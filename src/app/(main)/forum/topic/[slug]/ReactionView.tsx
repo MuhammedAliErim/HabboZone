@@ -87,7 +87,7 @@ export default function ReactionView({
     return acc;
   }, {} as Record<string, number>);
 
-  const topReactions = Object.entries(reactionCounts).sort((a, b) => b[1] - a[1]).slice(0, 3);
+  const topReactions = Object.entries(reactionCounts).sort((a, b) => (b[1] as number) - (a[1] as number)).slice(0, 3);
 
   return (
     <div className="flex items-center gap-4 mt-4 select-none relative">

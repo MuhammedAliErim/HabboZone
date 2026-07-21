@@ -61,7 +61,7 @@ export default async function SubForumPage({ params }: { params: { slug: string 
             </div>
             <div>
               <div className="text-xs font-bold text-primary tracking-widest uppercase mb-1">
-                {forum.categories?.name}
+                {(forum.categories as any)?.name}
               </div>
               <h1 className="text-3xl md:text-4xl font-black uppercase tracking-widest">
                 {forum.title}
@@ -113,8 +113,8 @@ export default async function SubForumPage({ params }: { params: { slug: string 
                   <div className="flex-shrink-0">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img 
-                      src={`https://www.habbo.com.tr/habbo-imaging/avatarimage?user=${topic.author?.habbo_username || 'Admin'}&direction=2&head_direction=2&gesture=sml&size=m`}
-                      alt={topic.author?.username}
+                      src={`https://www.habbo.com.tr/habbo-imaging/avatarimage?user=${(topic.author as any)?.habbo_username || 'Admin'}&direction=2&head_direction=2&gesture=sml&size=m`}
+                      alt={(topic.author as any)?.username}
                       className="w-12 h-12 rounded-full bg-black/20 border-2 border-white/10"
                     />
                   </div>
@@ -130,7 +130,7 @@ export default async function SubForumPage({ params }: { params: { slug: string 
                       )}
                     </h3>
                     <div className="text-sm text-white/50 mt-1 flex items-center gap-2">
-                      <span className="font-bold text-white/70">{topic.author?.username}</span>
+                      <span className="font-bold text-white/70">{(topic.author as any)?.username}</span>
                       <span>•</span>
                       <span>{new Date(topic.created_at).toLocaleDateString('tr-TR')}</span>
                     </div>
@@ -140,7 +140,7 @@ export default async function SubForumPage({ params }: { params: { slug: string 
                 {/* Orta: İstatistikler */}
                 <div className="flex-1 flex justify-center gap-6 mt-4 md:mt-0 w-full md:w-auto text-sm text-white/50">
                   <div className="flex items-center gap-1" title="Cevaplar">
-                    <MessageCircle size={16} /> {topic.replies?.[0]?.count || 0}
+                    <MessageCircle size={16} /> {(topic.replies as any)?.[0]?.count || 0}
                   </div>
                   <div className="flex items-center gap-1" title="Görüntülenme">
                     <Eye size={16} /> {topic.views || 0}

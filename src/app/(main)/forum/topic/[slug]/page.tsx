@@ -66,8 +66,8 @@ export default async function TopicPage({ params }: { params: { slug: string } }
       
       {/* Üst Kısım: Breadcrumb & Başlık */}
       <div className="space-y-4">
-        <Link href={`/forum/${topic.forums?.slug}`} className="inline-flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors">
-          <ArrowLeft size={16} /> {topic.forums?.title} Forumuna Dön
+        <Link href={`/forum/${(topic.forums as any)?.slug}`} className="inline-flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors">
+          <ArrowLeft size={16} /> {(topic.forums as any)?.title} Forumuna Dön
         </Link>
         
         <h1 className="text-3xl md:text-4xl font-black uppercase tracking-widest flex items-center gap-3">
@@ -82,11 +82,11 @@ export default async function TopicPage({ params }: { params: { slug: string } }
           <span className="flex items-center gap-1">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img 
-              src={`https://www.habbo.com.tr/habbo-imaging/avatarimage?user=${topic.author?.habbo_username || 'Admin'}&direction=2&head_direction=2&gesture=sml&size=s`}
+              src={`https://www.habbo.com.tr/habbo-imaging/avatarimage?user=${(topic.author as any)?.habbo_username || 'Admin'}&direction=2&head_direction=2&gesture=sml&size=s`}
               alt="Author"
               className="w-5 h-5 rounded-full bg-black/20"
             />
-            {topic.author?.username}
+            {(topic.author as any)?.username}
           </span>
           <span className="flex items-center gap-1"><Clock size={14} /> {new Date(topic.created_at).toLocaleDateString('tr-TR')}</span>
           <span className="flex items-center gap-1"><MessageCircle size={14} /> {replies?.length || 0} Cevap</span>
@@ -104,12 +104,12 @@ export default async function TopicPage({ params }: { params: { slug: string } }
         <div className="hidden md:flex flex-col items-center w-48 bg-black/20 border border-white/10 rounded-2xl p-4 flex-shrink-0">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img 
-            src={`https://www.habbo.com.tr/habbo-imaging/avatarimage?user=${topic.author?.habbo_username || 'Admin'}&direction=2&head_direction=2&gesture=sml&size=l`}
-            alt={topic.author?.username}
+            src={`https://www.habbo.com.tr/habbo-imaging/avatarimage?user=${(topic.author as any)?.habbo_username || 'Admin'}&direction=2&head_direction=2&gesture=sml&size=l`}
+            alt={(topic.author as any)?.username}
             className="w-full aspect-square object-cover bg-black/40 rounded-xl mb-4"
             style={{ objectPosition: 'center -10px' }}
           />
-          <div className="text-lg font-black text-center truncate w-full">{topic.author?.username}</div>
+          <div className="text-lg font-black text-center truncate w-full">{(topic.author as any)?.username}</div>
           <div className="text-xs text-primary font-bold uppercase tracking-widest mb-4">Konu Sahibi</div>
           {/* Rozetler buraya gelecek */}
         </div>
@@ -134,12 +134,12 @@ export default async function TopicPage({ params }: { params: { slug: string } }
             <div className="hidden md:flex flex-col items-center w-48 bg-black/20 border border-white/10 rounded-2xl p-4 flex-shrink-0">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img 
-                src={`https://www.habbo.com.tr/habbo-imaging/avatarimage?user=${reply.author?.habbo_username || 'Admin'}&direction=2&head_direction=2&gesture=sml&size=l`}
-                alt={reply.author?.username}
+                src={`https://www.habbo.com.tr/habbo-imaging/avatarimage?user=${(reply.author as any)?.habbo_username || 'Admin'}&direction=2&head_direction=2&gesture=sml&size=l`}
+                alt={(reply.author as any)?.username}
                 className="w-full aspect-square object-cover bg-black/40 rounded-xl mb-2"
                 style={{ objectPosition: 'center -10px' }}
               />
-              <div className="text-sm font-black text-center truncate w-full">{reply.author?.username}</div>
+              <div className="text-sm font-black text-center truncate w-full">{(reply.author as any)?.username}</div>
             </div>
             
             <div className={`flex-1 border rounded-2xl p-6 flex flex-col ${reply.is_solution ? 'bg-green-500/10 border-green-500/30' : 'bg-white/5 border-white/10'}`}>

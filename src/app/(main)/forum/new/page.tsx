@@ -7,7 +7,9 @@ import TipTapEditor from '@/components/admin/TipTapEditor';
 import { Save, ArrowLeft, PlusCircle, Trash2, HelpCircle } from 'lucide-react';
 import Link from 'next/link';
 
-export default function NewTopicPage() {
+import { Suspense } from 'react';
+
+function NewTopicForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const forumId = searchParams.get('forum_id');
@@ -271,5 +273,14 @@ export default function NewTopicPage() {
 
       </form>
     </div>
+  );
+}
+
+
+export default function NewTopicPage() {
+  return (
+    <Suspense fallback={<div className='p-20 text-center animate-pulse'>Yükleniyor...</div>}>
+      <NewTopicForm />
+    </Suspense>
   );
 }

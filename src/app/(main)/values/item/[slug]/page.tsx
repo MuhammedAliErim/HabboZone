@@ -118,7 +118,7 @@ export default async function ValuesItemPage({ params }: { params: { slug: strin
                     </div>
                     {record.profiles && (
                       <div className="text-xs font-bold text-white/30 bg-white/5 px-2 py-1 rounded">
-                        @{record.profiles.username}
+                        @{(record.profiles as any)?.username}
                       </div>
                     )}
                   </div>
