@@ -4,7 +4,7 @@ import { Award } from 'lucide-react';
 export const revalidate = 60; // Cache for 60 seconds
 
 export default async function BadgesPage() {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { data: badges } = await supabase
     .from('badges')
@@ -57,3 +57,4 @@ export default async function BadgesPage() {
     </div>
   );
 }
+

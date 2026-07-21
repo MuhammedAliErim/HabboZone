@@ -4,7 +4,7 @@ import { BookOpen, ExternalLink, Download } from 'lucide-react';
 export const revalidate = 60; // Cache for 60 seconds
 
 export default async function MagazinesPage() {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { data: magazines } = await supabase
     .from('magazines')
@@ -97,3 +97,4 @@ export default async function MagazinesPage() {
     </div>
   );
 }
+

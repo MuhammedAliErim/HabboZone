@@ -4,7 +4,7 @@ import { Image as ImageIcon } from 'lucide-react';
 export const revalidate = 60; // Cache for 60 seconds
 
 export default async function GalleryPage() {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { data: images } = await supabase
     .from('gallery')
@@ -59,3 +59,4 @@ export default async function GalleryPage() {
     </div>
   );
 }
+

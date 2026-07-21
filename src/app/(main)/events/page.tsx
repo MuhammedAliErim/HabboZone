@@ -4,7 +4,7 @@ import { Calendar, Clock, Trophy } from 'lucide-react';
 export const revalidate = 60; // Cache for 60 seconds
 
 export default async function EventsPage() {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { data: events } = await supabase
     .from('events')
@@ -99,3 +99,4 @@ export default async function EventsPage() {
     </div>
   );
 }
+

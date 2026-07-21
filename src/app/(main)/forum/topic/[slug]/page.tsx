@@ -10,7 +10,7 @@ import TopicModeration from './TopicModeration';
 export const revalidate = 0; // Disable caching
 
 export default async function TopicPage({ params }: { params: { slug: string } }) {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
   let userProfile = null;

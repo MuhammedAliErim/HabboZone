@@ -5,7 +5,7 @@ import { Diamond, TrendingUp, TrendingDown, Activity, Sparkles } from 'lucide-re
 export const revalidate = 60; // Cache for 60 seconds
 
 export default async function ValuesPage() {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   // Kategori listesini çek
   const { data: categories } = await supabase
@@ -124,3 +124,4 @@ export default async function ValuesPage() {
     </div>
   );
 }
+

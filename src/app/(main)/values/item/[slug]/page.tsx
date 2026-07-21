@@ -7,7 +7,7 @@ import ItemPriceChart from '@/components/values/ItemPriceChart';
 export const revalidate = 60;
 
 export default async function ValuesItemPage({ params }: { params: { slug: string } }) {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   // 1. Fetch item
   const { data: item } = await supabase

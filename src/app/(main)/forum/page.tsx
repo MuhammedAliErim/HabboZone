@@ -5,7 +5,7 @@ import { MessageSquare, Users, FileText } from 'lucide-react';
 export const revalidate = 0; // Disable caching for now to always show fresh data
 
 export default async function ForumIndexPage() {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   // Kategori ve alt forumları çek
   // Supabase'de nested join (categories -> forums)
@@ -143,3 +143,4 @@ export default async function ForumIndexPage() {
     </div>
   );
 }
+

@@ -6,7 +6,7 @@ import { Diamond, ArrowLeft, Search } from 'lucide-react';
 export const revalidate = 60; // Cache for 60 seconds
 
 export default async function CategoryValuesPage({ params }: { params: { category: string } }) {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   // 1. Fetch category
   const { data: category } = await supabase

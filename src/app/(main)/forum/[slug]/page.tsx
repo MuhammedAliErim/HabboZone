@@ -6,7 +6,7 @@ import { ArrowLeft, PlusCircle, MessageCircle, Eye, Pin, Lock, CheckCircle } fro
 export const revalidate = 0; // Disable caching
 
 export default async function SubForumPage({ params }: { params: { slug: string } }) {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   // Fetch forum details
   const { data: forum, error: forumError } = await supabase
