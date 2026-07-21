@@ -6,7 +6,7 @@ interface NewsCardProps {
     slug: string;
     summary: string;
     thumbnail_url: string;
-    author: { name: string; habbo_username: string };
+    author: { username: string; habbo_username: string };
     published_at: string;
   };
 }
@@ -36,10 +36,10 @@ export default function NewsCard({ news }: NewsCardProps) {
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-black/10 overflow-hidden border-2 border-white/30 flex items-center justify-center">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={avatarUrl} alt={news.author.name} className="mt-4" />
+            <img src={avatarUrl} alt={news.author.username} className="mt-4" />
           </div>
           <div>
-            <div className="text-sm font-bold text-primary">{news.author.name}</div>
+            <div className="text-sm font-bold text-primary">{news.author.username}</div>
             <div className="text-xs opacity-60">{new Date(news.published_at).toLocaleDateString('tr-TR')}</div>
           </div>
         </div>

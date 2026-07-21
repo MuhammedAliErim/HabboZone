@@ -9,6 +9,7 @@ export default async function GalleryPage() {
   const { data: images } = await supabase
     .from('gallery')
     .select('*, profiles(username)')
+    .eq('is_approved', true)
     .order('created_at', { ascending: false });
 
   return (
