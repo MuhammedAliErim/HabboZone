@@ -1,43 +1,28 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import { useRadioStore } from '@/store/useRadioStore';
+import { useState, useRef, useEffect } from 'react';
+import { Play, Pause, Volume2, VolumeX, Music, MessageCircle, Send } from 'lucide-react';
 import { createClient } from '@/utils/supabase/client';
-import { Send, Music, Loader2, Check } from 'lucide-react';
-
-// Demo radio stream URL (can be replaced with a real stream URL later)
-const RADIO_URL = 'https://stream.live.vc.bbcmedia.co.uk/bbc_radio_one';
 
 export default function RadioPlayer() {
-  const { isPlaying, volume, togglePlay, setVolume } = useRadioStore();
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [isMounted, setIsMounted] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [volume, setVolume] = useState(0.5);
+  const [isMuted, setIsMuted] = useState(false);
   const [showRequestForm, setShowRequestForm] = useState(false);
   
-  // Request form state
-  const [senderName, setSenderName] = useState('');
-  const [message, setMessage] = useState('');
-  const [songRequest, setSongRequest] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [requestName, setRequestName] = useState('');
+  const [requestSong, setRequestSong] = useState('');
+  const [requestMessage, setRequestMessage] = useState('');
+  const [requestStatus, setRequestStatus] = useState<'idle'|'loading'|'success'|'error'>('idle');
+
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const supabase = createClient();
+
+  const radioUrl = "https://listen.radioking.com/radio/15684/stream/29976"; 
 
   useEffect(() => {
-    setIsMounted(true);
-    audioRef.current = new Audio(RADIO_URL);
-    audioRef.current.loop = true;
-    
-    // Check if user is logged in to pre-fill sender name
-    const fetchUser = async () => {
-      const supabase = createClient();
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        const { data } = await supabase.from('profiles').select('username').eq('id', user.id).single();
-        if (data?.username) {
-          setSenderName(data.username);
-        }
-      }
-    };
-    fetchUser();
+    audioRef.current = new Audio(radioUrl);
+    audioRef.current.volume = volume;
     
     return () => {
       if (audioRef.current) {
@@ -49,171 +34,118 @@ export default function RadioPlayer() {
 
   useEffect(() => {
     if (audioRef.current) {
-      audioRef.current.volume = volume;
+      audioRef.current.volume = isMuted ? 0 : volume;
     }
-  }, [volume]);
+  }, [volume, isMuted]);
 
-  useEffect(() => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.play().catch((err) => {
-          console.error("Audio playback failed:", err);
-          togglePlay();
-        });
-      } else {
-        audioRef.current.pause();
-      }
+  const togglePlay = () => {
+    if (!audioRef.current) return;
+    
+    if (isPlaying) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play().catch(e => console.error("Playback failed:", e));
     }
-  }, [isPlaying, togglePlay]);
+    setIsPlaying(!isPlaying);
+  };
 
-  const handleSubmitRequest = async (e: React.FormEvent) => {
+  const handleRequestSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!senderName || !message) return;
-    
-    setIsSubmitting(true);
-    setSubmitStatus('idle');
-    
-    try {
-      const supabase = createClient();
-      const { error } = await supabase.from('radio_requests').insert([
-        { 
-          sender_name: senderName, 
-          message, 
-          song_request: songRequest 
-        }
-      ]);
-      
-      if (error) throw error;
-      
-      setSubmitStatus('success');
-      setMessage('');
-      setSongRequest('');
-      
+    setRequestStatus('loading');
+
+    const { error } = await supabase.from('radio_requests').insert([
+      { sender_name: requestName || 'Anonim', song_request: requestSong, message: requestMessage }
+    ]);
+
+    if (error) {
+      setRequestStatus('error');
+      setTimeout(() => setRequestStatus('idle'), 3000);
+    } else {
+      setRequestStatus('success');
+      setRequestSong('');
+      setRequestMessage('');
       setTimeout(() => {
-        setSubmitStatus('idle');
         setShowRequestForm(false);
+        setRequestStatus('idle');
       }, 3000);
-    } catch (error) {
-      console.error('Error submitting request:', error);
-      setSubmitStatus('error');
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
-  if (!isMounted) return null;
-
   return (
-    <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2">
+    <div className="fixed bottom-4 right-4 z-50 flex flex-col items-end gap-2 pointer-events-none">
+      
+      {/* Request Form Popup */}
       {showRequestForm && (
-        <div className="bg-white/90 dark:bg-black/90 backdrop-blur-xl p-5 rounded-2xl border border-white/20 shadow-2xl mb-2 w-80 animate-in fade-in slide-in-from-bottom-4">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="font-bold uppercase tracking-wider flex items-center gap-2">
-              <Music size={16} className="text-primary" /> Radyo İstek
-            </h3>
-            <button 
-              onClick={() => setShowRequestForm(false)}
-              className="text-foreground/50 hover:text-foreground text-xl"
-            >
-              &times;
-            </button>
+        <div className="bg-white border-2 border-black rounded-lg shadow-[4px_4px_0_rgba(0,0,0,0.2)] p-4 w-72 pointer-events-auto transform transition-all">
+          <div className="flex justify-between items-center mb-3 border-b-2 border-gray-200 pb-2">
+            <h3 className="font-bold text-sm uppercase text-primary">Radyo İstek Hattı</h3>
+            <button onClick={() => setShowRequestForm(false)} className="text-gray-500 hover:text-red-500 font-bold">X</button>
           </div>
           
-          <form onSubmit={handleSubmitRequest} className="space-y-3">
-            <div>
-              <label className="text-xs font-bold uppercase opacity-70 ml-1">Adın</label>
-              <input 
-                type="text" 
-                value={senderName}
-                onChange={(e) => setSenderName(e.target.value)}
-                required
-                placeholder="Habbo adın..."
-                className="w-full bg-black/10 border border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary"
-              />
+          {requestStatus === 'success' ? (
+            <div className="bg-green-100 text-green-800 p-3 rounded text-sm text-center font-bold">
+              İsteğin DJ'e ulaştı! 🎉
             </div>
-            
-            <div>
-              <label className="text-xs font-bold uppercase opacity-70 ml-1">İstediğin Şarkı (Opsiyonel)</label>
-              <input 
-                type="text" 
-                value={songRequest}
-                onChange={(e) => setSongRequest(e.target.value)}
-                placeholder="Örn: Tarkan - Kuzu Kuzu"
-                className="w-full bg-black/10 border border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary"
-              />
-            </div>
-            
-            <div>
-              <label className="text-xs font-bold uppercase opacity-70 ml-1">Mesajın</label>
-              <textarea 
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                required
-                placeholder="DJ'e iletmek istediğin mesaj..."
-                className="w-full bg-black/10 border border-white/10 rounded-lg px-3 py-2 text-sm h-20 resize-none focus:outline-none focus:border-primary"
-              />
-            </div>
-            
-            <button 
-              type="submit" 
-              disabled={isSubmitting || submitStatus === 'success'}
-              className={`w-full py-2 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all ${
-                submitStatus === 'success' ? 'bg-green-500 text-white' : 'bg-primary text-black hover:scale-105'
-              }`}
-            >
-              {isSubmitting ? (
-                <Loader2 size={16} className="animate-spin" />
-              ) : submitStatus === 'success' ? (
-                <><Check size={16} /> Gönderildi!</>
-              ) : (
-                <><Send size={16} /> İsteği Gönder</>
-              )}
-            </button>
-          </form>
+          ) : (
+            <form onSubmit={handleRequestSubmit} className="space-y-3">
+              <input type="text" placeholder="Adınız (İsteğe bağlı)" value={requestName} onChange={e => setRequestName(e.target.value)} className="w-full bg-gray-100 border border-gray-300 rounded px-2 py-1.5 text-xs text-black outline-none focus:border-primary" />
+              <input type="text" placeholder="İstediğin Şarkı" required value={requestSong} onChange={e => setRequestSong(e.target.value)} className="w-full bg-gray-100 border border-gray-300 rounded px-2 py-1.5 text-xs text-black outline-none focus:border-primary" />
+              <textarea placeholder="DJ'e Mesajın..." required rows={2} value={requestMessage} onChange={e => setRequestMessage(e.target.value)} className="w-full bg-gray-100 border border-gray-300 rounded px-2 py-1.5 text-xs text-black outline-none focus:border-primary resize-none"></textarea>
+              <button disabled={requestStatus === 'loading'} type="submit" className="habbo-button blue w-full text-xs py-1.5 flex justify-center items-center gap-1">
+                {requestStatus === 'loading' ? 'Gönderiliyor...' : <><Send size={12}/> Gönder</>}
+              </button>
+            </form>
+          )}
         </div>
       )}
 
-      <div className="bg-white/20 dark:bg-black/40 backdrop-blur-md p-4 rounded-2xl border-2 border-white/10 shadow-lg flex flex-col gap-3">
-        <div className="flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className={`w-10 h-10 bg-primary/20 text-primary rounded-xl flex items-center justify-center border border-primary/30 ${isPlaying ? 'animate-pulse' : ''}`}>
-              <Music size={20} />
-            </div>
-            <div>
-              <div className="text-sm font-bold uppercase tracking-wider">HabboZone Radyo</div>
-              <div className="text-xs text-primary font-medium">{isPlaying ? 'Yayında...' : 'Duraklatıldı'}</div>
-            </div>
+      {/* Main Player Widget */}
+      <div className="habbo-box w-72 pointer-events-auto shadow-2xl flex flex-col">
+        <div className="habbo-box-header orange flex items-center justify-between text-xs py-1.5">
+          <div className="flex items-center gap-1">
+            <Music size={14} className={isPlaying ? "animate-pulse" : ""} />
+            HabboZone Radyo
           </div>
-          
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setShowRequestForm(!showRequestForm)}
-              className={`p-2 rounded-lg transition-colors ${showRequestForm ? 'bg-primary text-black' : 'bg-white/10 hover:bg-white/20'}`}
-              title="İstek Gönder"
-            >
-              <Send size={16} />
-            </button>
-            <button 
-              onClick={togglePlay}
-              className="w-10 h-10 flex items-center justify-center bg-primary text-black hover:scale-105 rounded-lg transition-transform font-black"
-            >
-              {isPlaying ? '||' : '▶'}
-            </button>
+          <div className="flex items-center gap-1 text-[10px] bg-black/20 px-1.5 py-0.5 rounded">
+            <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span>
+            YAYINDA
           </div>
         </div>
         
-        <div className="flex items-center gap-3 px-1">
-          <span className="text-xs opacity-50">🔈</span>
-          <input 
-            type="range" 
-            min="0" 
-            max="1" 
-            step="0.05"
-            value={volume}
-            onChange={(e) => setVolume(parseFloat(e.target.value))}
-            className="w-full h-1.5 bg-black/20 rounded-lg appearance-none cursor-pointer accent-primary"
-          />
-          <span className="text-xs opacity-50">🔊</span>
+        <div className="p-3 bg-gray-100 flex items-center justify-between border-t-2 border-white">
+          <button 
+            onClick={togglePlay}
+            className="w-10 h-10 bg-white border-2 border-gray-300 rounded-full flex items-center justify-center text-primary hover:bg-gray-50 hover:border-primary transition-colors shadow-sm"
+          >
+            {isPlaying ? <Pause size={20} className="fill-current" /> : <Play size={20} className="fill-current ml-1" />}
+          </button>
+          
+          <div className="flex-1 px-3">
+            <div className="text-xs font-bold text-gray-800 mb-1">DJ HabboZone</div>
+            <div className="flex items-center gap-2">
+              <button onClick={() => setIsMuted(!isMuted)} className="text-gray-500 hover:text-primary">
+                {isMuted || volume === 0 ? <VolumeX size={14} /> : <Volume2 size={14} />}
+              </button>
+              <input 
+                type="range" 
+                min="0" max="1" step="0.01" 
+                value={isMuted ? 0 : volume}
+                onChange={(e) => {
+                  setVolume(parseFloat(e.target.value));
+                  setIsMuted(false);
+                }}
+                className="w-full h-1.5 bg-gray-300 rounded-lg appearance-none cursor-pointer accent-primary"
+              />
+            </div>
+          </div>
+
+          <button 
+            onClick={() => setShowRequestForm(!showRequestForm)}
+            className={`p-2 rounded-lg transition-colors border-2 ${showRequestForm ? 'bg-primary text-white border-primary' : 'bg-white text-gray-500 border-gray-300 hover:border-primary hover:text-primary'}`}
+            title="İstek Gönder"
+          >
+            <MessageCircle size={18} />
+          </button>
         </div>
       </div>
     </div>

@@ -27,6 +27,7 @@ CREATE TABLE public.profiles (
   username TEXT UNIQUE NOT NULL,
   habbo_username TEXT,
   motto TEXT,
+    hz_points INTEGER DEFAULT 0,
   avatar_url TEXT,
   role user_role DEFAULT 'Member'::user_role,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,

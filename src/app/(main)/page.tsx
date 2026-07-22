@@ -3,12 +3,19 @@ import NewsCard from '@/components/NewsCard';
 import MarketWidget from '@/components/MarketWidget';
 import Link from 'next/link';
 import { createClient } from '@/utils/supabase/server';
-import { MessageCircle, Award, Eye, Calendar, Pin } from 'lucide-react';
+import { MessageCircle, Award, PenTool, Radio } from 'lucide-react';
 
 export const revalidate = 60; // Cache for 60 seconds
 
 export default async function Home() {
   const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  let profile = null;
+  if (user) {
+    const { data } = await supabase.from('profiles').select('*').eq('id', user.id).single();
+    profile = data;
+  }
 
   // Fetch Featured News
   const { data: featuredNews } = await supabase
@@ -66,37 +73,46 @@ export default async function Home() {
     .limit(6);
 
   return (
-    <div className="py-8 space-y-16 animate-in fade-in duration-700">
+    <div className="py-6 space-y-6 animate-in fade-in duration-700 max-w-6xl mx-auto">
       
-      {/* Featured Slider */}
+      {/* Featured Slider Area */}
       {featuredNews && featuredNews.length > 0 && (
-        <section>
+        <section className="mb-6 rounded-lg overflow-hidden border-4 border-white shadow-md bg-white">
           <FeaturedSlider items={featuredNews} />
         </section>
       )}
 
       {/* Main Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
-        {/* Left Column: News & Forums (Takes up 2/3 space on large screens) */}
-        <div className="lg:col-span-2 space-y-12">
+        {/* Left Column: News & Forums */}
+        <div className="lg:col-span-2 space-y-6">
           
           {/* Latest News */}
-          <section className="space-y-6">
-            <div className="flex items-center justify-between border-b-4 border-black/10 dark:border-white/10 pb-4">
-              <h2 className="text-2xl font-black uppercase tracking-wider flex items-center gap-2">
-                <span className="w-4 h-4 bg-primary inline-block pixel-borders"></span>
-                Son Haberler
-              </h2>
-              <Link href="/news" className="text-sm font-bold text-primary hover:underline">Tümünü Gör →</Link>
+          <section className="habbo-box">
+            <div className="habbo-box-header blue flex justify-between items-center">
+              <span>Son Haberler</span>
+              <Link href="/news" className="text-[10px] bg-black/20 hover:bg-black/40 px-2 py-1 rounded transition-colors">
+                Tümünü Gör
+              </Link>
             </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="p-4 bg-gray-50 grid grid-cols-1 md:grid-cols-2 gap-4">
               {regularNews?.map((news: any) => (
-                <NewsCard key={news.slug} news={news} />
+                <div key={news.slug} className="bg-white border border-gray-200 rounded p-2 shadow-sm flex flex-col gap-2 hover:border-primary transition-colors group">
+                  <div className="h-32 rounded overflow-hidden relative">
+                    <img src={news.thumbnail_url || 'https://images.habbo.com/c_images/article_images_tr/tr_news_header_1.png'} alt={news.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                  </div>
+                  <Link href={`/news/${news.slug}`} className="font-bold text-sm text-gray-800 hover:text-primary leading-tight">
+                    {news.title}
+                  </Link>
+                  <div className="flex justify-between items-center text-[10px] text-gray-500 mt-auto pt-2 border-t border-gray-100">
+                    <span>{(news.author as any)?.username || 'Admin'}</span>
+                    <span>{new Date(news.published_at).toLocaleDateString('tr-TR')}</span>
+                  </div>
+                </div>
               ))}
               {(!regularNews || regularNews.length === 0) && (
-                <div className="col-span-full p-8 text-center bg-white/5 rounded-2xl border border-white/10 text-white/50">
+                <div className="col-span-full p-8 text-center text-gray-500">
                   Henüz haber bulunmuyor.
                 </div>
               )}
@@ -104,48 +120,49 @@ export default async function Home() {
           </section>
 
           {/* Latest Forum Topics */}
-          <section className="space-y-6">
-            <div className="flex items-center justify-between border-b-4 border-black/10 dark:border-white/10 pb-4">
-              <h2 className="text-2xl font-black uppercase tracking-wider flex items-center gap-2">
-                <span className="w-4 h-4 bg-[#FF9800] inline-block pixel-borders"></span>
-                Forumda Neler Oluyor?
-              </h2>
-              <Link href="/forum" className="text-sm font-bold text-[#FF9800] hover:underline">Foruma Git →</Link>
+          <section className="habbo-box">
+            <div className="habbo-box-header orange flex justify-between items-center">
+              <span>Forum'da Konuşulanlar</span>
+              <Link href="/forum" className="text-[10px] bg-black/20 hover:bg-black/40 px-2 py-1 rounded transition-colors">
+                Foruma Git
+              </Link>
             </div>
             
-            <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden shadow-lg divide-y divide-white/10">
+            <div className="divide-y divide-gray-200 bg-white">
               {latestTopics?.map((topic: any) => (
                 <Link 
                   key={topic.id} 
                   href={`/forum/topic/${topic.slug}`}
-                  className={`flex items-center p-4 gap-4 hover:bg-white/5 transition-colors group ${topic.is_pinned ? 'bg-primary/5' : ''}`}
+                  className={`flex items-center p-3 gap-3 hover:bg-orange-50 transition-colors group ${topic.is_pinned ? 'bg-orange-50/50' : ''}`}
                 >
                   <div className="flex-shrink-0">
-                    <img 
-                      src={`https://www.habbo.com.tr/habbo-imaging/avatarimage?user=${(topic.author as any)?.habbo_username || 'Admin'}&direction=2&head_direction=2&gesture=sml&size=s`}
-                      alt="avatar"
-                      className="w-10 h-10 rounded-full bg-black/20 border border-white/10"
-                    />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-bold text-base truncate group-hover:text-[#FF9800] transition-colors flex items-center gap-2">
-                      {topic.is_pinned && <Pin size={14} className="text-[#FF9800]" />}
-                      {topic.title}
-                    </h3>
-                    <div className="text-xs text-white/50 mt-1">
-                      <span className="font-bold text-white/70">{(topic.author as any)?.username}</span>
-                      {' • '}
-                      <span>{new Date(topic.created_at).toLocaleDateString('tr-TR')}</span>
+                    <div className="w-10 h-10 rounded overflow-hidden bg-gray-100 border border-gray-200 flex items-center justify-center">
+                      <img 
+                        src={`https://www.habbo.com.tr/habbo-imaging/avatarimage?user=${(topic.author as any)?.habbo_username || 'Admin'}&direction=2&head_direction=2&gesture=sml&size=s`}
+                        alt="avatar"
+                        className="w-12 h-12 -mt-2"
+                      />
                     </div>
                   </div>
-                  <div className="flex items-center gap-1 text-sm text-white/50 bg-black/20 px-3 py-1 rounded-full">
-                    <MessageCircle size={14} />
-                    <span>{(topic.replies as any)?.[0]?.count || 0}</span>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-bold text-sm text-gray-800 truncate group-hover:text-orange-600 transition-colors flex items-center gap-2">
+                      {topic.is_pinned && <span className="bg-orange-500 text-white text-[9px] px-1 rounded uppercase">Sabit</span>}
+                      {topic.title}
+                    </h3>
+                    <div className="text-[11px] text-gray-500 mt-0.5">
+                      Yazar: <span className="font-bold text-gray-700">{(topic.author as any)?.username}</span>
+                      {' • '}
+                      {new Date(topic.created_at).toLocaleDateString('tr-TR')}
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-center justify-center text-xs text-gray-500 bg-gray-100 px-3 py-1 rounded border border-gray-200 min-w-[50px]">
+                    <span className="font-bold text-gray-700">{(topic.replies as any)?.[0]?.count || 0}</span>
+                    <span className="text-[9px] uppercase">Yanıt</span>
                   </div>
                 </Link>
               ))}
               {(!latestTopics || latestTopics.length === 0) && (
-                <div className="p-8 text-center text-white/50">
+                <div className="p-8 text-center text-gray-500">
                   Henüz konu açılmamış.
                 </div>
               )}
@@ -155,32 +172,42 @@ export default async function Home() {
         </div>
 
         {/* Right Column: Widgets */}
-        <aside className="space-y-8">
+        <aside className="space-y-6">
           
+          {/* User Widget */}
+          {profile && (
+            <div className="habbo-box">
+              <div className="habbo-box-header green">Benim Bilgilerim</div>
+              <div className="p-4 bg-white flex items-center gap-4 border-b border-gray-100">
+                <div className="w-16 h-16 rounded overflow-hidden bg-gray-100 border border-gray-200 flex items-center justify-center shrink-0">
+                  <img src={`https://www.habbo.com.tr/habbo-imaging/avatarimage?user=${profile.habbo_username || 'Habbo'}&direction=3&head_direction=3&gesture=sml&size=m`} alt="avatar" className="w-20 h-20 -mt-2" />
+                </div>
+                <div>
+                  <div className="font-bold text-lg text-gray-800">{profile.username}</div>
+                  <div className="text-xs text-gray-500 italic mb-2">{profile.motto || 'Motto yok'}</div>
+                  <div className="flex gap-2 text-xs font-bold text-gray-600">
+                    <span className="bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded border border-yellow-300 shadow-sm">{profile.hz_points || 0} HZ Puanı</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Magazine Showcase */}
           {latestMagazine && (
-            <div className="bg-white/10 dark:bg-black/20 p-6 rounded-2xl border-4 border-white/20 shadow-lg relative overflow-hidden group">
-              <div className="absolute -top-20 -right-20 w-64 h-64 bg-primary/20 rounded-full blur-3xl group-hover:bg-primary/30 transition-colors" />
-              
-              <h3 className="text-xl font-black uppercase tracking-wider mb-6 flex items-center gap-2 relative z-10">
-                <span className="text-2xl">📖</span> Son Dergi
-              </h3>
-              
-              <div className="relative z-10 flex flex-col items-center text-center">
-                <div className="w-48 h-64 bg-black/20 rounded-lg overflow-hidden shadow-2xl border-2 border-white/30 transform rotate-[-2deg] group-hover:rotate-0 transition-transform mb-6">
+            <div className="habbo-box">
+              <div className="habbo-box-header dark">Haftanın Dergisi</div>
+              <div className="bg-gray-100 p-4 flex flex-col items-center">
+                <div className="w-32 h-44 bg-white rounded shadow-md border-2 border-gray-300 transform -rotate-2 hover:rotate-0 transition-transform mb-4 overflow-hidden">
                   <img 
                     src={latestMagazine.cover_image_url} 
                     alt={latestMagazine.title}
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <h4 className="font-bold text-lg mb-2">{latestMagazine.title}</h4>
-                <p className="text-sm opacity-80 mb-6">Sayı #{latestMagazine.issue_number} • En son çıkan sürüm</p>
-                
-                <Link 
-                  href={`/magazines/${latestMagazine.id}`}
-                  className="w-full py-3 bg-primary text-white font-bold uppercase tracking-widest rounded-lg pixel-borders hover:bg-primary/90 transition-colors text-center shadow-lg"
-                >
+                <h4 className="font-bold text-sm text-gray-800 text-center leading-tight mb-1">{latestMagazine.title}</h4>
+                <p className="text-[10px] text-gray-500 mb-3">Sayı #{latestMagazine.issue_number}</p>
+                <Link href={`/magazines/${latestMagazine.id}`} className="habbo-button blue text-xs w-full text-center py-2">
                   Hemen Oku
                 </Link>
               </div>
@@ -188,26 +215,30 @@ export default async function Home() {
           )}
 
           {/* Latest Badges */}
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-            <h3 className="text-xl font-black uppercase tracking-wider mb-6 flex items-center gap-2">
-              <Award className="text-[#E91E63]" /> Son Rozetler
-            </h3>
-            <div className="grid grid-cols-3 gap-4">
-              {latestBadges?.map((badge: any) => (
-                <div key={badge.id} className="flex flex-col items-center gap-2 group cursor-help" title={badge.name}>
-                  <div className="w-16 h-16 bg-black/20 rounded-xl flex items-center justify-center border border-white/10 group-hover:border-[#E91E63] group-hover:bg-[#E91E63]/10 transition-colors shadow-inner">
-                    <img src={badge.image_url} alt={badge.name} className="w-12 h-12 object-contain group-hover:scale-110 transition-transform" />
+          <div className="habbo-box">
+            <div className="habbo-box-header" style={{backgroundColor: '#E91E63', borderBottomColor: '#C2185B'}}>Son Eklenen Rozetler</div>
+            <div className="bg-white p-4">
+              <div className="grid grid-cols-3 gap-2">
+                {latestBadges?.map((badge: any) => (
+                  <div key={badge.id} className="flex flex-col items-center gap-1 group cursor-help bg-gray-50 border border-gray-100 rounded p-2 hover:border-pink-300 hover:bg-pink-50 transition-colors" title={badge.name}>
+                    <img src={badge.image_url} alt={badge.name} className="w-10 h-10 object-contain group-hover:scale-110 transition-transform drop-shadow-sm" />
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
+              <Link href="/badges" className="block text-center text-xs font-bold text-[#E91E63] mt-4 hover:underline">
+                Tüm Rozetleri İncele →
+              </Link>
             </div>
-            <Link href="/badges" className="block text-center text-sm font-bold text-[#E91E63] mt-6 hover:underline">
-              Tüm Rozetleri İncele →
-            </Link>
           </div>
           
           {/* Economy/Market Widget */}
-          <MarketWidget />
+          <div className="habbo-box">
+             <div className="habbo-box-header" style={{backgroundColor: '#795548', borderBottomColor: '#5D4037'}}>Değerler & Ekonomi</div>
+             <div className="bg-white">
+                <MarketWidget />
+             </div>
+          </div>
+          
         </aside>
 
       </div>
