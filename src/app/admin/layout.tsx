@@ -29,6 +29,12 @@ export default function AdminLayout({
           <Link href="/admin/magazines" className="block px-4 py-3 rounded-lg hover:bg-white/10 transition-colors font-bold text-sm">
             📖 E-Dergi Yönetimi
           </Link>
+          <Link href="/admin/staff" className="block px-4 py-3 rounded-lg hover:bg-white/10 transition-colors font-bold text-sm">
+            👔 Kadro Yönetimi
+          </Link>
+          <Link href="/admin/radio" className="block px-4 py-3 rounded-lg hover:bg-white/10 transition-colors font-bold text-sm">
+            📻 Radyo İstekleri
+          </Link>
         </nav>
 
         <div className="p-4 border-t border-white/10">

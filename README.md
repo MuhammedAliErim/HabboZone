@@ -1,23 +1,24 @@
-# HabboZone 🏨
+# HabboZone - Habbo Türkiye Fansitesi
 
-HabboZone, Habbo dünyasının nabzını tutan; etkinlikleri, eşya değerlerini, rozetleri, topluluk galerisini ve en güncel haberleri tek bir çatı altında toplayan özel bir fan sitesidir. 
+HabboZone, modern web teknolojileri ile geliştirilmiş, zengin özelliklere sahip yeni nesil bir Habbo Türkiye fansitesidir.
 
-Modern web teknolojileri ile geliştirilmiş olup, hızlı, güvenli ve oyuncu dostu bir deneyim sunar.
+## Özellikler
 
-## ✨ Özellikler
-- 📰 **Haberler & Dergiler:** En güncel gelişmeler ve özel e-dergi sayıları.
-- 💬 **Gelişmiş Forum:** Oyuncuların fikir alışverişi yapabileceği tartışma alanı.
-- 💎 **Değerler (Market):** Habbo eşya değerleri ve piyasa grafikleri.
-- 🏅 **Rozetler & Etkinlikler:** Özel site içi etkinlikler ve kullanıcılara verilebilen koleksiyon rozetleri.
-- 📸 **Topluluk Galerisi:** Oyuncuların yüklediği oyun içi anılar.
-- 🛡️ **Gelişmiş Admin Paneli:** Tüm içeriklerin tek bir merkezden yönetimi.
+- **Gelişmiş Haber Sistemi:** Kategori bazlı, yazar onaylı dinamik haber altyapısı.
+- **Topluluk Forumu:** Kullanıcıların konu açabileceği, tartışabileceği interaktif forum alanı.
+- **Habbo Değer & Nadire Merkezi:** Piyasada bulunan Habbo LTD ve nadire eşyalarının güncel fiyat takibi.
+- **Kullanıcı Profilleri & Rozetler:** Kişiselleştirilebilir profiller, Habbo avatar entegrasyonu ve site içi rozet kazanma sistemi.
+- **Radyo Oynatıcı:** Canlı yayınları dinleyebileceğiniz ve kesintisiz müzik keyfi sunan entegre radyo oynatıcı.
+- **Dergi & Galeri:** PDF formatında aylık dergiler ve oyuncuların görsellerini paylaşabildiği onaylı galeri sistemi.
+- **Etkinlik Takvimi:** Yaklaşan Habbo etkinliklerinin ve ödüllerinin listelendiği ajanda.
+- **Ekip ve İstek Hattı:** Radyo DJ'lerine anlık istek gönderme ve aktif site kadrosunu görüntüleme.
 
-## 🛠️ Teknolojiler
-- **Frontend:** Next.js 16 (App Router), React, Tailwind CSS, TypeScript, Lucide Icons.
-- **Backend & Database:** Supabase (PostgreSQL, Auth, Storage, Edge Functions).
+## Kullanılan Teknolojiler
 
-## 🔒 Lisans & Telif Hakkı
-Bu proje **Muhammed Ali Erim** tarafından geliştirilmiştir. 
-Projenin kodları açık kaynak (open-source) **DEĞİLDİR**. Kodların kopyalanması, dağıtılması veya başka isimle kullanılması kesinlikle yasaktır. Detaylar için lütfen `LICENSE` dosyasını okuyun.
+- **Frontend:** Next.js 16 (App Router), React, Tailwind CSS, Lucide Icons
+- **Backend & Veritabanı:** Supabase (PostgreSQL, Auth, Storage)
+- **Dağıtım:** Vercel
 
-*Telif Hakkı © 2026 Muhammed Ali Erim.*
+## Geliştirici
+
+**Muhammed Ali Erim** tarafından Habbo topluluğu için geliştirilmiştir.
