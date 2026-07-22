@@ -264,7 +264,7 @@ export default function AdminStaffPage() {
                       <td className="p-4">
                         <div className="flex items-center gap-3">
                           <div className="w-10 h-10 bg-black/20 rounded-full border border-white/10 flex items-center justify-center overflow-hidden shrink-0">
-                            <HabboAvatar username={item.profiles?.habbo_username || 'Habbo'} size="s" headDirection={2} direction={2} className="w-12 h-12 -mt-2" />
+                            <HabboAvatar username={item.profiles?.habbo_username || 'Habbo'} size="m" headDirection={2} direction={2} className="w-12 h-12 -mt-2" />
                           </div>
                           <div>
                             <div className="font-bold">{item.profiles?.username}</div>

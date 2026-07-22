@@ -8,7 +8,22 @@ export const revalidate = 60;
 export default async function StaffPage() {
   const supabase = await createClient();
 
-  const { data: staffMembers } = await supabase
+  type Profile = {
+    id: string;
+    username: string;
+    habbo_username: string;
+    motto: string;
+    role: string;
+  };
+
+  type StaffMember = {
+    id: string;
+    position: string;
+    order_index: number;
+    profiles: Profile;
+  };
+
+  const { data } = await supabase
     .from('staff')
     .select(`
       id,
@@ -23,6 +38,8 @@ export default async function StaffPage() {
       )
     `)
     .order('order_index', { ascending: true });
+
+  const staffMembers = data as unknown as StaffMember[];
 
   // Fallback data if no staff configured
   const displayStaff = staffMembers && staffMembers.length > 0 ? staffMembers : [];
