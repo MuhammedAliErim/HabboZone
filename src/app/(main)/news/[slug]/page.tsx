@@ -1,60 +1,78 @@
-import { MOCK_NEWS } from '@/lib/mockData';
+import { createClient } from '@/utils/supabase/server';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 
 export default async function NewsDetail({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
-  const newsItem = MOCK_NEWS.find(n => n.slug === resolvedParams.slug);
+  const supabase = await createClient();
+
+  const { data: newsItem } = await supabase
+    .from('news')
+    .select(`
+      *,
+      author:profiles!news_author_id_fkey(username, habbo_username)
+    `)
+    .eq('slug', resolvedParams.slug)
+    .single();
 
   if (!newsItem) {
     notFound();
   }
 
-  const avatarUrl = `https://www.habbo.com.tr/habbo-imaging/avatarimage?user=${newsItem.author.habbo_username}&direction=2&head_direction=2&gesture=sml&size=l`;
+  const avatarUrl = `https://www.habbo.com.tr/habbo-imaging/avatarimage?user=${(newsItem.author as any)?.habbo_username || 'Admin'}&direction=2&head_direction=2&gesture=sml&size=l`;
 
   return (
-    <article className="max-w-4xl mx-auto w-full py-12 px-4">
-      <Link href="/" className="inline-block mb-8 text-primary font-bold hover:underline">
-        ← Ana Sayfaya Dön
-      </Link>
-
-      <header className="mb-12 text-center">
-        <h1 className="text-4xl md:text-6xl font-black mb-6 leading-tight">
-          {newsItem.title}
-        </h1>
-        
-        <div className="flex items-center justify-center gap-4 text-sm opacity-80">
-          <div className="flex items-center gap-2 bg-white/10 dark:bg-black/20 px-4 py-2 rounded-full border border-white/20">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={avatarUrl} alt={newsItem.author.name} className="w-8 h-8 rounded-full bg-black/10 object-cover overflow-hidden" />
-            <span className="font-bold text-primary">{newsItem.author.name}</span>
+    <article className="max-w-4xl mx-auto w-full py-8 space-y-6">
+      
+      <div className="flex justify-between items-center bg-white border border-gray-200 p-2 rounded shadow-sm">
+          <Link href="/news" className="text-xs font-bold text-gray-500 hover:text-primary transition-colors flex items-center gap-1">
+            ← Haberlere Dön
+          </Link>
+          <div className="text-[10px] text-gray-400">
+            {new Date(newsItem.published_at).toLocaleDateString('tr-TR', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
           </div>
-          <span>•</span>
-          <time dateTime={newsItem.published_at}>
-            {new Date(newsItem.published_at).toLocaleDateString('tr-TR', { year: 'numeric', month: 'long', day: 'numeric' })}
-          </time>
+      </div>
+
+      <div className="habbo-box">
+        <div className="habbo-box-header blue flex justify-between items-center">
+            <span className="truncate">{newsItem.title}</span>
         </div>
-      </header>
+        <div className="bg-white">
+            {/* Hero Image */}
+            <div className="w-full h-[300px] md:h-[400px] border-b border-gray-200 bg-gray-100 relative">
+                <img 
+                    src={newsItem.thumbnail_url || 'https://images.habbo.com/c_images/article_images_tr/tr_news_header_1.png'} 
+                    alt={newsItem.title}
+                    className="w-full h-full object-cover"
+                />
+                
+                {/* Author Badge */}
+                <div className="absolute -bottom-6 left-6 flex items-center gap-3 bg-white p-2 rounded shadow-md border border-gray-200">
+                    <div className="w-12 h-12 bg-gray-100 rounded border border-gray-200 overflow-hidden flex items-center justify-center">
+                        <img src={avatarUrl} alt="yazar" className="w-16 h-16 -mt-2" />
+                    </div>
+                    <div>
+                        <div className="text-[10px] text-gray-500 uppercase font-bold">Yazar</div>
+                        <div className="font-bold text-sm text-gray-800">{(newsItem.author as any)?.username || 'Admin'}</div>
+                    </div>
+                </div>
+            </div>
 
-      {/* Hero Image */}
-      <div className="w-full h-[400px] md:h-[500px] rounded-3xl overflow-hidden mb-12 border-4 border-white/20 shadow-2xl relative">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img 
-          src={newsItem.thumbnail_url} 
-          alt={newsItem.title}
-          className="w-full h-full object-cover"
-        />
+            {/* Content */}
+            <div className="p-8 pt-12 md:p-12 md:pt-12">
+                <p className="text-lg font-bold text-gray-700 mb-8 border-l-4 border-primary pl-4 bg-gray-50 py-2 pr-2 rounded-r">
+                    {newsItem.summary}
+                </p>
+                
+                {/* Prose Content */}
+                <div 
+                    className="prose prose-sm md:prose-base max-w-none prose-headings:font-bold prose-headings:text-gray-800 prose-a:text-primary hover:prose-a:text-blue-600 prose-img:rounded-md prose-img:border prose-img:border-gray-200 text-gray-700"
+                    dangerouslySetInnerHTML={{ __html: newsItem.content.replace(/\n/g, '<br/>') }} 
+                />
+            </div>
+        </div>
       </div>
-
-      {/* Modern Typography Content */}
-      <div className="prose prose-lg dark:prose-invert prose-headings:font-black prose-a:text-primary hover:prose-a:text-primary/80 max-w-none bg-white/10 dark:bg-black/20 p-8 md:p-12 rounded-3xl backdrop-blur-md border border-white/10 shadow-xl">
-        <p className="lead text-xl md:text-2xl font-medium opacity-90 mb-8 border-l-4 border-primary pl-6">
-          {newsItem.summary}
-        </p>
-        
-        {/* Mock Markdown Rendering (We will use an MDX or Markdown parser in real integration) */}
-        <div dangerouslySetInnerHTML={{ __html: newsItem.content.replace(/\n/g, '<br/>') }} />
-      </div>
+      
     </article>
   );
 }
