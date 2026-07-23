@@ -25,11 +25,11 @@ export default function ReplyForm({ topicId, topicSlug, user }: { topicId: strin
             
             <div className="p-0 flex flex-col md:flex-row">
                 {/* Author Info (Left) */}
-                <div className="w-full md:w-[200px] bg-[#0a1325] p-6 flex flex-col items-center border-b md:border-b-0 md:border-r border-[#1e293b]">
-                    <div className="w-16 h-16 rounded bg-[#1e293b] flex items-center justify-center shrink-0 overflow-hidden relative mb-3">
-                        <HabboAvatar username={user.user_metadata?.habbo_username || user.user_metadata?.username} size="l" direction={3} className="w-12 h-12" />
+                <div className="w-full md:w-[200px] bg-[#0a1325] p-4 md:p-6 flex flex-row md:flex-col items-center gap-4 md:gap-0 border-b md:border-b-0 md:border-r border-[#1e293b]">
+                    <div className="w-12 h-12 md:w-16 md:h-16 rounded bg-[#1e293b] flex items-center justify-center shrink-0 overflow-hidden relative mb-0 md:mb-3">
+                        <HabboAvatar username={user.user_metadata?.habbo_username || user.user_metadata?.username} size="l" direction={3} className="w-10 h-10 md:w-12 md:h-12" />
                     </div>
-                    <span className="text-white font-bold text-[13px] text-center w-full truncate">
+                    <span className="text-white font-bold text-[13px] text-left md:text-center w-full truncate">
                         {user.user_metadata?.username}
                     </span>
                 </div>

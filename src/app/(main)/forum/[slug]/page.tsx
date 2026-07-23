@@ -58,20 +58,22 @@ export default async function TopicDetailPage({ params }: { params: { slug: stri
             <div className="flex flex-col md:flex-row">
                 
                 {/* Author Column */}
-                <div className="w-full md:w-[200px] bg-[#0a1325] p-6 flex flex-col items-center border-b md:border-b-0 md:border-r border-[#1e293b] shrink-0">
-                    <div className="w-20 h-20 rounded bg-[#1e293b] flex items-center justify-center relative mb-4">
-                        <HabboAvatar username={author?.habbo_username || author?.username} size="l" direction={3} className="w-16 h-16" />
+                <div className="w-full md:w-[200px] bg-[#0a1325] p-4 md:p-6 flex flex-row md:flex-col items-center gap-4 md:gap-0 border-b md:border-b-0 md:border-r border-[#1e293b] shrink-0">
+                    <div className="w-12 h-12 md:w-20 md:h-20 rounded bg-[#1e293b] flex items-center justify-center relative mb-0 md:mb-4 shrink-0">
+                        <HabboAvatar username={author?.habbo_username || author?.username} size="l" direction={3} className="w-10 h-10 md:w-16 md:h-16" />
                     </div>
-                    <Link href={`/profile/${author?.username}`} className="text-white font-bold text-[14px] text-center w-full truncate hover:text-[#3b82f6] transition-colors">
-                        {author?.username}
-                    </Link>
-                    <div className="text-[10px] text-[#64748b] font-medium uppercase mt-1 mb-4 bg-[#1e293b] px-2 py-0.5 rounded">
-                        {author?.rank || 'Kullanıcı'}
-                    </div>
-                    <div className="w-full space-y-2">
-                        <div className="flex justify-between text-[11px]">
-                            <span className="text-[#64748b]">Kayıt:</span>
-                            <span className="text-[#94a3b8]">{author?.created_at ? format(new Date(author.created_at), 'MMM yyyy', { locale: tr }) : '-'}</span>
+                    <div className="flex-1 min-w-0 md:w-full flex flex-col items-start md:items-center">
+                        <Link href={`/profile/${author?.username}`} className="text-white font-bold text-[14px] text-left md:text-center w-full truncate hover:text-[#3b82f6] transition-colors">
+                            {author?.username}
+                        </Link>
+                        <div className="text-[10px] text-[#64748b] font-medium uppercase mt-1 mb-0 md:mb-4 bg-[#1e293b] px-2 py-0.5 rounded inline-block">
+                            {author?.rank || 'Kullanıcı'}
+                        </div>
+                        <div className="w-full space-y-2 hidden md:block mt-2 md:mt-0">
+                            <div className="flex justify-between text-[11px]">
+                                <span className="text-[#64748b]">Kayıt:</span>
+                                <span className="text-[#94a3b8]">{author?.created_at ? format(new Date(author.created_at), 'MMM yyyy', { locale: tr }) : '-'}</span>
+                            </div>
                         </div>
                     </div>
                 </div>

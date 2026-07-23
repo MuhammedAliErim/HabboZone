@@ -11,7 +11,7 @@ function generateSlug(title: string): string {
         .replace(/(^-|-$)+/g, '') + '-' + Math.random().toString(36).substring(2, 8);
 }
 
-export async function createTopic(formData: FormData) {
+export async function createTopic(prevState: any, formData: FormData) {
     const supabase = await createClient();
 
     const { data: { user } } = await supabase.auth.getUser();
@@ -51,7 +51,7 @@ export async function createTopic(formData: FormData) {
     redirect(`/forum/${topic.slug}`);
 }
 
-export async function createReply(formData: FormData) {
+export async function createReply(prevState: any, formData: FormData) {
     const supabase = await createClient();
 
     const { data: { user } } = await supabase.auth.getUser();
