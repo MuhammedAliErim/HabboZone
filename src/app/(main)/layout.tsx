@@ -1,5 +1,8 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import PageTransition from "@/components/PageTransition";
+
+export const dynamic = "force-dynamic";
 
 export default function MainLayout({
   children,
@@ -10,7 +13,9 @@ export default function MainLayout({
     <>
       <Header />
       <main className="flex-1 flex flex-col w-full">
-        {children}
+        <PageTransition>
+          {children}
+        </PageTransition>
       </main>
       <Footer />
     </>

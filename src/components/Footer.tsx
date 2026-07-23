@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Twitter, Instagram, Disc as Discord, Shield, Book, Heart } from 'lucide-react';
+import { Hash as Twitter, Camera as Instagram, MessageSquare as Discord, Shield, Book, Heart } from 'lucide-react';
 
 export default function Footer() {
   return (

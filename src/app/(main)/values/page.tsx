@@ -152,7 +152,7 @@ export default async function ValuesPage() {
 
                     <div className="mt-6 flex justify-between items-center border-t border-[#1e293b] pt-4">
                         <span className="text-[#64748b] text-[11px]">Daha fazla ürün için mağazamızı ziyaret et!</span>
-                        <Link href="/store" className="bg-[#2563eb] hover:bg-[#1d4ed8] text-white text-[11px] font-bold px-4 py-2 rounded transition-colors flex items-center gap-2">
+                        <Link href="/values" className="bg-[#2563eb] hover:bg-[#1d4ed8] text-white text-[11px] font-bold px-4 py-2 rounded transition-colors flex items-center gap-2">
                             MAĞAZAYA GİT <span>→</span>
                         </Link>
                     </div>

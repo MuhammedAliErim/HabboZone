@@ -3,7 +3,6 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Users, FileText, MessageCircle, MapPin, Calendar, Award } from 'lucide-react';
 import HabboAvatar from '@/components/HabboAvatar';
-import Guestbook from '@/components/profile/Guestbook';
 
 export const revalidate = 60;
 
@@ -214,12 +213,7 @@ export default async function ProfilePage({ params, searchParams }: { params: Pr
 
             </div>
 
-            </div>
 
-            {/* Guestbook Component */}
-            <div className="mt-4">
-                <Guestbook userId={profile.id} isOwnProfile={isOwnProfile} />
-            </div>
             ) : (
                 <div className="habbo-box bg-[#0f172a] p-12 text-center border-dashed border-[#1e293b] mt-4">
                     <div className="flex justify-center mb-4 opacity-50">

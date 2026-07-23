@@ -18,7 +18,7 @@ export default function RadioPlayer() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const supabase = createClient();
 
-  const radioUrl = "https://listen.radioking.com/radio/15684/stream/29976"; 
+  const radioUrl = "https://coderadio-admin-v2.freecodecamp.org/listen/coderadio/radio.mp3"; 
 
   useEffect(() => {
     audioRef.current = new Audio(radioUrl);
