@@ -7,6 +7,7 @@ interface HabboAvatarProps {
   gesture?: 'sml' | 'sad' | 'spk' | 'eyb' | 'agr' | 'sur' | 'std';
   action?: 'sit' | 'wlk' | 'lay' | 'std';
   size?: 'm' | 'l';
+  headOnly?: boolean;
   className?: string;
 }
 
@@ -17,6 +18,7 @@ export default function HabboAvatar({
   gesture = 'std',
   action = 'std',
   size = 'l',
+  headOnly = false,
   className = '',
 }: HabboAvatarProps) {
   
@@ -28,7 +30,7 @@ export default function HabboAvatar({
     );
   }
 
-  const avatarUrl = `https://www.habbo.com.tr/habbo-imaging/avatarimage?user=${username}&direction=${direction}&head_direction=${headDirection}&gesture=${gesture}&action=${action}&size=${size}`;
+  const avatarUrl = `https://www.habbo.com.tr/habbo-imaging/avatarimage?user=${username}&direction=${direction}&head_direction=${headDirection}&gesture=${gesture}&action=${action}&size=${size}${headOnly ? '&headonly=1' : ''}`;
 
   return (
     <div className={`relative flex items-center justify-center ${className}`}>

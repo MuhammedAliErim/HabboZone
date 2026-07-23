@@ -20,20 +20,6 @@ export default function ItemPriceChart({ data, currencyType }: { data: DataPoint
     return <div className="text-white/40 text-center py-20">Yeterli fiyat geçmişi yok.</div>;
   }
 
-  const CustomTooltip = ({ active, payload, label }: any) => {
-    if (active && payload && payload.length) {
-      return (
-        <div className="bg-black/80 border border-white/20 p-3 rounded-lg shadow-xl backdrop-blur-sm">
-          <p className="text-white/60 text-xs mb-1">{label}</p>
-          <p className="font-black text-primary text-lg flex items-center gap-1">
-            {payload[0].value} <span className="text-xs uppercase text-white/50">{currencyType}</span>
-          </p>
-        </div>
-      );
-    }
-    return null;
-  };
-
   return (
     <div className="h-[400px] w-full">
       <ResponsiveContainer width="100%" height="100%">
@@ -54,7 +40,21 @@ export default function ItemPriceChart({ data, currencyType }: { data: DataPoint
             tickLine={false}
             tickFormatter={(value) => `${value}`}
           />
-          <Tooltip content={<CustomTooltip />} />
+          <Tooltip 
+            content={({ active, payload, label }) => {
+              if (active && payload && payload.length) {
+                return (
+                  <div className="bg-black/80 border border-white/20 p-3 rounded-lg shadow-xl backdrop-blur-sm">
+                    <p className="text-white/60 text-xs mb-1">{label}</p>
+                    <p className="font-black text-primary text-lg flex items-center gap-1">
+                      {payload[0].value} <span className="text-xs uppercase text-white/50">{currencyType}</span>
+                    </p>
+                  </div>
+                );
+              }
+              return null;
+            }} 
+          />
           <Line 
             type="monotone" 
             dataKey="value" 

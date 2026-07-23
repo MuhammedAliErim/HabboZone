@@ -1,17 +1,19 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Ubuntu, Pixelify_Sans } from "next/font/google";
 import "./globals.css";
 import ThemeProvider from "@/components/ThemeProvider";
 import RadioPlayer from "@/components/RadioPlayer";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const ubuntu = Ubuntu({
+  weight: ['300', '400', '500', '700'],
   subsets: ["latin"],
+  variable: "--font-ubuntu",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const pixelifySans = Pixelify_Sans({
+  weight: ['400', '500', '600', '700'],
   subsets: ["latin"],
+  variable: "--font-pixelify",
 });
 
 export const metadata: Metadata = {
@@ -27,10 +29,11 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${ubuntu.variable} ${pixelifySans.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col font-sans relative">
+        <div className="bg-animated-pattern"></div>
         <ThemeProvider>
           {children}
           <RadioPlayer />
@@ -39,4 +42,3 @@ export default function RootLayout({
     </html>
   );
 }
-

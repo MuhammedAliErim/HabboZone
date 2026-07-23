@@ -5,88 +5,154 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-primary: var(--primary);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-ubuntu), Arial, Helvetica, sans-serif;
+  --font-pixelify: var(--font-pixelify), 'Pixelify Sans', cursive;
 }
 
 :root {
-  /* Modern Dark Habbo Theme Colors */
-  --background: #0b1120; /* Dark navy background */
-  --foreground: #f8fafc; /* Light text */
-  --primary: #3b82f6; /* Modern Blue */
-  --habbo-green: #22c55e;
-  --habbo-orange: #f59e0b;
-  --habbo-yellow: #eab308;
-  --panel-bg: #131c31;
-  --panel-border: #1e293b;
+  /* Exactly matched UI Kit Colors */
+  --background: #0b1120; /* The main body background */
+  --foreground: #f8fafc;
+  --primary: #facc15; /* The main yellow used in buttons/text */
+  
+  --nav-bg: #090e17; /* The dark navbar background */
+  
+  --panel-bg: #111827; /* Dark boxes */
+  --panel-border: #1e293b; /* Box border */
 }
 
 body {
   background-color: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
-  /* Dark starfield / subtle noise pattern (simulated with a radial gradient for now) */
-  background-image: radial-gradient(circle at center, #111827 0%, #0b1120 100%);
+  font-family: var(--font-sans);
+  background-image: url('https://images.habbo.com/web_images/habbo-web-articles/lpromo_gen15_03.png');
+  background-size: cover;
+  background-position: center top;
   background-attachment: fixed;
+  background-blend-mode: overlay;
+  min-height: 100vh;
 }
 
-/* Habbo-style Pixel Art Utilities */
-.pixel-borders {
-  border: 2px solid #000;
-  box-shadow: 
-    -2px 0 0 0 rgba(255,255,255,0.1) inset,
-    2px 0 0 0 rgba(0,0,0,0.5) inset,
-    0 -2px 0 0 rgba(255,255,255,0.1) inset,
-    0 2px 0 0 rgba(0,0,0,0.5) inset,
-    4px 4px 0 0 rgba(0,0,0,0.3);
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(11, 17, 32, 0.95);
+  z-index: -1;
+}
+
+@keyframes slide-bg {
+  0% { background-position: 0 0; }
+  100% { background-position: 64px 64px; }
+}
+
+@keyframes ticker-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-ticker {
+  animation: ticker-scroll 20s linear infinite;
+}
+
+.bg-animated-pattern {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: url('https://images.habbo.com/c_images/reception/reception_backdrop_4.png');
+  background-repeat: repeat;
+  opacity: 0.05;
+  z-index: -1;
+  pointer-events: none;
+  animation: slide-bg 100s linear infinite;
   image-rendering: pixelated;
-  border-radius: 4px;
 }
 
+/* Base Box (Used everywhere) */
 .habbo-box {
   background-color: var(--panel-bg);
   border: 1px solid var(--panel-border);
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  border-radius: 8px;
   overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
+.habbo-card-hover {
+  transition: all 0.2s ease;
+}
+.habbo-card-hover:hover {
+  border-color: var(--primary);
+  transform: scale(1.02);
+  box-shadow: 0 0 15px rgba(250, 204, 21, 0.15), 0 4px 12px rgba(0,0,0,0.5);
+  z-index: 10;
 }
 
 .habbo-box-header {
-  background-color: rgba(255,255,255,0.03);
-  color: white;
-  padding: 12px 16px;
-  font-weight: 700;
+  padding: 16px 20px;
+  font-size: 16px;
+  font-family: var(--font-pixelify);
+  font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   border-bottom: 1px solid var(--panel-border);
 }
 
-.habbo-box-header.green { border-bottom: 2px solid var(--habbo-green); }
-.habbo-box-header.orange { border-bottom: 2px solid var(--habbo-orange); }
-.habbo-box-header.blue { border-bottom: 2px solid var(--primary); }
-.habbo-box-header.dark { border-bottom: 2px solid #475569; }
-
+/* Buttons */
 .habbo-button {
-  background-color: var(--habbo-green);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: var(--primary);
   color: #000;
-  font-weight: 800;
-  padding: 8px 16px;
-  border: 2px solid transparent;
-  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  transition: all 0.2s ease;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.1s ease;
+  border: none;
+}
+.habbo-button:hover { filter: brightness(1.1); transform: translateY(-1px); }
+.habbo-button:active { transform: translateY(1px); }
+
+.habbo-button.secondary {
+  background-color: #1e293b;
+  color: white;
+}
+.habbo-button.secondary:hover { background-color: #334155; }
+
+.habbo-button.success {
+  background-color: #22c55e;
+  color: white;
 }
 
-.habbo-button:hover {
-  filter: brightness(1.1);
-  transform: translateY(-1px);
+.habbo-button.primary-blue {
+  background-color: #1d4ed8;
+  color: white;
 }
 
-.habbo-button:active {
-  transform: translateY(1px);
+/* Tags */
+.habbo-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  background-color: var(--panel-border);
+  color: #94a3b8;
 }
+.habbo-tag.yellow { background-color: rgba(250, 204, 21, 0.2); color: #facc15; }
+.habbo-tag.green { background-color: rgba(34, 197, 94, 0.2); color: #4ade80; }
+.habbo-tag.blue { background-color: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+.habbo-tag.purple { background-color: rgba(168, 85, 247, 0.2); color: #c084fc; }
 
-.habbo-button.blue { background-color: var(--primary); color: white; }
-.habbo-button.orange { background-color: var(--habbo-orange); color: white; }
-.habbo-button.yellow { background-color: var(--habbo-yellow); color: #000; }
+.pixelated {
+  image-rendering: pixelated;
+}

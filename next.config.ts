@@ -1,7 +1,22 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.habbo.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.habbo.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.supabase.co',
+      }
+    ],
+  },
 };
 
 export default nextConfig;

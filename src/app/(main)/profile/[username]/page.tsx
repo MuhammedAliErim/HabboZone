@@ -1,16 +1,20 @@
 import { createClient } from '@/utils/supabase/server';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { MessageCircle, FileText, User, Coins } from 'lucide-react';
+import { Users, FileText, MessageCircle, MapPin, Calendar, Award } from 'lucide-react';
 import HabboAvatar from '@/components/HabboAvatar';
+import Guestbook from '@/components/profile/Guestbook';
 
-export default async function ProfilePage({ params }: { params: Promise<{ username: string }> }) {
+export const revalidate = 60;
+
+export default async function ProfilePage({ params, searchParams }: { params: Promise<{ username: string }>, searchParams?: Promise<{ [key: string]: string | string[] | undefined }> }) {
   const resolvedParams = await params;
+  const resolvedSearchParams = await searchParams;
   const username = decodeURIComponent(resolvedParams.username);
+  const currentTab = resolvedSearchParams?.tab || 'profil';
   
   const supabase = await createClient();
 
-  // Fetch user profile
   const { data: profile } = await supabase
     .from('profiles')
     .select('*')
@@ -21,167 +25,216 @@ export default async function ProfilePage({ params }: { params: Promise<{ userna
     notFound();
   }
 
-  // Fetch recent forum topics
+  const { data: { user } } = await supabase.auth.getUser();
+  const isOwnProfile = user && user.id === profile.id;
+
   const { data: topics } = await supabase
     .from('topics')
     .select('id, title, slug, created_at, replies(count)')
     .eq('author_id', profile.id)
     .order('created_at', { ascending: false })
-    .limit(5);
+    .limit(4);
 
-  // Fetch recent news if author
   let news: any[] = [];
-  if (profile.role === 'Admin' || profile.role === 'Editor' || profile.role === 'Journalist' || profile.role === 'Owner') {
+  if (['Admin', 'Editor', 'Journalist', 'Owner'].includes(profile.role)) {
     const { data } = await supabase
       .from('news')
       .select('id, title, slug, published_at')
       .eq('author_id', profile.id)
       .eq('status', 'published')
       .order('published_at', { ascending: false })
-      .limit(5);
+      .limit(4);
     if (data) {
       news = data;
     }
   }
 
-  const roleColors: Record<string, string> = {
-    Owner: 'bg-red-100 text-red-800 border-red-300',
-    Admin: 'bg-red-100 text-red-800 border-red-300',
-    Developer: 'bg-blue-100 text-blue-800 border-blue-300',
-    Moderator: 'bg-green-100 text-green-800 border-green-300',
-    Editor: 'bg-purple-100 text-purple-800 border-purple-300',
-    Journalist: 'bg-purple-100 text-purple-800 border-purple-300',
-    User: 'bg-gray-100 text-gray-800 border-gray-300',
-  };
+  // Fetch Badges
+  const { data: userBadges } = await supabase
+    .from('user_badges')
+    .select('*, badge:badges(*)')
+    .eq('user_id', profile.id)
+    .limit(8);
+    
+  const badges = userBadges ? userBadges.map(ub => ub.badge) : [];
 
   return (
-    <div className="py-6 max-w-5xl mx-auto space-y-6 animate-in fade-in duration-700">
+    <div className="max-w-[1000px] mx-auto px-6 py-8 animate-in fade-in duration-500">
       
-      {/* Profile Header */}
-      <div className="habbo-box bg-white overflow-hidden">
-        <div className="habbo-box-header blue">
-            Oyuncu Profili
-        </div>
-        <div className="p-8 bg-gradient-to-r from-blue-50 to-blue-100 relative">
-            <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
-                <User size={150} className="text-blue-600" />
-            </div>
+      <div className="flex flex-col lg:flex-row gap-6">
+        
+        {/* Left Sidebar - User Info */}
+        <div className="w-full lg:w-[300px] shrink-0 space-y-4">
             
-            <div className="relative z-10 flex flex-col md:flex-row items-center gap-8">
-                <div className="w-32 h-32 md:w-40 md:h-40 rounded bg-white border border-gray-200 shadow-sm flex-shrink-0 flex items-center justify-center p-2 relative overflow-hidden">
-                    <div className="absolute inset-0 bg-blue-50 opacity-50"></div>
-                    <HabboAvatar 
-                        username={profile.habbo_username || 'Habbo'} 
-                        direction={2} 
-                        headDirection={3} 
-                        size="l"
-                        className="scale-110 relative z-10 filter drop-shadow-md mt-6"
-                    />
-                </div>
+            <div className="habbo-box overflow-hidden relative">
                 
-                <div className="text-center md:text-left flex-1 space-y-4">
-                    <h1 className="text-3xl md:text-4xl font-black uppercase tracking-wider text-gray-800 drop-shadow-sm">
-                        {profile.username}
-                    </h1>
+                {/* Banner / Avatar Area */}
+                <div className="h-[120px] bg-[#050a14] border-b border-[#1e293b] relative overflow-hidden flex items-end justify-center">
+                    {/* Background Pattern */}
+                    <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'url("https://images.habbo.com/c_images/reception/reception_backdrop_4.png")', backgroundPosition: 'center', backgroundSize: 'cover' }}></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#050a14] to-transparent"></div>
                     
-                    <div className="flex flex-wrap gap-2 justify-center md:justify-start items-center">
-                        <span className={`px-2 py-0.5 rounded border text-[10px] font-black uppercase tracking-widest shadow-sm ${roleColors[profile.role] || roleColors.User}`}>
-                            {profile.role || 'Kullanıcı'}
+                    <div className="relative z-10 -mb-4">
+                        <HabboAvatar 
+                            username={profile.habbo_username || 'Habbo'} 
+                            direction={3} 
+                            headDirection={3} 
+                            size="l"
+                        />
+                    </div>
+                </div>
+
+                {/* Info Area */}
+                <div className="p-5 pt-6 text-center">
+                    <h1 className="text-2xl font-black text-white mb-1">{profile.username}</h1>
+                    <p className="text-[#64748b] text-[11px] font-bold flex items-center justify-center gap-1.5 mb-4">
+                        <Calendar size={12} />
+                        Kayıt: {new Date(profile.created_at).toLocaleDateString('tr-TR')}
+                    </p>
+
+                    <div className="flex flex-wrap justify-center gap-1.5 mb-5">
+                        <span className="px-2 py-1 bg-[#22c55e]/10 text-[#22c55e] border border-[#22c55e]/30 text-[10px] font-bold rounded">
+                            {profile.role.toUpperCase()}
                         </span>
-                        
                         {profile.habbo_username && (
-                            <span className="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-widest bg-yellow-100 text-yellow-800 border border-yellow-300 shadow-sm flex items-center gap-1">
-                                <img src="https://habbo.com.tr/favicon.ico" alt="Habbo" className="w-3 h-3" />
-                                {profile.habbo_username}
+                            <span className="px-2 py-1 bg-[#3b82f6]/10 text-[#3b82f6] border border-[#3b82f6]/30 text-[10px] font-bold rounded flex items-center gap-1">
+                                HABBO: {profile.habbo_username}
                             </span>
                         )}
+                    </div>
+                    
+                    {isOwnProfile && (
+                        <div className="w-full px-4 pb-4">
+                            <Link href="/settings" className="w-full block text-center bg-[#1e293b] hover:bg-[#334155] text-white text-[11px] font-bold py-2 rounded transition-colors border border-black shadow-[0_2px_0_#000]">
+                                AYARLARI DÜZENLE
+                            </Link>
+                        </div>
+                    )}
+                </div>
 
-                        <span className="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-widest bg-green-100 text-green-800 border border-green-300 shadow-sm flex items-center gap-1">
-                            <Coins size={12} />
-                            {profile.hz_points || 0} HZ Puanı
-                        </span>
+                <div className="p-5 pt-0">
+                    <div className="text-left mb-5">
+                        <h3 className="text-[10px] text-[#64748b] font-bold mb-1.5 uppercase tracking-wider">Hakkımda</h3>
+                        <p className="text-[#94a3b8] text-[12px] bg-[#050a14] p-3 rounded border border-[#1e293b]">
+                            Merhaba! Ben {profile.username}. HabboZone'a hoş geldiniz.
+                        </p>
                     </div>
 
-                    <div className="text-xs text-gray-500 font-bold bg-white p-2 border border-gray-200 rounded shadow-inner inline-block mt-2">
-                        Katılım: {new Date(profile.created_at).toLocaleDateString('tr-TR')}
+                    <div className="text-left">
+                        <h3 className="text-[10px] text-[#64748b] font-bold mb-2 uppercase tracking-wider flex items-center gap-1">
+                            <Award size={12} /> Seçili Rozetler
+                        </h3>
+                        <div className="flex flex-wrap items-center gap-2 bg-[#050a14] p-2 rounded border border-[#1e293b] min-h-[58px]">
+                            {badges.length > 0 ? (
+                                badges.map((b: any, i: number) => (
+                                    <div key={i} title={b?.name || ''} className="w-10 h-10 bg-[#050a14] rounded border border-[#1e293b] flex items-center justify-center hover:bg-[#1e293b] transition-colors cursor-pointer group">
+                                        <img src={b?.image_url} alt="Badge" className="group-hover:scale-110 transition-transform pixelated" />
+                                    </div>
+                                ))
+                            ) : (
+                                <span className="text-[#64748b] text-[11px] font-bold px-2">Kullanıcının henüz rozeti yok.</span>
+                            )}
+                        </div>
                     </div>
                 </div>
+
             </div>
-        </div>
-      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Recent Forum Topics */}
-        <div className="habbo-box bg-white">
-          <div className="habbo-box-header orange flex items-center gap-2">
-            <MessageCircle size={16} /> Son Forum Konuları
-          </div>
-          
-          <div className="p-4 bg-gray-50">
-            {topics && topics.length > 0 ? (
-                <div className="space-y-3">
-                {topics.map((topic) => (
-                    <Link 
-                    key={topic.id} 
-                    href={`/forum/topic/${topic.slug}`}
-                    className="block p-3 rounded bg-white hover:bg-orange-50 border border-gray-200 hover:border-orange-300 transition-colors shadow-sm group"
-                    >
-                    <h3 className="font-bold text-sm truncate text-gray-800 group-hover:text-orange-600 transition-colors mb-2">
-                        {topic.title}
-                    </h3>
-                    <div className="flex justify-between items-center text-[10px] font-bold text-gray-400 uppercase tracking-widest">
-                        <span>{new Date(topic.created_at).toLocaleDateString('tr-TR')}</span>
-                        <span className="flex items-center gap-1 bg-gray-100 px-1.5 py-0.5 rounded border border-gray-200 text-gray-600">
-                        <MessageCircle size={10} />
-                        {(topic.replies as any)?.[0]?.count || 0}
-                        </span>
+        </div>
+
+        {/* Right Content Area */}
+        <div className="flex-1">
+            
+            {/* Tabs */}
+            <div className="flex flex-wrap items-center gap-2 border-b border-[#1e293b] pb-4 mb-6">
+                <Link href={`/profile/${username}?tab=profil`} className={`px-6 py-2.5 font-bold text-[12px] rounded transition-colors ${currentTab === 'profil' ? 'bg-[#1e293b] text-white border border-[#334155]' : 'text-[#64748b] hover:text-white hover:bg-[#0a1325]'}`}>
+                    PROFİL
+                </Link>
+                <Link href={`/profile/${username}?tab=arkadaslar`} className={`px-6 py-2.5 font-bold text-[12px] rounded transition-colors ${currentTab === 'arkadaslar' ? 'bg-[#1e293b] text-white border border-[#334155]' : 'text-[#64748b] hover:text-white hover:bg-[#0a1325]'}`}>
+                    ARKADAŞLAR
+                </Link>
+                <Link href={`/profile/${username}?tab=rozetler`} className={`px-6 py-2.5 font-bold text-[12px] rounded transition-colors ${currentTab === 'rozetler' ? 'bg-[#1e293b] text-white border border-[#334155]' : 'text-[#64748b] hover:text-white hover:bg-[#0a1325]'}`}>
+                    ROZETLER
+                </Link>
+                <Link href={`/profile/${username}?tab=odalar`} className={`px-6 py-2.5 font-bold text-[12px] rounded transition-colors ${currentTab === 'odalar' ? 'bg-[#1e293b] text-white border border-[#334155]' : 'text-[#64748b] hover:text-white hover:bg-[#0a1325]'}`}>
+                    ODALAR
+                </Link>
+            </div>
+
+            {/* Profile Content */}
+            {currentTab === 'profil' ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                
+                {/* Recent Forum Topics */}
+                <div className="habbo-box p-4">
+                    <h2 className="text-sm font-bold text-white mb-4 flex items-center gap-2">
+                        <MessageCircle size={16} className="text-[#a855f7]" /> 
+                        Son Topluluk Konuları
+                    </h2>
+                    
+                    <div className="space-y-2">
+                        {topics && topics.length > 0 ? (
+                            topics.map(topic => (
+                                <Link href={`/forum/topic/${topic.slug}`} key={topic.id} className="block bg-[#050a14] border border-[#1e293b] p-3 rounded hover:border-[#facc15] transition-colors group">
+                                    <h3 className="text-[13px] text-white font-bold mb-1 group-hover:text-[#a855f7] transition-colors line-clamp-1">{topic.title}</h3>
+                                    <div className="flex justify-between items-center text-[10px] text-[#64748b] font-bold">
+                                        <span>{new Date(topic.created_at).toLocaleDateString('tr-TR')}</span>
+                                        <span className="flex items-center gap-1 text-[#a855f7] bg-[#a855f7]/10 px-1.5 py-0.5 rounded">
+                                            <MessageCircle size={10} /> {(topic.replies as any)?.[0]?.count || 0}
+                                        </span>
+                                    </div>
+                                </Link>
+                            ))
+                        ) : (
+                            <p className="text-[12px] text-[#64748b] text-center py-4">Henüz konu açmamış.</p>
+                        )}
                     </div>
-                    </Link>
-                ))}
                 </div>
+
+                {/* Recent News (if applicable) */}
+                {news.length > 0 && (
+                    <div className="habbo-box p-4">
+                        <h2 className="text-sm font-bold text-white mb-4 flex items-center gap-2">
+                            <FileText size={16} className="text-[#22c55e]" /> 
+                            Son Haberleri
+                        </h2>
+                        
+                        <div className="space-y-2">
+                            {news.map(item => (
+                                <Link href={`/news/${item.slug}`} key={item.id} className="block bg-[#050a14] border border-[#1e293b] p-3 rounded hover:border-[#facc15] transition-colors group">
+                                    <h3 className="text-[13px] text-white font-bold mb-1 group-hover:text-[#22c55e] transition-colors line-clamp-1">{item.title}</h3>
+                                    <div className="text-[10px] text-[#64748b] font-bold">
+                                        {new Date(item.published_at).toLocaleDateString('tr-TR')}
+                                    </div>
+                                </Link>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
+            </div>
+
+            </div>
+
+            {/* Guestbook Component */}
+            <div className="mt-4">
+                <Guestbook userId={profile.id} isOwnProfile={isOwnProfile} />
+            </div>
             ) : (
-                <div className="text-center p-6 text-gray-400 text-xs font-bold bg-white border border-gray-200 rounded">
-                Henüz konu açmamış.
+                <div className="habbo-box bg-[#0f172a] p-12 text-center border-dashed border-[#1e293b] mt-4">
+                    <div className="flex justify-center mb-4 opacity-50">
+                        <Users size={48} className="text-[#3b82f6]" />
+                    </div>
+                    <h3 className="text-white font-bold uppercase tracking-wider mb-2">ÇOK YAKINDA</h3>
+                    <p className="text-[#94a3b8] text-[13px] max-w-sm mx-auto">
+                        Bu sekme geliştirme aşamasındadır. Daha fazlası için bizi takip etmeye devam edin!
+                    </p>
                 </div>
             )}
-          </div>
         </div>
 
-        {/* Recent News (If Author) */}
-        {(profile.role === 'Admin' || profile.role === 'Editor' || profile.role === 'Journalist' || profile.role === 'Owner') && (
-          <div className="habbo-box bg-white">
-            <div className="habbo-box-header green flex items-center gap-2">
-              <FileText size={16} /> Son Haberleri
-            </div>
-            
-            <div className="p-4 bg-gray-50">
-                {news && news.length > 0 ? (
-                <div className="space-y-3">
-                    {news.map((item) => (
-                    <Link 
-                        key={item.id} 
-                        href={`/news/${item.slug}`}
-                        className="block p-3 rounded bg-white hover:bg-green-50 border border-gray-200 hover:border-green-300 transition-colors shadow-sm group"
-                    >
-                        <h3 className="font-bold text-sm truncate text-gray-800 group-hover:text-green-700 transition-colors mb-2">
-                        {item.title}
-                        </h3>
-                        <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
-                        <span>{new Date(item.published_at).toLocaleDateString('tr-TR')}</span>
-                        </div>
-                    </Link>
-                    ))}
-                </div>
-                ) : (
-                <div className="text-center p-6 text-gray-400 text-xs font-bold bg-white border border-gray-200 rounded">
-                    Henüz haber yazmamış.
-                </div>
-                )}
-            </div>
-          </div>
-        )}
-
       </div>
+
     </div>
   );
 }
