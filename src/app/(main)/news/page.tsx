@@ -20,6 +20,7 @@ export default async function NewsPage() {
       author:profiles!news_author_id_fkey(username, habbo_username)
     `)
     .eq('status', 'published')
+    .lte('published_at', new Date().toISOString())
     .order('published_at', { ascending: false });
 
   // Mock Categories and Most Read for the UI Kit

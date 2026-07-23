@@ -11,6 +11,8 @@ type NewsFormProps = {
     content: string
     category: string
     image_url: string
+    status?: string
+    published_at?: string
   }
 }
 
@@ -60,6 +62,31 @@ export default function NewsForm({ initialData }: NewsFormProps) {
           <option value="Kampanya">Kampanya</option>
           <option value="Güncelleme">Güncelleme</option>
         </select>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-300 mb-2">Durum</label>
+          <select 
+            name="status"
+            defaultValue={initialData?.status || 'Published'}
+            className="w-full px-4 py-2 bg-[#1f1f1f] border border-[#333] rounded-md text-white focus:outline-none focus:border-yellow-500"
+          >
+            <option value="Draft">Taslak</option>
+            <option value="Published">Yayınlandı</option>
+            <option value="Scheduled">Zamanlandı</option>
+          </select>
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-300 mb-2">Yayınlanma Tarihi</label>
+          <input 
+            type="datetime-local"
+            name="published_at"
+            defaultValue={initialData?.published_at ? new Date(initialData.published_at).toISOString().slice(0, 16) : ''}
+            className="w-full px-4 py-2 bg-[#1f1f1f] border border-[#333] rounded-md text-white focus:outline-none focus:border-yellow-500"
+          />
+          <p className="text-xs text-gray-500 mt-1">Eğer boş bırakırsanız otomatik olarak "Şimdi" kabul edilir.</p>
+        </div>
       </div>
 
       <div>

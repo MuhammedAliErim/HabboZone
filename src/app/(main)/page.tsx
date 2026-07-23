@@ -11,6 +11,73 @@ export const revalidate = 60;
 export default async function Home() {
   const supabase = await createClient();
 
+  const { data: newsItems } = await supabase
+    .from('news')
+    .select(`
+      title, 
+      slug, 
+      summary, 
+      thumbnail_url, 
+      published_at,
+      author:profiles!news_author_id_fkey(username, habbo_username)
+    `)
+    .eq('status', 'published')
+    .lte('published_at', new Date().toISOString())
+    .order('published_at', { ascending: false })
+    .limit(3);
+
+  const { data: magazines } = await supabase
+    .from('magazines')
+    .select('*')
+    .lte('published_at', new Date().toISOString())
+    .order('issue_number', { ascending: false })
+    .limit(5);
+
+  const { data: events } = await supabase
+    .from('events')
+    .select('*')
+    .gte('event_time', new Date().toISOString()) // Only upcoming events
+    .order('event_time', { ascending: true })
+    .limit(5);
+
+  const { data: badges } = await supabase
+    .from('badges')
+    .select('*')
+    .order('created_at', { ascending: false })
+    .limit(10);
+
+  const { data: announcements } = await supabase
+    .from('announcements')
+    .select('*')
+    .eq('is_active', true)
+    .order('created_at', { ascending: false });
+
+  const latestMagazine = magazines?.[0];
+
+  // Helper function to format event dates
+  const formatEventDay = (dateStr: string) => {
+    const date = new Date(dateStr);
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    
+    if (date.toDateString() === today.toDateString()) return 'BUGÜN';
+    if (date.toDateString() === tomorrow.toDateString()) return 'YARIN';
+    
+    const days = ['PAZAR', 'PAZARTESİ', 'SALI', 'ÇARŞAMBA', 'PERŞEMBE', 'CUMA', 'CUMARTESİ'];
+    return days[date.getDay()];
+  };
+
+  const getEventColor = (type: string) => {
+    switch(type) {
+      case 'Yarışma': return { text: 'text-purple-400', border: 'border-purple-400/30' };
+      case 'Parti': return { text: 'text-green-400', border: 'border-green-400/30' };
+      case 'Oyun': return { text: 'text-blue-400', border: 'border-blue-400/30' };
+      case 'Radyo': return { text: 'text-orange-400', border: 'border-orange-400/30' };
+      default: return { text: 'text-yellow-400', border: 'border-yellow-400/30' };
+    }
+  };
+
   return (
     <div className="pb-16 w-full">
       
@@ -97,20 +164,18 @@ export default async function Home() {
                  <div className="flex-1 overflow-hidden ml-[100px] flex items-center h-full relative" style={{ maskImage: 'linear-gradient(to right, transparent, black 5%, black 95%, transparent)' }}>
                      <div className="flex w-[200%] animate-ticker">
                          <div className="flex gap-12 shrink-0 items-center whitespace-nowrap text-white text-[12px] font-medium pr-12">
-                             <span className="flex items-center gap-2"><div className="w-1.5 h-1.5 bg-[#facc15] rounded-full"></div> Yeni bir nadire eklendi: Altın Ejderha</span>
-                             <span className="flex items-center gap-2"><div className="w-1.5 h-1.5 bg-[#facc15] rounded-full"></div> HabboZone yaz turnuvası kayıtları başladı!</span>
-                             <span className="flex items-center gap-2"><div className="w-1.5 h-1.5 bg-[#facc15] rounded-full"></div> Hafta sonu %50 indirimli HC fırsatı!</span>
-                             <span className="flex items-center gap-2"><div className="w-1.5 h-1.5 bg-[#facc15] rounded-full"></div> Odalardaki pet sınırı 50'ye yükseltildi!</span>
-                             <span className="flex items-center gap-2"><div className="w-1.5 h-1.5 bg-[#facc15] rounded-full"></div> Yeni HabboZone gazete sayısı yayınlandı, hemen oku!</span>
-                             <span className="flex items-center gap-2"><div className="w-1.5 h-1.5 bg-[#facc15] rounded-full"></div> Forumda haftanın en iyi oda tasarımı oylaması devam ediyor!</span>
+                             {announcements && announcements.length > 0 ? announcements.map((ann: any, i: number) => (
+                                <span key={i} className="flex items-center gap-2"><div className="w-1.5 h-1.5 bg-[#facc15] rounded-full"></div> {ann.message}</span>
+                             )) : (
+                                <span className="flex items-center gap-2"><div className="w-1.5 h-1.5 bg-[#facc15] rounded-full"></div> HabboZone'a hoş geldiniz! Son gelişmeler burada yer alacak.</span>
+                             )}
                          </div>
                          <div className="flex gap-12 shrink-0 items-center whitespace-nowrap text-white text-[12px] font-medium pr-12">
-                             <span className="flex items-center gap-2"><div className="w-1.5 h-1.5 bg-[#facc15] rounded-full"></div> Yeni bir nadire eklendi: Altın Ejderha</span>
-                             <span className="flex items-center gap-2"><div className="w-1.5 h-1.5 bg-[#facc15] rounded-full"></div> HabboZone yaz turnuvası kayıtları başladı!</span>
-                             <span className="flex items-center gap-2"><div className="w-1.5 h-1.5 bg-[#facc15] rounded-full"></div> Hafta sonu %50 indirimli HC fırsatı!</span>
-                             <span className="flex items-center gap-2"><div className="w-1.5 h-1.5 bg-[#facc15] rounded-full"></div> Odalardaki pet sınırı 50'ye yükseltildi!</span>
-                             <span className="flex items-center gap-2"><div className="w-1.5 h-1.5 bg-[#facc15] rounded-full"></div> Yeni HabboZone gazete sayısı yayınlandı, hemen oku!</span>
-                             <span className="flex items-center gap-2"><div className="w-1.5 h-1.5 bg-[#facc15] rounded-full"></div> Forumda haftanın en iyi oda tasarımı oylaması devam ediyor!</span>
+                             {announcements && announcements.length > 0 ? announcements.map((ann: any, i: number) => (
+                                <span key={`dup-${i}`} className="flex items-center gap-2"><div className="w-1.5 h-1.5 bg-[#facc15] rounded-full"></div> {ann.message}</span>
+                             )) : (
+                                <span className="flex items-center gap-2"><div className="w-1.5 h-1.5 bg-[#facc15] rounded-full"></div> HabboZone'a hoş geldiniz! Son gelişmeler burada yer alacak.</span>
+                             )}
                          </div>
                      </div>
                  </div>
@@ -155,37 +220,35 @@ export default async function Home() {
                </Link>
             </div>
 
-            {[
-              { tag: "YENİ", tagColor: "bg-[#ef4444]", title: "Habbo Yaz Güncellemesi Yayında!", desc: "Habbo Hotel'e gelen yeni yaz güncellemesi ile yepyeni furniler, kıyafetler ve odalar seni bekliyor!", date: "Bugün", comments: "125", views: "1.2b", time: "3 dk", author: "admin" },
-              { tag: "ETKİNLİK", tagColor: "bg-[#22c55e]", title: "HabboZone Yaz Etkinlikleri Başladı!", desc: "Yarışmalar, odalar, hediyeler ve daha fazlası! Detaylar haberimizde.", date: "Dün", comments: "85", views: "850", time: "2 dk", author: "frank" },
-              { tag: "GAZETE", tagColor: "bg-[#a855f7]", title: "HabboZone Gazetesi #12 Yayında!", desc: "En yeni haberler, röportajlar ve özel içerikler yeni sayımızda seni bekliyor!", date: "2 gün önce", comments: "60", views: "540", time: "5 dk", author: "bonnie" }
-             ].map((news, i) => (
-                <Link key={i} href="#" className="habbo-box hover:border-[#3b82f6]/50 p-3 flex flex-col gap-3 group transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(59,130,246,0.15)]">
+            {newsItems && newsItems.length > 0 ? newsItems.map((news: any) => (
+                <Link key={news.slug} href={`/news/${news.slug}`} className="habbo-box hover:border-[#3b82f6]/50 p-3 flex flex-col gap-3 group transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(59,130,246,0.15)]">
                    <div className="w-full h-[140px] bg-[#0a1325] rounded-[4px] relative overflow-hidden border border-[#1e293b]">
-                      <Image src="https://images.habbo.com/c_images/reception/new_furni_promo.png" alt={news.title} fill sizes="(max-width: 768px) 100vw, 30vw" className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500 pixelated" />
-                      <span className={`absolute top-2 left-2 ${news.tagColor} text-white text-[10px] font-black px-2 py-0.5 rounded-[3px] uppercase shadow-md z-10`}>{news.tag}</span>
+                      <Image src={news.thumbnail_url || "https://images.habbo.com/c_images/reception/new_furni_promo.png"} alt={news.title} fill sizes="(max-width: 768px) 100vw, 30vw" className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500 pixelated" />
+                      <span className="absolute top-2 left-2 bg-[#ef4444] text-white text-[10px] font-black px-2 py-0.5 rounded-[3px] uppercase shadow-md z-10">YENİ</span>
                    </div>
                    <div className="flex flex-col flex-1 justify-between">
                       <div>
                         <h3 className="text-white font-bold text-[15px] leading-tight group-hover:text-[#facc15] transition-colors mb-2">{news.title}</h3>
-                        <p className="text-gray-400 text-[12px] leading-snug line-clamp-2 mb-3">{news.desc}</p>
+                        <p className="text-gray-400 text-[12px] leading-snug line-clamp-2 mb-3">{news.summary}</p>
                       </div>
                       <div className="flex flex-col gap-2 border-t border-[#1e293b]/50 pt-2">
                         <div className="flex justify-between items-center">
-                          <span className="flex items-center gap-1.5 text-white text-[11px] font-bold"><img src="https://www.habbo.com.tr/habbo-imaging/avatarimage?user=presh&direction=2&head_direction=2&action=&gesture=&size=s" className="w-5 h-5 rounded-full bg-[#0a1325] pixelated border border-[#1e293b]" alt=""/> {news.author}</span>
-                          <span className="text-[#6b7280] text-[10px] font-bold">{news.date}</span>
+                          <span className="flex items-center gap-1.5 text-white text-[11px] font-bold"><img src={`https://www.habbo.com.tr/habbo-imaging/avatarimage?user=${news.author?.habbo_username || 'frank'}&direction=2&head_direction=2&action=&gesture=&size=s`} className="w-5 h-5 rounded-full bg-[#0a1325] pixelated border border-[#1e293b]" alt=""/> {news.author?.username || 'HabboZone'}</span>
+                          <span className="text-[#6b7280] text-[10px] font-bold">{new Date(news.published_at).toLocaleDateString('tr-TR')}</span>
                         </div>
                         <div className="flex justify-between items-center text-[#6b7280] text-[10px] font-bold">
                            <div className="flex items-center gap-3">
-                              <span className="flex items-center gap-1 group-hover:text-blue-400 transition-colors"><Clock size={10} /> {news.time}</span>
-                              <span className="flex items-center gap-1 group-hover:text-green-400 transition-colors"><Eye size={10} /> {news.views}</span>
+                              <span className="flex items-center gap-1 group-hover:text-blue-400 transition-colors"><Clock size={10} /> 3 dk</span>
+                              <span className="flex items-center gap-1 group-hover:text-green-400 transition-colors"><Eye size={10} /> 35</span>
                            </div>
-                           <span className="flex items-center gap-1 group-hover:text-[#facc15] transition-colors"><MessageSquare size={10} /> {news.comments} Yorum</span>
+                           <span className="flex items-center gap-1 group-hover:text-[#facc15] transition-colors"><MessageSquare size={10} /> 12 Yorum</span>
                         </div>
                       </div>
                    </div>
                 </Link>
-             ))}
+             )) : (
+               <div className="text-center text-gray-500 py-4 text-sm font-bold">Henüz haber yok.</div>
+             )}
          </div>
 
          {/* Center Col: HABBO ZONE GAZETESI */}
@@ -202,40 +265,46 @@ export default async function Home() {
 
             <div className="habbo-box p-4 flex flex-col gap-4">
                {/* Featured Issue */}
-               <div className="flex flex-col sm:flex-row gap-4 items-center sm:items-start pb-4 border-b border-[#1e293b]">
-                  <div className="w-[140px] h-[190px] shrink-0 border-[3px] border-black bg-[#d1d5db] shadow-[4px_4px_0_#000] rotate-2 hover:rotate-0 transition-transform cursor-pointer overflow-hidden flex flex-col relative">
-                     <div className="w-full h-8 bg-[#0a1325] border-b-2 border-black flex items-center justify-center">
-                        <span className="text-[#facc15] font-black text-[12px]">HABBO ZONE</span>
-                     </div>
-                     <div className="flex-1 w-full flex items-center justify-center p-2 relative">
-                        <img src="https://images.habbo.com/c_images/reception/newspaper_promo.png" className="w-full h-full object-cover pixelated opacity-90" alt="" />
-                     </div>
-                  </div>
-                  <div className="flex flex-col flex-1 pt-2">
-                     <h3 className="text-white font-black text-[20px] mb-2 leading-tight">HabboZone Gazetesi #12</h3>
-                     <p className="text-gray-300 text-[13px] mb-4">Habbo dünyasındaki en sıcak gelişmeler, röportajlar, odalar ve daha fazlası!</p>
-                     <Link href="/magazines/12" className="bg-[#facc15] hover:bg-[#eab308] text-black w-max px-6 py-2.5 rounded-[4px] font-black text-[13px] border-2 border-black shadow-[0_4px_0_#a16207] hover:translate-y-1 hover:shadow-none transition-all uppercase">
-                       HEMEN OKU
-                     </Link>
-                  </div>
-               </div>
-               
-               {/* Grid of issues */}
-               <div className="grid grid-cols-4 gap-3 pt-2">
-                  {['#12', '#11', '#00', '#09'].map((issue, i) => (
-                    <Link key={i} href={`/magazines/${issue.replace('#','')}`} className="flex flex-col items-center gap-2 group">
-                      <span className="text-white font-bold text-[12px]">{issue}</span>
-                      <div className="w-full aspect-[3/4] border-2 border-black bg-[#d1d5db] shadow-[2px_2px_0_#000] group-hover:rotate-2 transition-transform overflow-hidden flex flex-col">
-                        <div className="w-full h-6 bg-[#0a1325] border-b border-black flex items-center justify-center">
-                          <span className="text-[#facc15] font-black text-[8px]">HABBO ZONE</span>
-                        </div>
-                        <div className="flex-1 w-full flex items-center justify-center p-1 relative">
-                          <img src="https://images.habbo.com/c_images/reception/newspaper_promo.png" className="w-full h-full object-cover pixelated opacity-80" alt="" />
-                        </div>
+               {latestMagazine ? (
+                 <>
+                   <div className="flex flex-col sm:flex-row gap-4 items-center sm:items-start pb-4 border-b border-[#1e293b]">
+                      <div className="w-[140px] h-[190px] shrink-0 border-[3px] border-black bg-[#d1d5db] shadow-[4px_4px_0_#000] rotate-2 hover:rotate-0 transition-transform cursor-pointer overflow-hidden flex flex-col relative">
+                         <div className="w-full h-8 bg-[#0a1325] border-b-2 border-black flex items-center justify-center">
+                            <span className="text-[#facc15] font-black text-[12px]">HABBO ZONE</span>
+                         </div>
+                         <div className="flex-1 w-full flex items-center justify-center p-2 relative">
+                            <img src={latestMagazine.cover_image_url} className="w-full h-full object-cover pixelated opacity-90" alt="" />
+                         </div>
                       </div>
-                    </Link>
-                  ))}
-               </div>
+                      <div className="flex flex-col flex-1 pt-2">
+                         <h3 className="text-white font-black text-[20px] mb-2 leading-tight">HabboZone Gazetesi #{latestMagazine.issue_number}</h3>
+                         <p className="text-gray-300 text-[13px] mb-4 line-clamp-3">{latestMagazine.title}</p>
+                         <a href={latestMagazine.pdf_url} target="_blank" rel="noreferrer" className="bg-[#facc15] hover:bg-[#eab308] text-black w-max px-6 py-2.5 rounded-[4px] font-black text-[13px] border-2 border-black shadow-[0_4px_0_#a16207] hover:translate-y-1 hover:shadow-none transition-all uppercase">
+                           HEMEN OKU
+                         </a>
+                      </div>
+                   </div>
+                   
+                   {/* Grid of issues */}
+                   <div className="grid grid-cols-4 gap-3 pt-2">
+                      {magazines.slice(1).map((issue) => (
+                        <a key={issue.id} href={issue.pdf_url} target="_blank" rel="noreferrer" className="flex flex-col items-center gap-2 group">
+                          <span className="text-white font-bold text-[12px]">#{issue.issue_number}</span>
+                          <div className="w-full aspect-[3/4] border-2 border-black bg-[#d1d5db] shadow-[2px_2px_0_#000] group-hover:rotate-2 transition-transform overflow-hidden flex flex-col">
+                            <div className="w-full h-6 bg-[#0a1325] border-b border-black flex items-center justify-center">
+                              <span className="text-[#facc15] font-black text-[8px]">HABBO ZONE</span>
+                            </div>
+                            <div className="flex-1 w-full flex items-center justify-center p-1 relative">
+                              <img src={issue.cover_image_url} className="w-full h-full object-cover pixelated opacity-80" alt="" />
+                            </div>
+                          </div>
+                        </a>
+                      ))}
+                   </div>
+                 </>
+               ) : (
+                 <div className="text-center text-gray-500 py-8 font-bold text-sm">Henüz dergi/gazete eklenmemiş.</div>
+               )}
             </div>
          </div>
 
@@ -309,11 +378,14 @@ export default async function Home() {
                </div>
                <div className="habbo-box p-3">
                   <div className="grid grid-cols-5 gap-2">
-                     {Array.from({length: 10}).map((_, i) => (
-                        <div key={i} className="bg-[#0a1325] border border-[#1e293b] rounded-[4px] aspect-square flex items-center justify-center hover:bg-[#1e293b] hover:border-gray-500 transition-colors cursor-pointer group" title={`Rozet #${i+1}\n\nKazanma Yöntemi:\nEtkinliklere katılarak bu rozeti kazanabilirsin.`}>
-                           <img src={`https://images.habbo.com/c_images/album1584/TR${100+i}.gif`} alt="Badge" className="group-hover:scale-125 transition-transform duration-300 pixelated" />
+                     {badges && badges.length > 0 ? badges.map((badge: any) => (
+                        <div key={badge.id} className="bg-[#0a1325] border border-[#1e293b] rounded-[4px] aspect-square flex items-center justify-center hover:bg-[#1e293b] hover:border-gray-500 transition-colors cursor-pointer group relative" title={`${badge.name}\n\nKazanma Yöntemi:\n${badge.how_to_get}`}>
+                           {/* eslint-disable-next-line @next/next/no-img-element */}
+                           <img src={badge.image_url} alt={badge.name} className="group-hover:scale-125 transition-transform duration-300 pixelated max-w-[40px] max-h-[40px] object-contain" />
                         </div>
-                     ))}
+                     )) : (
+                        <div className="col-span-5 text-center text-gray-500 py-4 text-xs font-bold">Yeni rozet yok.</div>
+                     )}
                   </div>
                </div>
             </div>
@@ -325,25 +397,28 @@ export default async function Home() {
                   <Link href="/events" className="text-gray-400 hover:text-white text-[11px] font-bold flex items-center gap-1 uppercase">TÜMÜ <ArrowRight size={12} /></Link>
                </div>
                <div className="habbo-box p-3 flex flex-col gap-2">
-                  {[
-                    { day: 'BUGÜN', time: '20:00', title: 'Yaz Partisi', host: 'frank', color: 'text-green-400', border: 'border-green-400/30' },
-                    { day: 'YARIN', time: '21:30', title: 'Oda Tasarım Yarışması', host: 'bonnie', color: 'text-purple-400', border: 'border-purple-400/30' },
-                    { day: 'PAZAR', time: '19:00', title: 'Saklambaç', host: 'admin', color: 'text-blue-400', border: 'border-blue-400/30' }
-                  ].map((evt, i) => (
-                     <div key={i} className={`flex items-center justify-between p-2 bg-[#0a1325] border ${evt.border} rounded-[4px] hover:bg-[#1e293b] transition-colors cursor-pointer`}>
-                        <div className="flex items-center gap-3">
-                           <div className="flex flex-col items-center justify-center min-w-[40px]">
-                              <span className={`text-[10px] font-black ${evt.color}`}>{evt.day}</span>
-                              <span className="text-white text-[11px] font-bold">{evt.time}</span>
-                           </div>
-                           <div className="w-px h-8 bg-[#1e293b]"></div>
-                           <div className="flex flex-col">
-                              <span className="text-gray-300 text-[12px] font-medium truncate">{evt.title}</span>
-                              <span className="text-gray-500 text-[10px] flex items-center gap-1"><Users size={10} /> {evt.host}</span>
-                           </div>
-                        </div>
-                     </div>
-                  ))}
+                  {events && events.length > 0 ? events.map((evt: any) => {
+                     const evtStyle = getEventColor(evt.event_type);
+                     return (
+                      <div key={evt.id} className={`flex items-center justify-between p-2 bg-[#0a1325] border ${evtStyle.border} rounded-[4px] hover:bg-[#1e293b] transition-colors cursor-pointer`}>
+                          <div className="flex items-center gap-3 w-full overflow-hidden">
+                            <div className="flex flex-col items-center justify-center min-w-[40px] shrink-0">
+                                <span className={`text-[10px] font-black ${evtStyle.text}`}>{formatEventDay(evt.event_time)}</span>
+                                <span className="text-white text-[11px] font-bold">
+                                  {new Date(evt.event_time).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' })}
+                                </span>
+                            </div>
+                            <div className="w-px h-8 bg-[#1e293b] shrink-0"></div>
+                            <div className="flex flex-col flex-1 min-w-0">
+                                <span className="text-gray-300 text-[12px] font-medium truncate">{evt.title}</span>
+                                <span className="text-gray-500 text-[10px] flex items-center gap-1"><Users size={10} /> {evt.host_username}</span>
+                            </div>
+                          </div>
+                      </div>
+                     )
+                  }) : (
+                    <div className="text-center text-gray-500 py-2 text-xs font-bold">Yaklaşan etkinlik yok.</div>
+                  )}
                </div>
             </div>
 

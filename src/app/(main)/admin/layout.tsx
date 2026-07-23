@@ -6,7 +6,13 @@ import {
   Newspaper, 
   Users, 
   Gem,
-  LogOut
+  LogOut,
+  BookOpen,
+  Award,
+  Calendar,
+  Megaphone,
+  Home,
+  Book
 } from 'lucide-react'
 
 export const metadata = {
@@ -66,6 +72,14 @@ export default async function AdminLayout({
               <Newspaper size={18} />
               <span>Haberler</span>
             </Link>
+
+            <Link 
+              href="/admin/magazines"
+              className="flex items-center gap-3 px-3 py-2 text-gray-300 hover:text-white hover:bg-[#2a2a2a] rounded-md transition-colors"
+            >
+              <BookOpen size={18} />
+              <span>Gazete/Dergi</span>
+            </Link>
             
             <Link 
               href="/admin/values"
@@ -73,6 +87,46 @@ export default async function AdminLayout({
             >
               <Gem size={18} />
               <span>Nadire Değerleri</span>
+            </Link>
+
+            <Link 
+              href="/admin/badges"
+              className="flex items-center gap-3 px-3 py-2 text-gray-300 hover:text-white hover:bg-[#2a2a2a] rounded-md transition-colors"
+            >
+              <Award size={18} />
+              <span>Rozetler</span>
+            </Link>
+
+            <Link 
+              href="/admin/events"
+              className="flex items-center gap-3 px-3 py-2 text-gray-300 hover:text-white hover:bg-[#2a2a2a] rounded-md transition-colors"
+            >
+              <Calendar size={18} />
+              <span>Etkinlik Takvimi</span>
+            </Link>
+
+            <Link 
+              href="/admin/announcements"
+              className="flex items-center gap-3 px-3 py-2 text-gray-300 hover:text-white hover:bg-[#2a2a2a] rounded-md transition-colors"
+            >
+              <Megaphone size={18} />
+              <span>Son Dakika Bantı</span>
+            </Link>
+
+            <Link 
+              href="/admin/rooms"
+              className="flex items-center gap-3 px-3 py-2 text-gray-300 hover:text-white hover:bg-[#2a2a2a] rounded-md transition-colors"
+            >
+              <Home size={18} />
+              <span>Odalar</span>
+            </Link>
+
+            <Link 
+              href="/admin/guides"
+              className="flex items-center gap-3 px-3 py-2 text-gray-300 hover:text-white hover:bg-[#2a2a2a] rounded-md transition-colors"
+            >
+              <Book size={18} />
+              <span>Rehberler</span>
             </Link>
             
             <Link 

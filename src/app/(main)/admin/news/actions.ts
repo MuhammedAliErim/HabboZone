@@ -15,6 +15,9 @@ export async function createNews(formData: FormData) {
   const category = formData.get('category') as string
   const image_url = formData.get('image_url') as string
   const excerpt = formData.get('excerpt') as string
+  const status = formData.get('status') as string || 'Published'
+  const publishedAtInput = formData.get('published_at') as string
+  const published_at = publishedAtInput ? new Date(publishedAtInput).toISOString() : new Date().toISOString()
 
   const { error } = await supabase.from('news').insert({
     title,
@@ -23,7 +26,9 @@ export async function createNews(formData: FormData) {
     image_url,
     excerpt,
     author_id: user.id,
-    published: true // auto publish for now
+    published: true, // auto publish for now
+    status,
+    published_at
   })
 
   if (error) {
@@ -48,6 +53,9 @@ export async function updateNews(id: string, formData: FormData) {
   const category = formData.get('category') as string
   const image_url = formData.get('image_url') as string
   const excerpt = formData.get('excerpt') as string
+  const status = formData.get('status') as string || 'Published'
+  const publishedAtInput = formData.get('published_at') as string
+  const published_at = publishedAtInput ? new Date(publishedAtInput).toISOString() : new Date().toISOString()
 
   const { error } = await supabase
     .from('news')
@@ -56,7 +64,9 @@ export async function updateNews(id: string, formData: FormData) {
       content,
       category,
       image_url,
-      excerpt
+      excerpt,
+      status,
+      published_at
     })
     .eq('id', id)
 

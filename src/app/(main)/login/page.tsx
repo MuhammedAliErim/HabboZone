@@ -25,7 +25,7 @@ export default function LoginPage() {
     });
 
     if (authError) {
-      setError('Giriş başarısız. Lütfen e-posta ve şifrenizi kontrol edin.');
+      setError(authError.message === 'Email not confirmed' ? 'Lütfen e-posta adresinizi doğrulayın.' : authError.message);
       setLoading(false);
       return;
     }

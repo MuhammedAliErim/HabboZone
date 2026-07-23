@@ -99,10 +99,10 @@ export default async function ValuesPage() {
                     <ul className="space-y-1">
                         {displayCategories.map((cat: any) => (
                             <li key={cat.id}>
-                                <button className={`w-full flex items-center gap-3 px-3 py-2.5 rounded text-left transition-colors ${cat.name === 'Tümü' ? 'bg-[#1e293b] text-white' : 'text-[#64748b] hover:bg-[#0a1325] hover:text-white'}`}>
+                                <Link href={`/values/category/${cat.slug || cat.id}`} className={`w-full flex items-center gap-3 px-3 py-2.5 rounded text-left transition-colors ${cat.name === 'Tümü' ? 'bg-[#1e293b] text-white' : 'text-[#64748b] hover:bg-[#0a1325] hover:text-white'}`}>
                                     <span className="shrink-0">{cat.icon || <div className="w-3 h-3 bg-[#334155] rounded-sm"></div>}</span>
                                     <span className="text-[12px] font-bold">{cat.name}</span>
-                                </button>
+                                </Link>
                             </li>
                         ))}
                     </ul>
@@ -118,7 +118,7 @@ export default async function ValuesPage() {
                 </div>
                 <div className="bg-[#050a14] p-4">
                     <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
-                        {mockItems.map((item) => (
+                        {recentItems && recentItems.length > 0 ? recentItems.map((item) => (
                             <div
                                 key={item.id}
                                 className="bg-[#144b82] border border-[#1e61a5] rounded-md flex flex-col items-center justify-center h-[140px] relative group overflow-hidden shadow-inner cursor-pointer"
@@ -127,27 +127,38 @@ export default async function ValuesPage() {
                                 <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-black/20 group-hover:from-white/20 transition-colors pointer-events-none"></div>
 
                                 {/* Tag */}
-                                <div className="absolute top-2 left-2 z-10 bg-red-600 text-white text-[9px] font-black px-1.5 py-0.5 rounded shadow-sm tracking-wider">
-                                    {item.tag}
-                                </div>
+                                {item.is_ltd && (
+                                    <div className="absolute top-2 left-2 z-10 bg-red-600 text-white text-[9px] font-black px-1.5 py-0.5 rounded shadow-sm tracking-wider">
+                                        LTD
+                                    </div>
+                                )}
                                 
                                 {/* Image */}
-                                <div className="flex-1 flex items-center justify-center relative z-10">
+                                <div className="flex-1 flex items-center justify-center relative z-10 w-full p-2">
                                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                                    <img src={item.img} alt={item.name} className="max-w-[60px] max-h-[60px] object-contain drop-shadow-[0_4px_4px_rgba(0,0,0,0.5)] group-hover:scale-110 transition-transform duration-300" />
+                                    <img src={item.image_url} alt={item.name} className="max-w-[60px] max-h-[60px] object-contain drop-shadow-[0_4px_4px_rgba(0,0,0,0.5)] group-hover:scale-110 transition-transform duration-300" />
+                                </div>
+
+                                {/* Name overlay (hidden by default, shown on hover) */}
+                                <div className="absolute inset-x-0 bottom-8 z-10 bg-black/80 text-white text-[10px] font-bold text-center py-1 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none px-1 truncate">
+                                    {item.name}
                                 </div>
 
                                 {/* Price Bar */}
                                 <div className="w-full bg-[#072445] h-8 flex items-center justify-start px-3 gap-1 relative z-10 border-t border-[#144b82]/50">
-                                    <span className="text-white font-bold text-[11px]">{item.price}</span>
-                                    {item.currency === 'diamond' ? (
-                                        <div className="w-3 h-3 bg-blue-400 rotate-45 transform scale-75"></div>
+                                    <span className="text-white font-bold text-[11px]">{item.current_value}</span>
+                                    {item.currency_type === 'diamond' ? (
+                                        <div className="w-3 h-3 bg-blue-400 rotate-45 transform scale-75 shadow-sm border border-blue-600"></div>
+                                    ) : item.currency_type === 'credit' ? (
+                                        <div className="w-3 h-3 bg-yellow-400 rounded-full scale-75 border border-yellow-600 shadow-sm"></div>
                                     ) : (
-                                        <div className="w-3 h-3 bg-yellow-400 rounded-full scale-75 border border-yellow-600"></div>
+                                        <div className="text-[10px] text-gray-300 font-bold ml-1">{item.currency_type}</div>
                                     )}
                                 </div>
                             </div>
-                        ))}
+                        )) : (
+                          <div className="col-span-full text-center text-gray-500 py-8 font-bold text-sm">Henüz nadire eklenmemiş.</div>
+                        )}
                     </div>
 
                     <div className="mt-6 flex justify-between items-center border-t border-[#1e293b] pt-4">
