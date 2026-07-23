@@ -14,7 +14,7 @@ export default function Navigation() {
     { href: '/forum', label: 'TOPLULUK', icon: Users },
     { href: '/rooms', label: 'ODALAR', icon: Home },
     { href: '/guides', label: 'REHBERLER', icon: BookOpen },
-    { href: '/values', label: 'MAĞAZA', icon: ShoppingBag },
+    { href: '/values', label: 'DEĞERLER', icon: ShoppingBag },
     { href: '/tools', label: 'ARAÇLAR', icon: Wrench },
   ];
 

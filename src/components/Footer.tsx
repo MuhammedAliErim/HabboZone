@@ -6,10 +6,10 @@ export default function Footer() {
     <footer className="w-full bg-[#050a14] border-t-4 border-black pt-16 pb-8 relative z-10">
       <div className="max-w-[1200px] mx-auto px-4">
         
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-4 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-4 mb-12">
             
             {/* Column 1: Brand & Desc */}
-            <div className="md:col-span-2 flex flex-col items-start gap-4 pr-0 md:pr-12">
+            <div className="sm:col-span-2 lg:col-span-2 flex flex-col items-start gap-4 pr-0 lg:pr-8">
                 <div className="font-black tracking-tighter leading-none transform -skew-x-6 flex items-center justify-center">
                     <span className="text-[#facc15] text-3xl drop-shadow-[0_2px_0_rgba(0,0,0,1)] -mr-1">HABBO</span>
                     <span className="text-white text-3xl drop-shadow-[0_2px_0_rgba(0,0,0,1)]">ZONE</span>
@@ -55,6 +55,18 @@ export default function Footer() {
                 </nav>
             </div>
 
+            {/* Column 4: Legal & Policies */}
+            <div className="flex flex-col gap-4">
+                <h3 className="text-white font-black text-[14px] uppercase tracking-wider mb-2 border-l-4 border-[#facc15] pl-2">Yasal</h3>
+                <nav className="flex flex-col gap-2.5">
+                    <Link href="/privacy" className="text-[12px] font-bold text-gray-400 hover:text-[#facc15] hover:translate-x-1 transition-all">Gizlilik Politikası</Link>
+                    <Link href="/cookies" className="text-[12px] font-bold text-gray-400 hover:text-[#facc15] hover:translate-x-1 transition-all">Çerez Politikası</Link>
+                    <Link href="/kvkk" className="text-[12px] font-bold text-gray-400 hover:text-[#facc15] hover:translate-x-1 transition-all">KVKK Aydınlatma Metni</Link>
+                    <Link href="/fan-site-policy" className="text-[12px] font-bold text-gray-400 hover:text-[#facc15] hover:translate-x-1 transition-all">Fan Site Politikası</Link>
+                    <Link href="/contact" className="text-[12px] font-bold text-gray-400 hover:text-[#facc15] hover:translate-x-1 transition-all">İçerik Kaldırma Talebi</Link>
+                </nav>
+            </div>
+
         </div>
 
         {/* Disclaimer & Copyright */}
@@ -63,7 +75,7 @@ export default function Footer() {
             Bu HabboZone, Sulake Oy veya İştirakleri tarafından doğrulanmamış, onaylanmamış ve desteklenmemiştir ve bunlar ile bağlı değildir. Bu HabboZone, Habbo Fan Sitesi Poliçesi altında izin verilen ticaret markalarını ve diğer Habbo fikrî mülkiyetlerini kullanabilir.
             </p>
             <div className="text-[10px] text-[#facc15] font-black tracking-widest uppercase mt-2">
-            &copy; 2026 HABBOZONE. TÜM HAKLARI SAKLIDIR.
+            &copy; {new Date().getFullYear()} HABBOZONE. TÜM HAKLARI SAKLIDIR.
             </div>
         </div>
 
