@@ -10,21 +10,23 @@
 }
 
 :root {
-  /* Classic Habbo Hotel Colors */
-  --background: #f1f5f9; /* Light slate/grayish blue background */
-  --foreground: #1e293b; /* Dark text */
-  --primary: #009ce0; /* Habbo Blue */
-  --habbo-green: #82b428;
-  --habbo-orange: #ffa600;
+  /* Modern Dark Habbo Theme Colors */
+  --background: #0b1120; /* Dark navy background */
+  --foreground: #f8fafc; /* Light text */
+  --primary: #3b82f6; /* Modern Blue */
+  --habbo-green: #22c55e;
+  --habbo-orange: #f59e0b;
+  --habbo-yellow: #eab308;
+  --panel-bg: #131c31;
+  --panel-border: #1e293b;
 }
 
 body {
   background-color: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
-  /* Classic Dotted pattern for a retro feel */
-  background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
-  background-size: 16px 16px;
+  /* Dark starfield / subtle noise pattern (simulated with a radial gradient for now) */
+  background-image: radial-gradient(circle at center, #111827 0%, #0b1120 100%);
   background-attachment: fixed;
 }
 
@@ -32,55 +34,59 @@ body {
 .pixel-borders {
   border: 2px solid #000;
   box-shadow: 
-    -2px 0 0 0 rgba(255,255,255,0.2) inset,
-    2px 0 0 0 rgba(0,0,0,0.2) inset,
-    0 -2px 0 0 rgba(255,255,255,0.2) inset,
-    0 2px 0 0 rgba(0,0,0,0.2) inset,
-    4px 4px 0 0 rgba(0,0,0,0.1);
+    -2px 0 0 0 rgba(255,255,255,0.1) inset,
+    2px 0 0 0 rgba(0,0,0,0.5) inset,
+    0 -2px 0 0 rgba(255,255,255,0.1) inset,
+    0 2px 0 0 rgba(0,0,0,0.5) inset,
+    4px 4px 0 0 rgba(0,0,0,0.3);
   image-rendering: pixelated;
   border-radius: 4px;
 }
 
 .habbo-box {
-  background-color: #ffffff;
-  border: 2px solid #334155;
-  border-radius: 8px;
-  box-shadow: 0 4px 0 #94a3b8;
+  background-color: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
   overflow: hidden;
 }
 
 .habbo-box-header {
-  background-color: var(--primary);
+  background-color: rgba(255,255,255,0.03);
   color: white;
-  padding: 10px 16px;
-  font-weight: 900;
+  padding: 12px 16px;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  border-bottom: 2px solid #0284c7;
-  text-shadow: 1px 1px 0px rgba(0,0,0,0.3);
+  border-bottom: 1px solid var(--panel-border);
 }
 
-.habbo-box-header.green { background-color: var(--habbo-green); border-bottom-color: #658c1f; }
-.habbo-box-header.orange { background-color: var(--habbo-orange); border-bottom-color: #cc8500; }
-.habbo-box-header.dark { background-color: #334155; border-bottom-color: #1e293b; }
+.habbo-box-header.green { border-bottom: 2px solid var(--habbo-green); }
+.habbo-box-header.orange { border-bottom: 2px solid var(--habbo-orange); }
+.habbo-box-header.blue { border-bottom: 2px solid var(--primary); }
+.habbo-box-header.dark { border-bottom: 2px solid #475569; }
 
 .habbo-button {
   background-color: var(--habbo-green);
-  color: white;
-  font-weight: bold;
+  color: #000;
+  font-weight: 800;
   padding: 8px 16px;
-  border: 2px solid #000;
+  border: 2px solid transparent;
   border-radius: 6px;
-  box-shadow: inset -2px -2px 0px rgba(0,0,0,0.2), inset 2px 2px 0px rgba(255,255,255,0.3);
   text-transform: uppercase;
   letter-spacing: 1px;
-  transition: all 0.1s;
+  transition: all 0.2s ease;
+}
+
+.habbo-button:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
 }
 
 .habbo-button:active {
-  box-shadow: inset 2px 2px 0px rgba(0,0,0,0.2), inset -2px -2px 0px rgba(255,255,255,0.3);
-  transform: translateY(2px);
+  transform: translateY(1px);
 }
 
-.habbo-button.blue { background-color: var(--primary); }
-.habbo-button.orange { background-color: var(--habbo-orange); }
+.habbo-button.blue { background-color: var(--primary); color: white; }
+.habbo-button.orange { background-color: var(--habbo-orange); color: white; }
+.habbo-button.yellow { background-color: var(--habbo-yellow); color: #000; }

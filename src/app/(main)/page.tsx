@@ -3,7 +3,7 @@ import NewsCard from '@/components/NewsCard';
 import MarketWidget from '@/components/MarketWidget';
 import Link from 'next/link';
 import { createClient } from '@/utils/supabase/server';
-import { MessageCircle, Award, PenTool, Radio, Users, Sparkles, Megaphone, Clock, User, Coins } from 'lucide-react';
+import { MessageCircle, Award, PenTool, Radio, Users, Sparkles, Megaphone, Clock, User, Coins, Flame, Monitor, AlignLeft, BookOpen, Newspaper } from 'lucide-react';
 import HabboAvatar from '@/components/HabboAvatar';
 
 export const revalidate = 60; // Cache for 60 seconds
@@ -66,230 +66,206 @@ export default async function Home() {
     .order('created_at', { ascending: false })
     .limit(5);
 
-  // Fetch Latest Badges
-  const { data: latestBadges } = await supabase
-    .from('badges')
-    .select('*')
-    .order('created_at', { ascending: false })
-    .limit(8);
-
   return (
-    <div className="py-6 space-y-6 animate-in fade-in duration-700 max-w-6xl mx-auto">
+    <div className="animate-in fade-in duration-700 pb-12">
       
-      {/* 2-Column Main Layout: Left (Main Content) - Right (Sidebar) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      {/* Hero Section (Dark Theme Cityscape) */}
+      <section className="relative w-full overflow-hidden bg-[#0b1120] min-h-[500px] flex items-center justify-center border-b border-[#1e293b]">
+        <div 
+          className="absolute inset-0 z-0 opacity-30"
+          style={{
+            backgroundImage: 'url("https://images.habbo.com/c_images/reception/reception_backdrop_4.png")',
+            backgroundPosition: 'center',
+            backgroundSize: 'cover',
+            imageRendering: 'pixelated'
+          }}
+        />
         
-        {/* Left Column (Main Content) - 8 cols */}
+        {/* Gradient Overlay for better text readability */}
+        <div className="absolute inset-0 z-10 bg-gradient-to-r from-[#0b1120] via-transparent to-[#0b1120]"></div>
+        <div className="absolute inset-0 z-10 bg-gradient-to-t from-[#0b1120] to-transparent opacity-80"></div>
+
+        <div className="relative z-20 max-w-4xl mx-auto px-6 text-center flex flex-col items-center">
+            
+            <div className="font-black tracking-tighter leading-none transform -skew-x-6 mb-6">
+                <div className="text-[#f59e0b] text-6xl md:text-8xl drop-shadow-[0_4px_0_rgba(0,0,0,1)] -mb-2">HABBO</div>
+                <div className="text-white text-6xl md:text-8xl drop-shadow-[0_4px_0_rgba(0,0,0,1)]">ZONE</div>
+            </div>
+
+            <h1 className="text-3xl md:text-4xl font-bold text-white mb-4 drop-shadow-lg">
+                Habbo dünyasından en son haberler!
+            </h1>
+            <p className="text-lg text-gray-300 max-w-2xl mb-8 font-medium">
+                Habbo Zone, Habbo hayranları için en kapsamlı haber, rehber, fan sitesi ve topluluk platformudur!
+            </p>
+
+            <div className="flex items-center gap-4">
+                <Link href="/register" className="habbo-button text-lg px-8 py-3 shadow-[0_4px_15px_rgba(34,197,94,0.3)]">
+                    HEMEN KATIL
+                </Link>
+                <Link href="https://www.habbo.com.tr" target="_blank" className="habbo-button blue text-lg px-8 py-3 shadow-[0_4px_15px_rgba(59,130,246,0.3)]">
+                    HABBO HOTEL
+                </Link>
+            </div>
+        </div>
+      </section>
+
+      {/* Main Content Area */}
+      <div className="max-w-[1400px] mx-auto px-6 mt-[-40px] relative z-30 grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        {/* Left Column - 8 cols */}
         <div className="lg:col-span-8 space-y-6">
           
-          {/* Welcome Box */}
-          {!profile && (
-            <div className="habbo-box bg-white overflow-hidden relative group">
-              <div className="absolute top-0 right-0 opacity-10 p-8 pointer-events-none transform group-hover:scale-110 transition-transform duration-1000">
-                <Sparkles size={120} />
-              </div>
-              <div className="p-6 bg-gradient-to-r from-blue-50 to-white flex flex-col sm:flex-row items-center gap-6 relative z-10">
-                <div className="w-24 h-24 bg-white rounded-full border border-blue-200 shadow-inner flex items-center justify-center shrink-0">
-                   <img src="https://images.habbo.com/c_images/album1584/ADM.gif" alt="Welcome" className="w-12 object-contain" />
-                </div>
-                <div className="text-center sm:text-left space-y-2">
-                  <h1 className="text-2xl font-black text-blue-800 uppercase tracking-tight">HabboZone'a Hoş Geldin!</h1>
-                  <p className="text-sm font-medium text-gray-600 leading-relaxed">
-                    Türkiye'nin en güncel ve en yenilikçi Habbo topluluğundasın. En son haberleri okuyabilir, forumda diğer Habbolarla tartışabilir, rozetleri inceleyebilir ve radyomuzda müzik dinleyebilirsin. Aramıza katılmak için hemen giriş yap!
-                  </p>
-                  <div className="pt-2">
-                    <Link href="/login" className="habbo-button blue inline-block shadow-md">
-                      HESAP OLUŞTUR / GİRİŞ YAP
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
           {/* Featured Slider Area */}
           {featuredNews && featuredNews.length > 0 && (
-            <section className="rounded-lg overflow-hidden border-4 border-[#334155] shadow-[0_4px_0_#94a3b8] bg-white">
+            <section className="rounded-xl overflow-hidden border border-[#1e293b] shadow-2xl bg-[#131c31]">
               <FeaturedSlider items={featuredNews} />
             </section>
           )}
 
           {/* Latest News */}
           <section className="habbo-box">
-            <div className="habbo-box-header blue flex justify-between items-center">
-              <div className="flex items-center gap-2"><Megaphone size={16} /> HabboZone Haberleri</div>
-              <Link href="/news" className="text-[10px] bg-black/20 hover:bg-black/40 px-2 py-1 rounded transition-colors shadow-inner">
-                Tümünü Gör
+            <div className="habbo-box-header flex justify-between items-center">
+              <div className="flex items-center gap-2"><AlignLeft size={18} className="text-red-400" /> SON HABERLER</div>
+              <Link href="/news" className="text-[10px] text-gray-400 hover:text-white transition-colors">
+                TÜM HABERLER →
               </Link>
             </div>
-            <div className="p-4 bg-[#f8fafc] grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
               {regularNews?.map((news: any) => (
-                <div key={news.slug} className="bg-white border border-gray-200 rounded p-2.5 shadow-sm flex flex-col gap-2 hover:border-blue-400 hover:bg-blue-50 transition-colors group">
-                  <div className="h-32 rounded overflow-hidden relative border border-gray-200 shadow-inner">
-                    <img src={news.thumbnail_url || 'https://images.habbo.com/c_images/article_images_tr/tr_news_header_1.png'} alt={news.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <Link key={news.slug} href={`/news/${news.slug}`} className="bg-[#0b1120] border border-[#1e293b] rounded-lg p-3 flex gap-3 hover:border-gray-500 transition-colors group">
+                  <div className="w-24 h-24 shrink-0 rounded overflow-hidden relative border border-[#1e293b]">
+                    <img src={news.thumbnail_url || 'https://images.habbo.com/c_images/article_images_tr/tr_news_header_1.png'} alt={news.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                    <div className="absolute top-1 left-1 bg-red-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded uppercase">Yeni</div>
                   </div>
-                  <Link href={`/news/${news.slug}`} className="font-bold text-[13px] text-gray-800 hover:text-blue-700 leading-tight">
-                    {news.title}
-                  </Link>
-                  <div className="flex justify-between items-center text-[10px] text-gray-500 mt-auto pt-2 border-t border-gray-100 font-bold uppercase tracking-wider">
-                    <span className="flex items-center gap-1"><User size={12}/> {(news.author as any)?.username || 'Admin'}</span>
-                    <span className="flex items-center gap-1"><Clock size={12}/> {new Date(news.published_at).toLocaleDateString('tr-TR')}</span>
-                  </div>
-                </div>
-              ))}
-              {(!regularNews || regularNews.length === 0) && (
-                <div className="col-span-full p-8 text-center text-gray-500 font-bold">
-                  Henüz haber bulunmuyor.
-                </div>
-              )}
-            </div>
-          </section>
-
-          {/* Latest Forum Topics */}
-          <section className="habbo-box">
-            <div className="habbo-box-header orange flex justify-between items-center">
-              <div className="flex items-center gap-2"><MessageCircle size={16} /> Forum'da Konuşulanlar</div>
-              <Link href="/forum" className="text-[10px] bg-black/20 hover:bg-black/40 px-2 py-1 rounded transition-colors shadow-inner">
-                Foruma Git
-              </Link>
-            </div>
-            
-            <div className="divide-y divide-gray-100 bg-[#f8fafc]">
-              {latestTopics?.map((topic: any) => (
-                <Link 
-                  key={topic.id} 
-                  href={`/forum/topic/${topic.slug}`}
-                  className={`flex items-center p-3 gap-3 bg-white hover:bg-orange-50 transition-colors group ${topic.is_pinned ? 'bg-orange-50/30' : ''}`}
-                >
-                  <div className="flex-shrink-0">
-                    <div className="w-12 h-12 rounded bg-gray-50 border border-gray-200 flex items-center justify-center shadow-inner">
-                      <img 
-                        src={`https://www.habbo.com.tr/habbo-imaging/avatarimage?user=${(topic.author as any)?.habbo_username || 'Admin'}&direction=2&head_direction=2&gesture=sml&size=m`}
-                        alt="avatar"
-                        className="w-12 h-12 -mt-2"
-                      />
-                    </div>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-bold text-[13px] text-gray-800 truncate group-hover:text-orange-600 transition-colors flex items-center gap-2">
-                      {topic.is_pinned && <span className="bg-orange-500 text-white text-[9px] px-1.5 py-0.5 rounded shadow-sm">SABİT</span>}
-                      {topic.title}
+                  <div className="flex flex-col justify-between py-1">
+                    <h3 className="font-bold text-sm text-gray-200 group-hover:text-white leading-tight line-clamp-2">
+                        {news.title}
                     </h3>
-                    <div className="text-[10px] text-gray-500 mt-1 uppercase tracking-wider font-bold">
-                      {(topic.author as any)?.username} <span className="text-gray-300 mx-1">•</span> {new Date(topic.created_at).toLocaleDateString('tr-TR')}
+                    <p className="text-[11px] text-gray-400 line-clamp-2 mt-1">
+                        {news.summary || 'Habbo dünyasından en güncel gelişmeler ve daha fazlası...'}
+                    </p>
+                    <div className="text-[10px] text-gray-500 mt-2 font-bold">
+                        {new Date(news.published_at).toLocaleDateString('tr-TR')}
                     </div>
-                  </div>
-                  <div className="flex flex-col items-center justify-center text-xs text-gray-500 bg-gray-50 px-3 py-1.5 rounded border border-gray-200 shadow-inner min-w-[50px] group-hover:border-orange-200 group-hover:bg-orange-100/50">
-                    <span className="font-black text-gray-700">{(topic.replies as any)?.[0]?.count || 0}</span>
-                    <span className="text-[9px] uppercase font-bold text-gray-400">Yanıt</span>
                   </div>
                 </Link>
               ))}
-              {(!latestTopics || latestTopics.length === 0) && (
-                <div className="p-8 text-center text-gray-500 font-bold">
-                  Henüz konu açılmamış.
-                </div>
-              )}
             </div>
           </section>
+
+          {/* Magazine Section */}
+          {latestMagazine && (
+            <section className="habbo-box">
+              <div className="habbo-box-header flex justify-between items-center">
+                <div className="flex items-center gap-2"><Newspaper size={18} className="text-yellow-400" /> HABBO ZONE GAZETESİ</div>
+                <Link href="/magazines" className="text-[10px] text-gray-400 hover:text-white transition-colors">
+                  TÜM SAYILAR →
+                </Link>
+              </div>
+              <div className="p-6 bg-gradient-to-br from-[#131c31] to-[#0b1120] flex flex-col md:flex-row items-center gap-8">
+                  <div className="w-40 shrink-0">
+                      <div className="w-full aspect-[3/4] bg-white rounded-md shadow-2xl border-4 border-gray-800 relative group overflow-hidden">
+                          <img src={latestMagazine.cover_image_url} alt={latestMagazine.title} className="w-full h-full object-cover" />
+                      </div>
+                  </div>
+                  <div className="flex-1 text-center md:text-left space-y-3">
+                      <h3 className="text-2xl font-black text-white">{latestMagazine.title}</h3>
+                      <p className="text-sm text-gray-300 leading-relaxed">
+                          Habbo dünyasındaki en sıcak gelişmeler, röportajlar, odalar ve daha fazlası bu sayıda seni bekliyor!
+                      </p>
+                      <div className="pt-2">
+                          <Link href={`/magazines/${latestMagazine.id}`} className="habbo-button yellow inline-block">
+                              HEMEN OKU
+                          </Link>
+                      </div>
+                  </div>
+              </div>
+            </section>
+          )}
 
         </div>
 
-        {/* Right Column (Sidebar Widgets) - 4 cols */}
+        {/* Right Column - 4 cols */}
         <aside className="lg:col-span-4 space-y-6">
           
-          {/* Radio Status Widget */}
+          {/* Hot Topics */}
           <div className="habbo-box">
-             <div className="habbo-box-header" style={{backgroundColor: '#6b21a8', borderBottomColor: '#581c87'}}>
-               <div className="flex items-center gap-2"><Radio size={16} /> Yayında Olan</div>
-             </div>
-             <div className="bg-white p-0 relative overflow-hidden">
-                <div className="h-16 bg-gradient-to-r from-purple-100 to-fuchsia-100 absolute top-0 w-full z-0 border-b border-purple-200"></div>
-                <div className="p-4 relative z-10 flex flex-col items-center pt-6">
-                    <div className="w-16 h-16 bg-white rounded-full border-2 border-purple-300 shadow-md flex items-center justify-center mb-3">
-                        <img src="https://images.habbo.com/c_images/album1584/ADM.gif" alt="DJ" className="w-10 object-contain" />
-                    </div>
-                    <div className="font-black text-lg text-purple-900 leading-none mb-1">DJ AutoDJ</div>
-                    <div className="text-[10px] font-bold uppercase tracking-widest text-purple-600 bg-purple-100 px-2 py-0.5 rounded-full border border-purple-200 mb-4">Şu an Canlı</div>
-                    
-                    <div className="w-full bg-gray-50 rounded border border-gray-200 p-3 text-center shadow-inner">
-                        <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Çalan Şarkı</div>
-                        <div className="text-xs font-bold text-gray-700 truncate">HabboZone Hits - Karışık Yabancı</div>
-                    </div>
-                </div>
-             </div>
-          </div>
-
-          {/* User Widget */}
-          {profile && (
-            <div className="habbo-box">
-              <div className="habbo-box-header green">Kullanıcı Bilgileri</div>
-              <div className="p-4 bg-white flex items-center gap-4">
-                <div className="w-16 h-16 rounded overflow-hidden bg-gray-50 border border-gray-200 flex items-center justify-center shrink-0 shadow-inner">
-                  <HabboAvatar username={profile.habbo_username || 'Habbo'} size="m" headDirection={3} direction={3} className="w-16 h-16 -mt-4" />
-                </div>
-                <div>
-                  <div className="font-black text-lg text-gray-800 leading-none mb-1">{profile.username}</div>
-                  <div className="text-[11px] text-gray-500 italic mb-2">"{profile.motto || 'Motto yok'}"</div>
-                  <div className="flex gap-2 text-[10px] font-black uppercase tracking-wider text-gray-600">
-                    <span className="bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded shadow-sm flex items-center gap-1 border border-yellow-200"><Coins size={10}/> {profile.hz_points || 0} HZ Puanı</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Magazine Showcase */}
-          {latestMagazine && (
-            <div className="habbo-box">
-              <div className="habbo-box-header dark flex items-center gap-2"><PenTool size={16} /> Haftanın Dergisi</div>
-              <div className="bg-[#f8fafc] p-5 flex flex-col items-center">
-                <div className="w-32 h-44 bg-white rounded shadow-lg border-4 border-white transform -rotate-3 hover:rotate-0 hover:scale-105 transition-all duration-300 mb-4 overflow-hidden relative group">
-                  <img 
-                    src={latestMagazine.cover_image_url} 
-                    alt={latestMagazine.title}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                      <span className="text-white font-bold text-xs uppercase tracking-widest bg-black/50 px-2 py-1 rounded">Okumak için tıkla</span>
-                  </div>
-                </div>
-                <h4 className="font-black text-[13px] text-gray-800 text-center leading-tight mb-1">{latestMagazine.title}</h4>
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">Sayı #{latestMagazine.issue_number}</p>
-                <Link href={`/magazines/${latestMagazine.id}`} className="habbo-button blue text-xs w-full text-center py-2 shadow-md">
-                  Hemen Oku
-                </Link>
-              </div>
-            </div>
-          )}
-
-          {/* Economy/Market Widget */}
-          <div className="habbo-box">
-             <div className="habbo-box-header" style={{backgroundColor: '#795548', borderBottomColor: '#5D4037'}}>
-               <div className="flex items-center gap-2"><Coins size={16} /> Değerler & Ekonomi</div>
-             </div>
-             <div className="bg-white">
-                <MarketWidget />
-             </div>
-          </div>
-
-          {/* Latest Badges */}
-          <div className="habbo-box">
-            <div className="habbo-box-header" style={{backgroundColor: '#E91E63', borderBottomColor: '#C2185B'}}>
-              <div className="flex items-center gap-2"><Award size={16} /> Son Eklenen Rozetler</div>
-            </div>
-            <div className="bg-white p-4">
-              <div className="grid grid-cols-4 gap-2">
-                {latestBadges?.map((badge: any) => (
-                  <div key={badge.id} className="flex flex-col items-center justify-center group cursor-help bg-gray-50 border border-gray-100 rounded p-2 hover:border-pink-300 hover:bg-pink-50 transition-colors shadow-sm aspect-square" title={badge.name}>
-                    <img src={badge.image_url} alt={badge.name} className="w-10 h-10 object-contain group-hover:scale-110 transition-transform drop-shadow-sm" />
-                  </div>
-                ))}
-              </div>
-              <Link href="/badges" className="block text-center text-[10px] font-black uppercase tracking-widest text-[#E91E63] mt-4 hover:text-[#C2185B] transition-colors bg-pink-50 py-2 rounded">
-                Tüm Rozetleri İncele
+            <div className="habbo-box-header flex justify-between items-center">
+              <div className="flex items-center gap-2"><Flame size={18} className="text-orange-500" /> SICAK KONULAR</div>
+              <Link href="/forum" className="text-[10px] text-gray-400 hover:text-white transition-colors">
+                TÜMÜ →
               </Link>
             </div>
+            <div className="p-3 divide-y divide-[#1e293b]">
+              {latestTopics?.map((topic: any) => (
+                <Link key={topic.id} href={`/forum/topic/${topic.slug}`} className="flex items-center gap-3 p-3 hover:bg-[#0b1120] transition-colors group">
+                    <Flame size={16} className="text-orange-500 shrink-0 group-hover:scale-110 transition-transform" />
+                    <span className="text-sm font-bold text-gray-300 group-hover:text-white truncate">{topic.title}</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Online Users Mockup */}
+          <div className="habbo-box">
+            <div className="habbo-box-header flex justify-between items-center">
+              <div className="flex items-center gap-2"><Users size={18} className="text-green-400" /> ÇEVRİMİÇİ KULLANICILAR</div>
+            </div>
+            <div className="p-4 flex items-center justify-between">
+                <div className="flex -space-x-3">
+                    {[1,2,3,4,5,6].map(i => (
+                        <div key={i} className="w-10 h-10 rounded-full bg-gray-800 border-2 border-[#131c31] overflow-hidden flex items-center justify-center shrink-0">
+                            <img src={`https://www.habbo.com.tr/habbo-imaging/avatarimage?user=Habbo&direction=2&head_direction=2&gesture=sml&size=s`} className="w-10 h-10 object-cover" />
+                        </div>
+                    ))}
+                </div>
+                <div className="text-sm font-black text-gray-400">+248</div>
+            </div>
+          </div>
+
+          {/* Radio Status Widget (Dark Theme) */}
+          <div className="habbo-box">
+             <div className="habbo-box-header flex items-center gap-2">
+               <Radio size={18} className="text-purple-400" /> HABBO RADYO
+             </div>
+             <div className="p-4 bg-[#0b1120] flex items-center gap-4 relative overflow-hidden">
+                <div className="w-16 h-16 bg-[#131c31] rounded border border-[#1e293b] flex items-center justify-center shrink-0">
+                    <img src="https://images.habbo.com/c_images/album1584/ADM.gif" alt="DJ" className="w-10 object-contain drop-shadow-md" />
+                </div>
+                <div>
+                    <div className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-0.5">Şu An Çalan</div>
+                    <div className="font-bold text-sm text-white mb-1">Habbo FM - Yaz Özel</div>
+                    <div className="text-[11px] text-gray-400 flex items-center gap-1"><User size={10} /> DJ AutoDJ</div>
+                </div>
+             </div>
+          </div>
+
+          {/* Quick Links */}
+          <div className="habbo-box">
+             <div className="habbo-box-header flex items-center gap-2">
+               <Monitor size={18} className="text-blue-400" /> HIZLI ERİŞİM
+             </div>
+             <div className="p-4 grid grid-cols-3 gap-2 text-center">
+                 <Link href="https://habbo.com.tr" target="_blank" className="flex flex-col items-center gap-2 p-2 hover:bg-[#0b1120] rounded-lg transition-colors group">
+                     <div className="w-10 h-10 bg-[#1e293b] rounded-lg flex items-center justify-center group-hover:bg-blue-900 transition-colors">
+                        <Monitor size={20} className="text-blue-400" />
+                     </div>
+                     <span className="text-[10px] font-bold text-gray-400">Habbo Hotel</span>
+                 </Link>
+                 <Link href="/guides" className="flex flex-col items-center gap-2 p-2 hover:bg-[#0b1120] rounded-lg transition-colors group">
+                     <div className="w-10 h-10 bg-[#1e293b] rounded-lg flex items-center justify-center group-hover:bg-purple-900 transition-colors">
+                        <BookOpen size={20} className="text-purple-400" />
+                     </div>
+                     <span className="text-[10px] font-bold text-gray-400">Rehberler</span>
+                 </Link>
+                 <Link href="/forum" className="flex flex-col items-center gap-2 p-2 hover:bg-[#0b1120] rounded-lg transition-colors group">
+                     <div className="w-10 h-10 bg-[#1e293b] rounded-lg flex items-center justify-center group-hover:bg-green-900 transition-colors">
+                        <MessageCircle size={20} className="text-green-400" />
+                     </div>
+                     <span className="text-[10px] font-bold text-gray-400">Forum</span>
+                 </Link>
+             </div>
           </div>
           
         </aside>
