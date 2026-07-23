@@ -1,6 +1,5 @@
 import { Crown, Star, Sparkles, CheckCircle2, ShieldAlert } from 'lucide-react';
 import Link from 'next/link';
-import HabboAvatar from '@/components/HabboAvatar';
 
 export const metadata = {
   title: 'VIP Kulübü | HabboZone',
@@ -12,8 +11,9 @@ export default function VIPPage() {
     {
       name: 'Altın VIP',
       price: '₺50 / Ay',
-      color: 'from-yellow-400 to-amber-600',
-      icon: <Star size={32} className="text-yellow-200" />,
+      headerClass: 'orange',
+      bgClass: 'from-orange-50 to-yellow-100',
+      icon: <Star size={32} className="text-orange-500" />,
       features: [
         'Profilde "Altın VIP" Rozeti',
         'Sarı renkli özel nick',
@@ -25,8 +25,9 @@ export default function VIPPage() {
     {
       name: 'Elmas VIP',
       price: '₺100 / Ay',
-      color: 'from-cyan-400 to-blue-600',
-      icon: <Crown size={32} className="text-cyan-100" />,
+      headerClass: 'blue',
+      bgClass: 'from-blue-50 to-cyan-100',
+      icon: <Crown size={32} className="text-blue-500" />,
       popular: true,
       features: [
         'Profilde "Elmas VIP" hareketli rozet',
@@ -41,8 +42,9 @@ export default function VIPPage() {
     {
       name: 'Efsanevi VIP',
       price: '₺250 / Sınırsız',
-      color: 'from-purple-500 to-pink-600',
-      icon: <Sparkles size={32} className="text-pink-200" />,
+      headerClass: 'dark',
+      bgClass: 'from-purple-50 to-pink-100',
+      icon: <Sparkles size={32} className="text-purple-600" />,
       features: [
         'Profilde "Efsanevi VIP" hareketli ve kalıcı rozet',
         'İstediğiniz renk özel nick',
@@ -56,83 +58,82 @@ export default function VIPPage() {
   ];
 
   return (
-    <div className="max-w-6xl mx-auto space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-20">
+    <div className="max-w-6xl mx-auto space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-20 py-6">
       
       {/* Hero Section */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-yellow-900/40 via-amber-900/40 to-yellow-900/40 border border-yellow-500/30 p-8 md:p-16 text-center">
-        <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
-          <Crown size={300} className="text-yellow-500" />
-        </div>
-        <div className="absolute top-0 left-0 p-8 opacity-10 pointer-events-none">
-          <Crown size={300} className="text-yellow-500" />
+      <div className="habbo-box bg-white overflow-hidden relative text-center">
+        <div className="habbo-box-header orange">
+          HabboZone Destekçileri
         </div>
         
-        <div className="relative z-10 max-w-3xl mx-auto space-y-6">
-          <div className="w-20 h-20 bg-gradient-to-br from-yellow-400 to-amber-600 rounded-full flex items-center justify-center mx-auto shadow-[0_0_50px_rgba(251,191,36,0.5)] border-4 border-yellow-200">
-            <Crown size={40} className="text-white drop-shadow-md" />
-          </div>
-          
-          <h1 className="text-4xl md:text-6xl font-black uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-yellow-400 to-amber-500 drop-shadow-sm">
-            VIP KULÜBÜ
-          </h1>
-          
-          <p className="text-lg md:text-xl text-yellow-100/80 font-medium">
-            HabboZone'u destekleyerek hem sitemizin büyümesine katkıda bulunun hem de birbirinden eşsiz ayrıcalıkların tadını çıkarın.
-          </p>
+        <div className="p-8 md:p-12 bg-gradient-to-r from-orange-50 to-yellow-100 flex flex-col items-center">
+            <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
+                <Crown size={150} className="text-orange-600" />
+            </div>
+            
+            <div className="relative z-10 max-w-3xl mx-auto space-y-4">
+                <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto shadow-inner border-2 border-orange-200">
+                    <Crown size={32} className="text-orange-500 drop-shadow-sm" />
+                </div>
+                
+                <h1 className="text-2xl md:text-4xl font-black uppercase tracking-widest text-gray-800 drop-shadow-sm">
+                    VIP KULÜBÜ
+                </h1>
+                
+                <p className="text-sm text-gray-600 font-medium max-w-lg mx-auto">
+                    HabboZone'u destekleyerek hem sitemizin büyümesine katkıda bulunun hem de birbirinden eşsiz ayrıcalıkların tadını çıkarın.
+                </p>
+            </div>
         </div>
       </div>
 
       {/* Packages */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {vipPackages.map((pkg, index) => (
           <div 
             key={index} 
-            className={`relative rounded-3xl overflow-hidden border ${
-              pkg.popular 
-                ? 'border-cyan-400/50 shadow-[0_0_30px_rgba(34,211,238,0.15)] -translate-y-2' 
-                : 'border-white/10 hover:border-white/20'
-            } bg-black/40 transition-all duration-500`}
+            className={`habbo-box bg-white relative transition-transform duration-300 ${pkg.popular ? 'lg:-translate-y-2 lg:scale-105 shadow-md' : ''}`}
           >
             {pkg.popular && (
-              <div className="absolute top-0 left-0 w-full bg-gradient-to-r from-cyan-400 to-blue-500 py-1.5 text-center text-xs font-black uppercase tracking-widest text-white z-10 shadow-md">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-yellow-400 text-yellow-900 px-3 py-0.5 rounded text-[9px] font-black uppercase tracking-widest shadow-sm border border-yellow-500 z-20 whitespace-nowrap">
                 En Çok Tercih Edilen
               </div>
             )}
-            
-            <div className={`pt-12 pb-8 px-8 bg-gradient-to-br ${pkg.color} bg-opacity-10 relative overflow-hidden`}>
-              <div className="absolute top-0 right-0 opacity-20 -mr-4 -mt-4 transform rotate-12">
-                {pkg.icon}
-              </div>
-              <div className="relative z-10">
-                <h3 className="text-3xl font-black uppercase tracking-wider text-white drop-shadow-md">{pkg.name}</h3>
-                <div className="mt-4 text-3xl font-bold text-white/90">{pkg.price}</div>
-              </div>
+
+            <div className={`habbo-box-header ${pkg.headerClass} relative z-10`}>
+              {pkg.name}
             </div>
             
-            <div className="p-8 space-y-6 bg-black/20">
-              <ul className="space-y-4">
-                {pkg.features.map((feature, idx) => (
-                  <li key={idx} className="flex items-start gap-3 text-sm font-medium text-white/70">
-                    <CheckCircle2 size={20} className={`shrink-0 ${
-                      pkg.popular ? 'text-cyan-400' : 'text-primary'
-                    }`} />
-                    <span>{feature}</span>
-                  </li>
-                ))}
-              </ul>
+            <div className="p-0 bg-gray-50 flex flex-col h-full">
+              <div className={`p-6 bg-gradient-to-br ${pkg.bgClass} flex flex-col items-center text-center border-b border-gray-200 relative overflow-hidden`}>
+                <div className="absolute top-2 right-2 opacity-20">
+                  {pkg.icon}
+                </div>
+                <div className="text-2xl font-black text-gray-800 drop-shadow-sm relative z-10 mb-1">{pkg.price}</div>
+                <div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest relative z-10">Abonelik Bedeli</div>
+              </div>
               
-              <div className="pt-6 border-t border-white/5">
-                <Link 
-                  href="https://discord.gg/habbozone" 
-                  target="_blank"
-                  className={`block w-full py-4 rounded-xl text-center font-black uppercase tracking-widest transition-all ${
-                    pkg.popular
-                      ? 'bg-gradient-to-r from-cyan-400 to-blue-600 text-white hover:shadow-[0_0_20px_rgba(34,211,238,0.4)] hover:scale-105'
-                      : 'bg-white/10 text-white hover:bg-white/20'
-                  }`}
-                >
-                  Satın Al
-                </Link>
+              <div className="p-6 space-y-4 flex-1 flex flex-col">
+                <ul className="space-y-3 flex-1">
+                  {pkg.features.map((feature, idx) => (
+                    <li key={idx} className="flex items-start gap-2 text-xs font-bold text-gray-600">
+                      <CheckCircle2 size={16} className={`shrink-0 ${
+                        pkg.popular ? 'text-blue-500' : 'text-green-500'
+                      }`} />
+                      <span className="leading-tight">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+                
+                <div className="pt-4 border-t border-gray-200 mt-auto">
+                  <Link 
+                    href="https://discord.gg/habbozone" 
+                    target="_blank"
+                    className={`habbo-button ${pkg.popular ? 'blue' : 'green'} w-full flex items-center justify-center py-2 text-xs`}
+                  >
+                    Satın Al
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
@@ -140,15 +141,20 @@ export default function VIPPage() {
       </div>
 
       {/* Info Section */}
-      <div className="bg-blue-950/30 border border-blue-500/20 rounded-2xl p-8 flex flex-col md:flex-row items-center gap-8">
-        <div className="p-4 bg-blue-500/20 rounded-full text-blue-400 shrink-0">
-          <ShieldAlert size={40} />
+      <div className="habbo-box bg-white">
+        <div className="habbo-box-header dark flex items-center gap-2">
+            <ShieldAlert size={16} /> Önemli Bilgilendirme
         </div>
-        <div className="space-y-2">
-          <h3 className="text-xl font-bold text-blue-300">Önemli Bilgilendirme</h3>
-          <p className="text-blue-200/70 text-sm leading-relaxed">
-            VIP paketleri aylık olarak yenilenir (Efsanevi VIP hariç). Satın alma işlemleri ve ödeme yöntemleri için Discord sunucumuzdaki <strong>#vip-destek</strong> kanalından veya site yöneticilerinden bizzat destek alabilirsiniz. Toplanan tüm gelirler HabboZone sunucu masrafları ve ödüllü etkinlikler için kullanılmaktadır.
-          </p>
+        <div className="p-6 bg-blue-50 flex flex-col md:flex-row items-center gap-6">
+            <div className="p-4 bg-white rounded border border-blue-200 text-blue-500 shadow-inner shrink-0">
+                <ShieldAlert size={32} />
+            </div>
+            <div className="space-y-2 text-center md:text-left">
+                <h3 className="text-sm font-black text-gray-800 uppercase tracking-widest">Nasıl Satın Alınır?</h3>
+                <p className="text-xs text-gray-600 font-medium leading-relaxed">
+                    VIP paketleri aylık olarak yenilenir (Efsanevi VIP hariç). Satın alma işlemleri ve ödeme yöntemleri için Discord sunucumuzdaki <strong className="text-gray-800">#vip-destek</strong> kanalından veya site yöneticilerinden bizzat destek alabilirsiniz. Toplanan tüm gelirler HabboZone sunucu masrafları ve ödüllü etkinlikler için kullanılmaktadır.
+                </p>
+            </div>
         </div>
       </div>
       

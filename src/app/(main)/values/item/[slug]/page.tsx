@@ -6,14 +6,15 @@ import ItemPriceChart from '@/components/values/ItemPriceChart';
 
 export const revalidate = 60;
 
-export default async function ValuesItemPage({ params }: { params: { slug: string } }) {
+export default async function ValuesItemPage({ params }: { params: Promise<{ slug: string }> }) {
+  const resolvedParams = await params;
   const supabase = await createClient();
 
   // 1. Fetch item
   const { data: item } = await supabase
     .from('habbo_items')
     .select('*, habbo_item_categories(name, slug)')
-    .eq('slug', params.slug)
+    .eq('slug', resolvedParams.slug)
     .single();
 
   if (!item) {
@@ -34,98 +35,105 @@ export default async function ValuesItemPage({ params }: { params: { slug: strin
   })) || [];
 
   return (
-    <div className="max-w-6xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-20">
+    <div className="max-w-6xl mx-auto space-y-6 pb-20 animate-in fade-in slide-in-from-bottom-4 duration-700 py-6">
       
       {/* Breadcrumb / Back */}
-      <Link href={`/values/${item.habbo_item_categories.slug}`} className="inline-flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors">
-        <ArrowLeft size={16} /> {item.habbo_item_categories.name} Kategorisine Dön
+      <Link href={`/values/${item.habbo_item_categories.slug}`} className="inline-flex items-center gap-2 text-xs font-bold text-gray-500 hover:text-primary transition-colors bg-white px-3 py-1.5 rounded shadow-sm border border-gray-200">
+        <ArrowLeft size={14} /> {item.habbo_item_categories.name} Kategorisine Dön
       </Link>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         {/* Sol Kolon: Eşya Detayları */}
         <div className="lg:col-span-1 space-y-6">
-          <div className="bg-white/5 border border-white/10 rounded-3xl p-8 flex flex-col items-center text-center shadow-2xl relative overflow-hidden">
-            <div className="absolute top-0 inset-x-0 h-32 bg-gradient-to-b from-primary/20 to-transparent -z-10" />
+          <div className="habbo-box bg-white overflow-hidden relative text-center">
+            <div className="habbo-box-header green">Eşya Detayları</div>
             
-            <div className="h-40 w-40 flex items-center justify-center mb-6 relative z-10">
-              {item.image_url ? (
-                /* eslint-disable-next-line @next/next/no-img-element */
-                <img src={item.image_url} alt={item.name} className="max-h-full max-w-full object-contain filter drop-shadow-2xl scale-125" />
-              ) : (
-                <Diamond size={64} className="text-white/20" />
-              )}
-            </div>
+            <div className="p-6 bg-gradient-to-b from-green-50 to-white flex flex-col items-center">
+                <div className="h-32 w-32 flex items-center justify-center mb-6 relative z-10 bg-white border border-gray-200 rounded-full shadow-inner">
+                {item.image_url ? (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img src={item.image_url} alt={item.name} className="max-h-full max-w-full object-contain filter drop-shadow-md scale-110" />
+                ) : (
+                    <Diamond size={48} className="text-gray-300" />
+                )}
+                </div>
 
-            <h1 className="text-3xl font-black uppercase tracking-widest mb-2">{item.name}</h1>
-            
-            <div className="flex items-center gap-2 mb-6">
-              <span className="px-3 py-1 bg-white/10 rounded-full text-xs font-bold uppercase tracking-wider text-white/70">
-                {item.habbo_item_categories.name}
-              </span>
-              {item.is_ltd && (
-                <span className="px-3 py-1 bg-yellow-500/20 border border-yellow-500/50 text-yellow-500 rounded-full text-xs font-black uppercase tracking-wider shadow-[0_0_10px_rgba(234,179,8,0.2)]">
-                  LTD {item.ltd_count > 0 && `(${item.ltd_count})`}
+                <h1 className="text-xl md:text-2xl font-black uppercase tracking-widest mb-2 text-gray-800">{item.name}</h1>
+                
+                <div className="flex items-center gap-2 mb-6 justify-center">
+                <span className="px-2 py-0.5 bg-gray-100 border border-gray-200 rounded text-[10px] font-bold uppercase tracking-wider text-gray-600 shadow-sm">
+                    {item.habbo_item_categories.name}
                 </span>
-              )}
-            </div>
+                {item.is_ltd && (
+                    <span className="px-2 py-0.5 bg-yellow-100 border border-yellow-400 text-yellow-800 rounded text-[10px] font-black uppercase tracking-wider shadow-sm">
+                    LTD {item.ltd_count > 0 && `(${item.ltd_count})`}
+                    </span>
+                )}
+                </div>
 
-            <div className="w-full bg-black/40 border border-white/10 rounded-2xl p-6">
-              <div className="text-sm font-bold text-white/50 uppercase tracking-widest mb-2">Güncel Değer</div>
-              <div className="text-4xl font-black text-primary flex justify-center items-center gap-2">
-                {item.current_value} <span className="text-lg text-white/50 uppercase">{item.currency_type}</span>
-              </div>
-            </div>
+                <div className="w-full bg-gray-50 border border-gray-200 rounded p-4 shadow-inner">
+                <div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Güncel Değer</div>
+                <div className="text-2xl font-black text-green-600 flex justify-center items-center gap-2 drop-shadow-sm">
+                    {item.current_value} <span className="text-xs text-gray-500 uppercase">{item.currency_type}</span>
+                </div>
+                </div>
 
-            {item.description && (
-              <p className="mt-6 text-white/60 text-sm leading-relaxed">
-                {item.description}
-              </p>
-            )}
+                {item.description && (
+                <p className="mt-4 text-gray-600 text-xs font-medium leading-relaxed bg-gray-50 p-3 rounded border border-gray-100 w-full text-left">
+                    {item.description}
+                </p>
+                )}
+            </div>
           </div>
         </div>
 
         {/* Sağ Kolon: Fiyat Grafiği ve Geçmiş */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-white/5 border border-white/10 rounded-3xl p-6 md:p-8">
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-2xl font-black uppercase tracking-widest flex items-center gap-3">
-                <History className="text-primary" size={28} />
-                Fiyat Geçmişi
-              </h2>
+          <div className="habbo-box bg-white">
+            <div className="habbo-box-header blue flex items-center gap-2">
+                <History size={16} /> Fiyat Grafiği
             </div>
-            
-            <ItemPriceChart data={chartData} currencyType={item.currency_type} />
+            <div className="p-4 md:p-6 bg-gray-50">
+                <div className="bg-white border border-gray-200 rounded p-4 shadow-sm">
+                    {/* Make sure ItemPriceChart renders well on white background */}
+                    <ItemPriceChart data={chartData} currencyType={item.currency_type} />
+                </div>
+            </div>
           </div>
 
           {/* Güncelleme Kayıtları */}
-          <div className="bg-white/5 border border-white/10 rounded-3xl p-6 md:p-8">
-            <h3 className="text-lg font-bold uppercase tracking-widest mb-6 text-white/80">Son Güncellemeler</h3>
-            <div className="space-y-4">
-              {history && history.length > 0 ? (
-                [...history].reverse().slice(0, 5).map((record, index) => (
-                  <div key={index} className="flex items-center justify-between p-4 bg-black/20 rounded-xl border border-white/5">
-                    <div className="flex items-center gap-4">
-                      <div className="w-2 h-2 rounded-full bg-primary" />
-                      <div>
-                        <div className="font-bold">
-                          {record.value} <span className="text-xs text-white/50">{item.currency_type}</span>
+          <div className="habbo-box bg-white">
+            <div className="habbo-box-header orange">
+                Son Güncellemeler
+            </div>
+            <div className="p-4 bg-gray-50">
+                <div className="space-y-3">
+                {history && history.length > 0 ? (
+                    [...history].reverse().slice(0, 5).map((record, index) => (
+                    <div key={index} className="flex items-center justify-between p-3 bg-white rounded border border-gray-200 shadow-sm">
+                        <div className="flex items-center gap-3">
+                        <div className="w-2 h-2 rounded-full bg-orange-400" />
+                        <div>
+                            <div className="font-bold text-gray-800 text-sm">
+                            {record.value} <span className="text-[10px] text-gray-500 uppercase">{item.currency_type}</span>
+                            </div>
+                            <div className="text-[10px] font-bold text-gray-400">
+                            {new Date(record.created_at).toLocaleString('tr-TR')}
+                            </div>
                         </div>
-                        <div className="text-xs text-white/40">
-                          {new Date(record.created_at).toLocaleString('tr-TR')}
                         </div>
-                      </div>
+                        {record.profiles && (
+                        <div className="text-[10px] font-bold text-gray-500 bg-gray-100 border border-gray-200 px-2 py-1 rounded">
+                            @{(record.profiles as any)?.username}
+                        </div>
+                        )}
                     </div>
-                    {record.profiles && (
-                      <div className="text-xs font-bold text-white/30 bg-white/5 px-2 py-1 rounded">
-                        @{(record.profiles as any)?.username}
-                      </div>
-                    )}
-                  </div>
-                ))
-              ) : (
-                <div className="text-center text-white/40 py-4 text-sm">Geçmiş kaydı bulunamadı.</div>
-              )}
+                    ))
+                ) : (
+                    <div className="text-center text-gray-500 py-4 text-xs font-bold bg-white border border-gray-200 rounded">Geçmiş kaydı bulunamadı.</div>
+                )}
+                </div>
             </div>
           </div>
         </div>

@@ -49,99 +49,113 @@ export default async function SettingsPage() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <div className="max-w-4xl mx-auto space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700 py-6">
       
-      <div className="flex items-center gap-4 border-b border-white/10 pb-6">
-        <div className="p-4 bg-primary/20 rounded-2xl text-primary">
-          <Settings size={32} />
+      <div className="habbo-box bg-white overflow-hidden relative text-center">
+        <div className="habbo-box-header blue">
+          Profil Ayarları
         </div>
-        <div>
-          <h1 className="text-3xl font-black uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-white to-white/60">
-            Profil Ayarları
-          </h1>
-          <p className="text-white/50 font-medium mt-1">
-            Hesap bilgilerinizi ve Habbo karakterinizi buradan yönetebilirsiniz.
-          </p>
+        
+        <div className="p-8 bg-gradient-to-r from-blue-50 to-blue-100 flex flex-col items-center">
+            <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
+                <Settings size={150} className="text-blue-600" />
+            </div>
+            
+            <div className="relative z-10 max-w-2xl space-y-2">
+                <h1 className="text-2xl md:text-3xl font-black uppercase tracking-widest text-gray-800 drop-shadow-sm">
+                    Hesap Bilgilerin
+                </h1>
+                <p className="text-sm text-gray-600 font-medium">
+                    Hesap bilgilerinizi ve Habbo karakterinizi buradan yönetebilirsiniz.
+                </p>
+            </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         
         {/* Sol Sütun: Avatar Önizleme */}
         <div className="md:col-span-1 space-y-6">
-          <div className="bg-black/40 border border-white/10 rounded-2xl p-6 text-center shadow-xl relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-bl-full -z-10" />
-            <h3 className="font-bold uppercase tracking-wider text-white/70 mb-4">Mevcut Karakterin</h3>
-            
-            <div className="h-48 flex items-center justify-center bg-white/5 rounded-xl border border-white/10 mb-4 relative overflow-hidden group">
-              <HabboAvatar 
-                username={profile.habbo_username} 
-                direction={4} 
-                headDirection={4} 
-                size="l"
-                action="wlk"
-                className="w-24 h-48 drop-shadow-2xl group-hover:scale-110 transition-transform duration-500" 
-              />
+          <div className="habbo-box bg-white text-center">
+            <div className="habbo-box-header green">Mevcut Karakterin</div>
+            <div className="p-6 bg-gray-50 flex flex-col items-center">
+                <div className="h-48 w-full flex items-center justify-center bg-white rounded border border-gray-200 mb-4 relative overflow-hidden shadow-inner group">
+                <HabboAvatar 
+                    username={profile.habbo_username || 'Habbo'} 
+                    direction={4} 
+                    headDirection={4} 
+                    size="l"
+                    action="wlk"
+                    className="w-24 h-48 drop-shadow-md group-hover:scale-110 transition-transform duration-500" 
+                />
+                </div>
+                
+                <p className="text-[10px] text-gray-500 font-medium bg-gray-100 p-2 rounded border border-gray-200 shadow-sm leading-tight">
+                Gerçek Habbo.com.tr hesabını bağlayarak karakterini sitede sergileyebilirsin.
+                </p>
             </div>
-            
-            <p className="text-sm text-white/50">
-              Gerçek Habbo.com.tr hesabını bağlayarak karakterini sitede sergileyebilirsin.
-            </p>
           </div>
         </div>
 
         {/* Sağ Sütun: Form */}
         <div className="md:col-span-2">
-          <form action={updateProfile} className="bg-black/40 border border-white/10 rounded-2xl p-6 space-y-6 shadow-xl">
-            
-            <div className="space-y-4">
-              <div>
-                <label className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-white/70 mb-2">
-                  <User size={16} /> Site Kullanıcı Adı
-                </label>
-                <input
-                  type="text"
-                  name="username"
-                  defaultValue={profile.username}
-                  required
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
-                />
-              </div>
+          <div className="habbo-box bg-white">
+            <div className="habbo-box-header dark">Profili Düzenle</div>
+            <div className="p-6 md:p-8 bg-gray-50">
+                <form action={updateProfile} className="space-y-5">
+                    
+                    <div className="space-y-4">
+                    <div>
+                        <label className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-gray-500 mb-1.5">
+                        <User size={14} className="text-blue-500" /> Site Kullanıcı Adı
+                        </label>
+                        <input
+                        type="text"
+                        name="username"
+                        defaultValue={profile.username}
+                        required
+                        className="w-full bg-white border border-gray-300 rounded px-3 py-2.5 text-gray-800 text-sm font-bold shadow-inner focus:outline-none focus:border-blue-500 transition-colors"
+                        />
+                    </div>
 
-              <div>
-                <label className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-white/70 mb-2">
-                  <HabboAvatar username="Habbo" size="m" className="w-4 h-4 overflow-hidden" /> Habbo Kullanıcı Adı
-                </label>
-                <input
-                  type="text"
-                  name="habbo_username"
-                  defaultValue={profile.habbo_username || ''}
-                  placeholder="Gerçek Habbo adın..."
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
-                />
-              </div>
+                    <div>
+                        <label className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-gray-500 mb-1.5">
+                        <HabboAvatar username="Habbo" size="m" className="w-4 h-4 overflow-hidden -mt-2" /> Habbo Kullanıcı Adı
+                        </label>
+                        <input
+                        type="text"
+                        name="habbo_username"
+                        defaultValue={profile.habbo_username || ''}
+                        placeholder="Gerçek Habbo adın..."
+                        className="w-full bg-white border border-gray-300 rounded px-3 py-2.5 text-gray-800 text-sm font-bold shadow-inner focus:outline-none focus:border-blue-500 transition-colors"
+                        />
+                    </div>
 
-              <div>
-                <label className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-white/70 mb-2">
-                  <MessageSquare size={16} /> Motto (Söz)
-                </label>
-                <input
-                  type="text"
-                  name="motto"
-                  defaultValue={profile.motto || ''}
-                  placeholder="Kısa bir biyografi veya motto..."
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
-                />
-              </div>
+                    <div>
+                        <label className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-gray-500 mb-1.5">
+                        <MessageSquare size={14} className="text-green-500" /> Motto (Söz)
+                        </label>
+                        <input
+                        type="text"
+                        name="motto"
+                        defaultValue={profile.motto || ''}
+                        placeholder="Kısa bir biyografi veya motto..."
+                        className="w-full bg-white border border-gray-300 rounded px-3 py-2.5 text-gray-800 text-sm font-bold shadow-inner focus:outline-none focus:border-blue-500 transition-colors"
+                        />
+                    </div>
+                    </div>
+
+                    <div className="pt-2">
+                        <button 
+                        type="submit"
+                        className="habbo-button green w-full flex items-center justify-center gap-2 py-3"
+                        >
+                        <Save size={16} /> Değişiklikleri Kaydet
+                        </button>
+                    </div>
+                </form>
             </div>
-
-            <button 
-              type="submit"
-              className="w-full flex items-center justify-center gap-2 bg-primary text-black font-black uppercase tracking-widest py-4 rounded-xl hover:bg-primary/90 transition-all hover:scale-[1.02] active:scale-95 shadow-xl shadow-primary/20"
-            >
-              <Save size={20} /> Değişiklikleri Kaydet
-            </button>
-          </form>
+          </div>
         </div>
 
       </div>
