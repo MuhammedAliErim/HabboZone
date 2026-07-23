@@ -47,8 +47,7 @@ export default function RegisterPage() {
         }
     }
 
-    router.push('/');
-    router.refresh();
+    window.location.href = '/';
   };
 
   return (

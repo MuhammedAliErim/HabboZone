@@ -12,7 +12,11 @@ export default async function Header() {
   let profile = null;
   if (user) {
     const { data } = await supabase.from('profiles').select('*').eq('id', user.id).single();
-    profile = data;
+    profile = data || {
+      username: user.user_metadata?.username || user.email?.split('@')[0] || 'Kullanıcı',
+      habbo_username: user.user_metadata?.habbo_username || '',
+      role: 'Member'
+    };
   }
 
   // Active state mocking
