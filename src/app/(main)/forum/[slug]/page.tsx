@@ -1,169 +1,158 @@
 import { createClient } from '@/utils/supabase/server';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { ArrowLeft, PlusCircle, MessageCircle, Eye, Pin, Lock, CheckCircle } from 'lucide-react';
+import Link from 'next/link';
+import { ChevronLeft, Clock, MessageSquare, ShieldAlert } from 'lucide-react';
+import HabboAvatar from '@/components/HabboAvatar';
+import ReplyForm from '@/components/forum/ReplyForm';
+import { formatDistanceToNow, format } from 'date-fns';
+import { tr } from 'date-fns/locale';
 
-export const revalidate = 0; // Disable caching
+export const dynamic = 'force-dynamic';
 
-export default async function SubForumPage({ params }: { params: Promise<{ slug: string }> }) {
-  const resolvedParams = await params;
-  const supabase = await createClient();
+export default async function TopicDetailPage({ params }: { params: { slug: string } }) {
+    const supabase = await createClient();
 
-  // Fetch forum details
-  const { data: forum, error: forumError } = await supabase
-    .from('forums')
-    .select(`
-      id,
-      title,
-      description,
-      icon,
-      category_id,
-      categories ( name )
-    `)
-    .eq('slug', resolvedParams.slug)
-    .single();
+    const { data: { user } } = await supabase.auth.getUser();
 
-  if (forumError || !forum) {
-    notFound();
-  }
+    // Fetch the topic
+    const { data: topic, error } = await supabase
+        .from('topics')
+        .select(`
+            id, title, slug, content, created_at, updated_at, is_pinned, is_locked,
+            author:profiles!topics_author_id_fkey(id, username, habbo_username, created_at, rank),
+            forum:forums(title, slug, category:categories(name))
+        `)
+        .eq('slug', params.slug)
+        .single();
 
-  // Fetch topics in this forum
-  const { data: topics, error: topicsError } = await supabase
-    .from('topics')
-    .select(`
-      id,
-      title,
-      slug,
-      is_pinned,
-      is_locked,
-      is_solved,
-      views,
-      created_at,
-      author:profiles!topics_author_id_fkey(username, habbo_username),
-      replies(count)
-    `)
-    .eq('forum_id', forum.id)
-    .order('is_pinned', { ascending: false }) // Pinned first
-    .order('created_at', { ascending: false });
+    if (error || !topic) {
+        notFound();
+    }
 
-  return (
-    <div className="max-w-6xl mx-auto space-y-6 pb-20 animate-in fade-in slide-in-from-bottom-4 duration-700 py-6">
-      
-      {/* Üst Navigasyon & Başlık */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
-        <div className="space-y-4">
-          <Link href="/forum" className="inline-flex items-center gap-2 text-xs font-bold text-gray-500 hover:text-primary transition-colors bg-white px-3 py-1.5 rounded shadow-sm border border-gray-200">
-            <ArrowLeft size={14} /> Foruma Dön
-          </Link>
-          
-          <div className="flex items-center gap-4 bg-white p-4 rounded border border-gray-200 shadow-sm">
-            <div className="w-16 h-16 bg-gray-100 border border-gray-200 rounded flex items-center justify-center text-3xl">
-              {forum.icon || '💬'}
-            </div>
-            <div>
-              <div className="text-[10px] font-bold text-gray-400 tracking-widest uppercase mb-1">
-                {(forum.categories as any)?.name}
-              </div>
-              <h1 className="text-2xl md:text-3xl font-black uppercase tracking-widest text-gray-800">
-                {forum.title}
-              </h1>
-              <p className="text-gray-500 text-sm mt-1">
-                {forum.description}
-              </p>
-            </div>
-          </div>
-        </div>
+    // Fetch the replies
+    const { data: replies } = await supabase
+        .from('replies')
+        .select(`
+            id, content, created_at, updated_at,
+            author:profiles!replies_author_id_fkey(id, username, habbo_username, created_at, rank)
+        `)
+        .eq('topic_id', topic.id)
+        .order('created_at', { ascending: true });
 
-        <Link 
-          href={`/forum/new?forum_id=${forum.id}`}
-          className="habbo-button green text-sm flex items-center gap-2"
-        >
-          <PlusCircle size={16} /> Yeni Konu Aç
-        </Link>
-      </div>
+    const formatTime = (dateStr: string) => {
+        return formatDistanceToNow(new Date(dateStr), { addSuffix: true, locale: tr });
+    };
 
-      {/* Konular Listesi */}
-      <div className="habbo-box">
-        
-        {/* Tablo Başlıkları */}
-        <div className="habbo-box-header blue hidden md:flex text-[10px]">
-          <div className="flex-[3]">Konu Başlığı</div>
-          <div className="flex-1 text-center">İstatistikler</div>
-          <div className="flex-1 text-right">Son Mesaj</div>
-        </div>
+    const formatExactTime = (dateStr: string) => {
+        return format(new Date(dateStr), 'dd MMM yyyy, HH:mm', { locale: tr });
+    };
 
-        {/* Liste */}
-        <div className="bg-white">
-            {topicsError ? (
-            <div className="p-8 text-center text-red-500 text-sm font-bold bg-red-50">Konular yüklenirken hata oluştu.</div>
-            ) : topics?.length === 0 ? (
-            <div className="p-16 text-center text-gray-500 flex flex-col items-center bg-gray-50">
-                <MessageCircle size={48} className="mb-4 text-gray-300" />
-                <p className="text-sm font-bold">Bu forumda henüz hiç konu açılmamış.</p>
-                <p className="text-xs mt-2">İlk konuyu sen açmak ister misin?</p>
-            </div>
-            ) : (
-            <div className="divide-y divide-gray-200">
-                {topics?.map((topic: any) => (
-                <Link 
-                    key={topic.id}
-                    href={`/forum/topic/${topic.slug}`}
-                    className={`flex flex-col md:flex-row items-start md:items-center p-3 hover:bg-gray-50 transition-colors group ${topic.is_pinned ? 'bg-orange-50/50' : ''}`}
-                >
-                    {/* Sol: İkon & Başlık */}
-                    <div className="flex-[3] flex items-center gap-3 w-full">
-                    <div className="flex-shrink-0">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <div className="w-12 h-12 rounded bg-gray-100 border border-gray-200 overflow-hidden flex items-center justify-center">
-                            <img 
-                            src={`https://www.habbo.com.tr/habbo-imaging/avatarimage?user=${(topic.author as any)?.habbo_username || 'Admin'}&direction=2&head_direction=2&gesture=sml&size=m`}
-                            alt={(topic.author as any)?.username}
-                            className="w-16 h-16 -mt-2"
-                            />
-                        </div>
-                    </div>
-                    <div className="min-w-0">
-                        <h3 className="text-sm font-bold text-gray-800 group-hover:text-primary transition-colors line-clamp-1 flex items-center gap-2">
-                        {topic.is_pinned && <Pin size={14} className="text-orange-500" />}
-                        {topic.is_locked && <Lock size={14} className="text-red-500" />}
-                        {topic.title}
-                        {topic.is_solved && (
-                            <span className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-green-100 text-green-700 text-[9px] rounded uppercase tracking-wider ml-2 border border-green-200">
-                            <CheckCircle size={8} /> Çözüldü
-                            </span>
-                        )}
-                        </h3>
-                        <div className="text-[10px] text-gray-500 mt-1 flex items-center gap-2">
-                        <span className="font-bold text-gray-700">{(topic.author as any)?.username}</span>
-                        <span>•</span>
-                        <span>{new Date(topic.created_at).toLocaleDateString('tr-TR')}</span>
-                        </div>
-                    </div>
-                    </div>
-
-                    {/* Orta: İstatistikler */}
-                    <div className="flex-1 flex justify-center gap-4 mt-3 md:mt-0 w-full md:w-auto text-xs text-gray-500">
-                    <div className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded border border-gray-200" title="Cevaplar">
-                        <MessageCircle size={12} /> <span className="font-bold text-gray-700">{(topic.replies as any)?.[0]?.count || 0}</span>
-                    </div>
-                    <div className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded border border-gray-200" title="Görüntülenme">
-                        <Eye size={12} /> <span className="font-bold text-gray-700">{topic.views || 0}</span>
-                    </div>
-                    </div>
-
-                    {/* Sağ: Son Mesaj (Şu an statik, gerçekte reply'lardan çekilmeli) */}
-                    <div className="flex-1 mt-3 md:mt-0 w-full md:w-auto text-[10px] md:text-right">
-                    <div className="text-gray-400 bg-gray-50 p-2 rounded border border-gray-100 text-center md:text-right inline-block">
-                        Henüz cevap yok
-                    </div>
-                    </div>
-                </Link>
-                ))}
-            </div>
+    const PostCard = ({ content, author, createdAt, isTopic = false }: { content: string, author: any, createdAt: string, isTopic?: boolean }) => (
+        <div className={`habbo-box overflow-hidden mb-6 ${isTopic ? 'border-[#3b82f6]/30 shadow-[0_0_20px_rgba(59,130,246,0.05)]' : ''}`}>
+            {isTopic && (
+                <div className="bg-[#3b82f6]/10 border-b border-[#3b82f6]/20 px-6 py-2 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-[#3b82f6]"></span>
+                    <span className="text-[#3b82f6] text-[10px] font-bold tracking-widest uppercase">İlk Gönderi</span>
+                </div>
             )}
-        </div>
-      </div>
+            <div className="flex flex-col md:flex-row">
+                
+                {/* Author Column */}
+                <div className="w-full md:w-[200px] bg-[#0a1325] p-6 flex flex-col items-center border-b md:border-b-0 md:border-r border-[#1e293b] shrink-0">
+                    <div className="w-20 h-20 rounded bg-[#1e293b] flex items-center justify-center relative mb-4">
+                        <HabboAvatar username={author?.habbo_username || author?.username} size="l" direction={3} className="w-16 h-16" />
+                    </div>
+                    <Link href={`/profile/${author?.username}`} className="text-white font-bold text-[14px] text-center w-full truncate hover:text-[#3b82f6] transition-colors">
+                        {author?.username}
+                    </Link>
+                    <div className="text-[10px] text-[#64748b] font-medium uppercase mt-1 mb-4 bg-[#1e293b] px-2 py-0.5 rounded">
+                        {author?.rank || 'Kullanıcı'}
+                    </div>
+                    <div className="w-full space-y-2">
+                        <div className="flex justify-between text-[11px]">
+                            <span className="text-[#64748b]">Kayıt:</span>
+                            <span className="text-[#94a3b8]">{author?.created_at ? format(new Date(author.created_at), 'MMM yyyy', { locale: tr }) : '-'}</span>
+                        </div>
+                    </div>
+                </div>
 
-    </div>
-  );
+                {/* Content Column */}
+                <div className="flex-1 flex flex-col">
+                    <div className="p-4 border-b border-[#1e293b] flex items-center justify-between">
+                        <div className="flex items-center gap-2 text-[#64748b] text-[11px]">
+                            <Clock size={12} />
+                            <span>{formatExactTime(createdAt)}</span>
+                            <span className="hidden sm:inline">({formatTime(createdAt)})</span>
+                        </div>
+                    </div>
+                    <div className="p-6 text-[#cbd5e1] text-[14px] leading-relaxed whitespace-pre-wrap flex-1 break-words">
+                        {content}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+
+    return (
+        <div className="max-w-[1000px] mx-auto px-6 pb-16 animate-in fade-in duration-500 pt-8">
+            
+            {/* Breadcrumb & Navigation */}
+            <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+                <div className="flex items-center gap-2 text-[12px] font-bold">
+                    <Link href="/forum" className="text-[#64748b] hover:text-white transition-colors">FORUM</Link>
+                    <ChevronLeft size={14} className="text-[#475569] rotate-180" />
+                    <Link href={`/forum/category/${Array.isArray(topic.forum) ? topic.forum[0]?.slug : (topic.forum as any)?.slug}`} className="text-[#64748b] hover:text-white transition-colors uppercase">{Array.isArray(topic.forum) ? topic.forum[0]?.title : (topic.forum as any)?.title}</Link>
+                </div>
+                <Link href="/forum" className="inline-flex items-center gap-2 text-[#94a3b8] hover:text-white font-bold text-[11px] transition-colors border border-[#1e293b] px-3 py-1.5 rounded hover:bg-[#1e293b]">
+                    <ChevronLeft size={14} />
+                    GERİ DÖN
+                </Link>
+            </div>
+
+            {/* Topic Header */}
+            <div className="mb-8">
+                <h1 className="text-2xl md:text-3xl font-black text-white tracking-tight mb-2 flex items-center gap-3">
+                    {topic.is_locked && <ShieldAlert className="text-[#ef4444]" size={24} />}
+                    {topic.title}
+                </h1>
+                <div className="flex flex-wrap items-center gap-4 text-[12px] text-[#64748b]">
+                    <span className="flex items-center gap-1">
+                        <MessageSquare size={14} /> {replies?.length || 0} Cevap
+                    </span>
+                </div>
+            </div>
+
+            {/* Original Topic Post */}
+            <PostCard 
+                content={topic.content} 
+                author={topic.author} 
+                createdAt={topic.created_at} 
+                isTopic={true}
+            />
+
+            {/* Replies */}
+            {replies?.map((reply: any) => (
+                <PostCard 
+                    key={reply.id} 
+                    content={reply.content} 
+                    author={reply.author} 
+                    createdAt={reply.created_at} 
+                />
+            ))}
+
+            {/* Reply Form */}
+            <div className="mt-8">
+                {topic.is_locked ? (
+                    <div className="bg-[#ef4444]/10 border border-[#ef4444]/20 rounded p-6 text-center">
+                        <ShieldAlert size={32} className="text-[#ef4444] mx-auto mb-2" />
+                        <h3 className="text-white font-bold mb-1">Bu konu kilitli</h3>
+                        <p className="text-[#ef4444] text-[13px]">Bu konuya yeni cevap yazılamaz.</p>
+                    </div>
+                ) : (
+                    <ReplyForm topicId={topic.id} topicSlug={topic.slug} user={user} />
+                )}
+            </div>
+
+        </div>
+    );
 }
