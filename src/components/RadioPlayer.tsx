@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Play, Pause, Volume2, VolumeX, Music, MessageCircle, Send } from 'lucide-react';
+import { Play, Pause, Volume2, VolumeX, Music, MessageCircle, Send, RadioReceiver } from 'lucide-react';
 import { createClient } from '@/utils/supabase/client';
 
 export default function RadioPlayer() {
@@ -76,54 +76,77 @@ export default function RadioPlayer() {
       
       {/* Request Form Popup */}
       {showRequestForm && (
-        <div className="bg-white border-2 border-black rounded-lg shadow-[4px_4px_0_rgba(0,0,0,0.2)] p-4 w-72 pointer-events-auto transform transition-all">
-          <div className="flex justify-between items-center mb-3 border-b-2 border-gray-200 pb-2">
-            <h3 className="font-bold text-sm uppercase text-primary">Radyo İstek Hattı</h3>
-            <button onClick={() => setShowRequestForm(false)} className="text-gray-500 hover:text-red-500 font-bold">X</button>
+        <div className="habbo-box w-72 pointer-events-auto shadow-[4px_4px_0_rgba(0,0,0,0.2)] animate-in slide-in-from-bottom-2 fade-in duration-200">
+          <div className="habbo-box-header dark flex justify-between items-center py-2">
+            <span className="flex items-center gap-1"><MessageCircle size={14} /> Radyo İstek Hattı</span>
+            <button onClick={() => setShowRequestForm(false)} className="text-gray-400 hover:text-white font-bold bg-black/30 hover:bg-red-500 rounded px-1.5 transition-colors">X</button>
           </div>
           
-          {requestStatus === 'success' ? (
-            <div className="bg-green-100 text-green-800 p-3 rounded text-sm text-center font-bold">
-              İsteğin DJ'e ulaştı! 🎉
-            </div>
-          ) : (
-            <form onSubmit={handleRequestSubmit} className="space-y-3">
-              <input type="text" placeholder="Adınız (İsteğe bağlı)" value={requestName} onChange={e => setRequestName(e.target.value)} className="w-full bg-gray-100 border border-gray-300 rounded px-2 py-1.5 text-xs text-black outline-none focus:border-primary" />
-              <input type="text" placeholder="İstediğin Şarkı" required value={requestSong} onChange={e => setRequestSong(e.target.value)} className="w-full bg-gray-100 border border-gray-300 rounded px-2 py-1.5 text-xs text-black outline-none focus:border-primary" />
-              <textarea placeholder="DJ'e Mesajın..." required rows={2} value={requestMessage} onChange={e => setRequestMessage(e.target.value)} className="w-full bg-gray-100 border border-gray-300 rounded px-2 py-1.5 text-xs text-black outline-none focus:border-primary resize-none"></textarea>
-              <button disabled={requestStatus === 'loading'} type="submit" className="habbo-button blue w-full text-xs py-1.5 flex justify-center items-center gap-1">
-                {requestStatus === 'loading' ? 'Gönderiliyor...' : <><Send size={12}/> Gönder</>}
-              </button>
-            </form>
-          )}
+          <div className="p-4 bg-gray-50 border-t-2 border-white">
+              {requestStatus === 'success' ? (
+                <div className="bg-green-100 text-green-800 p-4 border border-green-300 rounded text-sm text-center font-bold shadow-inner">
+                  İsteğin DJ'e ulaştı! 🎉
+                </div>
+              ) : (
+                <form onSubmit={handleRequestSubmit} className="space-y-3">
+                  <div>
+                    <label className="text-[10px] font-black uppercase text-gray-500 mb-1 block">Adınız (İsteğe Bağlı)</label>
+                    <input type="text" value={requestName} onChange={e => setRequestName(e.target.value)} className="w-full bg-white border-2 border-gray-300 rounded px-2 py-1.5 text-xs text-black outline-none focus:border-blue-500 shadow-inner" />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-black uppercase text-gray-500 mb-1 block">İstediğiniz Şarkı</label>
+                    <input type="text" required value={requestSong} onChange={e => setRequestSong(e.target.value)} className="w-full bg-white border-2 border-gray-300 rounded px-2 py-1.5 text-xs text-black outline-none focus:border-blue-500 shadow-inner" />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-black uppercase text-gray-500 mb-1 block">Mesajınız</label>
+                    <textarea required rows={2} value={requestMessage} onChange={e => setRequestMessage(e.target.value)} className="w-full bg-white border-2 border-gray-300 rounded px-2 py-1.5 text-xs text-black outline-none focus:border-blue-500 shadow-inner resize-none"></textarea>
+                  </div>
+                  <button disabled={requestStatus === 'loading'} type="submit" className="habbo-button blue w-full text-xs py-2 flex justify-center items-center gap-1 shadow-md">
+                    {requestStatus === 'loading' ? 'Gönderiliyor...' : <><Send size={12}/> Gönder</>}
+                  </button>
+                </form>
+              )}
+          </div>
         </div>
       )}
 
       {/* Main Player Widget */}
-      <div className="habbo-box w-72 pointer-events-auto shadow-2xl flex flex-col">
-        <div className="habbo-box-header orange flex items-center justify-between text-xs py-1.5">
-          <div className="flex items-center gap-1">
-            <Music size={14} className={isPlaying ? "animate-pulse" : ""} />
-            HabboZone Radyo
-          </div>
-          <div className="flex items-center gap-1 text-[10px] bg-black/20 px-1.5 py-0.5 rounded">
-            <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span>
-            YAYINDA
-          </div>
+      <div className="habbo-box w-72 pointer-events-auto shadow-2xl flex flex-col group">
+        <div className="habbo-box-header" style={{backgroundColor: '#6b21a8', borderBottomColor: '#581c87'}}>
+            <div className="flex items-center justify-between text-xs py-1">
+                <div className="flex items-center gap-1.5">
+                    <RadioReceiver size={14} className={isPlaying ? "animate-bounce" : ""} />
+                    HabboZone FM
+                </div>
+                <div className="flex items-center gap-1 text-[9px] bg-black/30 border border-black/20 px-1.5 py-0.5 rounded shadow-inner">
+                    <span className={`w-1.5 h-1.5 rounded-full ${isPlaying ? 'bg-green-400 animate-pulse' : 'bg-red-500'}`}></span>
+                    CANLI YAYIN
+                </div>
+            </div>
         </div>
         
-        <div className="p-3 bg-gray-100 flex items-center justify-between border-t-2 border-white">
+        <div className="p-3 bg-gradient-to-b from-gray-50 to-gray-100 flex items-center justify-between border-t border-white relative overflow-hidden">
+          
+          {/* Abstract background for the player */}
+          <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
+            <Music size={100} />
+          </div>
+
           <button 
             onClick={togglePlay}
-            className="w-10 h-10 bg-white border-2 border-gray-300 rounded-full flex items-center justify-center text-primary hover:bg-gray-50 hover:border-primary transition-colors shadow-sm"
+            className={`relative z-10 w-12 h-12 rounded-full flex items-center justify-center transition-all shadow-[0_4px_0_rgba(0,0,0,0.2)] active:shadow-none active:translate-y-1 ${
+                isPlaying 
+                ? 'bg-red-500 text-white border-2 border-red-700 hover:bg-red-400' 
+                : 'bg-green-500 text-white border-2 border-green-700 hover:bg-green-400'
+            }`}
           >
             {isPlaying ? <Pause size={20} className="fill-current" /> : <Play size={20} className="fill-current ml-1" />}
           </button>
           
-          <div className="flex-1 px-3">
-            <div className="text-xs font-bold text-gray-800 mb-1">DJ HabboZone</div>
-            <div className="flex items-center gap-2">
-              <button onClick={() => setIsMuted(!isMuted)} className="text-gray-500 hover:text-primary">
+          <div className="flex-1 px-3 relative z-10">
+            <div className="text-[11px] font-black text-gray-800 uppercase tracking-widest mb-1.5">DJ AutoDJ</div>
+            <div className="flex items-center gap-2 bg-white px-2 py-1 rounded border border-gray-300 shadow-inner">
+              <button onClick={() => setIsMuted(!isMuted)} className="text-gray-500 hover:text-purple-600 transition-colors">
                 {isMuted || volume === 0 ? <VolumeX size={14} /> : <Volume2 size={14} />}
               </button>
               <input 
@@ -134,14 +157,14 @@ export default function RadioPlayer() {
                   setVolume(parseFloat(e.target.value));
                   setIsMuted(false);
                 }}
-                className="w-full h-1.5 bg-gray-300 rounded-lg appearance-none cursor-pointer accent-primary"
+                className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600"
               />
             </div>
           </div>
 
           <button 
             onClick={() => setShowRequestForm(!showRequestForm)}
-            className={`p-2 rounded-lg transition-colors border-2 ${showRequestForm ? 'bg-primary text-white border-primary' : 'bg-white text-gray-500 border-gray-300 hover:border-primary hover:text-primary'}`}
+            className={`relative z-10 p-2.5 rounded-lg transition-colors border-2 shadow-sm ${showRequestForm ? 'bg-purple-600 text-white border-purple-800' : 'bg-white text-gray-600 border-gray-300 hover:border-purple-400 hover:text-purple-600'}`}
             title="İstek Gönder"
           >
             <MessageCircle size={18} />
