@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, AlignLeft, Newspaper, Users, BookOpen, ShoppingBag, Wrench } from 'lucide-react';
+import { Home, AlignLeft, Newspaper, Users, BookOpen, ShoppingBag, Wrench, Package } from 'lucide-react';
 
 export default function Navigation() {
   const pathname = usePathname();
@@ -16,6 +16,7 @@ export default function Navigation() {
     { href: '/rooms', label: 'ODALAR', icon: Home },
     { href: '/guides', label: 'REHBERLER', icon: BookOpen },
     { href: '/market', label: 'PAZAR', icon: ShoppingBag },
+    { href: '/wiki', label: 'WİKİ', icon: Package },
     { href: '/tools', label: 'ARAÇLAR', icon: Wrench },
   ];
 
