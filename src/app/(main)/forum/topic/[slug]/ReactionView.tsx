@@ -90,7 +90,7 @@ export default function ReactionView({
   const topReactions = Object.entries(reactionCounts).sort((a, b) => (b[1] as number) - (a[1] as number)).slice(0, 3);
 
   return (
-    <div className="flex items-center gap-4 mt-4 select-none relative">
+    <div className="flex items-center gap-4 select-none relative">
       {/* Active Reaction Display */}
       {reactions.length > 0 && (
         <div className="flex items-center gap-1 bg-black/20 rounded-full px-3 py-1 border border-white/5">

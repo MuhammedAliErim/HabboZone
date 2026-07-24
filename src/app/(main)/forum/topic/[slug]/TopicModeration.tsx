@@ -40,7 +40,7 @@ export default function TopicModeration({
   };
 
   return (
-    <div className="flex items-center gap-2 mt-4 pt-4 border-t border-white/10">
+    <div className="flex items-center gap-2">
       {isModerator && (
         <>
           <button 

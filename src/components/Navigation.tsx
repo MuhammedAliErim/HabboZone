@@ -12,9 +12,10 @@ export default function Navigation() {
     { href: '/news', label: 'HABERLER', icon: AlignLeft },
     { href: '/magazines', label: 'GAZETE', icon: Newspaper },
     { href: '/forum', label: 'TOPLULUK', icon: Users },
+    { href: '/groups', label: 'GRUPLAR', icon: Users },
     { href: '/rooms', label: 'ODALAR', icon: Home },
     { href: '/guides', label: 'REHBERLER', icon: BookOpen },
-    { href: '/values', label: 'DEĞERLER', icon: ShoppingBag },
+    { href: '/market', label: 'PAZAR', icon: ShoppingBag },
     { href: '/tools', label: 'ARAÇLAR', icon: Wrench },
   ];
 

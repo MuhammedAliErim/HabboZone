@@ -57,6 +57,37 @@ export default async function ProfilePage({ params, searchParams }: { params: Pr
     
   const badges = userBadges ? userBadges.map(ub => ub.badge) : [];
 
+  // Fetch Rooms (Defensive)
+  let rooms: any[] = [];
+  if (currentTab === 'odalar') {
+      const { data, error } = await supabase.from('user_rooms').select('*').eq('user_id', profile.id).order('created_at', { ascending: false });
+      if (!error && data) rooms = data;
+  }
+
+  // Fetch Follows (Defensive)
+  let followers: any[] = [];
+  let following: any[] = [];
+  if (currentTab === 'arkadaslar') {
+      const { data: f1, error: e1 } = await supabase.from('user_follows').select('follower_id, created_at').eq('following_id', profile.id);
+      if (!e1 && f1) {
+          // fetch profiles for followers
+          const ids = f1.map(f => f.follower_id);
+          if (ids.length > 0) {
+              const { data: profiles } = await supabase.from('profiles').select('id, username, habbo_username, avatar_url, role').in('id', ids);
+              if (profiles) followers = profiles.map(p => ({ ...p, follow_date: f1.find(f => f.follower_id === p.id)?.created_at }));
+          }
+      }
+      
+      const { data: f2, error: e2 } = await supabase.from('user_follows').select('following_id, created_at').eq('follower_id', profile.id);
+      if (!e2 && f2) {
+          const ids = f2.map(f => f.following_id);
+          if (ids.length > 0) {
+              const { data: profiles } = await supabase.from('profiles').select('id, username, habbo_username, avatar_url, role').in('id', ids);
+              if (profiles) following = profiles.map(p => ({ ...p, follow_date: f2.find(f => f.following_id === p.id)?.created_at }));
+          }
+      }
+  }
+
   return (
     <div className="max-w-[1000px] mx-auto px-6 py-8 animate-in fade-in duration-500">
       
@@ -161,7 +192,7 @@ export default async function ProfilePage({ params, searchParams }: { params: Pr
             </div>
 
             {/* Profile Content */}
-            {currentTab === 'profil' ? (
+            {currentTab === 'profil' && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 
                 {/* Recent Forum Topics */}
@@ -210,19 +241,121 @@ export default async function ProfilePage({ params, searchParams }: { params: Pr
                         </div>
                     </div>
                 )}
-
             </div>
+            )}
 
+            {currentTab === 'rozetler' && (
+                <div className="habbo-box p-6">
+                    <h2 className="text-sm font-bold text-white mb-6 flex items-center gap-2">
+                        <Award size={16} className="text-[#facc15]" /> 
+                        Tüm Rozetler
+                    </h2>
+                    
+                    {badges.length > 0 ? (
+                        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4">
+                            {badges.map((b: any, i: number) => (
+                                <div key={i} className="bg-[#050a14] border border-[#1e293b] rounded p-4 flex flex-col items-center text-center hover:border-[#facc15] transition-colors group">
+                                    <div className="w-16 h-16 flex items-center justify-center mb-3">
+                                        <img src={b?.image_url} alt={b?.name} className="group-hover:scale-110 transition-transform pixelated max-w-full max-h-full" />
+                                    </div>
+                                    <h3 className="text-white font-bold text-[11px] leading-tight mb-1">{b?.name}</h3>
+                                    <p className="text-[#64748b] text-[9px] line-clamp-2">{b?.description}</p>
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="text-center py-12 border border-dashed border-[#1e293b] rounded bg-[#050a14]">
+                            <Award size={32} className="text-[#334155] mx-auto mb-3" />
+                            <h3 className="text-white font-bold mb-1">Henüz Rozeti Yok</h3>
+                            <p className="text-[#64748b] text-[12px]">Bu kullanıcı henüz hiç rozet kazanmamış.</p>
+                        </div>
+                    )}
+                </div>
+            )}
 
-            ) : (
-                <div className="habbo-box bg-[#0f172a] p-12 text-center border-dashed border-[#1e293b] mt-4">
-                    <div className="flex justify-center mb-4 opacity-50">
-                        <Users size={48} className="text-[#3b82f6]" />
+            {currentTab === 'arkadaslar' && (
+                <div className="habbo-box p-6">
+                    <h2 className="text-sm font-bold text-white mb-6 flex items-center gap-2">
+                        <Users size={16} className="text-[#3b82f6]" /> 
+                        Takip Edilenler ve Takipçiler
+                    </h2>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 className="text-[12px] font-bold text-[#64748b] uppercase tracking-wider mb-4 border-b border-[#1e293b] pb-2">Takipçiler ({followers.length})</h3>
+                            <div className="space-y-2">
+                                {followers.length > 0 ? followers.map((f: any, i: number) => (
+                                    <Link href={`/profile/${f.username}`} key={i} className="flex items-center gap-3 bg-[#050a14] border border-[#1e293b] p-2 rounded hover:border-[#3b82f6] transition-colors group">
+                                        <div className="w-10 h-10 rounded bg-[#0a1325] border border-[#1e293b] flex items-center justify-center shrink-0 overflow-hidden relative">
+                                            <HabboAvatar username={f.habbo_username || f.username} size="m" headOnly direction={3} className="w-8 h-8" />
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                            <div className="text-[12px] font-bold text-white group-hover:text-[#3b82f6] transition-colors">{f.username}</div>
+                                            <div className="text-[10px] text-[#64748b]">{f.role}</div>
+                                        </div>
+                                    </Link>
+                                )) : (
+                                    <div className="text-[11px] text-[#64748b] italic py-2">Henüz takipçisi yok.</div>
+                                )}
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 className="text-[12px] font-bold text-[#64748b] uppercase tracking-wider mb-4 border-b border-[#1e293b] pb-2">Takip Ettikleri ({following.length})</h3>
+                            <div className="space-y-2">
+                                {following.length > 0 ? following.map((f: any, i: number) => (
+                                    <Link href={`/profile/${f.username}`} key={i} className="flex items-center gap-3 bg-[#050a14] border border-[#1e293b] p-2 rounded hover:border-[#3b82f6] transition-colors group">
+                                        <div className="w-10 h-10 rounded bg-[#0a1325] border border-[#1e293b] flex items-center justify-center shrink-0 overflow-hidden relative">
+                                            <HabboAvatar username={f.habbo_username || f.username} size="m" headOnly direction={3} className="w-8 h-8" />
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                            <div className="text-[12px] font-bold text-white group-hover:text-[#3b82f6] transition-colors">{f.username}</div>
+                                            <div className="text-[10px] text-[#64748b]">{f.role}</div>
+                                        </div>
+                                    </Link>
+                                )) : (
+                                    <div className="text-[11px] text-[#64748b] italic py-2">Kimseyi takip etmiyor.</div>
+                                )}
+                            </div>
+                        </div>
                     </div>
-                    <h3 className="text-white font-bold uppercase tracking-wider mb-2">ÇOK YAKINDA</h3>
-                    <p className="text-[#94a3b8] text-[13px] max-w-sm mx-auto">
-                        Bu sekme geliştirme aşamasındadır. Daha fazlası için bizi takip etmeye devam edin!
-                    </p>
+                </div>
+            )}
+
+            {currentTab === 'odalar' && (
+                <div className="habbo-box p-6">
+                    <h2 className="text-sm font-bold text-white mb-6 flex items-center gap-2">
+                        <MapPin size={16} className="text-[#ef4444]" /> 
+                        Favori Odalar
+                    </h2>
+                    
+                    {rooms.length > 0 ? (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            {rooms.map((room: any, i: number) => (
+                                <a href={`https://www.habbo.com.tr/hotel?room=${room.room_id}`} target="_blank" rel="noopener noreferrer" key={i} className="bg-[#050a14] border border-[#1e293b] rounded p-3 flex gap-4 hover:border-[#ef4444] transition-colors group">
+                                    <div className="w-16 h-16 bg-[#0a1325] rounded border border-[#1e293b] overflow-hidden shrink-0">
+                                        {room.thumbnail_url ? (
+                                            <img src={room.thumbnail_url} alt={room.room_name} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
+                                        ) : (
+                                            <div className="w-full h-full flex items-center justify-center text-[#334155]">
+                                                <MapPin size={24} />
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div className="flex-1 min-w-0 flex flex-col justify-center">
+                                        <h3 className="text-white font-bold text-[12px] mb-1 group-hover:text-[#ef4444] transition-colors line-clamp-1">{room.room_name}</h3>
+                                        <p className="text-[#64748b] text-[10px] line-clamp-2">{room.room_description || 'Açıklama yok'}</p>
+                                    </div>
+                                </a>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="text-center py-12 border border-dashed border-[#1e293b] rounded bg-[#050a14]">
+                            <MapPin size={32} className="text-[#334155] mx-auto mb-3" />
+                            <h3 className="text-white font-bold mb-1">Henüz Oda Eklenmemiş</h3>
+                            <p className="text-[#64748b] text-[12px]">Kullanıcı henüz profilinde sergilemek için bir oda eklememiş.</p>
+                        </div>
+                    )}
                 </div>
             )}
         </div>

@@ -47,13 +47,12 @@ export default function EventForm() {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-300 mb-1">Yetkili Username</label>
-        <input 
-          type="text" 
-          name="host_username" 
-          required
-          className="w-full bg-[#1f1f1f] border border-[#333] rounded-md px-3 py-2 text-white focus:outline-none focus:border-[#3b82f6]"
-          placeholder="Örn: frank"
+        <label className="block text-sm font-medium text-gray-300 mb-1">Açıklama (Opsiyonel)</label>
+        <textarea 
+          name="description" 
+          rows={3}
+          className="w-full bg-[#1f1f1f] border border-[#333] rounded-md px-3 py-2 text-white focus:outline-none focus:border-[#3b82f6] resize-none"
+          placeholder="Etkinlik hakkında kısa bilgi..."
         />
       </div>
 
@@ -61,7 +60,7 @@ export default function EventForm() {
         <label className="block text-sm font-medium text-gray-300 mb-1">Tarih ve Saat</label>
         <input 
           type="datetime-local" 
-          name="event_time" 
+          name="event_date" 
           required
           className="w-full bg-[#1f1f1f] border border-[#333] rounded-md px-3 py-2 text-white focus:outline-none focus:border-[#3b82f6]"
         />
@@ -79,6 +78,36 @@ export default function EventForm() {
           <option value="Radyo">Radyo</option>
           <option value="Genel">Genel</option>
         </select>
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-300 mb-1">Görsel URL (Opsiyonel)</label>
+        <input 
+          type="url" 
+          name="image_url" 
+          className="w-full bg-[#1f1f1f] border border-[#333] rounded-md px-3 py-2 text-white focus:outline-none focus:border-[#3b82f6]"
+          placeholder="https://..."
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-300 mb-1">Ödül Metni (Opsiyonel)</label>
+        <input 
+          type="text" 
+          name="reward_text" 
+          className="w-full bg-[#1f1f1f] border border-[#333] rounded-md px-3 py-2 text-white focus:outline-none focus:border-[#3b82f6]"
+          placeholder="Örn: Özel Rozet + 50 Kredi"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-300 mb-1">Oda Linki (Opsiyonel)</label>
+        <input 
+          type="url" 
+          name="room_link" 
+          className="w-full bg-[#1f1f1f] border border-[#333] rounded-md px-3 py-2 text-white focus:outline-none focus:border-[#3b82f6]"
+          placeholder="https://www.habbo.com.tr/room/..."
+        />
       </div>
 
       <button 

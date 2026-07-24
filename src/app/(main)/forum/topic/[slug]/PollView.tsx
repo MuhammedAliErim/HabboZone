@@ -70,10 +70,10 @@ export default function PollView({ poll, currentUser }: { poll: any, currentUser
   const totalVotes = votes.length; // Actually, in multiple choice total votes might be more than total voters.
 
   return (
-    <div className="bg-primary/10 border border-primary/30 rounded-2xl p-6 space-y-4">
-      <h3 className="text-xl font-bold text-primary flex items-center gap-2">
+    <div className="bg-[#050a14] border border-[#1e293b] rounded p-6 space-y-4 habbo-box">
+      <h3 className="text-xl font-bold text-[#3b82f6] flex items-center gap-2">
         📊 Anket: {poll.question}
-        {poll.is_multiple_choice && <span className="text-xs bg-primary/20 text-primary px-2 py-1 rounded ml-auto">Çoklu Seçim</span>}
+        {poll.is_multiple_choice && <span className="text-[10px] bg-[#3b82f6]/20 text-[#3b82f6] px-2 py-1 rounded ml-auto uppercase tracking-widest">Çoklu Seçim</span>}
       </h3>
       <div className="space-y-3 mt-4">
         {poll.poll_options?.map((opt: any) => {
@@ -85,14 +85,14 @@ export default function PollView({ poll, currentUser }: { poll: any, currentUser
             <div 
               key={opt.id} 
               onClick={() => toggleOption(opt.id)}
-              className={`relative overflow-hidden rounded-lg border transition-all ${
-                isSelected ? 'border-primary/50 bg-primary/10' : 'border-white/5 bg-black/20 hover:bg-black/40'
+              className={`relative overflow-hidden rounded border transition-all ${
+                isSelected ? 'border-[#3b82f6] bg-[#3b82f6]/10' : 'border-[#1e293b] bg-[#0a1325] hover:border-[#334155]'
               } ${!hasVoted ? 'cursor-pointer' : ''}`}
             >
               {/* Progress bar background for results */}
               {hasVoted && (
                 <div 
-                  className="absolute top-0 left-0 h-full bg-primary/20 transition-all duration-1000"
+                  className="absolute top-0 left-0 h-full bg-[#3b82f6]/20 transition-all duration-1000"
                   style={{ width: `${percentage}%` }}
                 />
               )}
@@ -100,14 +100,14 @@ export default function PollView({ poll, currentUser }: { poll: any, currentUser
               <div className="relative p-4 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   {!hasVoted && (
-                    <div className={`w-5 h-5 flex items-center justify-center rounded-full border ${isSelected ? 'border-primary bg-primary' : 'border-white/30'}`}>
-                      {isSelected && <div className="w-2 h-2 bg-white rounded-full" />}
+                    <div className={`w-5 h-5 flex items-center justify-center rounded border ${isSelected ? 'border-[#3b82f6] bg-[#3b82f6]' : 'border-[#1e293b] bg-[#050a14]'}`}>
+                      {isSelected && <div className="w-2 h-2 bg-white rounded-sm" />}
                     </div>
                   )}
-                  <span className={`font-bold ${isSelected ? 'text-primary' : 'text-white'}`}>{opt.option_text}</span>
+                  <span className={`font-bold ${isSelected ? 'text-[#3b82f6]' : 'text-white'}`}>{opt.option_text}</span>
                 </div>
                 {hasVoted && (
-                  <div className="text-sm font-bold text-white/60">
+                  <div className="text-sm font-bold text-[#64748b]">
                     {optVotes} oy ({percentage}%)
                   </div>
                 )}
@@ -121,13 +121,13 @@ export default function PollView({ poll, currentUser }: { poll: any, currentUser
         <button 
           onClick={handleVote} 
           disabled={loading || selectedOptions.length === 0}
-          className="bg-primary text-white px-8 py-3 rounded-lg font-bold uppercase tracking-widest text-sm mt-4 hover:bg-primary/80 transition-colors disabled:opacity-50"
+          className="bg-[#3b82f6] text-white px-8 py-3 rounded font-bold uppercase tracking-widest text-sm mt-4 hover:bg-[#2563eb] transition-colors disabled:opacity-50 border-b-4 border-[#1d4ed8]"
         >
           {loading ? 'Oylanıyor...' : 'Oy Ver'}
         </button>
       )}
       {hasVoted && (
-        <div className="text-sm text-green-400 font-bold mt-4 flex items-center gap-2">
+        <div className="text-sm text-[#22c55e] font-bold mt-4 flex items-center gap-2">
           ✅ Oyunuz kaydedildi. (Toplam {totalVotes} oy kullanıldı)
         </div>
       )}

@@ -8,8 +8,8 @@ export default async function AdminEventsPage() {
 
   const { data: events } = await supabase
     .from('events')
-    .select('*')
-    .order('event_time', { ascending: true })
+    .select('*, profiles:author_id(username)')
+    .order('event_date', { ascending: true })
 
   return (
     <div>
@@ -31,7 +31,7 @@ export default async function AdminEventsPage() {
         <div className="lg:col-span-2">
           <div className="bg-[#2a2a2a] border border-[#333] rounded-lg overflow-hidden">
             <div className="p-4 border-b border-[#333] flex justify-between items-center bg-[#1f1f1f]">
-              <h2 className="text-lg font-bold text-white">Yaklaşan Etkinlikler</h2>
+              <h2 className="text-lg font-bold text-white">Etkinlikler</h2>
             </div>
             
             <div className="overflow-x-auto">
@@ -50,7 +50,7 @@ export default async function AdminEventsPage() {
                     events.map((evt) => (
                       <tr key={evt.id} className="border-b border-[#333] hover:bg-[#333]/50 transition-colors">
                         <td className="px-4 py-3 font-medium text-white whitespace-nowrap">
-                          {new Date(evt.event_time).toLocaleString('tr-TR', { 
+                          {new Date(evt.event_date).toLocaleString('tr-TR', { 
                             day: '2-digit', 
                             month: '2-digit', 
                             year: 'numeric',
@@ -59,8 +59,8 @@ export default async function AdminEventsPage() {
                           })}
                         </td>
                         <td className="px-4 py-3 font-medium text-[#a855f7]">{evt.title}</td>
-                        <td className="px-4 py-3">{evt.host_username}</td>
-                        <td className="px-4 py-3">{evt.event_type}</td>
+                        <td className="px-4 py-3">{evt.profiles?.username || 'Bilinmiyor'}</td>
+                        <td className="px-4 py-3">{evt.event_type || 'Genel'}</td>
                         <td className="px-4 py-3 text-right">
                           <DeleteEventButton id={evt.id} />
                         </td>

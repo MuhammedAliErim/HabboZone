@@ -3,22 +3,26 @@ import { createClient } from '@/utils/supabase/server';
 import { 
   Flame, Users, Calendar, Trophy, MessageSquare, ChevronRight, 
   Newspaper, BookOpen, ShoppingBag, ArrowRight, Gift, LifeBuoy,
-  List, Star, Megaphone, Mic, Download, ExternalLink, ChevronLeft
+  List, Star, Megaphone, Mic, Download, ExternalLink, ChevronLeft, Lock
 } from 'lucide-react';
+import Countdown from '@/components/Countdown';
 
 export const revalidate = 60;
 
 export default async function MagazinesPage() {
   const supabase = await createClient();
 
+  // Fetch all active magazines, even those scheduled for the future
   const { data: magazines } = await supabase
     .from('magazines')
     .select('*')
     .eq('is_active', true)
-    .lte('published_at', new Date().toISOString())
     .order('issue_number', { ascending: false });
 
   const latestMagazine = magazines?.[0];
+  
+  // Calculate locked status based on server time initially
+  const isLatestLocked = latestMagazine && new Date(latestMagazine.published_at).getTime() > Date.now();
 
   return (
     <div className="w-full bg-[#0a0f18] min-h-screen text-white font-sans py-8">
@@ -88,18 +92,35 @@ export default async function MagazinesPage() {
                          GAZETESİ
                       </h1>
                       <span className="text-white font-bold text-[13px] md:text-[15px] tracking-[0.2em] bg-black/60 px-4 py-1 rounded-[4px] backdrop-blur-sm border border-white/10 mt-2 uppercase">
-                         #{latestMagazine.issue_number} SAYI - {new Date(latestMagazine.published_at).toLocaleDateString('tr-TR', { month: 'long', year: 'numeric' })}
+                         #{latestMagazine.issue_number} SAYI
                       </span>
                    </div>
                 </div>
 
                 {/* Latest Featured Article */}
-                <div className="bg-[#131b28] border-2 border-[#1e293b] rounded-[6px] p-4 flex flex-col md:flex-row gap-6 shadow-lg group">
-                   <div className="w-full md:w-[30%] h-[240px] rounded-[4px] border border-[#2b3548] relative overflow-hidden shrink-0">
+                <div className="bg-[#131b28] border-2 border-[#1e293b] rounded-[6px] p-4 flex flex-col md:flex-row gap-6 shadow-lg group relative overflow-hidden">
+                   {isLatestLocked && (
+                      <div className="absolute inset-0 z-20 bg-[#0a0f18]/80 backdrop-blur-sm flex flex-col items-center justify-center gap-4">
+                        <div className="w-16 h-16 bg-[#1e293b] rounded-full flex items-center justify-center border-2 border-yellow-500 shadow-[0_0_20px_rgba(234,179,8,0.2)]">
+                           <Lock size={32} className="text-yellow-500" />
+                        </div>
+                        <h2 className="text-2xl font-black text-white uppercase tracking-wider">BU SAYI KİLİTLİ</h2>
+                        <div className="bg-[#1e293b] px-6 py-3 rounded-[6px] border border-[#334155] text-center">
+                           <p className="text-gray-400 text-xs font-bold uppercase mb-1">AÇILMASINA KALAN SÜRE</p>
+                           <div className="text-2xl font-black text-yellow-400">
+                             <Countdown targetDate={latestMagazine.published_at} />
+                           </div>
+                        </div>
+                      </div>
+                   )}
+                   
+                   <div className={`w-full md:w-[30%] h-[240px] rounded-[4px] border border-[#2b3548] relative overflow-hidden shrink-0 ${isLatestLocked ? 'opacity-30' : ''}`}>
                       <img src={latestMagazine.cover_image_url} className="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-transform duration-500" alt="" />
                    </div>
-                   <div className="flex flex-col flex-1 justify-center py-2">
-                      <span className="bg-[#6b21a8] text-white font-black text-[10px] px-2 py-0.5 rounded-[3px] uppercase tracking-wider w-max mb-3">YENİ SAYI YAYINDA</span>
+                   <div className={`flex flex-col flex-1 justify-center py-2 ${isLatestLocked ? 'opacity-30' : ''}`}>
+                      <span className="bg-[#6b21a8] text-white font-black text-[10px] px-2 py-0.5 rounded-[3px] uppercase tracking-wider w-max mb-3">
+                         {isLatestLocked ? 'GELECEK SAYI' : 'YENİ SAYI YAYINDA'}
+                      </span>
                       <h2 className="text-white font-black text-[22px] leading-tight mb-4 group-hover:text-[#a78bfa] transition-colors">
                          {latestMagazine.title}
                       </h2>
@@ -109,17 +130,22 @@ export default async function MagazinesPage() {
                             <div className="w-5 h-5 bg-[#1e293b] rounded-full flex items-center justify-center text-[#facc15] font-black text-[10px]">H</div>
                             <span className="text-gray-200">HabboZone Ekibi</span>
                          </div>
-                         <div className="flex items-center gap-1.5"><Calendar size={12}/> {new Date(latestMagazine.published_at).toLocaleDateString('tr-TR')}</div>
+                         <div className="flex items-center gap-1.5"><Calendar size={12}/> {new Date(latestMagazine.published_at).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
                       </div>
 
                       <p className="text-gray-300 text-[13px] leading-relaxed mb-6 line-clamp-3">
-                         HabboZone gazetesinin en yeni sayısı çıktı! İçeriği okumak ve indirmek için aşağıdaki butonu kullanabilirsiniz.
+                         {isLatestLocked 
+                           ? "Bu sayı henüz erişime açılmadı. Belirtilen tarihte geri gelerek yeni sayımızı PDF olarak okuyabilir ve indirebilirsiniz."
+                           : "HabboZone gazetesinin en yeni sayısı çıktı! İçeriği okumak ve indirmek için aşağıdaki butonu kullanabilirsiniz."
+                         }
                       </p>
 
                       <div className="flex items-center gap-4">
-                         <a href={latestMagazine.pdf_url} target="_blank" rel="noreferrer" className="bg-[#4c1d95] hover:bg-[#6b21a8] text-white font-bold text-[12px] px-5 py-2.5 rounded-[4px] w-max flex items-center gap-2 transition-colors uppercase tracking-wider">
-                            PDF OLARAK OKU <ExternalLink size={14} />
-                         </a>
+                         {!isLatestLocked && (
+                           <Link href={`/magazines/${latestMagazine.issue_number}`} className="bg-[#4c1d95] hover:bg-[#6b21a8] text-white font-bold text-[12px] px-5 py-2.5 rounded-[4px] w-max flex items-center gap-2 transition-colors uppercase tracking-wider">
+                              DERGİYİ OKU <ExternalLink size={14} />
+                           </Link>
+                         )}
                       </div>
                    </div>
                 </div>
@@ -127,30 +153,48 @@ export default async function MagazinesPage() {
             ) : (
               <div className="text-center py-12 bg-[#131b28] border-2 border-[#1e293b] rounded-[6px]">
                 <BookOpen size={48} className="mx-auto text-gray-600 mb-4" />
-                <h2 className="text-xl font-bold text-gray-400">Henüz yayınlanmış bir dergi/gazete bulunmuyor.</h2>
+                <h2 className="text-xl font-bold text-gray-400">Henüz yayınlanmış veya planlanmış bir dergi/gazete bulunmuyor.</h2>
               </div>
             )}
 
             {/* Grid Articles */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-               {magazines && magazines.slice(1).map((post) => (
-                  <div key={post.id} className="bg-[#131b28] border-2 border-[#1e293b] rounded-[6px] p-3 flex flex-col gap-3 group hover:border-[#4c1d95] hover:shadow-[0_0_15px_rgba(76,29,149,0.3)] transition-all">
-                     <div className="w-full h-[180px] bg-[#0a0f18] rounded-[4px] border border-[#2b3548] relative overflow-hidden">
-                        <img src={post.cover_image_url} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-transform duration-500" alt="" />
-                        <span className={`absolute top-2 left-2 bg-[#3b82f6] text-white text-[9px] font-black px-2 py-0.5 rounded-[3px] uppercase shadow-md`}>SAYI #{post.issue_number}</span>
-                     </div>
-                     <div className="flex flex-col flex-1">
-                        <h3 className="text-white font-bold text-[15px] leading-tight group-hover:text-[#a78bfa] transition-colors mb-2">{post.title}</h3>
-                        <div className="flex justify-between items-center text-[#6b7280] text-[11px] font-bold border-t border-[#1e293b] pt-2 mt-auto">
-                           <span>{new Date(post.published_at).toLocaleDateString('tr-TR')}</span>
-                           <a href={post.pdf_url} target="_blank" rel="noreferrer" className="flex items-center gap-1.5 text-blue-400 hover:text-blue-300">
-                              <ExternalLink size={12} />
-                              <span>OKU</span>
-                           </a>
-                        </div>
-                     </div>
-                  </div>
-               ))}
+               {magazines && magazines.slice(1).map((post) => {
+                  const isLocked = new Date(post.published_at).getTime() > Date.now();
+                  
+                  return (
+                    <div key={post.id} className="bg-[#131b28] border-2 border-[#1e293b] rounded-[6px] p-3 flex flex-col gap-3 group hover:border-[#4c1d95] hover:shadow-[0_0_15px_rgba(76,29,149,0.3)] transition-all relative overflow-hidden">
+                       
+                       {isLocked && (
+                          <div className="absolute inset-0 z-20 bg-[#0a0f18]/80 backdrop-blur-sm flex flex-col items-center justify-center gap-2 rounded-[4px]">
+                            <Lock size={24} className="text-yellow-500" />
+                            <div className="bg-[#1e293b] px-3 py-1.5 rounded-[4px] border border-[#334155] text-center">
+                               <div className="text-[12px] font-black text-yellow-400">
+                                 <Countdown targetDate={post.published_at} />
+                               </div>
+                            </div>
+                          </div>
+                       )}
+
+                       <div className={`w-full h-[180px] bg-[#0a0f18] rounded-[4px] border border-[#2b3548] relative overflow-hidden ${isLocked ? 'opacity-30' : ''}`}>
+                          <img src={post.cover_image_url} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-transform duration-500" alt="" />
+                          <span className={`absolute top-2 left-2 ${isLocked ? 'bg-gray-600' : 'bg-[#3b82f6]'} text-white text-[9px] font-black px-2 py-0.5 rounded-[3px] uppercase shadow-md`}>SAYI #{post.issue_number}</span>
+                       </div>
+                       <div className={`flex flex-col flex-1 ${isLocked ? 'opacity-30' : ''}`}>
+                          <h3 className="text-white font-bold text-[15px] leading-tight group-hover:text-[#a78bfa] transition-colors mb-2">{post.title}</h3>
+                          <div className="flex justify-between items-center text-[#6b7280] text-[11px] font-bold border-t border-[#1e293b] pt-2 mt-auto">
+                             <span>{new Date(post.published_at).toLocaleDateString('tr-TR')}</span>
+                             {!isLocked && (
+                               <Link href={`/magazines/${post.issue_number}`} className="flex items-center gap-1.5 text-blue-400 hover:text-blue-300">
+                                  <ExternalLink size={12} />
+                                  <span>OKU</span>
+                               </Link>
+                             )}
+                          </div>
+                       </div>
+                    </div>
+                  )
+               })}
             </div>
 
          </div>
@@ -163,17 +207,37 @@ export default async function MagazinesPage() {
             <div className="bg-[#131b28] border-2 border-[#1e293b] rounded-[6px] p-4 flex flex-col shadow-lg">
                <h3 className="text-[#a78bfa] font-black text-[12px] tracking-wider mb-4 uppercase">TÜM SAYILAR</h3>
                <div className="flex flex-col gap-3 h-[400px] overflow-y-auto custom-scrollbar pr-2">
-                  {magazines && magazines.map((issue) => (
-                    <a key={issue.id} href={issue.pdf_url} target="_blank" rel="noreferrer" className="flex items-center gap-3 p-2 hover:bg-[#1e293b] border border-transparent hover:border-[#2b3548] rounded-[4px] transition-colors group">
-                       <div className="w-[45px] h-[60px] bg-[#d1d5db] border border-black shadow-[2px_2px_0_rgba(0,0,0,0.5)] flex flex-col overflow-hidden shrink-0 group-hover:scale-105 transition-transform">
-                          <img src={issue.cover_image_url} className="w-full h-full object-cover" alt="" />
-                       </div>
-                       <div className="flex flex-col justify-center">
-                          <span className="text-gray-200 font-bold text-[13px] group-hover:text-white">#{issue.issue_number} - {new Date(issue.published_at).toLocaleDateString('tr-TR', { month: 'long', year: 'numeric'})}</span>
-                          <span className="text-gray-500 text-[11px] font-medium">{new Date(issue.published_at).toLocaleDateString('tr-TR')}</span>
-                       </div>
-                    </a>
-                  ))}
+                  {magazines && magazines.map((issue) => {
+                    const isLocked = new Date(issue.published_at).getTime() > Date.now();
+                    
+                    return (
+                      <div key={issue.id} className="relative block group">
+                        {/* Wrapper link if not locked, otherwise just div */}
+                        {isLocked ? (
+                          <div className="flex items-center gap-3 p-2 hover:bg-[#1e293b] border border-transparent hover:border-[#2b3548] rounded-[4px] transition-colors opacity-60">
+                             <div className="w-[45px] h-[60px] bg-[#d1d5db] border border-black shadow-[2px_2px_0_rgba(0,0,0,0.5)] flex flex-col overflow-hidden shrink-0 relative">
+                                <img src={issue.cover_image_url} className="w-full h-full object-cover grayscale" alt="" />
+                                <div className="absolute inset-0 flex items-center justify-center bg-black/40"><Lock size={16} className="text-white"/></div>
+                             </div>
+                             <div className="flex flex-col justify-center">
+                                <span className="text-gray-200 font-bold text-[13px] line-clamp-1">#{issue.issue_number} - {new Date(issue.published_at).toLocaleDateString('tr-TR', { month: 'short', year: 'numeric'})}</span>
+                                <span className="text-gray-500 text-[11px] font-medium flex items-center gap-1 text-yellow-500"><Lock size={10}/>Kilitli</span>
+                             </div>
+                          </div>
+                        ) : (
+                          <Link href={`/magazines/${issue.issue_number}`} className="flex items-center gap-3 p-2 hover:bg-[#1e293b] border border-transparent hover:border-[#2b3548] rounded-[4px] transition-colors group">
+                             <div className="w-[45px] h-[60px] bg-[#d1d5db] border border-black shadow-[2px_2px_0_rgba(0,0,0,0.5)] flex flex-col overflow-hidden shrink-0 group-hover:scale-105 transition-transform">
+                                <img src={issue.cover_image_url} className="w-full h-full object-cover" alt="" />
+                             </div>
+                             <div className="flex flex-col justify-center">
+                                <span className="text-gray-200 font-bold text-[13px] group-hover:text-white line-clamp-1">#{issue.issue_number} - {new Date(issue.published_at).toLocaleDateString('tr-TR', { month: 'short', year: 'numeric'})}</span>
+                                <span className="text-gray-500 text-[11px] font-medium">{new Date(issue.published_at).toLocaleDateString('tr-TR')}</span>
+                             </div>
+                          </Link>
+                        )}
+                      </div>
+                    )
+                  })}
                </div>
             </div>
 

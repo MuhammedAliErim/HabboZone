@@ -1,11 +1,14 @@
 import { createClient } from '@/utils/supabase/server';
 import { Image as ImageIcon } from 'lucide-react';
 import Link from 'next/link';
+import GalleryUploadModal from '@/components/gallery/GalleryUploadModal';
 
 export const revalidate = 60; // Cache for 60 seconds
 
 export default async function GalleryPage() {
   const supabase = await createClient();
+
+  const { data: { user } } = await supabase.auth.getUser();
 
   const { data: images } = await supabase
     .from('gallery')
@@ -18,8 +21,11 @@ export default async function GalleryPage() {
       
       {/* Hero Section */}
       <div className="habbo-box bg-white overflow-hidden relative text-center">
-        <div className="habbo-box-header orange">
-          Topluluk Galerisi
+        <div className="habbo-box-header orange flex items-center justify-between">
+          <span>Topluluk Galerisi</span>
+          {user && (
+            <GalleryUploadModal />
+          )}
         </div>
         
         <div className="p-8 md:p-12 bg-gradient-to-r from-orange-50 to-orange-100 flex flex-col items-center">

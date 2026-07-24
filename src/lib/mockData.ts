@@ -52,6 +52,13 @@ export const MOCK_MAGAZINES = [
     issue_number: 14,
     cover_image_url: 'https://images.habbo.com/web_images/habbo-web-articles/lpromo_summer20_gen.png',
     pdf_url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+    pages: [
+      'https://images.habbo.com/web_images/habbo-web-articles/lpromo_summer20_gen.png',
+      '/images/assets/Gemini_Generated_Image_2zj0l42zj0l42zj0.png',
+      '/images/assets/Gemini_Generated_Image_5r1j4p5r1j4p5r1j.png',
+      '/images/assets/Gemini_Generated_Image_3108c93108c93108.png',
+      '/images/assets/Gemini_Generated_Image_a231qxa231qxa231.png'
+    ],
     published_at: new Date(Date.now() - 100000).toISOString(),
   },
   {
@@ -60,6 +67,11 @@ export const MOCK_MAGAZINES = [
     issue_number: 13,
     cover_image_url: 'https://images.habbo.com/web_images/habbo-web-articles/lpromo_easter20_gen.png',
     pdf_url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+    pages: [
+      'https://images.habbo.com/web_images/habbo-web-articles/lpromo_easter20_gen.png',
+      '/images/assets/Gemini_Generated_Image_5r1j4p5r1j4p5r1j.png',
+      '/images/assets/Gemini_Generated_Image_3108c93108c93108.png'
+    ],
     published_at: new Date(Date.now() - 50000000).toISOString(),
   },
   {
@@ -68,6 +80,11 @@ export const MOCK_MAGAZINES = [
     issue_number: 12,
     cover_image_url: 'https://images.habbo.com/web_images/habbo-web-articles/lpromo_hc2020.png',
     pdf_url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+    pages: [
+      'https://images.habbo.com/web_images/habbo-web-articles/lpromo_hc2020.png',
+      '/images/assets/Gemini_Generated_Image_a231qxa231qxa231.png',
+      '/images/assets/Gemini_Generated_Image_2zj0l42zj0l42zj0.png'
+    ],
     published_at: new Date(Date.now() - 100000000).toISOString(),
   }
 ];

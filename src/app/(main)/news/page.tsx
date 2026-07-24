@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { createClient } from '@/utils/supabase/server';
-import { MessageCircle, Eye, Tag, ChevronRight, Clock } from 'lucide-react';
+import { MessageCircle, Eye, Tag, ChevronRight, Clock, Lock } from 'lucide-react';
+import Countdown from '@/components/Countdown';
 
 export const revalidate = 60; // Cache for 60 seconds
 
@@ -20,7 +21,7 @@ export default async function NewsPage() {
       author:profiles!news_author_id_fkey(username, habbo_username)
     `)
     .eq('status', 'published')
-    .lte('published_at', new Date().toISOString())
+    // Removed lte('published_at') to show scheduled news as well
     .order('published_at', { ascending: false });
 
   // Mock Categories and Most Read for the UI Kit
@@ -68,32 +69,53 @@ export default async function NewsPage() {
         
         {/* Left Column - News List */}
         <div className="space-y-4">
-            {newsItems?.map((news: any) => (
-              <Link key={news.slug} href={`/news/${news.slug}`} className="habbo-box habbo-card-hover p-4 flex flex-col sm:flex-row gap-5 group">
-                <div className="w-full sm:w-[240px] h-[140px] rounded-md overflow-hidden border border-[#1e293b] shrink-0 relative">
-                  <Image src={news.thumbnail_url || 'https://images.habbo.com/c_images/article_images_tr/tr_news_header_1.png'} alt={news.title} fill sizes="(max-width: 768px) 100vw, 30vw" className="object-cover group-hover:scale-110 transition-transform duration-500" />
-                  <div className="absolute top-2 left-2">
-                      <span className="habbo-tag blue bg-blue-600/90 text-white border-blue-500 backdrop-blur-sm shadow-sm">HABER</span>
-                  </div>
-                </div>
-                <div className="flex flex-col py-1 flex-1">
-                    <h2 className="font-black text-white text-xl group-hover:text-[#facc15] transition-colors leading-tight mb-2">
-                        {news.title}
-                    </h2>
-                    <p className="text-[#94a3b8] text-sm line-clamp-2 mb-4">
-                        {news.summary}
-                    </p>
-                    <div className="flex justify-between items-center text-[11px] text-[#64748b] font-bold mt-auto pt-4 border-t border-[#1e293b]">
-                        <span>{new Date(news.published_at).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
-                        <div className="flex items-center gap-4">
-                            <span className="flex items-center gap-1 hover:text-white transition-colors"><Clock size={14}/> 3 dk</span>
-                            <span className="flex items-center gap-1 hover:text-white transition-colors"><Eye size={14}/> 35</span>
-                            <span className="flex items-center gap-1 hover:text-white transition-colors"><MessageCircle size={14}/> 12</span>
+            {newsItems?.map((news: any) => {
+              const isLocked = new Date(news.published_at).getTime() > Date.now();
+              
+              return (
+                <Link key={news.slug} href={`/news/${news.slug}`} className="habbo-box habbo-card-hover p-4 flex flex-col sm:flex-row gap-5 group relative overflow-hidden">
+                  
+                  {isLocked && (
+                    <div className="absolute inset-0 z-20 bg-[#0a0f18]/80 backdrop-blur-sm flex flex-col items-center justify-center gap-2">
+                      <Lock size={32} className="text-yellow-500" />
+                      <div className="bg-[#1e293b] px-4 py-2 rounded-[6px] border border-[#334155] text-center shadow-lg">
+                        <p className="text-gray-400 text-[10px] font-bold uppercase mb-1">KİLİTLİ HABER</p>
+                        <div className="text-lg font-black text-yellow-400">
+                          <Countdown targetDate={news.published_at} />
                         </div>
+                      </div>
                     </div>
-                </div>
-              </Link>
-            ))}
+                  )}
+
+                  <div className={`w-full sm:w-[240px] h-[140px] rounded-md overflow-hidden border border-[#1e293b] shrink-0 relative ${isLocked ? 'opacity-30 grayscale' : ''}`}>
+                    <Image src={news.thumbnail_url || 'https://images.habbo.com/c_images/article_images_tr/tr_news_header_1.png'} alt={news.title} fill sizes="(max-width: 768px) 100vw, 30vw" className="object-cover group-hover:scale-110 transition-transform duration-500" />
+                    <div className="absolute top-2 left-2">
+                        <span className={`habbo-tag ${isLocked ? 'bg-gray-600 border-gray-500' : 'blue bg-blue-600/90 border-blue-500'} text-white backdrop-blur-sm shadow-sm`}>
+                          {isLocked ? 'ZAMANLANDI' : 'HABER'}
+                        </span>
+                    </div>
+                  </div>
+                  <div className={`flex flex-col py-1 flex-1 ${isLocked ? 'opacity-30' : ''}`}>
+                      <h2 className="font-black text-white text-xl group-hover:text-[#facc15] transition-colors leading-tight mb-2 line-clamp-2">
+                          {news.title}
+                      </h2>
+                      <p className="text-[#94a3b8] text-sm line-clamp-2 mb-4">
+                          {isLocked ? 'Bu haber henüz erişime açılmadı. Belirtilen tarihte okuyabilirsiniz.' : news.summary}
+                      </p>
+                      <div className="flex justify-between items-center text-[11px] text-[#64748b] font-bold mt-auto pt-4 border-t border-[#1e293b]">
+                          <span>{new Date(news.published_at).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
+                          {!isLocked && (
+                            <div className="flex items-center gap-4">
+                                <span className="flex items-center gap-1 hover:text-white transition-colors"><Clock size={14}/> 3 dk</span>
+                                <span className="flex items-center gap-1 hover:text-white transition-colors"><Eye size={14}/> 35</span>
+                                <span className="flex items-center gap-1 hover:text-white transition-colors"><MessageCircle size={14}/> 12</span>
+                            </div>
+                          )}
+                      </div>
+                  </div>
+                </Link>
+              )
+            })}
 
             {(!newsItems || newsItems.length === 0) && (
               <div className="habbo-box p-8 text-center text-gray-500 font-bold">

@@ -12,7 +12,9 @@ import {
   Calendar,
   Megaphone,
   Home,
-  Book
+  Book,
+  Image,
+  MessageSquare
 } from 'lucide-react'
 
 export const metadata = {
@@ -135,6 +137,30 @@ export default async function AdminLayout({
             >
               <Users size={18} />
               <span>Kullanıcılar</span>
+            </Link>
+
+            <Link 
+              href="/admin/staff"
+              className="flex items-center gap-3 px-3 py-2 text-gray-300 hover:text-white hover:bg-[#2a2a2a] rounded-md transition-colors"
+            >
+              <Users size={18} />
+              <span>Ekip Yönetimi</span>
+            </Link>
+            
+            <Link 
+              href="/admin/gallery"
+              className="flex items-center gap-3 px-3 py-2 text-gray-300 hover:text-white hover:bg-[#2a2a2a] rounded-md transition-colors"
+            >
+              <Image size={18} />
+              <span>Galeri</span>
+            </Link>
+
+            <Link 
+              href="/admin/forum"
+              className="flex items-center gap-3 px-3 py-2 text-gray-300 hover:text-white hover:bg-[#2a2a2a] rounded-md transition-colors"
+            >
+              <MessageSquare size={18} />
+              <span>Forum Kategorileri</span>
             </Link>
           </nav>
         </div>

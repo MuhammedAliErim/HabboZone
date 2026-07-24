@@ -48,11 +48,11 @@ export default function UserDropdown({ profile }: UserDropdownProps) {
         <div className="w-9 h-9 rounded bg-[#1e293b] flex items-center justify-center overflow-hidden shrink-0">
           <HabboAvatar username={profile.habbo_username || 'Habbo'} size="m" headDirection={3} direction={3} className="w-12 h-12 -mt-2" />
         </div>
-        <div className="flex flex-col justify-center">
+        <div className="hidden sm:flex flex-col justify-center">
           <span className="font-bold text-white text-[12px] leading-tight">{profile.username}</span>
           {isVip && <span className="text-[#facc15] text-[10px] font-bold">VIP ÜYE</span>}
         </div>
-        <ChevronDown size={14} className={`text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+        <ChevronDown size={14} className={`hidden sm:block text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
       {isOpen && (

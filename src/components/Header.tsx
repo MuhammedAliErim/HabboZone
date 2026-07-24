@@ -3,7 +3,9 @@ import { LogIn } from 'lucide-react';
 import { createClient } from '@/utils/supabase/server';
 import Navigation from './Navigation';
 import UserDropdown from './UserDropdown';
-import SearchOverlay from './SearchOverlay';
+import GlobalSearch from './search/GlobalSearch';
+import MobileMenu from './MobileMenu';
+import NotificationBell from './notifications/NotificationBell';
 
 export default async function Header() {
   const supabase = await createClient();
@@ -40,10 +42,12 @@ export default async function Header() {
         {/* Right: Auth / User Area */}
         <div className="flex items-center gap-4 h-full">
           
-          <SearchOverlay />
+          <div className="hidden md:block">
+            <GlobalSearch />
+          </div>
 
           {!profile ? (
-            <div className="flex items-center gap-3">
+            <div className="hidden lg:flex items-center gap-3">
               <Link href="/login" className="habbo-button success px-4 py-2.5">
                 <LogIn size={16} /> GİRİŞ YAP
               </Link>
@@ -52,8 +56,13 @@ export default async function Header() {
               </Link>
             </div>
           ) : (
-            <UserDropdown profile={profile} />
+            <div className="flex items-center gap-3">
+              <NotificationBell userId={user?.id || ''} />
+              <UserDropdown profile={profile} />
+            </div>
           )}
+
+          <MobileMenu profile={profile} />
         </div>
 
       </div>

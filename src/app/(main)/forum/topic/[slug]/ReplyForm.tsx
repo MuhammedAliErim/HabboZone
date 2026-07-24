@@ -43,24 +43,24 @@ export default function ReplyForm({ topicId, currentUser }: { topicId: string, c
 
   if (!currentUser) {
     return (
-      <div className="bg-white/5 border border-white/10 rounded-2xl p-8 text-center space-y-4">
-        <h3 className="text-xl font-bold uppercase tracking-widest">Tartışmaya Katıl</h3>
-        <p className="text-white/60">Cevap yazabilmek için üye girişi yapman gerekiyor.</p>
-        <button onClick={() => router.push('/login')} className="bg-primary text-white px-6 py-2 rounded-lg font-bold">Giriş Yap</button>
+      <div className="bg-[#050a14] border border-[#1e293b] rounded p-8 text-center space-y-4 habbo-box">
+        <h3 className="text-xl font-bold uppercase tracking-widest text-white">Tartışmaya Katıl</h3>
+        <p className="text-[#64748b]">Cevap yazabilmek için üye girişi yapman gerekiyor.</p>
+        <button onClick={() => router.push('/login')} className="bg-[#3b82f6] text-white px-6 py-2 rounded font-bold hover:bg-[#2563eb] transition-colors border-b-4 border-[#1d4ed8]">Giriş Yap</button>
       </div>
     );
   }
 
   return (
-    <div className="bg-white/5 border border-white/10 rounded-2xl p-6 shadow-xl">
-      <h3 className="text-xl font-bold uppercase tracking-widest mb-4">Cevap Yaz</h3>
+    <div className="bg-[#050a14] border border-[#1e293b] rounded p-6 shadow-xl habbo-box">
+      <h3 className="text-xl font-bold uppercase tracking-widest mb-4 text-white">Cevap Yaz</h3>
       <form onSubmit={handleSubmit} className="space-y-4">
         <TipTapEditor content={content} onChange={setContent} />
         <div className="flex justify-end pt-2">
           <button 
             type="submit" 
             disabled={loading || content.length < 10}
-            className="flex items-center gap-2 bg-primary text-white font-bold uppercase tracking-widest px-8 py-3 rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50"
+            className="flex items-center gap-2 bg-[#22c55e] text-white font-bold uppercase tracking-widest px-8 py-3 rounded hover:bg-[#16a34a] transition-colors disabled:opacity-50 border-b-4 border-[#15803d]"
           >
             {loading ? <span className="animate-spin">⚙</span> : <Send size={18} />}
             Gönder

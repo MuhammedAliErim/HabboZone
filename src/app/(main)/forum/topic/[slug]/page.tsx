@@ -67,29 +67,31 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
       
       {/* Üst Kısım: Breadcrumb & Başlık */}
       <div className="space-y-4">
-        <Link href={`/forum/${(topic.forums as any)?.slug}`} className="inline-flex items-center gap-2 text-xs font-bold text-gray-500 hover:text-primary transition-colors bg-white px-3 py-1.5 rounded shadow-sm border border-gray-200">
+        <Link href={`/forum/${(topic.forums as any)?.slug}`} className="inline-flex items-center gap-2 text-[10px] font-bold text-[#64748b] hover:text-white transition-colors bg-[#050a14] px-3 py-1.5 rounded border border-[#1e293b]">
           <ArrowLeft size={14} /> {(topic.forums as any)?.title} Forumuna Dön
         </Link>
         
-        <h1 className="text-2xl md:text-3xl font-black uppercase tracking-widest flex items-center gap-3 text-gray-800">
+        <h1 className="text-2xl md:text-3xl font-black uppercase tracking-widest flex items-center gap-3 text-white">
           {topic.title}
           {topic.is_solved && (
-            <span className="px-2 py-0.5 bg-green-100 border border-green-200 text-green-700 text-[10px] rounded uppercase tracking-wider flex items-center gap-1 shadow-sm">
+            <span className="px-2 py-0.5 bg-[#22c55e]/10 border border-[#22c55e]/30 text-[#22c55e] text-[10px] rounded uppercase tracking-wider flex items-center gap-1 shadow-sm">
               <CheckCircle size={12} /> Çözüldü
             </span>
           )}
         </h1>
-        <div className="flex items-center gap-4 text-[10px] text-gray-500 font-bold border-b border-gray-200 pb-4">
+        <div className="flex items-center gap-4 text-[10px] text-[#64748b] font-bold border-b border-[#1e293b] pb-4">
           <span className="flex items-center gap-1">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <div className="w-5 h-5 rounded overflow-hidden bg-gray-100 flex items-center justify-center">
+            <div className="w-5 h-5 rounded overflow-hidden bg-[#0a1325] border border-[#1e293b] flex items-center justify-center">
                 <img 
                 src={`https://www.habbo.com.tr/habbo-imaging/avatarimage?user=${(topic.author as any)?.habbo_username || 'Admin'}&direction=2&head_direction=2&gesture=sml&size=s`}
                 alt="Author"
-                className="w-6 h-6 -mt-1"
+                className="w-6 h-6 -mt-1 pixelated"
                 />
             </div>
-            {(topic.author as any)?.username}
+            <Link href={`/profile/${(topic.author as any)?.username}`} className="hover:text-[#3b82f6] transition-colors">
+              {(topic.author as any)?.username}
+            </Link>
           </span>
           <span className="flex items-center gap-1"><Clock size={12} /> {new Date(topic.created_at).toLocaleDateString('tr-TR')}</span>
           <span className="flex items-center gap-1"><MessageCircle size={12} /> {replies?.length || 0} Cevap</span>
@@ -102,34 +104,36 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
       )}
 
       {/* Ana Konu Gövdesi */}
-      <div className="flex gap-4">
+      <div className="flex flex-col md:flex-row gap-4">
         {/* Yazar Bilgi Kutusu */}
         <div className="hidden md:flex flex-col items-center w-48 habbo-box flex-shrink-0 self-start">
-          <div className="habbo-box-header green py-1 px-2 text-[10px] text-center w-full">Konu Sahibi</div>
-          <div className="bg-white w-full p-4 flex flex-col items-center">
+          <div className="habbo-box-header green py-1 px-2 text-[10px] text-center w-full uppercase tracking-widest font-bold">Konu Sahibi</div>
+          <div className="bg-[#050a14] w-full p-4 flex flex-col items-center">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <div className="w-full aspect-square bg-gray-100 border border-gray-200 rounded mb-4 overflow-hidden flex items-center justify-center shadow-inner">
+            <div className="w-full aspect-square bg-[#0a1325] border border-[#1e293b] rounded mb-4 overflow-hidden flex items-center justify-center shadow-inner relative">
                 <img 
                 src={`https://www.habbo.com.tr/habbo-imaging/avatarimage?user=${(topic.author as any)?.habbo_username || 'Admin'}&direction=2&head_direction=2&gesture=sml&size=l`}
                 alt={(topic.author as any)?.username}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover pixelated"
                 style={{ objectPosition: 'center -10px' }}
                 />
             </div>
-            <div className="text-sm font-black text-gray-800 text-center truncate w-full">{(topic.author as any)?.username}</div>
-            {/* Rozetler buraya gelecek */}
+            <Link href={`/profile/${(topic.author as any)?.username}`} className="text-[13px] font-black text-white text-center truncate w-full hover:text-[#3b82f6] transition-colors">
+              {(topic.author as any)?.username}
+            </Link>
+            <div className="text-[10px] text-[#64748b] mt-1">{(topic.author as any)?.role || 'Üye'}</div>
           </div>
         </div>
 
         {/* İçerik */}
         <div className="flex-1 habbo-box min-h-[200px] flex flex-col">
             <div className="habbo-box-header blue py-1 px-2 text-[10px]">{new Date(topic.created_at).toLocaleString('tr-TR')}</div>
-            <div className="p-6 bg-white flex flex-col flex-1">
-                <div className="prose prose-sm md:prose-base max-w-none flex-1 text-gray-700" dangerouslySetInnerHTML={{ __html: topic.content }} />
+            <div className="p-6 bg-[#050a14] flex flex-col flex-1">
+                <div className="prose prose-invert prose-sm md:prose-base max-w-none flex-1 text-gray-300" dangerouslySetInnerHTML={{ __html: topic.content }} />
                 
-                <div className="mt-8 border-t border-gray-100 pt-4 flex justify-between items-center bg-gray-50 -mx-6 -mb-6 px-6 pb-6 rounded-b">
-                <ReactionView targetId={topic.id} targetType="topic" currentUser={user} />
-                <TopicModeration topic={topic} userProfile={userProfile} />
+                <div className="mt-8 border-t border-[#1e293b] pt-4 flex flex-wrap gap-4 justify-between items-center bg-[#0a1325] -mx-6 -mb-6 px-6 pb-6 rounded-b">
+                  <ReactionView targetId={topic.id} targetType="topic" currentUser={user} />
+                  <TopicModeration topic={topic} userProfile={userProfile} />
                 </div>
             </div>
         </div>
@@ -137,35 +141,37 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
 
       {/* Cevaplar */}
       <div className="space-y-4 pt-8">
-        <h3 className="text-lg font-bold uppercase tracking-widest border-b border-gray-200 pb-2 text-gray-800">Cevaplar ({replies?.length || 0})</h3>
+        <h3 className="text-sm font-bold uppercase tracking-widest border-b border-[#1e293b] pb-2 text-white">Cevaplar ({replies?.length || 0})</h3>
         
         {replies?.map((reply: any) => (
-          <div key={reply.id} className="flex gap-4">
+          <div key={reply.id} className="flex flex-col md:flex-row gap-4">
             <div className="hidden md:flex flex-col items-center w-48 habbo-box flex-shrink-0 self-start">
-              <div className="habbo-box-header gray py-1 px-2 text-[10px] text-center w-full">Cevaplayan</div>
-              <div className="bg-white w-full p-4 flex flex-col items-center">
+              <div className="habbo-box-header gray py-1 px-2 text-[10px] text-center w-full uppercase tracking-widest font-bold">Cevaplayan</div>
+              <div className="bg-[#050a14] w-full p-4 flex flex-col items-center">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <div className="w-full aspect-square bg-gray-100 border border-gray-200 rounded mb-2 overflow-hidden flex items-center justify-center shadow-inner">
+                <div className="w-full aspect-square bg-[#0a1325] border border-[#1e293b] rounded mb-2 overflow-hidden flex items-center justify-center shadow-inner relative">
                     <img 
                     src={`https://www.habbo.com.tr/habbo-imaging/avatarimage?user=${(reply.author as any)?.habbo_username || 'Admin'}&direction=2&head_direction=2&gesture=sml&size=l`}
                     alt={(reply.author as any)?.username}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover pixelated"
                     style={{ objectPosition: 'center -10px' }}
                     />
                 </div>
-                <div className="text-xs font-black text-gray-800 text-center truncate w-full">{(reply.author as any)?.username}</div>
+                <Link href={`/profile/${(reply.author as any)?.username}`} className="text-[12px] font-black text-white text-center truncate w-full hover:text-[#3b82f6] transition-colors">
+                  {(reply.author as any)?.username}
+                </Link>
               </div>
             </div>
             
-            <div className={`flex-1 habbo-box flex flex-col`}>
-              <div className={`habbo-box-header py-1 px-2 text-[10px] flex justify-between ${reply.is_solution ? 'green' : 'blue'}`}>
+            <div className={`flex-1 habbo-box flex flex-col ${reply.is_solution ? 'border-[#22c55e]' : ''}`}>
+              <div className={`habbo-box-header py-1 px-2 text-[10px] flex justify-between ${reply.is_solution ? 'green' : 'gray'}`}>
                 <span>{new Date(reply.created_at).toLocaleString('tr-TR')}</span>
-                {reply.is_solution && <span className="text-white">✅ Çözüm Olarak İşaretlendi</span>}
+                {reply.is_solution && <span className="text-white font-bold tracking-wider">✅ Çözüm</span>}
               </div>
-              <div className={`p-6 flex flex-col flex-1 ${reply.is_solution ? 'bg-green-50' : 'bg-white'}`}>
-                <div className="prose prose-sm md:prose-base max-w-none flex-1 text-gray-700" dangerouslySetInnerHTML={{ __html: reply.content }} />
+              <div className={`p-6 flex flex-col flex-1 ${reply.is_solution ? 'bg-[#050a14]' : 'bg-[#050a14]'}`}>
+                <div className="prose prose-invert prose-sm md:prose-base max-w-none flex-1 text-gray-300" dangerouslySetInnerHTML={{ __html: reply.content }} />
                 
-                <div className={`mt-4 border-t pt-2 ${reply.is_solution ? 'border-green-100' : 'border-gray-100'}`}>
+                <div className={`mt-6 pt-4 border-t ${reply.is_solution ? 'border-[#22c55e]/30' : 'border-[#1e293b]'}`}>
                     <ReactionView targetId={reply.id} targetType="reply" currentUser={user} />
                 </div>
               </div>
@@ -174,7 +180,7 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
         ))}
 
         {replies?.length === 0 && (
-          <div className="text-center p-8 text-gray-500 bg-gray-50 border border-gray-200 rounded">
+          <div className="text-center p-12 text-[#64748b] bg-[#050a14] border border-dashed border-[#1e293b] rounded habbo-box text-sm">
             Bu konuya henüz cevap yazılmamış. İlk cevabı sen yaz!
           </div>
         )}
@@ -186,8 +192,8 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
           <ReplyForm topicId={topic.id} currentUser={user} />
         </div>
       ) : (
-        <div className="mt-8 p-6 bg-red-50 border border-red-200 text-red-600 text-center font-bold rounded shadow-sm text-sm uppercase tracking-widest">
-          Bu konu kilitlenmiştir ve yeni cevaplara kapalıdır.
+        <div className="mt-8 p-6 bg-[#ef4444]/10 border border-[#ef4444]/30 text-[#ef4444] text-center font-bold rounded habbo-box text-xs uppercase tracking-widest">
+          🔒 Bu konu kilitlenmiştir ve yeni cevaplara kapalıdır.
         </div>
       )}
 
