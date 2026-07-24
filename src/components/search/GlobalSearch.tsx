@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
-import { Search, Loader2, Newspaper, BookOpen, Medal, Calendar, User, FileText } from 'lucide-react';
+import { Search, Loader2, Newspaper, BookOpen, Medal, Calendar, User, FileText, ShoppingBag, Package } from 'lucide-react';
 import { useDebounce } from 'use-debounce';
 import { globalSearch, SearchResult } from '@/app/actions/search';
 import Link from 'next/link';
@@ -55,6 +55,9 @@ export default function GlobalSearch() {
       case 'event': return <Calendar size={14} className="text-purple-400" />;
       case 'profile': return <User size={14} className="text-green-400" />;
       case 'topic': return <FileText size={14} className="text-gray-400" />;
+      case 'guide': return <FileText size={14} className="text-blue-400" />;
+      case 'market': return <ShoppingBag size={14} className="text-emerald-400" />;
+      case 'wiki': return <Package size={14} className="text-[#facc15]" />;
       default: return <Search size={14} className="text-gray-400" />;
     }
   };
@@ -67,6 +70,9 @@ export default function GlobalSearch() {
       case 'event': return 'Etkinlik';
       case 'profile': return 'Kullanıcı';
       case 'topic': return 'Forum/Rehber';
+      case 'guide': return 'Rehber';
+      case 'market': return 'Pazar';
+      case 'wiki': return 'Wiki';
       default: return 'Diğer';
     }
   };

@@ -1,6 +1,6 @@
 import { createClient } from '@/utils/supabase/server';
 import Link from 'next/link';
-import { Newspaper, BookOpen, Medal, Calendar, User, FileText, Search, Users, AlertCircle } from 'lucide-react';
+import { Newspaper, BookOpen, Medal, Calendar, User, FileText, Search, Users, AlertCircle, ShoppingBag, Package } from 'lucide-react';
 import Image from 'next/image';
 
 export const metadata = {
@@ -20,6 +20,8 @@ const TABS = [
   { id: 'events', label: 'Etkinlikler' },
   { id: 'groups', label: 'Gruplar' },
   { id: 'profiles', label: 'Kullanıcılar' },
+  { id: 'market', label: 'Pazar' },
+  { id: 'wiki', label: 'Wiki' },
 ];
 
 export default async function SearchPage({ searchParams }: Props) {
@@ -57,7 +59,25 @@ export default async function SearchPage({ searchParams }: Props) {
         id: d.id, _type: 'event', title: d.title, description: d.description, url: `/events`, imageUrl: d.image_url 
       })));
     }
-    // TODO: Add magazines, guides, groups when those tables/pages are fully ready
+    if (tab === 'all' || tab === 'guides') {
+      const { data } = await supabase.from('guides').select('id, title, summary, slug, image_url').ilike('title', searchPattern).eq('status', 'Published').limit(20);
+      if (data) results.push(...data.map(d => ({ 
+        id: d.id, _type: 'guide', title: d.title, description: d.summary, url: `/guides/${d.slug}`, imageUrl: d.image_url 
+      })));
+    }
+    if (tab === 'all' || tab === 'market') {
+      const { data } = await supabase.from('market_items').select('id, name, description, slug, image_url').ilike('name', searchPattern).limit(20);
+      if (data) results.push(...data.map(d => ({ 
+        id: d.id, _type: 'market', title: d.name, description: d.description, url: `/market/item/${d.slug}`, imageUrl: d.image_url 
+      })));
+    }
+    if (tab === 'all' || tab === 'wiki') {
+      const { data } = await supabase.from('wiki_items').select('id, name, description, slug, image_url').ilike('name', searchPattern).limit(20);
+      if (data) results.push(...data.map(d => ({ 
+        id: d.id, _type: 'wiki', title: d.name, description: d.description, url: `/wiki/item/${d.slug}`, imageUrl: d.image_url 
+      })));
+    }
+    // TODO: Add magazines, groups when those tables/pages are fully ready
   }
 
   const getTypeIcon = (type: string) => {
@@ -69,6 +89,8 @@ export default async function SearchPage({ searchParams }: Props) {
       case 'profile': return <User size={16} className="text-green-400" />;
       case 'guide': return <FileText size={16} className="text-blue-400" />;
       case 'group': return <Users size={16} className="text-pink-400" />;
+      case 'market': return <ShoppingBag size={16} className="text-emerald-400" />;
+      case 'wiki': return <Package size={16} className="text-[#facc15]" />;
       default: return <Search size={16} className="text-gray-400" />;
     }
   };
@@ -82,6 +104,8 @@ export default async function SearchPage({ searchParams }: Props) {
       case 'profile': return 'Kullanıcı';
       case 'guide': return 'Rehber';
       case 'group': return 'Grup';
+      case 'market': return 'Pazar';
+      case 'wiki': return 'Wiki';
       default: return 'Diğer';
     }
   };

@@ -4,7 +4,7 @@ import { createClient } from '@/utils/supabase/server';
 
 export interface SearchResult {
   id: string;
-  type: 'news' | 'magazine' | 'event' | 'badge' | 'profile' | 'topic';
+  type: 'news' | 'magazine' | 'event' | 'badge' | 'profile' | 'topic' | 'guide' | 'market' | 'wiki';
   title: string;
   description?: string;
   url: string;
@@ -89,6 +89,61 @@ export async function globalSearch(query: string, limitPerType = 3): Promise<Sea
       description: e.description,
       url: `/events`, // Point to events page
       imageUrl: e.image_url
+    })));
+  }
+
+  // 5. Search Guides
+  const { data: guides } = await supabase
+    .from('guides')
+    .select('id, title, summary, slug, image_url')
+    .ilike('title', searchPattern)
+    .eq('status', 'Published')
+    .limit(limitPerType);
+
+  if (guides) {
+    results.push(...guides.map(g => ({
+      id: g.id,
+      type: 'guide' as const,
+      title: g.title,
+      description: g.summary,
+      url: `/guides/${g.slug}`,
+      imageUrl: g.image_url
+    })));
+  }
+
+  // 6. Search Market Items
+  const { data: marketItems } = await supabase
+    .from('market_items')
+    .select('id, name, description, slug, image_url')
+    .ilike('name', searchPattern)
+    .limit(limitPerType);
+
+  if (marketItems) {
+    results.push(...marketItems.map(m => ({
+      id: m.id,
+      type: 'market' as const,
+      title: m.name,
+      description: m.description,
+      url: `/market/item/${m.slug}`,
+      imageUrl: m.image_url
+    })));
+  }
+
+  // 7. Search Wiki Items
+  const { data: wikiItems } = await supabase
+    .from('wiki_items')
+    .select('id, name, description, slug, image_url')
+    .ilike('name', searchPattern)
+    .limit(limitPerType);
+
+  if (wikiItems) {
+    results.push(...wikiItems.map(w => ({
+      id: w.id,
+      type: 'wiki' as const,
+      title: w.name,
+      description: w.description,
+      url: `/wiki/item/${w.slug}`,
+      imageUrl: w.image_url
     })));
   }
 
