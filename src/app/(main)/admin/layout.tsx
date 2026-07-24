@@ -14,7 +14,8 @@ import {
   Home,
   Book,
   Image,
-  MessageSquare
+  MessageSquare,
+  Package
 } from 'lucide-react'
 
 export const metadata = {
@@ -89,6 +90,14 @@ export default async function AdminLayout({
             >
               <Gem size={18} />
               <span>Nadire Değerleri</span>
+            </Link>
+
+            <Link 
+              href="/admin/wiki"
+              className="flex items-center gap-3 px-3 py-2 text-gray-300 hover:text-white hover:bg-[#2a2a2a] rounded-md transition-colors"
+            >
+              <Package size={18} />
+              <span>Wiki Kütüphanesi</span>
             </Link>
 
             <Link 
