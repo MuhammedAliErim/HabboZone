@@ -26,6 +26,8 @@
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "react-hot-toast": "^2.6.0",
+    "react-pageflip": "^2.0.3",
+    "react-rnd": "^10.5.3",
     "recharts": "^3.10.0",
     "tippy.js": "^6.3.7",
     "use-debounce": "^10.1.1",

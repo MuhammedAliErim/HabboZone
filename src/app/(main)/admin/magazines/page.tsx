@@ -1,27 +1,30 @@
-import { createClient } from '@/utils/supabase/server'
+import { getAdminMagazines, deleteMagazine } from '@/app/actions/magazine'
 import Link from 'next/link'
-import { Plus, Edit, Trash2 } from 'lucide-react'
+import { Plus, Edit, Trash2, Wand2 } from 'lucide-react'
 import Image from 'next/image'
 
 export default async function AdminMagazinesPage() {
-  const supabase = await createClient()
-
-  const { data: magazines, error } = await supabase
-    .from('magazines')
-    .select('*')
-    .order('issue_number', { ascending: false })
+  const magazines = await getAdminMagazines();
 
   return (
     <div>
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-        <h1 className="text-2xl font-bold text-white">Gazete/Dergi Yönetimi</h1>
-        <Link 
-          href="/admin/magazines/new"
-          className="flex items-center gap-2 bg-yellow-500 hover:bg-yellow-600 text-black px-4 py-2 rounded-md font-bold transition-colors"
-        >
-          <Plus size={18} />
-          Yeni Sayı Ekle
-        </Link>
+        <h1 className="text-2xl font-bold text-white">Gelişmiş AI Dergi Yönetimi</h1>
+        <form action={async () => {
+          'use server';
+          const { createMagazine } = await import('@/app/actions/magazine');
+          const { redirect } = await import('next/navigation');
+          const newMag = await createMagazine('Yeni Dergi', 'Açıklama girilmedi.');
+          redirect(`/admin/magazines/${newMag.id}/edit`);
+        }}>
+          <button 
+            type="submit"
+            className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white px-4 py-2 rounded-md font-bold transition-colors"
+          >
+            <Wand2 size={18} />
+            Yeni AI Dergi Oluştur
+          </button>
+        </form>
       </div>
 
       <div className="bg-[#2a2a2a] border border-[#333] rounded-lg overflow-hidden">
@@ -43,7 +46,7 @@ export default async function AdminMagazinesPage() {
                     <td className="px-6 py-4">
                       <div className="relative w-12 h-16 rounded overflow-hidden border border-[#444]">
                         <Image 
-                          src={item.cover_image_url} 
+                          src={item.cover_image || item.cover_image_url || '/placeholder.png'} 
                           alt={item.title} 
                           fill
                           className="object-cover"
@@ -51,13 +54,14 @@ export default async function AdminMagazinesPage() {
                       </div>
                     </td>
                     <td className="px-6 py-4 font-bold text-yellow-500">
-                      #{item.issue_number}
+                      #{item.issue_number || item.id.substring(0, 4)}
                     </td>
                     <td className="px-6 py-4 font-medium text-white max-w-[200px] truncate">
                       {item.title}
+                      {item.is_ai_generated && <span className="ml-2 text-xs bg-indigo-500/20 text-indigo-400 px-2 py-0.5 rounded border border-indigo-500/30">AI Destekli</span>}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      {new Date(item.published_at).toLocaleString('tr-TR')}
+                      {item.published_at ? new Date(item.published_at).toLocaleString('tr-TR') : 'Yayınlanmadı'}
                     </td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-2">
@@ -68,12 +72,19 @@ export default async function AdminMagazinesPage() {
                         >
                           <Edit size={16} />
                         </Link>
-                        <button 
-                          className="p-2 bg-red-500/10 text-red-400 hover:bg-red-500/20 rounded transition-colors"
-                          title="Sil"
-                        >
-                          <Trash2 size={16} />
-                        </button>
+                        <form action={async () => {
+                          'use server';
+                          const { deleteMagazine } = await import('@/app/actions/magazine');
+                          await deleteMagazine(item.id);
+                        }}>
+                          <button 
+                            type="submit"
+                            className="p-2 bg-red-500/10 text-red-400 hover:bg-red-500/20 rounded transition-colors"
+                            title="Sil"
+                          >
+                            <Trash2 size={16} />
+                          </button>
+                        </form>
                       </div>
                     </td>
                   </tr>

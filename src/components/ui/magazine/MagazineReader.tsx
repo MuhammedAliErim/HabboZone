@@ -1,49 +1,43 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
-import { 
-  ChevronLeft, 
-  ChevronRight, 
-  X, 
-  Menu, 
-  Download,
-  Maximize,
-  Minimize
-} from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronLeft, ChevronRight, X, Maximize, Minimize } from 'lucide-react';
+import HTMLFlipBook from 'react-pageflip';
+
+// Bypass strict TS type checking for HTMLFlipBook since its types are incomplete
+const FlipBook = HTMLFlipBook as any;
 
 interface MagazineReaderProps {
-  magazine: {
-    title: string;
-    issue_number: number;
-    pdf_url: string;
-    pages?: string[];
-  };
+  magazine: any;
+  aiPages?: any[];
 }
 
-export default function MagazineReader({ magazine }: MagazineReaderProps) {
-  const [currentPage, setCurrentPage] = useState(0);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+// Flipbook için her bir sayfa bileşeni (React-pageflip forwardRef gerektirir)
+const Page = React.forwardRef<HTMLDivElement, { children: React.ReactNode; number: number }>(
+  (props, ref) => {
+    return (
+      <div className="bg-white overflow-hidden shadow-lg" ref={ref}>
+        {props.children}
+        <div className="absolute bottom-2 right-2 text-xs text-gray-500 font-medium opacity-50 z-50 mix-blend-difference">
+          {props.number}
+        </div>
+      </div>
+    );
+  }
+);
+Page.displayName = 'Page';
+
+export default function MagazineReader({ magazine, aiPages = [] }: MagazineReaderProps) {
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const pages = magazine.pages || [];
-  const totalPages = pages.length;
+  const flipBookRef = useRef<any>(null);
 
-  // Keyboard navigation
-  const handleKeyDown = useCallback((e: KeyboardEvent) => {
-    if (e.key === 'ArrowRight') {
-      setCurrentPage((prev) => Math.min(prev + 1, totalPages - 1));
-    } else if (e.key === 'ArrowLeft') {
-      setCurrentPage((prev) => Math.max(prev - 1, 0));
-    } else if (e.key === 'Escape' && isFullscreen) {
-      toggleFullscreen();
-    }
-  }, [totalPages, isFullscreen]);
-
-  useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [handleKeyDown]);
+  // Eski sistemdeki (Resim tabanlı) sayfalar
+  const oldPages = magazine.pages || [];
+  const isAiGenerated = aiPages.length > 0 || magazine.is_ai_generated;
+  
+  // Hangi sayfaları göstereceğiz?
+  const totalPages = isAiGenerated ? aiPages.length : oldPages.length;
 
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
@@ -69,14 +63,79 @@ export default function MagazineReader({ magazine }: MagazineReaderProps) {
 
   if (totalPages === 0) {
     return (
-      <div className="flex h-screen items-center justify-center bg-zinc-950 text-white">
+      <div className="flex h-screen items-center justify-center bg-[#0a0a0a] text-white">
         Bu dergi için sayfa bulunamadı.
       </div>
     );
   }
 
+  // AI Sayfasını Render Etme Fonksiyonu
+  const renderAIPage = (page: any) => {
+    const layers = page.layout_data?.layers || [];
+    return (
+      <div 
+        className="w-full h-full relative origin-top-left"
+        style={{
+          backgroundColor: page.background_color || '#ffffff',
+          backgroundImage: page.background_image ? `url(${page.background_image})` : 'none',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          // Orijinal dergi 800x1131, bizim flipbook boyutumuz 400x565 olacak (Yarı yarıya)
+          // Transform scale ile küçültüyoruz ki içindeki absolute pozisyonlar bozulmasın
+          transform: 'scale(0.5)',
+          width: 800,
+          height: 1131
+        }}
+      >
+        {layers.map((layer: any) => {
+          if (layer.type === 'text') {
+            return (
+              <div 
+                key={layer.id}
+                style={{
+                  position: 'absolute',
+                  left: layer.style?.x || 0,
+                  top: layer.style?.y || 0,
+                  width: layer.style?.width,
+                  height: layer.style?.height,
+                  fontSize: layer.style?.fontSize,
+                  color: layer.style?.color,
+                  fontWeight: layer.style?.fontWeight,
+                  lineHeight: 1.2
+                }}
+              >
+                {layer.content}
+              </div>
+            );
+          } else if (layer.type === 'image') {
+            return (
+              <div
+                key={layer.id}
+                style={{
+                  position: 'absolute',
+                  left: layer.style?.x || 0,
+                  top: layer.style?.y || 0,
+                  width: layer.style?.width,
+                  height: layer.style?.height,
+                }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img 
+                  src={layer.content} 
+                  alt="layer" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            );
+          }
+          return null;
+        })}
+      </div>
+    );
+  };
+
   return (
-    <div className="fixed inset-0 z-[100] bg-[#0a0a0a] text-white flex flex-col overflow-hidden font-sans">
+    <div className="fixed inset-0 z-[100] bg-[#0a0a0a] text-white flex flex-col font-sans overflow-hidden">
       {/* Header */}
       <header className="h-14 flex-none bg-[#111111] border-b border-white/10 flex items-center justify-between px-4 z-20">
         <div className="flex items-center gap-3">
@@ -87,123 +146,81 @@ export default function MagazineReader({ magazine }: MagazineReaderProps) {
           >
             <X size={18} />
           </Link>
-          <button 
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/15 flex items-center justify-center transition-colors text-white md:hidden"
-          >
-            <Menu size={18} />
-          </button>
-          <div className="hidden sm:block">
+          <div>
             <h1 className="font-bold text-[15px] leading-tight text-gray-100">{magazine.title}</h1>
-            <p className="text-[11px] text-gray-400 font-medium">Sayı #{magazine.issue_number}</p>
+            {magazine.issue_number && <p className="text-[11px] text-gray-400 font-medium">Sayı #{magazine.issue_number}</p>}
           </div>
         </div>
 
         <div className="flex items-center gap-3">
-          <span className="text-xs font-bold text-gray-400 tracking-widest uppercase mr-2">
-            {currentPage + 1} / {totalPages}
-          </span>
           <button 
             onClick={toggleFullscreen}
-            className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/15 flex items-center justify-center transition-colors text-gray-300 hidden sm:flex"
+            className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/15 flex items-center justify-center transition-colors text-gray-300"
             title="Tam Ekran"
           >
             {isFullscreen ? <Minimize size={16} /> : <Maximize size={16} />}
           </button>
-          <a 
-            href={magazine.pdf_url} 
-            download 
-            className="flex items-center gap-2 px-3 py-1.5 bg-[#38bdf8]/10 hover:bg-[#38bdf8]/20 text-[#38bdf8] rounded-[4px] text-xs font-bold transition-colors border border-[#38bdf8]/30"
-          >
-            <Download size={14} />
-            <span className="hidden sm:inline">PDF İNDİR</span>
-          </a>
         </div>
       </header>
 
-      {/* Main Content Area */}
-      <div className="flex flex-1 overflow-hidden relative">
-        {/* Sidebar (Thumbnails) */}
-        <AnimatePresence initial={false}>
-          {isSidebarOpen && (
-            <motion.div
-              initial={{ width: 0, opacity: 0 }}
-              animate={{ width: 220, opacity: 1 }}
-              exit={{ width: 0, opacity: 0 }}
-              transition={{ duration: 0.3, ease: 'easeInOut' }}
-              className="h-full bg-[#111111] border-r border-white/5 flex-none overflow-y-auto custom-scrollbar absolute md:relative z-10"
-            >
-              <div className="p-4 grid grid-cols-2 gap-3 w-[220px]">
-                {pages.map((imgUrl, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentPage(index)}
-                    className={`relative group rounded border-2 transition-all overflow-hidden aspect-[1/1.4] ${
-                      currentPage === index 
-                        ? 'border-[#38bdf8] shadow-[0_0_10px_rgba(56,189,248,0.3)]' 
-                        : 'border-transparent hover:border-white/20'
-                    }`}
-                  >
-                    <img 
-                      src={imgUrl} 
-                      alt={`Sayfa ${index + 1}`} 
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute bottom-0 inset-x-0 bg-black/80 backdrop-blur-sm text-[9px] font-bold text-center py-1 text-gray-300 border-t border-white/10">
-                      SAYFA {index + 1}
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Reader Canvas */}
-        <main className="flex-1 relative flex items-center justify-center bg-[#0a0a0a] overflow-hidden group">
-          {/* Controls overlay */}
-          <button
-            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 0))}
-            disabled={currentPage === 0}
-            className={`absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-black/50 backdrop-blur-md flex items-center justify-center text-white transition-all z-10 border border-white/10 shadow-lg ${currentPage === 0 ? 'opacity-0 cursor-not-allowed' : 'opacity-0 group-hover:opacity-100 hover:bg-black/80 hover:scale-110'}`}
+      {/* Reader Canvas (3D Flipbook) */}
+      <main className="flex-1 flex flex-col items-center justify-center bg-[#1a1a1a] relative overflow-hidden">
+        
+        {/* Flipbook Container */}
+        <div className="relative shadow-[0_0_50px_rgba(0,0,0,0.8)]">
+          <FlipBook 
+            width={400} 
+            height={565} 
+            size="fixed" 
+            minWidth={315} 
+            maxWidth={1000} 
+            minHeight={400} 
+            maxHeight={1533} 
+            maxShadowOpacity={0.5} 
+            showCover={true} 
+            mobileScrollSupport={true}
+            className="flipbook-component"
+            ref={flipBookRef}
           >
-            <ChevronLeft size={24} />
-          </button>
+            {isAiGenerated ? (
+              aiPages.map((page: any, index: number) => (
+                <Page key={page.id} number={index + 1}>
+                  {renderAIPage(page)}
+                </Page>
+              ))
+            ) : (
+              oldPages.map((url: string, index: number) => (
+                <Page key={index} number={index + 1}>
+                  <div className="w-full h-full bg-white flex items-center justify-center">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={url} alt={`Sayfa ${index + 1}`} className="max-w-full max-h-full object-contain" />
+                  </div>
+                </Page>
+              ))
+            )}
+          </FlipBook>
+        </div>
 
-          <button
-            onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages - 1))}
-            disabled={currentPage === totalPages - 1}
-            className={`absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-black/50 backdrop-blur-md flex items-center justify-center text-white transition-all z-10 border border-white/10 shadow-lg ${currentPage === totalPages - 1 ? 'opacity-0 cursor-not-allowed' : 'opacity-0 group-hover:opacity-100 hover:bg-black/80 hover:scale-110'}`}
+        {/* Sonraki / Önceki Sayfa Butonları */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-6 bg-black/60 px-6 py-3 rounded-full backdrop-blur-md border border-white/10">
+          <button 
+            onClick={() => flipBookRef.current?.pageFlip().flipPrev()}
+            className="text-white hover:text-yellow-400 transition-colors flex items-center gap-2 text-sm font-bold"
           >
-            <ChevronRight size={24} />
+            <ChevronLeft size={20} /> ÖNCEKİ
           </button>
-
-          {/* Current Page Image */}
-          <div className="w-full h-full p-4 md:p-8 flex items-center justify-center relative">
-            <AnimatePresence mode="wait">
-              <motion.img
-                key={currentPage}
-                src={pages[currentPage]}
-                initial={{ opacity: 0, scale: 0.98, x: 20 }}
-                animate={{ opacity: 1, scale: 1, x: 0 }}
-                exit={{ opacity: 0, scale: 0.98, x: -20 }}
-                transition={{ duration: 0.25, ease: 'easeOut' }}
-                className="max-w-full max-h-full object-contain drop-shadow-2xl shadow-black rounded-[2px]"
-                alt={`Sayfa ${currentPage + 1}`}
-              />
-            </AnimatePresence>
-          </div>
           
-          {/* Sidebar Toggle Button Overlay (if sidebar is closed) */}
-          <button
-            onClick={() => setIsSidebarOpen(true)}
-            className={`absolute left-4 top-4 w-10 h-10 rounded-full bg-black/50 backdrop-blur-md flex items-center justify-center text-white transition-all z-10 border border-white/10 shadow-lg opacity-0 group-hover:opacity-100 hover:bg-black/80 ${isSidebarOpen ? 'hidden md:hidden' : 'block'}`}
-            title="Sayfaları Göster"
+          <div className="w-[1px] h-6 bg-white/20"></div>
+
+          <button 
+            onClick={() => flipBookRef.current?.pageFlip().flipNext()}
+            className="text-white hover:text-yellow-400 transition-colors flex items-center gap-2 text-sm font-bold"
           >
-            <Menu size={18} />
+            SONRAKİ <ChevronRight size={20} />
           </button>
-        </main>
-      </div>
+        </div>
+
+      </main>
     </div>
   );
 }

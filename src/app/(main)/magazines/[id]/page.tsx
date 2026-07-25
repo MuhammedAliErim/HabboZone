@@ -55,5 +55,12 @@ export default async function MagazineReaderPage({ params }: Props) {
     notFound();
   }
 
-  return <MagazineReader magazine={magazine} />;
+  // Fetch AI pages if they exist
+  const { data: aiPages } = await supabase
+    .from('magazine_pages')
+    .select('*')
+    .eq('magazine_id', magazine.id)
+    .order('page_number', { ascending: true });
+
+  return <MagazineReader magazine={magazine} aiPages={aiPages || []} />;
 }
