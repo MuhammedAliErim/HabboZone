@@ -1,9 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import { Check, X, Trash2 } from 'lucide-react'
+import { Check, X, Trash2, Eye, ExternalLink, Image as ImageIcon, ShieldCheck, Clock, User } from 'lucide-react'
 import { approveGalleryImage, rejectGalleryImage } from '../actions'
 import Image from 'next/image'
+import Link from 'next/link'
 
 type GalleryImage = {
   id: string
@@ -13,7 +14,7 @@ type GalleryImage = {
   created_at: string
   profiles: {
     username: string
-    habbo_username: string
+    habbo_username?: string
   }
 }
 
@@ -26,146 +27,223 @@ export default function GalleryAdminClient({
 }) {
   const [loading, setLoading] = useState(false)
   const [activeTab, setActiveTab] = useState<'pending' | 'approved'>('pending')
+  const [previewImage, setPreviewImage] = useState<GalleryImage | null>(null)
 
   const handleApprove = async (id: string) => {
     setLoading(true)
     try {
       await approveGalleryImage(id)
-      alert('Görsel onaylandı!')
     } catch (err: any) {
-      alert(err.message)
+      alert(err.message || 'Onaylanırken hata oluştu!')
     } finally {
       setLoading(false)
     }
   }
 
   const handleReject = async (id: string, imageUrl: string, isDelete = false) => {
-    if (!confirm(`Bu görseli ${isDelete ? 'silmek' : 'reddetmek'} istediğinize emin misiniz?`)) return
+    if (!confirm(`Bu görseli kalıcı olarak ${isDelete ? 'silmek' : 'reddetmek'} istediğinize emin misiniz?`)) return
     
     setLoading(true)
     try {
       await rejectGalleryImage(id, imageUrl)
-      alert(isDelete ? 'Görsel silindi!' : 'Görsel reddedildi ve silindi!')
     } catch (err: any) {
-      alert(err.message)
+      alert(err.message || 'İşlem sırasında hata oluştu!')
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-in fade-in duration-300">
       
       {/* Tabs */}
-      <div className="flex gap-2 border-b border-[#333]">
+      <div className="flex items-center gap-3 border-b border-white/10 pb-4">
         <button
           onClick={() => setActiveTab('pending')}
-          className={`px-4 py-2 text-sm font-medium transition-colors border-b-2 ${
+          className={`habbo-box px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all flex items-center gap-2 ${
             activeTab === 'pending' 
-              ? 'border-yellow-400 text-white' 
-              : 'border-transparent text-gray-400 hover:text-white'
+              ? 'bg-gradient-to-r from-yellow-500 to-amber-500 text-black shadow-lg shadow-yellow-500/20 scale-105' 
+              : 'bg-[#0a1224] text-gray-400 hover:text-white border border-white/10'
           }`}
         >
+          <Clock size={16} className={activeTab === 'pending' ? 'text-black' : 'text-yellow-400'} />
           Onay Bekleyenler ({pendingImages.length})
         </button>
+
         <button
           onClick={() => setActiveTab('approved')}
-          className={`px-4 py-2 text-sm font-medium transition-colors border-b-2 ${
+          className={`habbo-box px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all flex items-center gap-2 ${
             activeTab === 'approved' 
-              ? 'border-yellow-400 text-white' 
-              : 'border-transparent text-gray-400 hover:text-white'
+              ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-black shadow-lg shadow-emerald-500/20 scale-105' 
+              : 'bg-[#0a1224] text-gray-400 hover:text-white border border-white/10'
           }`}
         >
-          Son Onaylananlar
+          <ShieldCheck size={16} className={activeTab === 'approved' ? 'text-black' : 'text-emerald-400'} />
+          Yayında Olanlar ({approvedImages.length})
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      {/* Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {activeTab === 'pending' ? (
           pendingImages.length > 0 ? (
             pendingImages.map(img => (
-              <div key={img.id} className="bg-[#2a2a2a] border border-[#333] rounded-lg overflow-hidden group">
-                <div className="relative aspect-video w-full bg-black/50">
-                  <Image 
-                    src={img.image_url} 
-                    alt={img.title}
-                    fill
-                    className="object-contain"
-                  />
+              <div key={img.id} className="habbo-box bg-[#0a1224] border-2 border-white/10 rounded-xl overflow-hidden group hover:border-yellow-400/50 transition-all shadow-xl flex flex-col justify-between">
+                <div>
+                  <div className="relative aspect-video w-full bg-[#050a14] border-b border-white/10 overflow-hidden cursor-pointer group-hover:opacity-90 transition-opacity" onClick={() => setPreviewImage(img)}>
+                    <Image 
+                      src={img.image_url} 
+                      alt={img.title || 'Galeri Görseli'}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      unoptimized
+                    />
+                    <div className="absolute top-2 right-2 bg-black/70 backdrop-blur-md px-2.5 py-1 rounded-lg text-[10px] font-bold text-yellow-400 border border-yellow-400/30 flex items-center gap-1">
+                      <Clock size={10} /> Bekliyor
+                    </div>
+                  </div>
+
+                  <div className="p-4 space-y-2">
+                    <h3 className="font-black text-white text-sm truncate">{img.title || 'Başlıksız Görsel'}</h3>
+                    {img.description ? (
+                      <p className="text-xs text-gray-400 line-clamp-2 italic">{img.description}</p>
+                    ) : (
+                      <p className="text-xs text-gray-600 italic">- açıklama yok -</p>
+                    )}
+                    
+                    <div className="text-xs text-gray-400 pt-2 border-t border-white/5 flex items-center justify-between">
+                      <span className="flex items-center gap-1 font-bold text-blue-400">
+                        <User size={12} /> {img.profiles?.username || 'Anonim'}
+                      </span>
+                      <button 
+                        onClick={() => setPreviewImage(img)}
+                        className="text-gray-400 hover:text-white flex items-center gap-1 text-[10px] font-bold underline"
+                      >
+                        <Eye size={12} /> Büyüt
+                      </button>
+                    </div>
+                  </div>
                 </div>
-                <div className="p-4 space-y-2">
-                  <h3 className="font-bold text-white text-sm truncate">{img.title}</h3>
-                  {img.description && (
-                    <p className="text-xs text-gray-400 line-clamp-2">{img.description}</p>
-                  )}
-                  <div className="text-[10px] text-gray-500 pt-2 border-t border-[#333] mt-2">
-                    Yükleyen: {img.profiles?.username}
-                  </div>
-                  
-                  <div className="flex gap-2 pt-2">
-                    <button
-                      onClick={() => handleApprove(img.id)}
-                      disabled={loading}
-                      className="flex-1 bg-green-600 hover:bg-green-700 text-white py-1.5 rounded text-xs flex items-center justify-center gap-1 transition-colors disabled:opacity-50"
-                    >
-                      <Check size={14} /> Onayla
-                    </button>
-                    <button
-                      onClick={() => handleReject(img.id, img.image_url)}
-                      disabled={loading}
-                      className="flex-1 bg-red-600 hover:bg-red-700 text-white py-1.5 rounded text-xs flex items-center justify-center gap-1 transition-colors disabled:opacity-50"
-                    >
-                      <X size={14} /> Reddet
-                    </button>
-                  </div>
+                
+                <div className="p-3 bg-[#050a14] border-t border-white/10 flex gap-2">
+                  <button
+                    onClick={() => handleApprove(img.id)}
+                    disabled={loading}
+                    className="habbo-button flex-1 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white py-2 rounded-xl text-xs font-black flex items-center justify-center gap-1.5 transition-all shadow-md disabled:opacity-50"
+                  >
+                    <Check size={16} /> ONAYLA
+                  </button>
+                  <button
+                    onClick={() => handleReject(img.id, img.image_url)}
+                    disabled={loading}
+                    className="habbo-button flex-1 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white py-2 rounded-xl text-xs font-black flex items-center justify-center gap-1.5 transition-all shadow-md disabled:opacity-50"
+                  >
+                    <X size={16} /> REDDET
+                  </button>
                 </div>
               </div>
             ))
           ) : (
-            <div className="col-span-full py-12 text-center text-gray-500 bg-[#2a2a2a] rounded-lg border border-[#333]">
-              Onay bekleyen görsel bulunmuyor.
+            <div className="col-span-full py-16 text-center text-gray-500 habbo-box bg-[#0a1224] rounded-xl border-2 border-white/10">
+              <ImageIcon size={40} className="mx-auto mb-3 text-gray-600 opacity-40" />
+              <p className="font-bold text-base text-gray-400">Onay bekleyen yeni galeri fotoğrafı yok.</p>
+              <p className="text-xs mt-1">Topluluk üyeleri fotoğraf yüklediğinde burada listelenecektir.</p>
             </div>
           )
         ) : (
           approvedImages.length > 0 ? (
             approvedImages.map(img => (
-              <div key={img.id} className="bg-[#2a2a2a] border border-[#333] rounded-lg overflow-hidden group">
-                <div className="relative aspect-video w-full bg-black/50">
-                  <Image 
-                    src={img.image_url} 
-                    alt={img.title}
-                    fill
-                    className="object-contain"
-                  />
+              <div key={img.id} className="habbo-box bg-[#0a1224] border-2 border-white/10 rounded-xl overflow-hidden group hover:border-emerald-500/50 transition-all shadow-xl flex flex-col justify-between">
+                <div>
+                  <div className="relative aspect-video w-full bg-[#050a14] border-b border-white/10 overflow-hidden cursor-pointer" onClick={() => setPreviewImage(img)}>
+                    <Image 
+                      src={img.image_url} 
+                      alt={img.title || 'Galeri Görseli'}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      unoptimized
+                    />
+                    <div className="absolute top-2 right-2 bg-emerald-950/80 backdrop-blur-md px-2.5 py-1 rounded-lg text-[10px] font-bold text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
+                      <ShieldCheck size={12} /> Yayında
+                    </div>
+                  </div>
+
+                  <div className="p-4 space-y-2">
+                    <h3 className="font-black text-white text-sm truncate">{img.title || 'Başlıksız Görsel'}</h3>
+                    {img.description ? (
+                      <p className="text-xs text-gray-400 line-clamp-2 italic">{img.description}</p>
+                    ) : (
+                      <p className="text-xs text-gray-600 italic">- açıklama yok -</p>
+                    )}
+                    
+                    <div className="text-xs text-gray-400 pt-2 border-t border-white/5 flex items-center justify-between">
+                      <span className="flex items-center gap-1 font-bold text-emerald-400">
+                        <User size={12} /> {img.profiles?.username || 'Anonim'}
+                      </span>
+                      <button 
+                        onClick={() => setPreviewImage(img)}
+                        className="text-gray-400 hover:text-white flex items-center gap-1 text-[10px] font-bold underline"
+                      >
+                        <Eye size={12} /> Büyüt
+                      </button>
+                    </div>
+                  </div>
                 </div>
-                <div className="p-4 space-y-2">
-                  <h3 className="font-bold text-white text-sm truncate">{img.title}</h3>
-                  {img.description && (
-                    <p className="text-xs text-gray-400 line-clamp-2">{img.description}</p>
-                  )}
-                  <div className="text-[10px] text-gray-500 pt-2 border-t border-[#333] mt-2">
-                    Yükleyen: {img.profiles?.username}
-                  </div>
-                  
-                  <div className="pt-2">
-                    <button
-                      onClick={() => handleReject(img.id, img.image_url, true)}
-                      disabled={loading}
-                      className="w-full bg-red-600/20 hover:bg-red-600 text-red-500 hover:text-white py-1.5 rounded text-xs flex items-center justify-center gap-1 transition-colors disabled:opacity-50"
-                    >
-                      <Trash2 size={14} /> Sil
-                    </button>
-                  </div>
+
+                <div className="p-3 bg-[#050a14] border-t border-white/10">
+                  <button
+                    onClick={() => handleReject(img.id, img.image_url, true)}
+                    disabled={loading}
+                    className="habbo-button w-full bg-red-500/10 hover:bg-red-600 text-red-400 hover:text-white py-2 rounded-xl text-xs font-black flex items-center justify-center gap-1.5 transition-all border border-red-500/20 disabled:opacity-50"
+                  >
+                    <Trash2 size={14} /> GALERİDEN KALDIR VE SİL
+                  </button>
                 </div>
               </div>
             ))
           ) : (
-            <div className="col-span-full py-12 text-center text-gray-500 bg-[#2a2a2a] rounded-lg border border-[#333]">
-              Onaylanmış görsel bulunmuyor.
+            <div className="col-span-full py-16 text-center text-gray-500 habbo-box bg-[#0a1224] rounded-xl border-2 border-white/10">
+              <ImageIcon size={40} className="mx-auto mb-3 text-gray-600 opacity-40" />
+              <p className="font-bold text-base text-gray-400">Onaylanmış hiç fotoğraf bulunamadı.</p>
             </div>
           )
         )}
       </div>
+
+      {/* Lightbox / Preview Modal */}
+      {previewImage && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200" onClick={() => setPreviewImage(null)}>
+          <div className="habbo-box bg-[#0a1224] border-2 border-white/20 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden shadow-2xl flex flex-col" onClick={e => e.stopPropagation()}>
+            <div className="p-4 bg-[#050a14] border-b border-white/10 flex items-center justify-between">
+              <div>
+                <h3 className="font-black text-white text-base">{previewImage.title || 'Galeri Fotoğrafı'}</h3>
+                <span className="text-xs text-yellow-400 font-bold">Yükleyen: {previewImage.profiles?.username || 'Anonim'}</span>
+              </div>
+              <button 
+                onClick={() => setPreviewImage(null)}
+                className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors"
+              >
+                <X size={20} />
+              </button>
+            </div>
+            
+            <div className="p-6 overflow-auto flex-1 flex items-center justify-center bg-black/50">
+              <img 
+                src={previewImage.image_url} 
+                alt={previewImage.title || 'Fotoğraf'} 
+                className="max-w-full max-h-[65vh] object-contain rounded-xl border border-white/10 shadow-2xl" 
+              />
+            </div>
+
+            {previewImage.description && (
+              <div className="p-4 bg-[#050a14] border-t border-white/10 text-xs text-gray-300 italic">
+                "{previewImage.description}"
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
     </div>
   )
 }

@@ -1,78 +1,145 @@
 import { createClient } from '@/utils/supabase/server'
 import Link from 'next/link'
-import { Plus, Edit, Trash2 } from 'lucide-react'
+import { Plus, Edit, Trash2, Home, Users, Layers, Sparkles } from 'lucide-react'
 import Image from 'next/image'
+
+export const revalidate = 0;
+
+export const metadata = {
+  title: 'Popüler Odalar Yönetimi - Admin Paneli',
+}
 
 export default async function AdminRoomsPage() {
   const supabase = await createClient()
 
-  const { data: rooms, error } = await supabase
+  const { data: rooms } = await supabase
     .from('rooms')
     .select('*')
     .order('created_at', { ascending: false })
 
+  const totalCapacity = rooms?.reduce((acc, r) => acc + (r.max_users || 0), 0) || 0
+  const activeRooms = rooms?.length || 0
+
   return (
-    <div>
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-        <h1 className="text-2xl font-bold text-white">Odalar Yönetimi</h1>
-        <Link 
-          href="/admin/rooms/new"
-          className="flex items-center gap-2 bg-yellow-500 hover:bg-yellow-600 text-black px-4 py-2 rounded-md font-bold transition-colors"
-        >
-          <Plus size={18} />
-          Yeni Oda Ekle
-        </Link>
+    <div className="space-y-8 animate-in fade-in duration-500">
+      
+      {/* Üst Başlık & İstatistikler */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-6 border-b border-white/10">
+        <div>
+          <h1 className="text-3xl font-black text-white tracking-tight flex items-center gap-3">
+            <Home className="text-yellow-400" size={32} /> HABBO ODALARI YÖNETİM MERKEZİ
+          </h1>
+          <p className="text-sm text-gray-400 font-medium mt-1">
+            Topluluğun gözde mekanlarını, resmi oda listesini ve buluşma alanlarını organize edin.
+          </p>
+        </div>
+
+        <div className="flex items-center gap-3 flex-wrap">
+          <div className="habbo-box bg-[#0a1224] border border-white/10 px-4 py-2 rounded-xl flex items-center gap-3">
+            <Layers className="text-yellow-400" size={20} />
+            <div>
+              <span className="block text-[10px] text-gray-400 font-bold uppercase">Kayıtlı Mekan</span>
+              <span className="text-base font-black text-white">{activeRooms} Oda</span>
+            </div>
+          </div>
+
+          <div className="habbo-box bg-[#0a1224] border border-white/10 px-4 py-2 rounded-xl flex items-center gap-3">
+            <Users className="text-emerald-400" size={20} />
+            <div>
+              <span className="block text-[10px] text-gray-400 font-bold uppercase">Toplam Kapasite</span>
+              <span className="text-base font-black text-emerald-300">{totalCapacity} Kişi</span>
+            </div>
+          </div>
+
+          <Link 
+            href="/admin/rooms/new"
+            className="habbo-button bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-400 hover:to-amber-400 text-black px-5 py-2.5 rounded-xl font-black transition-all flex items-center gap-2 shadow-lg text-xs uppercase"
+          >
+            <Plus size={18} />
+            Yeni Oda Ekle
+          </Link>
+        </div>
       </div>
 
-      <div className="bg-[#2a2a2a] border border-[#333] rounded-lg overflow-hidden">
+      {/* Oda Listesi Tablosu */}
+      <div className="habbo-box bg-[#0a1224] border-2 border-white/10 rounded-xl overflow-hidden shadow-2xl">
+        <div className="p-4 border-b border-white/10 flex justify-between items-center bg-[#050a14]">
+          <h2 className="text-sm font-black text-white uppercase tracking-wider flex items-center gap-2">
+            <Sparkles className="text-yellow-400" size={18} /> Gözde Odalar ve Mekan Listesi
+          </h2>
+          <span className="text-xs text-gray-400 font-bold">
+            {activeRooms} aktif oda
+          </span>
+        </div>
+
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm text-gray-300">
-            <thead className="bg-[#1f1f1f] text-gray-400 uppercase border-b border-[#333]">
+            <thead className="bg-[#050a14] text-gray-400 uppercase text-xs font-black border-b border-white/10">
               <tr>
-                <th className="px-6 py-4">Görsel</th>
-                <th className="px-6 py-4">Oda Adı</th>
-                <th className="px-6 py-4">Sahip</th>
-                <th className="px-6 py-4">Kategori</th>
-                <th className="px-6 py-4 text-right">İşlemler</th>
+                <th className="px-6 py-4">ODA KAPAK GÖRSELİ</th>
+                <th className="px-6 py-4">ODA ADI & AÇIKLAMA</th>
+                <th className="px-6 py-4">SAHİP</th>
+                <th className="px-6 py-4">KATEGORİ</th>
+                <th className="px-6 py-4 text-center">KAPASİTE</th>
+                <th className="px-6 py-4 text-right">İŞLEMLER</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-white/5">
               {rooms && rooms.length > 0 ? (
                 rooms.map((item) => (
-                  <tr key={item.id} className="border-b border-[#333] hover:bg-[#333]/50 transition-colors">
+                  <tr key={item.id} className="hover:bg-white/5 transition-colors group">
                     <td className="px-6 py-4">
                       {item.image_url ? (
-                        <div className="relative w-16 h-10 rounded overflow-hidden border border-[#444]">
+                        <div className="relative w-24 h-14 rounded-xl overflow-hidden border-2 border-white/10 shadow-md group-hover:border-yellow-400/50 transition-colors shrink-0">
                           <Image 
                             src={item.image_url} 
                             alt={item.name} 
                             fill
                             className="object-cover"
+                            unoptimized
                           />
                         </div>
                       ) : (
-                        <span className="text-gray-500 italic">Yok</span>
+                        <div className="w-24 h-14 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-xs text-gray-500 italic">
+                          Görsel Yok
+                        </div>
                       )}
                     </td>
-                    <td className="px-6 py-4 font-bold text-white">
-                      {item.name}
-                    </td>
-                    <td className="px-6 py-4 font-medium text-yellow-500">
-                      {item.owner}
+                    <td className="px-6 py-4">
+                      <div className="font-black text-white text-base group-hover:text-yellow-400 transition-colors">
+                        {item.name}
+                      </div>
+                      {item.description && (
+                        <div className="text-xs text-gray-400 mt-0.5 max-w-[260px] truncate">
+                          {item.description}
+                        </div>
+                      )}
                     </td>
                     <td className="px-6 py-4">
-                      <span className="bg-[#333] px-2 py-1 rounded text-xs">{item.category}</span>
+                      <span className="font-bold text-yellow-400 text-xs bg-yellow-500/10 border border-yellow-500/20 px-2.5 py-1 rounded-lg">
+                        👤 {item.owner}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className="bg-purple-500/20 text-purple-300 border border-purple-500/30 px-3 py-1 rounded-lg text-xs font-bold uppercase">
+                        {item.category || 'Popüler'}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="font-black text-white text-sm bg-black/40 px-3 py-1 rounded-lg border border-white/10">
+                        {item.current_users || 0} / {item.max_users || 75}
+                      </span>
                     </td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-2">
                         <Link 
                           href={`/admin/rooms/${item.id}/edit`}
-                          className="p-2 bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 rounded transition-colors"
+                          className="p-2.5 bg-blue-500/10 text-blue-400 hover:bg-blue-500 hover:text-white rounded-xl transition-all shadow-sm"
                           title="Düzenle"
                         >
                           <Edit size={16} />
                         </Link>
-                        {/* We use a simple form to handle deletion for ease without client components */}
+                        
                         <form action={async () => {
                           'use server'
                           const sb = await createClient()
@@ -80,8 +147,8 @@ export default async function AdminRoomsPage() {
                         }}>
                           <button 
                             type="submit"
-                            className="p-2 bg-red-500/10 text-red-400 hover:bg-red-500/20 rounded transition-colors"
-                            title="Sil"
+                            className="p-2.5 bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white rounded-xl transition-all shadow-sm"
+                            title="Odayı Sil"
                           >
                             <Trash2 size={16} />
                           </button>
@@ -92,8 +159,12 @@ export default async function AdminRoomsPage() {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={5} className="px-6 py-8 text-center text-gray-500">
-                    Henüz hiç oda bulunmuyor.
+                  <td colSpan={6} className="px-6 py-12 text-center text-gray-500">
+                    <div className="max-w-xs mx-auto space-y-2">
+                      <Home size={32} className="mx-auto text-gray-600 opacity-40" />
+                      <p className="font-bold text-sm text-gray-400">Listede hiç Habbo odası bulunamadı.</p>
+                      <p className="text-xs">Yukarıdaki "Yeni Oda Ekle" butonuna tıklayarak ilk odayı ekleyin!</p>
+                    </div>
                   </td>
                 </tr>
               )}
@@ -101,6 +172,7 @@ export default async function AdminRoomsPage() {
           </table>
         </div>
       </div>
+
     </div>
   )
 }

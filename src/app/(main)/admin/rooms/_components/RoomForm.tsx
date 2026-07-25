@@ -3,7 +3,8 @@
 import { useState } from 'react'
 import { createRoom, updateRoom } from '../actions'
 import { createClient } from '@/utils/supabase/client'
-import { CheckCircle, ImageIcon } from 'lucide-react'
+import { CheckCircle2, Image as ImageIcon, Sparkles, User, Users, Layers, AlertCircle, Loader2 } from 'lucide-react'
+import Link from 'next/link'
 
 type RoomFormProps = {
   initialData?: {
@@ -21,7 +22,18 @@ type RoomFormProps = {
 export default function RoomForm({ initialData }: RoomFormProps) {
   const [loading, setLoading] = useState(false)
   const [imageFile, setImageFile] = useState<File | null>(null)
+  const [previewUrl, setPreviewUrl] = useState<string | null>(initialData?.image_url || null)
   const supabase = createClient()
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null
+    setImageFile(file)
+    if (file) {
+      setPreviewUrl(URL.createObjectURL(file))
+    } else {
+      setPreviewUrl(initialData?.image_url || null)
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -61,103 +73,146 @@ export default function RoomForm({ initialData }: RoomFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <form onSubmit={handleSubmit} className="space-y-6 animate-in fade-in duration-300">
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">Oda Adı</label>
+          <label className="block text-xs font-bold uppercase tracking-wider text-yellow-400 mb-2 flex items-center gap-1.5">
+            <Sparkles size={14} /> Oda Adı <span className="text-red-500">*</span>
+          </label>
           <input 
             name="name"
             defaultValue={initialData?.name}
             required
-            className="w-full px-4 py-2 bg-[#1f1f1f] border border-[#333] rounded-md text-white focus:outline-none focus:border-yellow-500"
+            placeholder="Örn: [HR] VIP Dinlenme Tesisi"
+            className="w-full px-4 py-3 bg-[#050a14] border-2 border-white/10 rounded-xl text-white font-bold text-sm focus:outline-none focus:border-yellow-400 transition-colors shadow-inner"
           />
         </div>
+
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">Oda Sahibi (Kullanıcı Adı)</label>
+          <label className="block text-xs font-bold uppercase tracking-wider text-blue-400 mb-2 flex items-center gap-1.5">
+            <User size={14} /> Oda Sahibi (Habbo Adı) <span className="text-red-500">*</span>
+          </label>
           <input 
             name="owner"
             defaultValue={initialData?.owner}
             required
-            className="w-full px-4 py-2 bg-[#1f1f1f] border border-[#333] rounded-md text-white focus:outline-none focus:border-yellow-500"
+            placeholder="Örn: MuhammedAliErim"
+            className="w-full px-4 py-3 bg-[#050a14] border-2 border-white/10 rounded-xl text-white font-bold text-sm focus:outline-none focus:border-blue-400 transition-colors shadow-inner"
           />
         </div>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-300 mb-2">Açıklama</label>
+        <label className="block text-xs font-bold uppercase tracking-wider text-gray-300 mb-2">
+          Oda Açıklaması
+        </label>
         <textarea 
           name="description"
           defaultValue={initialData?.description}
           rows={3}
-          className="w-full px-4 py-2 bg-[#1f1f1f] border border-[#333] rounded-md text-white focus:outline-none focus:border-yellow-500"
+          placeholder="Oda kuralları, sohbet ortamı ve genel bilgi..."
+          className="w-full px-4 py-3 bg-[#050a14] border-2 border-white/10 rounded-xl text-gray-300 text-xs focus:outline-none focus:border-yellow-400 transition-colors shadow-inner font-medium resize-none"
         />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">Kategori</label>
+          <label className="block text-xs font-bold uppercase tracking-wider text-purple-400 mb-2 flex items-center gap-1.5">
+            <Layers size={14} /> Kategori
+          </label>
           <select 
             name="category"
             defaultValue={initialData?.category || 'Popüler'}
-            className="w-full px-4 py-2 bg-[#1f1f1f] border border-[#333] rounded-md text-white focus:outline-none focus:border-yellow-500"
+            className="w-full px-4 py-3 bg-[#050a14] border-2 border-white/10 rounded-xl text-white font-bold text-xs focus:outline-none focus:border-purple-400 transition-colors"
           >
-            <option value="Popüler">Popüler</option>
-            <option value="Yeni">Yeni</option>
-            <option value="Etkinlik">Etkinlik</option>
-            <option value="Resmi">Resmi</option>
+            <option value="Popüler">🌟 Popüler Odalar</option>
+            <option value="Yeni">✨ Yeni Açılanlar</option>
+            <option value="Etkinlik">🎉 Etkinlik & Yarışma</option>
+            <option value="Resmi">🏛️ Resmi Habbo Odaları</option>
           </select>
         </div>
+
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">Maks. Kullanıcı</label>
+          <label className="block text-xs font-bold uppercase tracking-wider text-emerald-400 mb-2 flex items-center gap-1.5">
+            <Users size={14} /> Maksimum Kapasite
+          </label>
           <input 
             type="number"
             name="max_users"
-            defaultValue={initialData?.max_users ?? 100}
+            defaultValue={initialData?.max_users ?? 75}
             required
-            className="w-full px-4 py-2 bg-[#1f1f1f] border border-[#333] rounded-md text-white focus:outline-none focus:border-yellow-500"
+            className="w-full px-4 py-3 bg-[#050a14] border-2 border-white/10 rounded-xl text-white font-bold text-xs focus:outline-none focus:border-emerald-400 transition-colors shadow-inner"
           />
         </div>
+
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">Mevcut Kullanıcı (Opsiyonel)</label>
+          <label className="block text-xs font-bold uppercase tracking-wider text-cyan-400 mb-2 flex items-center gap-1.5">
+            <Users size={14} /> Mevcut Çevrimiçi (Simülasyon)
+          </label>
           <input 
             type="number"
             name="current_users"
             defaultValue={initialData?.current_users ?? 0}
-            className="w-full px-4 py-2 bg-[#1f1f1f] border border-[#333] rounded-md text-white focus:outline-none focus:border-yellow-500"
+            className="w-full px-4 py-3 bg-[#050a14] border-2 border-white/10 rounded-xl text-white font-bold text-xs focus:outline-none focus:border-cyan-400 transition-colors shadow-inner"
           />
         </div>
       </div>
 
-      <div className="bg-[#1f1f1f] border border-[#333] rounded-md p-4">
-        <label className="block text-sm font-medium text-gray-300 mb-2 flex items-center gap-2">
-          <ImageIcon size={16} /> Oda Görseli {initialData?.image_url && '(Yüklü)'}
+      <div className="habbo-box bg-[#050a14] border-2 border-white/10 rounded-xl p-5 space-y-4">
+        <label className="block text-xs font-bold uppercase tracking-wider text-pink-400 flex items-center gap-1.5">
+          <ImageIcon size={16} /> Oda Kapak Görseli (Screenshot / Minyatür) <span className="text-red-500">*</span>
         </label>
-        <input 
-          type="file"
-          accept="image/*"
-          onChange={(e) => setImageFile(e.target.files?.[0] || null)}
-          className="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-yellow-500 file:text-black hover:file:bg-yellow-600"
-        />
-        {imageFile && <p className="text-xs text-green-400 mt-2 flex items-center gap-1"><CheckCircle size={12}/> Seçildi</p>}
+        
+        <div className="flex flex-col sm:flex-row items-center gap-6">
+          <label className="flex-1 w-full cursor-pointer bg-[#0a1224] hover:bg-white/5 border-2 border-dashed border-white/20 rounded-xl p-6 text-center transition-all group">
+            <input 
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="hidden"
+            />
+            <span className="text-xs font-bold text-gray-400 group-hover:text-white flex flex-col items-center justify-center gap-2">
+              <ImageIcon size={24} className="text-pink-400" />
+              <span>Görsel Yüklemek İçin Tıklayın veya Sürükleyin</span>
+              <span className="text-[10px] text-gray-500 font-normal">(PNG, JPG veya WEBP - Tavsiye edilen: 16:9 geniş açı)</span>
+            </span>
+          </label>
+
+          {previewUrl && (
+            <div className="w-full sm:w-48 aspect-video rounded-xl bg-black border-2 border-pink-500/50 overflow-hidden relative shadow-xl shrink-0">
+              <img src={previewUrl} alt="Oda Önizleme" className="w-full h-full object-cover" />
+            </div>
+          )}
+        </div>
       </div>
 
       {initialData?.image_url && (
-          <input type="hidden" name="image_url" value={initialData.image_url} />
+        <input type="hidden" name="image_url" value={initialData.image_url} />
       )}
 
-      <div className="flex justify-end gap-4">
-        <a 
+      <div className="flex justify-end items-center gap-4 pt-4 border-t border-white/10">
+        <Link 
           href="/admin/rooms" 
-          className="px-6 py-2 bg-[#333] text-white rounded-md hover:bg-[#444] transition-colors"
+          className="px-6 py-3 rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white font-bold text-xs uppercase transition-colors"
         >
-          İptal
-        </a>
+          İptal Et
+        </Link>
+        
         <button 
-          type="submit" 
+          type="submit"
           disabled={loading}
-          className="px-6 py-2 bg-yellow-500 text-black font-bold rounded-md hover:bg-yellow-600 transition-colors disabled:opacity-50"
+          className="habbo-button bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-400 hover:to-amber-400 text-black font-black px-8 py-3 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 text-xs uppercase disabled:opacity-50"
         >
-          {loading ? 'Kaydediliyor...' : 'Kaydet'}
+          {loading ? (
+            <>
+              <Loader2 size={16} className="animate-spin" /> ODA KAYDEDİLİYOR...
+            </>
+          ) : (
+            <>
+              <CheckCircle2 size={16} /> {initialData ? 'DEĞİŞİKLİKLERİ GÜNCELLE' : 'YENİ ODAYI YAYINLA'}
+            </>
+          )}
         </button>
       </div>
     </form>

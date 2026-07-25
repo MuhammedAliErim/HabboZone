@@ -2,8 +2,16 @@
 
 import { useState } from 'react'
 import { updateUserRole } from '../actions'
+import { Shield, Check, Loader2 } from 'lucide-react'
 
-const roles = ['Member', 'VIP', 'Moderator', 'Administrator', 'Developer', 'Owner']
+const roles = [
+  { value: 'Member', label: '👤 Üye (Member)', class: 'bg-slate-800/60 text-slate-300 border-slate-600/50' },
+  { value: 'VIP', label: '💎 VIP Üye', class: 'bg-blue-900/60 text-blue-300 border-blue-500/50 font-bold' },
+  { value: 'Moderator', label: '🛡️ Moderatör', class: 'bg-purple-900/60 text-purple-300 border-purple-500/50 font-bold' },
+  { value: 'Administrator', label: '⚡ Yöneticisi (Admin)', class: 'bg-amber-900/60 text-amber-300 border-amber-500/50 font-black' },
+  { value: 'Developer', label: '💻 Geliştirici', class: 'bg-emerald-900/60 text-emerald-300 border-emerald-500/50 font-black' },
+  { value: 'Owner', label: '👑 Kurucu (Owner)', class: 'bg-rose-900/60 text-rose-300 border-rose-500/50 font-black shadow-lg shadow-rose-500/20' }
+]
 
 export default function RoleSelect({ userId, currentRole }: { userId: string, currentRole: string }) {
   const [loading, setLoading] = useState(false)
@@ -15,26 +23,36 @@ export default function RoleSelect({ userId, currentRole }: { userId: string, cu
     try {
       await updateUserRole(userId, newRole)
       setRole(newRole)
-      alert('Rol güncellendi')
     } catch (err: any) {
       alert(err.message || 'Rol güncellenirken hata oluştu')
-      // revert select
       e.target.value = role
     } finally {
       setLoading(false)
     }
   }
 
+  const activeRoleConfig = roles.find(r => r.value === role) || roles[0]
+
   return (
-    <select
-      value={role}
-      onChange={handleChange}
-      disabled={loading}
-      className="bg-[#1f1f1f] border border-[#333] text-sm rounded px-2 py-1 focus:border-yellow-500 focus:outline-none disabled:opacity-50"
-    >
-      {roles.map(r => (
-        <option key={r} value={r}>{r}</option>
-      ))}
-    </select>
+    <div className="relative inline-flex items-center gap-1.5">
+      {loading ? (
+        <Loader2 size={16} className="text-yellow-400 animate-spin" />
+      ) : (
+        <Shield size={14} className="text-gray-400" />
+      )}
+      
+      <select
+        value={role}
+        onChange={handleChange}
+        disabled={loading}
+        className={`px-3 py-1.5 rounded-lg border text-xs outline-none cursor-pointer transition-all ${activeRoleConfig.class} hover:border-white/40 disabled:opacity-50`}
+      >
+        {roles.map(r => (
+          <option key={r.value} value={r.value} className="bg-[#0f172a] text-white font-medium py-1">
+            {r.label}
+          </option>
+        ))}
+      </select>
+    </div>
   )
 }
