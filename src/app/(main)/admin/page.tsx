@@ -18,9 +18,9 @@ export default async function AdminDashboardPage() {
     supabase.from('profiles').select('*', { count: 'exact', head: true }),
     supabase.from('news').select('*', { count: 'exact', head: true }),
     supabase.from('habbo_items').select('*', { count: 'exact', head: true }),
-    supabase.from('forum_topics').select('*', { count: 'exact', head: true }),
+    supabase.from('topics').select('*', { count: 'exact', head: true }),
     supabase.from('magazines').select('*', { count: 'exact', head: true }),
-    supabase.from('habbo_groups').select('*', { count: 'exact', head: true }),
+    supabase.from('groups').select('*', { count: 'exact', head: true }),
     supabase.from('guides').select('*', { count: 'exact', head: true }),
     supabase.from('events').select('*', { count: 'exact', head: true })
   ])
