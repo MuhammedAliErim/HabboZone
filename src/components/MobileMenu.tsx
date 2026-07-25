@@ -3,13 +3,14 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, Home, AlignLeft, Newspaper, Users, BookOpen, ShoppingBag, Wrench, LogIn, UserPlus, LogOut } from 'lucide-react';
+import { Menu, X, Home, AlignLeft, Newspaper, Users, BookOpen, ShoppingBag, Wrench, LogIn, UserPlus, LogOut, LayoutDashboard } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import GlobalSearch from './search/GlobalSearch';
 
 export default function MobileMenu({ profile }: { profile: any }) {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  const isStaff = profile && !['Member', 'VIP', 'User', 'Üye', 'member', 'user', 'vip'].includes(profile.role);
 
   const navItems = [
     { href: '/', label: 'ANA SAYFA', icon: Home },
@@ -106,6 +107,15 @@ export default function MobileMenu({ profile }: { profile: any }) {
                 </div>
               ) : (
                 <div className="p-4 border-t border-white/10 flex flex-col gap-3 mt-auto">
+                  {isStaff && (
+                    <Link 
+                      href="/admin"
+                      onClick={() => setIsOpen(false)}
+                      className="habbo-button warning w-full flex items-center justify-center gap-2 py-3 !bg-yellow-500 !text-black font-black"
+                    >
+                      <LayoutDashboard size={18} /> YÖNETİM PANELİ
+                    </Link>
+                  )}
                   <Link 
                     href={`/profile/${profile.username}`}
                     onClick={() => setIsOpen(false)}

@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import { LogOut, Settings, User, ChevronDown } from 'lucide-react';
+import { LogOut, Settings, User, ChevronDown, LayoutDashboard } from 'lucide-react';
 import { createClient } from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation';
 import HabboAvatar from './HabboAvatar';
@@ -38,6 +38,7 @@ export default function UserDropdown({ profile }: UserDropdownProps) {
   };
 
   const isVip = ['VIP', 'Admin', 'Owner', 'Developer'].includes(profile.role);
+  const isStaff = !['Member', 'VIP', 'User', 'Üye', 'member', 'user', 'vip'].includes(profile.role);
 
   return (
     <div className="relative" ref={dropdownRef}>
@@ -57,6 +58,16 @@ export default function UserDropdown({ profile }: UserDropdownProps) {
 
       {isOpen && (
         <div className="absolute right-0 mt-2 w-48 bg-[#0f172a] border-2 border-black rounded-[4px] shadow-[0_4px_0_#000] z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+          {isStaff && (
+            <Link 
+              href="/admin"
+              onClick={() => setIsOpen(false)}
+              className="flex items-center gap-2 px-4 py-3 text-[12px] font-bold text-yellow-400 hover:text-white hover:bg-yellow-500/20 transition-colors border-b border-[#1e293b] bg-yellow-500/10"
+            >
+              <LayoutDashboard size={14} className="text-yellow-400 animate-pulse" />
+              ADMİN PANELİ
+            </Link>
+          )}
           <Link 
             href={`/profile/${profile.username}`}
             onClick={() => setIsOpen(false)}

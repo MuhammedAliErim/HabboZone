@@ -22,7 +22,7 @@ export const metadata = {
   title: 'Admin Paneli - HabboZone',
 }
 
-const adminRoles = ['Owner', 'Developer', 'Administrator', 'Moderator']
+const adminRoles = ['Owner', 'Developer', 'Administrator', 'Moderator', 'Admin', 'Editor', 'Yazar', 'Muhabir', 'Staff', 'Yetkili', 'Yönetici', 'Birim Sorumlusu']
 
 export default async function AdminLayout({
   children,
