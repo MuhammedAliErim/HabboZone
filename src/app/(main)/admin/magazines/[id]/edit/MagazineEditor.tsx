@@ -21,7 +21,7 @@ export default function MagazineEditor({ initialMagazine, initialPages }: Editor
   const [isAIGenerating, setIsAIGenerating] = useState(false);
   const [aiPrompt, setAiPrompt] = useState("");
   
-  const currentPage = pages[currentPageIndex];
+  const currentPage = pages[currentPageIndex] || createEmptyPage(initialMagazine.id, 1);
 
   function createEmptyPage(magazineId: string, pageNum: number): MagazinePage {
     return {
@@ -132,14 +132,29 @@ export default function MagazineEditor({ initialMagazine, initialPages }: Editor
       }
       const generatedData = result.data;
       
-      // JSON'u MagazinePage formatına çevirelim
+      // JSON'u MagazinePage formatına çevirelim ve her katmana benzersiz kimlik ile kesin boyutlar verelim
       const newPages: MagazinePage[] = generatedData.pages.map((p, idx) => ({
-        id: `ai_${Date.now()}_${idx}`,
+        id: `ai_page_${Date.now()}_${idx}`,
         magazine_id: initialMagazine.id,
-        page_number: p.page_number,
-        background_color: p.background_color,
+        page_number: p.page_number || (idx + 1),
+        background_color: p.background_color || '#1e293b',
         background_image: null,
-        layout_data: { layers: p.layers }
+        layout_data: {
+          layers: (Array.isArray(p.layers) ? p.layers : []).map((layer: any, lIdx: number) => ({
+            ...layer,
+            id: `layer_${Date.now()}_${idx}_${lIdx}_${Math.random().toString(36).substring(2, 7)}`,
+            style: {
+              x: typeof layer.style?.x === 'number' ? layer.style.x : 50,
+              y: typeof layer.style?.y === 'number' ? layer.style.y : (100 + lIdx * 150),
+              width: typeof layer.style?.width === 'number' && layer.style.width > 20 ? layer.style.width : (layer.type === 'image' ? 600 : 500),
+              height: typeof layer.style?.height === 'number' && layer.style.height > 20 ? layer.style.height : (layer.type === 'image' ? 400 : 100),
+              fontSize: layer.style?.fontSize || '24px',
+              color: layer.style?.color || '#ffffff',
+              fontWeight: layer.style?.fontWeight || 'normal',
+              ...layer.style
+            }
+          }))
+        }
       }));
 
       setPages(newPages);
@@ -255,11 +270,13 @@ export default function MagazineEditor({ initialMagazine, initialPages }: Editor
           {currentPage.layout_data?.layers?.map((layer: any) => (
             <Rnd
               key={layer.id}
-              default={{
-                x: layer.style?.x || 0,
-                y: layer.style?.y || 0,
-                width: layer.style?.width || 200,
-                height: layer.style?.height || 100,
+              size={{
+                width: layer.style?.width || (layer.type === 'image' ? 600 : 300),
+                height: layer.style?.height || (layer.type === 'image' ? 400 : 100),
+              }}
+              position={{
+                x: layer.style?.x || 50,
+                y: layer.style?.y || 50,
               }}
               bounds="parent"
               onDragStop={(e, d) => updateLayerStyle(layer.id, { x: d.x, y: d.y })}

@@ -57,13 +57,13 @@ JSON dışında hiçbir ekstra metin, açıklama veya markdown bloğu kullanma. 
           "id": "layer_1",
           "type": "text",
           "content": "Kapak Başlığı",
-          "style": { "x": 50, "y": 100, "fontSize": "48px", "color": "#ffffff", "fontWeight": "bold", "width": 700 }
+          "style": { "x": 50, "y": 100, "fontSize": "48px", "color": "#ffffff", "fontWeight": "bold", "width": 700, "height": 100 }
         },
         {
           "id": "layer_2",
           "type": "image",
           "content": "IMAGE_PROMPT: Habbo characters at a beach party, high quality pixel art style", 
-          "style": { "x": 0, "y": 300, "width": 800, "height": 500 }
+          "style": { "x": 50, "y": 250, "width": 700, "height": 500 }
         }
       ]
     }
@@ -71,9 +71,10 @@ JSON dışında hiçbir ekstra metin, açıklama veya markdown bloğu kullanma. 
 }
 
 Önemli Notlar:
-- Dergi genel olarak 800x1131 (A4) boyutunda bir tuvalde (canvas) oluşturulur. x ve y değerlerini buna göre belirle.
+- Dergi genel olarak 800x1131 (A4) boyutunda bir tuvalde (canvas) oluşturulur. x ve y değerlerini buna göre belirle. x değerlerini her zaman 50 ile 700 arasında, y değerlerini 50 ile 900 arasında tut.
+- KESİNLİKLE boş sayfa ("layers": []) üretme! Her sayfada en az 2 veya 3 layer olsun (başlık, metin, resim vb.).
 - Resim gelmesi gereken yerlere type: 'image' ver ve content kısmına "IMAGE_PROMPT: [İngilizce detaylı resim oluşturma komutu]" yaz. Böylece biz o promptu FLUX'a gönderip resmi çizeceğiz.
-- Yazılara uygun font, boyut ve renk ver.
+- Yazılara uygun font, boyut ve renk ver. Arka plan koyu ise yazılar kesinlikle açık renk (#ffffff, #f8fafc vb.) olsun. width ve height değerlerini mutlaka ver.
 - En az 3 sayfa üret (1 kapak, 2 içerik sayfası).
 `;
 
@@ -119,13 +120,46 @@ JSON dışında hiçbir ekstra metin, açıklama veya markdown bloğu kullanma. 
       const data = await response.json();
       let content = data.choices?.[0]?.message?.content || "";
       
-      // JSON bloğunu temizle (markdown taglerini kaldır)
-      content = content.replace(/```json/g, '').replace(/```/g, '').trim();
+      // JSON bloğunu güvenli bir şekilde ayıkla
+      const firstBrace = content.indexOf('{');
+      const lastBrace = content.lastIndexOf('}');
+      if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
+        content = content.substring(firstBrace, lastBrace + 1);
+      } else {
+        content = content.replace(/```json/g, '').replace(/```/g, '').trim();
+      }
 
       const parsedJson = JSON.parse(content) as GeneratedMagazineSchema;
-      if (!parsedJson || !parsedJson.pages || !Array.isArray(parsedJson.pages)) {
-        throw new Error("Geçersiz JSON formatı alındı.");
+      if (!parsedJson || !parsedJson.pages || !Array.isArray(parsedJson.pages) || parsedJson.pages.length === 0) {
+        throw new Error("Geçersiz veya boş JSON formatı alındı.");
       }
+
+      // Eksik veya hatalı katman verilerini temizleyip garanti altına alalım (Sanitization)
+      parsedJson.pages = parsedJson.pages.map((page, pIdx) => {
+        const layers = Array.isArray(page.layers) ? page.layers : [];
+        return {
+          ...page,
+          page_number: page.page_number || (pIdx + 1),
+          background_color: page.background_color || '#1e293b',
+          layers: layers.map((layer, lIdx) => ({
+            ...layer,
+            id: layer.id || `ai_layer_${pIdx}_${lIdx}_${Date.now()}`,
+            type: layer.type === 'image' ? 'image' : 'text',
+            content: layer.content || (layer.type === 'image' ? 'IMAGE_PROMPT: Habbo pixel art' : 'Metin Alanı'),
+            style: {
+              x: typeof layer.style?.x === 'number' ? layer.style.x : 50,
+              y: typeof layer.style?.y === 'number' ? layer.style.y : (100 + lIdx * 150),
+              width: typeof layer.style?.width === 'number' && layer.style.width > 20 ? layer.style.width : (layer.type === 'image' ? 600 : 500),
+              height: typeof layer.style?.height === 'number' && layer.style.height > 20 ? layer.style.height : (layer.type === 'image' ? 400 : 100),
+              fontSize: layer.style?.fontSize || '24px',
+              color: layer.style?.color || '#ffffff',
+              fontWeight: layer.style?.fontWeight || 'normal',
+              ...layer.style
+            }
+          }))
+        };
+      });
+
       return parsedJson;
 
     } catch (err: any) {
