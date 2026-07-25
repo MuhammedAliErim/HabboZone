@@ -36,7 +36,15 @@ export async function createMagazine(title: string, description: string = '') {
 
   const { data, error } = await supabase
     .from('magazines')
-    .insert({ title, description, author_id: user.id })
+    .insert({ 
+      title, 
+      description, 
+      author_id: user.id,
+      cover_image: '/placeholder.png',
+      cover_image_url: '/placeholder.png',
+      is_ai_generated: true,
+      is_published: false
+    })
     .select()
     .single();
 
@@ -124,7 +132,8 @@ export async function saveMagazinePage(magazineId: string, pageNumber: number, l
         page_number: pageNumber,
         layout_data: layoutData,
         background_color: backgroundColor,
-        background_image: backgroundImage
+        background_image: backgroundImage,
+        image_url: backgroundImage || '/placeholder.png'
       });
     if (error) throw new Error(error.message);
   }
