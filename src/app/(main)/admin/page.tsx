@@ -4,7 +4,7 @@ import {
   Users, Newspaper, Gem, MessageSquare, BookOpen, Shield, Calendar, 
   Award, Megaphone, Home, Book, Image as ImageIcon, Wand2, Package, 
   Sparkles, Activity, ShieldCheck, Cpu, ArrowRight, Zap, CheckCircle2, 
-  LayoutDashboard, Wrench, Layers
+  LayoutDashboard, Wrench, Layers, CreditCard
 } from 'lucide-react'
 
 export default async function AdminDashboardPage() {
@@ -94,6 +94,7 @@ export default async function AdminDashboardPage() {
 
   const adminModules = [
     { title: 'Canva Görsel Stüdyosu', desc: 'Haber kapakları, rehber bannerları ve rozet grafikleri tasarlayın.', href: '/admin/studio', icon: Wand2, color: 'border-pink-500/50 hover:border-pink-500 bg-pink-500/10 hover:bg-pink-500/20', badge: 'YENİ CANVA v4' },
+    { title: 'Kart & İmza Stüdyosu', desc: 'Resmi yetkili yaka kartları, forum imza barları ve VIP biletleri tasarlayın.', href: '/admin/id-studio', icon: CreditCard, color: 'border-purple-500/50 hover:border-purple-500 bg-purple-500/10 hover:bg-purple-500/20', badge: 'NEW PRO v2' },
     { title: 'Haberler & Yazılar', desc: 'Haber yayınlayın, içerikleri ve manşetleri düzenleyin.', href: '/admin/news', icon: Newspaper, color: 'border-green-500/30 hover:border-green-500 bg-green-500/5 hover:bg-green-500/10' },
     { title: 'Canva Dergi Stüdyosu', desc: 'AI destekli dergi ve gazete tasarlayıcısı, katman editörü.', href: '/admin/magazines', icon: Layers, color: 'border-pink-500/30 hover:border-pink-500 bg-pink-500/5 hover:bg-pink-500/10', badge: 'CANVA PRO' },
     { title: 'Nadire Değerleri', desc: 'Habbo nadire katalog değerlerini, grafikleri ve fiyatları yönetin.', href: '/admin/values', icon: Gem, color: 'border-yellow-500/30 hover:border-yellow-500 bg-yellow-500/5 hover:bg-yellow-500/10' },
@@ -141,6 +142,12 @@ export default async function AdminDashboardPage() {
               className="bg-gradient-to-r from-amber-500 to-pink-600 hover:from-amber-400 hover:to-pink-500 text-white font-bold px-5 py-3 rounded-xl shadow-lg shadow-amber-500/25 flex items-center gap-2 transition-all hover:scale-105"
             >
               <Wand2 className="w-5 h-5 animate-pulse" /> Canva Görsel Stüdyosu
+            </Link>
+            <Link 
+              href="/admin/id-studio" 
+              className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold px-5 py-3 rounded-xl shadow-lg shadow-purple-500/25 flex items-center gap-2 transition-all hover:scale-105"
+            >
+              <CreditCard className="w-5 h-5 animate-bounce" /> Kart & İmza Stüdyosu
             </Link>
             <Link 
               href="/admin/magazines" 

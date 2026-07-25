@@ -17,7 +17,8 @@ import {
   MessageSquare,
   Package,
   Wand2,
-  Sparkles
+  Sparkles,
+  CreditCard
 } from 'lucide-react'
 
 export const metadata = {
@@ -79,6 +80,17 @@ export default async function AdminLayout({
                 <span>Canva Stüdyo</span>
               </div>
               <span className="px-1.5 py-0.5 rounded bg-pink-500 text-white text-[9px] font-black uppercase tracking-wider">PRO</span>
+            </Link>
+
+            <Link 
+              href="/admin/id-studio"
+              className="flex items-center justify-between px-3 py-2.5 text-purple-300 hover:text-white bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/30 rounded-lg transition-all my-1 shadow-lg shadow-purple-500/10"
+            >
+              <div className="flex items-center gap-3">
+                <CreditCard size={18} className="text-purple-400 animate-bounce" />
+                <span>Kart & İmza</span>
+              </div>
+              <span className="px-1.5 py-0.5 rounded bg-purple-500 text-white text-[9px] font-black uppercase tracking-wider">NEW</span>
             </Link>
             
             <Link 
