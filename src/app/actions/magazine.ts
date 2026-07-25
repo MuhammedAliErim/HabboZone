@@ -39,11 +39,13 @@ export async function createMagazine(title: string, description: string = '') {
     .insert({ 
       title, 
       description, 
-      author_id: user.id,
       cover_image: '/placeholder.png',
       cover_image_url: '/placeholder.png',
+      issue_number: Math.floor(Math.random() * 8999) + 1000,
       is_ai_generated: true,
-      is_published: false
+      is_published: false,
+      is_active: true,
+      published_at: new Date().toISOString()
     })
     .select()
     .single();
