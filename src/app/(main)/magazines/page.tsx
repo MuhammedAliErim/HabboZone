@@ -16,7 +16,8 @@ export default async function MagazinesPage() {
   const { data: magazines } = await supabase
     .from('magazines')
     .select('*')
-    .eq('is_active', true)
+    // AI olmayan eski dergileri ve AI olup yayınlanmış olanları getirir
+    .or('is_published.eq.true,is_ai_generated.eq.false,is_ai_generated.is.null')
     .order('issue_number', { ascending: false });
 
   const latestMagazine = magazines?.[0];
