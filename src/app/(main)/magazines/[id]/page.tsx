@@ -1,8 +1,6 @@
 import { createClient } from '@/utils/supabase/server';
-import dynamic from 'next/dynamic';
+import MagazineReaderWrapper from '@/components/ui/magazine/MagazineReaderWrapper';
 import { notFound } from 'next/navigation';
-
-const MagazineReader = dynamic(() => import('@/components/ui/magazine/MagazineReader'), { ssr: false });
 import { Metadata, ResolvingMetadata } from 'next';
 
 export const revalidate = 60;
@@ -64,5 +62,5 @@ export default async function MagazineReaderPage({ params }: Props) {
     .eq('magazine_id', magazine.id)
     .order('page_number', { ascending: true });
 
-  return <MagazineReader magazine={magazine} aiPages={aiPages || []} />;
+  return <MagazineReaderWrapper magazine={magazine} aiPages={aiPages || []} />;
 }
