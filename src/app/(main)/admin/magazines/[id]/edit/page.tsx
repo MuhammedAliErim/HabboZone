@@ -1,5 +1,7 @@
 import { getMagazineWithPages } from '@/app/actions/magazine';
-import MagazineEditor from './MagazineEditor';
+import dynamic from 'next/dynamic';
+
+const MagazineEditor = dynamic(() => import('./MagazineEditor'), { ssr: false });
 
 export default async function AdminMagazineEditPage({ params }: { params: { id: string } }) {
   const { id } = params;

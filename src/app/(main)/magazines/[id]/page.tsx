@@ -1,6 +1,8 @@
 import { createClient } from '@/utils/supabase/server';
+import dynamic from 'next/dynamic';
 import { notFound } from 'next/navigation';
-import MagazineReader from '@/components/ui/magazine/MagazineReader';
+
+const MagazineReader = dynamic(() => import('@/components/ui/magazine/MagazineReader'), { ssr: false });
 import { Metadata, ResolvingMetadata } from 'next';
 
 export const revalidate = 60;
