@@ -79,6 +79,7 @@ JSON dışında hiçbir ekstra metin, açıklama veya markdown bloğu kullanma. 
 
   // NVIDIA NIM üzerinde popüler, en stabil çalışan modelleri sırayla deneyelim (Fallback sistemi)
   const modelsToTry = [
+    "openai/gpt-oss-120b",
     "meta/llama-3.1-70b-instruct",
     "meta/llama-3.1-405b-instruct",
     "mistralai/mixtral-8x22b-instruct-v0.1",
