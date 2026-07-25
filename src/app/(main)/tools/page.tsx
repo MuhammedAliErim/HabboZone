@@ -1,10 +1,12 @@
-import { Wrench, Image as ImageIcon, Type, Sparkles } from 'lucide-react';
+import { Wrench, Image as ImageIcon, Type, Sparkles, ArrowRightLeft, Trophy } from 'lucide-react';
 import AvatarTool from '@/components/tools/AvatarTool';
 import FontGeneratorTool from '@/components/tools/FontGeneratorTool';
+import TradeCalculatorTool from '@/components/tools/TradeCalculatorTool';
+import WheelOfFortuneTool from '@/components/tools/WheelOfFortuneTool';
 
 export const metadata = {
   title: 'Araçlar - HabboZone',
-  description: 'HabboZone araçları ile avatarınızı oluşturun, özel fontlar yazın.',
+  description: 'HabboZone araçları ile avatar oluşturun, nadire takas hesaplayın ve şans çarkı çevirin.',
 };
 
 export default function ToolsPage() {
@@ -28,7 +30,7 @@ export default function ToolsPage() {
                     <Wrench size={32} className="text-[#f59e0b]" /> 
                     HABBO ARAÇLARI
                 </h1>
-                <p className="text-[#94a3b8] text-sm font-medium">Habbo deneyiminizi geliştirecek faydalı uygulamalar</p>
+                <p className="text-[#94a3b8] text-sm font-medium">Habbo deneyiminizi geliştirecek faydalı uygulamalar ve canlı hesaplayıcılar</p>
             </div>
         </div>
       </section>
@@ -66,21 +68,36 @@ export default function ToolsPage() {
                 </div>
             </div>
         </div>
-        
-        {/* Tool 3: Coming Soon */}
+
+        {/* Tool 3: Trade Value Calculator */}
         <div className="bg-[#050a14] border border-[#14213a] rounded-lg overflow-hidden lg:col-span-2">
             <div className="bg-[#0a1325] border-b border-[#14213a] p-4 flex items-center gap-2">
-                <Sparkles size={18} className="text-[#22c55e]" />
-                <h2 className="text-[13px] font-bold text-white tracking-wide">YAKINDA GELECEK ARAÇLAR</h2>
+                <ArrowRightLeft size={18} className="text-[#22c55e]" />
+                <h2 className="text-[13px] font-bold text-white tracking-wide">NADİRE TAKAS & DEĞER HESAPLAYICISI</h2>
             </div>
-            <div className="p-12 flex flex-col items-center justify-center text-center">
-                <div className="w-16 h-16 bg-[#0a1325] border border-[#1e293b] rounded-full flex items-center justify-center mb-4 shadow-sm">
-                    <Wrench size={28} className="text-[#475569]" />
-                </div>
-                <h3 className="text-lg font-black text-white mb-2">Daha fazla araç yolda!</h3>
-                <p className="text-[12px] text-[#94a3b8] max-w-md">
-                    Oda planlayıcı, değer hesaplayıcı ve daha birçok Habbo aracı çok yakında HabboZone'da sizlerle olacak.
+            <div className="p-6">
+                <p className="text-[12px] text-[#94a3b8] mb-6">
+                Takas edeceğiniz nadireleri karşı tarafın teklifiyle karşılaştırın. Kredi ve elmas endeksine göre anında kazanç/zarar analizi yapın ve sonucu kopyalayın!
                 </p>
+                <div className="bg-[#0a1325] border border-[#1e293b] rounded-lg p-4">
+                    <TradeCalculatorTool />
+                </div>
+            </div>
+        </div>
+
+        {/* Tool 4: Wheel of Fortune */}
+        <div className="bg-[#050a14] border border-[#14213a] rounded-lg overflow-hidden lg:col-span-2">
+            <div className="bg-[#0a1325] border-b border-[#14213a] p-4 flex items-center gap-2">
+                <Trophy size={18} className="text-[#ec4899]" />
+                <h2 className="text-[13px] font-bold text-white tracking-wide">HABBO ÇEKİLİŞ & ŞANS ÇARKI</h2>
+            </div>
+            <div className="p-6">
+                <p className="text-[12px] text-[#94a3b8] mb-6">
+                Oda yarışmalarınızda, sandalye kapmaca oyunlarında veya rozet çekilişlerinde katılımcılarınızı ekleyerek adil ve eğlenceli şekilde kazananı seçin!
+                </p>
+                <div className="bg-[#0a1325] border border-[#1e293b] rounded-lg p-4">
+                    <WheelOfFortuneTool />
+                </div>
             </div>
         </div>
         
