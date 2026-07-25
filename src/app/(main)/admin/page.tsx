@@ -4,7 +4,7 @@ import {
   Users, Newspaper, Gem, MessageSquare, BookOpen, Shield, Calendar, 
   Award, Megaphone, Home, Book, Image as ImageIcon, Wand2, Package, 
   Sparkles, Activity, ShieldCheck, Cpu, ArrowRight, Zap, CheckCircle2, 
-  LayoutDashboard, Wrench, Layers, CreditCard
+  LayoutDashboard, Wrench, Layers, CreditCard, Compass
 } from 'lucide-react'
 
 export default async function AdminDashboardPage() {
@@ -95,6 +95,7 @@ export default async function AdminDashboardPage() {
   const adminModules = [
     { title: 'Canva Görsel Stüdyosu', desc: 'Haber kapakları, rehber bannerları ve rozet grafikleri tasarlayın.', href: '/admin/studio', icon: Wand2, color: 'border-pink-500/50 hover:border-pink-500 bg-pink-500/10 hover:bg-pink-500/20', badge: 'YENİ CANVA v4' },
     { title: 'Kart & İmza Stüdyosu', desc: 'Resmi yetkili yaka kartları, forum imza barları ve VIP biletleri tasarlayın.', href: '/admin/id-studio', icon: CreditCard, color: 'border-purple-500/50 hover:border-purple-500 bg-purple-500/10 hover:bg-purple-500/20', badge: 'NEW PRO v2' },
+    { title: 'Oda & Harita Çözüm Stüdyosu', desc: 'Wired labirentleri ve rozet görevleri için interaktif ok ve adım işaretli haritalar tasarlayın.', href: '/admin/room-studio', icon: Compass, color: 'border-emerald-500/50 hover:border-emerald-500 bg-emerald-500/10 hover:bg-emerald-500/20', badge: 'CANVA MAP v3' },
     { title: 'Haberler & Yazılar', desc: 'Haber yayınlayın, içerikleri ve manşetleri düzenleyin.', href: '/admin/news', icon: Newspaper, color: 'border-green-500/30 hover:border-green-500 bg-green-500/5 hover:bg-green-500/10' },
     { title: 'Canva Dergi Stüdyosu', desc: 'AI destekli dergi ve gazete tasarlayıcısı, katman editörü.', href: '/admin/magazines', icon: Layers, color: 'border-pink-500/30 hover:border-pink-500 bg-pink-500/5 hover:bg-pink-500/10', badge: 'CANVA PRO' },
     { title: 'Nadire Değerleri', desc: 'Habbo nadire katalog değerlerini, grafikleri ve fiyatları yönetin.', href: '/admin/values', icon: Gem, color: 'border-yellow-500/30 hover:border-yellow-500 bg-yellow-500/5 hover:bg-yellow-500/10' },
@@ -111,28 +112,28 @@ export default async function AdminDashboardPage() {
   ]
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-300">
+    <div className="space-y-10 animate-in fade-in duration-500">
       
-      {/* ÜST BANNER & SİSTEM DURUMU */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#111827] via-[#1e293b] to-[#0f172a] border border-[#334155] p-6 md:p-8 shadow-2xl">
-        <div className="absolute -right-10 -bottom-10 w-64 h-64 bg-yellow-500/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div className="absolute -left-10 -top-10 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      {/* ÜST KARŞILAMA VE ÖZET BANNERI (Habbo-box Lüks Tasarım) */}
+      <div className="habbo-box bg-gradient-to-r from-[#070c18] via-[#0a1224] to-[#0f172a] border-2 border-white/10 p-8 rounded-2xl relative overflow-hidden shadow-2xl">
+        <div className="absolute -right-10 -top-10 w-64 h-64 bg-yellow-400/5 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="absolute right-40 -bottom-20 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl pointer-events-none"></div>
         
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div>
-            <div className="flex items-center gap-2 mb-2">
+        <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+          <div className="space-y-2 max-w-2xl">
+            <div className="flex items-center gap-2">
               <span className="px-2.5 py-0.5 rounded-full bg-yellow-400/20 border border-yellow-400/40 text-yellow-300 text-xs font-black tracking-wider uppercase flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5" /> KOMUTA MERKEZİ v4.0
+                <Sparkles className="w-3.5 h-3.5" /> YÖNETİM KOMUTA MERKEZİ v4.0
               </span>
               <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-bold flex items-center gap-1.5">
-                <CheckCircle2 className="w-3.5 h-3.5" /> ÇEVRİMİÇİ
+                <CheckCircle2 className="w-3.5 h-3.5" /> CANVA PRO SİSTEMİ AKTİF
               </span>
             </div>
-            <h1 className="text-2xl md:text-3xl font-black text-white tracking-tight">
-              HabboZone <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-200">Yönetim Paneli</span>
+            <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
+              Habbo<span className="text-yellow-400">Zone</span> Yönetim Paneli
             </h1>
-            <p className="text-sm text-gray-300 mt-1 max-w-2xl">
-              Sistem durumunu denetleyin, Canva tarzı gelişmiş tasarım stüdyosuyla banner ve dergiler oluşturun, nadire değerlerini ve tüm topluluk modüllerini profesyonelce yönetin.
+            <p className="text-sm text-gray-300 leading-relaxed font-medium">
+              Sistem durumunu denetleyin, Canva tarzı gelişmiş tasarım stüdyolarıyla banner, harita ve dergiler oluşturun, nadire değerlerini ve tüm topluluk modüllerini profesyonelce yönetin.
             </p>
           </div>
 
@@ -141,13 +142,19 @@ export default async function AdminDashboardPage() {
               href="/admin/studio" 
               className="bg-gradient-to-r from-amber-500 to-pink-600 hover:from-amber-400 hover:to-pink-500 text-white font-bold px-5 py-3 rounded-xl shadow-lg shadow-amber-500/25 flex items-center gap-2 transition-all hover:scale-105"
             >
-              <Wand2 className="w-5 h-5 animate-pulse" /> Canva Görsel Stüdyosu
+              <Wand2 className="w-5 h-5 animate-pulse" /> Canva Görsel
             </Link>
             <Link 
               href="/admin/id-studio" 
               className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold px-5 py-3 rounded-xl shadow-lg shadow-purple-500/25 flex items-center gap-2 transition-all hover:scale-105"
             >
-              <CreditCard className="w-5 h-5 animate-bounce" /> Kart & İmza Stüdyosu
+              <CreditCard className="w-5 h-5 animate-bounce" /> Kart & İmza
+            </Link>
+            <Link 
+              href="/admin/room-studio" 
+              className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold px-5 py-3 rounded-xl shadow-lg shadow-emerald-500/25 flex items-center gap-2 transition-all hover:scale-105"
+            >
+              <Compass className="w-5 h-5 animate-spin-slow" /> Harita Stüdyosu
             </Link>
             <Link 
               href="/admin/magazines" 

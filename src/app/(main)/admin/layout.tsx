@@ -18,7 +18,8 @@ import {
   Package,
   Wand2,
   Sparkles,
-  CreditCard
+  CreditCard,
+  Compass
 } from 'lucide-react'
 
 export const metadata = {
@@ -91,6 +92,17 @@ export default async function AdminLayout({
                 <span>Kart & İmza</span>
               </div>
               <span className="px-1.5 py-0.5 rounded bg-purple-500 text-white text-[9px] font-black uppercase tracking-wider">NEW</span>
+            </Link>
+
+            <Link 
+              href="/admin/room-studio"
+              className="flex items-center justify-between px-3 py-2.5 text-emerald-300 hover:text-white bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 rounded-lg transition-all my-1 shadow-lg shadow-emerald-500/10"
+            >
+              <div className="flex items-center gap-3">
+                <Compass size={18} className="text-emerald-400 animate-spin-slow" />
+                <span>Harita Stüdyo</span>
+              </div>
+              <span className="px-1.5 py-0.5 rounded bg-emerald-500 text-white text-[9px] font-black uppercase tracking-wider">MAP</span>
             </Link>
             
             <Link 
