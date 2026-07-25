@@ -19,6 +19,11 @@ export default function AvatarTool() {
     alert('Resim linki kopyalandı!');
   };
 
+  const handleChange = (setter: (val: string) => void, val: string) => {
+    setLoading(true);
+    setter(val);
+  };
+
   return (
     <div className="flex flex-col md:flex-row gap-6">
       {/* Controls */}
@@ -28,7 +33,7 @@ export default function AvatarTool() {
           <input 
             type="text" 
             value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e) => handleChange(setUsername, e.target.value)}
             className="w-full bg-gray-50 border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-blue-500"
             placeholder="Kullanıcı adı girin..."
           />
@@ -37,7 +42,7 @@ export default function AvatarTool() {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-xs font-bold text-gray-700 mb-1">Eylem</label>
-            <select value={action} onChange={(e) => setAction(e.target.value)} className="w-full bg-gray-50 border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
+            <select value={action} onChange={(e) => handleChange(setAction, e.target.value)} className="w-full bg-gray-50 border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
               <option value="std">Ayakta</option>
               <option value="sit">Oturuyor</option>
               <option value="wlk">Yürüyor</option>
@@ -47,7 +52,7 @@ export default function AvatarTool() {
           </div>
           <div>
             <label className="block text-xs font-bold text-gray-700 mb-1">Yüz İfadesi</label>
-            <select value={gesture} onChange={(e) => setGesture(e.target.value)} className="w-full bg-gray-50 border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
+            <select value={gesture} onChange={(e) => handleChange(setGesture, e.target.value)} className="w-full bg-gray-50 border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
               <option value="std">Normal</option>
               <option value="sml">Gülümsüyor</option>
               <option value="sad">Üzgün</option>
@@ -57,10 +62,10 @@ export default function AvatarTool() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-3 gap-3">
           <div>
             <label className="block text-xs font-bold text-gray-700 mb-1">Yön</label>
-            <select value={direction} onChange={(e) => setDirection(e.target.value)} className="w-full bg-gray-50 border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
+            <select value={direction} onChange={(e) => handleChange(setDirection, e.target.value)} className="w-full bg-gray-50 border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
               <option value="2">Güney Doğu</option>
               <option value="3">Güney</option>
               <option value="4">Güney Batı</option>
@@ -69,11 +74,18 @@ export default function AvatarTool() {
           </div>
           <div>
             <label className="block text-xs font-bold text-gray-700 mb-1">Baş Yönü</label>
-            <select value={headDirection} onChange={(e) => setHeadDirection(e.target.value)} className="w-full bg-gray-50 border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
-               <option value="2">Güney Doğu</option>
+            <select value={headDirection} onChange={(e) => handleChange(setHeadDirection, e.target.value)} className="w-full bg-gray-50 border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
+              <option value="2">Güney Doğu</option>
               <option value="3">Güney</option>
               <option value="4">Güney Batı</option>
               <option value="5">Batı</option>
+            </select>
+          </div>
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Boyut</label>
+            <select value={size} onChange={(e) => handleChange(setSize, e.target.value)} className="w-full bg-gray-50 border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
+              <option value="b">Büyük (L)</option>
+              <option value="s">Küçük (S)</option>
             </select>
           </div>
         </div>
@@ -82,11 +94,18 @@ export default function AvatarTool() {
       {/* Preview */}
       <div className="w-full md:w-48 flex flex-col items-center">
         <div className="w-full aspect-square bg-[#f8fafc] border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center relative group overflow-hidden">
+          {loading && (
+            <div className="absolute inset-0 bg-white/70 flex items-center justify-center z-10">
+              <RefreshCw size={24} className="text-blue-500 animate-spin" />
+            </div>
+          )}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img 
             src={imageUrl} 
             alt="Habbo Avatar" 
             className="max-h-full object-contain transition-transform group-hover:scale-110" 
             onLoad={() => setLoading(false)}
+            onError={() => setLoading(false)}
           />
         </div>
         <div className="flex w-full gap-2 mt-4">

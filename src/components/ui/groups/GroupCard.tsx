@@ -19,7 +19,7 @@ interface GroupCardProps {
 
 export default function GroupCard({ group }: GroupCardProps) {
   const avatarUrl = `https://www.habbo.com.tr/habbo-imaging/avatarimage?user=${group.owner.habbo_username}&direction=2&head_direction=2&gesture=sml&size=s`;
-  const members = group.memberCount || Math.floor(Math.random() * 100 + 10);
+  const members = group.memberCount || ((group.name.length * 7) % 50) + 12;
 
   return (
     <Link href={`/groups/${group.slug}`} className="habbo-box hover:border-[#3b82f6]/50 p-0 flex flex-col group transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(59,130,246,0.15)] relative overflow-hidden h-[240px]">
@@ -46,6 +46,8 @@ export default function GroupCard({ group }: GroupCardProps) {
           </div>
           
           <div className="flex items-center gap-1.5 bg-[#0a1325]/80 backdrop-blur-sm px-2 py-1 rounded-md border border-[#1e293b]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={avatarUrl} alt={group.owner.username} className="w-4 h-4 object-contain rounded-full bg-black/40" />
             <ShieldAlert size={12} className="text-[#facc15]" />
             <span className="text-white text-[10px] font-bold uppercase">Kurucu: {group.owner.username}</span>
           </div>

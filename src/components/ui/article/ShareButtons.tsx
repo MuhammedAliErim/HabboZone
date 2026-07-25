@@ -26,7 +26,10 @@ export default function ShareButtons({ url, title }: ShareButtonsProps) {
 
   return (
     <div className="flex items-center gap-2">
-      <span className="text-[11px] font-bold text-gray-400 uppercase mr-2">PAYLAŞ:</span>
+      <span className="flex items-center gap-1 text-[11px] font-bold text-gray-400 uppercase mr-2">
+        <Share2 size={14} className="text-blue-400" />
+        PAYLAŞ:
+      </span>
       
       <a 
         href={shareLinks.x} 

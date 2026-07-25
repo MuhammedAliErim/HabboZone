@@ -31,7 +31,7 @@ export default function VoteButtons({
 
     startTransition(async () => {
       // Optimistic update
-      let prevVote = userVote;
+      const prevVote = userVote;
       let newUp = upvotes;
       let newDown = downvotes;
 
@@ -43,7 +43,7 @@ export default function VoteButtons({
       } else {
         // Change or add vote
         if (prevVote === 'upvote') newUp--;
-        if (prevVote === 'downvote') newDown--;
+        else if (prevVote === 'downvote') newDown--;
         
         if (type === 'upvote') newUp++;
         else newDown++;
@@ -63,7 +63,7 @@ export default function VoteButtons({
           setDownvotes(initialDownvotes);
           toast.error(result.message || 'Oylama işlemi başarısız oldu.');
         }
-      } catch (error) {
+      } catch (_err) {
         setUserVote(prevVote);
         setUpvotes(initialUpvotes);
         setDownvotes(initialDownvotes);
