@@ -125,7 +125,12 @@ export default function MagazineEditor({ initialMagazine, initialPages }: Editor
     setIsAIGenerating(true);
     const loadingToast = toast.loading('Yapay Zeka dergiyi tasarlıyor... (Bu işlem 30-60 sn sürebilir)');
     try {
-      const generatedData = await createAIPoweredMagazine(aiPrompt);
+      const result = await createAIPoweredMagazine(aiPrompt);
+      if (!result.success || !result.data) {
+        toast.error('Yapay Zeka Hatası: ' + (result.error || 'Bilinmeyen bir hata oluştu'), { id: loadingToast });
+        return;
+      }
+      const generatedData = result.data;
       
       // JSON'u MagazinePage formatına çevirelim
       const newPages: MagazinePage[] = generatedData.pages.map((p, idx) => ({
