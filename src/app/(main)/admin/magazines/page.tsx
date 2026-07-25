@@ -1,6 +1,6 @@
-import { getAdminMagazines, deleteMagazine } from '@/app/actions/magazine'
+import { getAdminMagazines } from '@/app/actions/magazine'
 import Link from 'next/link'
-import { Plus, Edit, Trash2, Wand2 } from 'lucide-react'
+import { Edit, Trash2, Wand2 } from 'lucide-react'
 import Image from 'next/image'
 
 export default async function AdminMagazinesPage() {
@@ -46,7 +46,7 @@ export default async function AdminMagazinesPage() {
                     <td className="px-6 py-4">
                       <div className="relative w-12 h-16 rounded overflow-hidden border border-[#444]">
                         <Image 
-                          src={item.cover_image || item.cover_image_url || '/placeholder.png'} 
+                          src={item.cover_image_url || '/placeholder.png'} 
                           alt={item.title} 
                           fill
                           className="object-cover"
@@ -54,11 +54,10 @@ export default async function AdminMagazinesPage() {
                       </div>
                     </td>
                     <td className="px-6 py-4 font-bold text-yellow-500">
-                      #{item.issue_number || item.id.substring(0, 4)}
+                      #{item.issue_number || '—'}
                     </td>
                     <td className="px-6 py-4 font-medium text-white max-w-[200px] truncate">
                       {item.title}
-                      {item.is_ai_generated && <span className="ml-2 text-xs bg-indigo-500/20 text-indigo-400 px-2 py-0.5 rounded border border-indigo-500/30">AI Destekli</span>}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {item.published_at ? new Date(item.published_at).toLocaleString('tr-TR') : 'Yayınlanmadı'}
