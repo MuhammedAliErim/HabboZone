@@ -62,5 +62,37 @@ export async function GET() {
 
   result.testCall = modelResults;
 
+  // Görsel (FLUX) API testi
+  if (imageKey) {
+    try {
+      const imgRes = await fetch("https://ai.api.nvidia.com/v1/genai/black-forest-labs/flux.1-dev", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${imageKey}`,
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          prompt: "test pixel art",
+          cfg_scale: 5,
+          width: 1024,
+          height: 1024,
+          steps: 10
+        })
+      });
+      if (imgRes.ok) {
+        const imgData = await imgRes.json();
+        const hasBase64 = !!(imgData.artifacts && imgData.artifacts[0] && imgData.artifacts[0].base64);
+        result.imageTest = { success: true, format: hasBase64 ? 'artifacts[0].base64' : 'other', sample: hasBase64 ? 'data:image/jpeg;base64,...' : imgData };
+      } else {
+        result.imageTest = { success: false, status: imgRes.status, error: await imgRes.text() };
+      }
+    } catch (e: any) {
+      result.imageTest = { success: false, exception: e.message };
+    }
+  } else {
+    result.imageTest = { status: 'skipped', reason: 'NVIDIA_IMAGE_API_KEY eksik' };
+  }
+
   return NextResponse.json(result);
 }

@@ -169,15 +169,23 @@ export async function generateImageFromFlux(prompt: string): Promise<string> {
     }
 
     const data = await response.json();
+    
+    // NVIDIA NIM (black-forest-labs/flux.1-dev) formatı: artifacts[0].base64
+    if (data.artifacts && data.artifacts[0] && data.artifacts[0].base64) {
+      return `data:image/jpeg;base64,${data.artifacts[0].base64}`;
+    }
+
+    // OpenAI DALL-E formatı fallback: data[0].b64_json
     if (data.data && data.data[0] && data.data[0].b64_json) {
       return `data:image/jpeg;base64,${data.data[0].b64_json}`;
     }
     
+    // URL formatı fallback
     if (data.data && data.data[0] && data.data[0].url) {
       return data.data[0].url;
     }
 
-    throw new Error("Geçerli bir resim verisi dönmedi.");
+    throw new Error("Geçerli bir resim verisi dönmedi: " + JSON.stringify(data).substring(0, 100));
   } catch (error) {
     console.error("Image generation error:", error);
     throw error;
