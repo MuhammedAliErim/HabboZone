@@ -38,7 +38,11 @@ export default function UserDropdown({ profile }: UserDropdownProps) {
   };
 
   const isVip = ['VIP', 'Admin', 'Owner', 'Developer'].includes(profile.role);
-  const isStaff = !['Member', 'VIP', 'User', 'Üye', 'member', 'user', 'vip'].includes(profile.role);
+  const staffRoles = ['owner', 'developer', 'administrator', 'moderator', 'admin', 'editor', 'yazar', 'muhabir', 'staff', 'yetkili', 'yönetici', 'birim sorumlusu', 'mod'];
+  const isStaff = profile && profile.role && (
+    !['member', 'vip', 'user', 'üye', 'normal üye'].includes(profile.role.toLowerCase()) ||
+    staffRoles.some(r => profile.role.toLowerCase().includes(r))
+  );
 
   return (
     <div className="relative" ref={dropdownRef}>
@@ -57,15 +61,15 @@ export default function UserDropdown({ profile }: UserDropdownProps) {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-[#0f172a] border-2 border-black rounded-[4px] shadow-[0_4px_0_#000] z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+        <div className="absolute right-0 mt-2 w-52 bg-[#0f172a] border-2 border-white/10 rounded-xl shadow-2xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
           {isStaff && (
             <Link 
               href="/admin"
               onClick={() => setIsOpen(false)}
-              className="flex items-center gap-2 px-4 py-3 text-[12px] font-bold text-yellow-400 hover:text-white hover:bg-yellow-500/20 transition-colors border-b border-[#1e293b] bg-yellow-500/10"
+              className="flex items-center gap-2.5 px-4 py-3 text-[12px] font-black text-black bg-gradient-to-r from-yellow-400 via-amber-400 to-yellow-500 hover:brightness-110 transition-all shadow-md border-b border-yellow-600/50"
             >
-              <LayoutDashboard size={14} className="text-yellow-400 animate-pulse" />
-              ADMİN PANELİ
+              <LayoutDashboard size={16} className="text-black animate-bounce" />
+              <span>ADMİN PANELİNE GİT</span>
             </Link>
           )}
           <Link 

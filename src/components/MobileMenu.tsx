@@ -10,7 +10,11 @@ import GlobalSearch from './search/GlobalSearch';
 export default function MobileMenu({ profile }: { profile: any }) {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
-  const isStaff = profile && !['Member', 'VIP', 'User', 'Üye', 'member', 'user', 'vip'].includes(profile.role);
+  const staffRoles = ['owner', 'developer', 'administrator', 'moderator', 'admin', 'editor', 'yazar', 'muhabir', 'staff', 'yetkili', 'yönetici', 'birim sorumlusu', 'mod'];
+  const isStaff = profile && profile.role && (
+    !['member', 'vip', 'user', 'üye', 'normal üye'].includes(profile.role.toLowerCase()) ||
+    staffRoles.some(r => profile.role.toLowerCase().includes(r))
+  );
 
   const navItems = [
     { href: '/', label: 'ANA SAYFA', icon: Home },
@@ -111,9 +115,9 @@ export default function MobileMenu({ profile }: { profile: any }) {
                     <Link 
                       href="/admin"
                       onClick={() => setIsOpen(false)}
-                      className="habbo-button warning w-full flex items-center justify-center gap-2 py-3 !bg-yellow-500 !text-black font-black"
+                      className="habbo-button warning w-full flex items-center justify-center gap-2 py-3 !bg-gradient-to-r !from-yellow-400 !to-amber-500 !text-black font-black shadow-lg"
                     >
-                      <LayoutDashboard size={18} /> YÖNETİM PANELİ
+                      <LayoutDashboard size={18} className="animate-bounce" /> ADMİN PANELİNE GİT
                     </Link>
                   )}
                   <Link 
