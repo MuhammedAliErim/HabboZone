@@ -75,7 +75,7 @@ export default function Footer() {
             Bu HabboZone, Sulake Oy veya İştirakleri tarafından doğrulanmamış, onaylanmamış ve desteklenmemiştir ve bunlar ile bağlı değildir. Bu HabboZone, Habbo Fan Sitesi Poliçesi altında izin verilen ticaret markalarını ve diğer Habbo fikrî mülkiyetlerini kullanabilir.
             </p>
             <div className="text-[10px] text-[#facc15] font-black tracking-widest uppercase mt-2">
-            &copy; {new Date().getFullYear()} HABBOZONE. TÜM HAKLARI SAKLIDIR.
+            &copy; 2026 HABBOZONE. TÜM HAKLARI SAKLIDIR.
             </div>
         </div>
 
