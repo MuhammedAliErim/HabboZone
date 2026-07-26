@@ -2,6 +2,9 @@
 
 HabboZone, modern web teknolojileri ile geliştirilmiş, zengin özelliklere sahip yeni nesil bir Habbo Türkiye fansitesidir.
 
+> [!IMPORTANT]
+> **AI / GPT / Codex ile Geliştirme Rehberi:** Bu projeyi bir yapay zeka asistanına (GPT-4o, Codex, Claude vb.) bağlarken veya üzerinde çalışırken projenin tam mimari bağlamı, API anahtarları, veritabanı şeması ve tasarım dili için mutlaka [AI_CODEX_DOCUMENTATION.md](file:///C:/Users/odokh/Desktop/HabboZone/AI_CODEX_DOCUMENTATION.md) dökümanını inceleyin!
+
 ## Özellikler
 
 - **Gelişmiş Haber Sistemi:** Kategori bazlı, yazar onaylı dinamik haber altyapısı.
