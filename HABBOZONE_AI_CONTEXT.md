@@ -68,11 +68,11 @@ HabboZone/
 │   │   │   ├── guides/     # Oyun rehberleri ve adım adım çözüm talimatları
 │   │   │   ├── groups/     # Topluluk grupları ve fan kulüpleri
 │   │   │   ├── profile/    # Oyuncu profilleri, rozetleri, arkadaşları ve VIP statüleri
-│   │   │   └── tools/      # Kullanıcı araçları (Avatar üretici, rozet arayıcı vb.)
+│   │   │   └── tools/      # Kullanıcı araçları (Avatar üretici, rozet arayıcı, kura çarkı, nadire takas hesaplayıcısı vb.)
 │   │   ├── api/            # API Route'ları (NVIDIA AI entegrasyonları, Habbo API proxy vb.)
 │   │   └── layout.tsx      # Root Layout ve genel tema kapsayıcısı
 │   ├── components/
-│   │   ├── tools/          # AvatarTool, BadgeTool vb. interaktif araçlar
+│   │   ├── tools/          # AvatarTool, BadgeTool, TradeCalculatorTool, WheelOfFortuneTool vb. interaktif araçlar
 │   │   └── ui/             # Yeniden kullanılabilir butonlar, kartlar, haber ve dergi okuyucular
 │   └── utils/
 │       └── supabase/       # Supabase client, server, admin ve middleware yardımcıları
@@ -84,7 +84,7 @@ HabboZone/
 ---
 
 ## 🎨 6. CANVA BENZERİ ÖZEL TASARIM STÜDYOLARI (YÖNETİM PANELSİ)
-HabboZone'un en büyük farkı, admin panelinde (`/admin`) yer alan 5 büyük **Canva Benzeri Tasarım Stüdyosu**dur. Bu stüdyolar, içerik üreticilerinin dışarıdan (Photoshop vb.) grafik tasarımı yapmadan saniyeler içinde şık görseller ve HTML gömme (embed) kodları üretmesini sağlar:
+HabboZone'un en büyük farkı, admin panelinde (`/admin`) yer alan 6 büyük **Canva Benzeri Tasarım Stüdyosu**dur. Bu stüdyolar, içerik üreticilerinin dışarıdan (Photoshop vb.) grafik tasarımı yapmadan saniyeler içinde şık görseller ve HTML gömme (embed) kodları üretmesini sağlar:
 
 1. **🎨 Canva Görsel Stüdyosu v4.0 (`/admin/studio`):**
    - Haber kapakları, rehber bannerları, sosyal medya görselleri ve duyuru kartları tasarlama motoru. Sürükle-bırak ikonlar, renk paletleri ve yazı tipleri içerir.
@@ -94,7 +94,9 @@ HabboZone'un en büyük farkı, admin panelinde (`/admin`) yer alan 5 büyük **
    - Wired labirentleri, oda turnuvaları ve rozet görevleri için harita üzerine adım adım oklar, numaralar, ışınlayıcı noktaları ve uyarı rozetleri ekleme araçları.
 4. **👗 Kombin & Lookbook Moda Stüdyosu v2.0 (`/admin/outfit-studio`):**
    - 5 farklı podyum teması (Altın VIP, Sakura Pembe, Siber Neon, Kış Masalı, Gotik Gece) üzerinde canlı avatar yön/eylem kontrolleri. Kombinde giyilen eşyaları (Taç, Kazak, Gözlük vb.) fiyatlarıyla etiketleyip tek tıkla haber veya dergilere gömmek için HTML kodu export eder.
-5. **📰 Canva Dergi Stüdyosu (`/admin/magazines`):**
+5. **🏆 Turnuva & Çekiliş Stüdyosu v2.0 (`/admin/giveaway-studio`):**
+   - Çekiliş ve Kura Modeli ile katılımcıları ekleyerek canlı animasyonlu kura çarkı döndürme, 1v1 Turnuva Eşleşme Şeması (Bracket Generator) ile katılımcıları adilce eşleştirip animasyonlu eleme turları oluşturma ve haber embed (gömme) HTML kodu üretme.
+6. **📰 Canva Dergi Stüdyosu (`/admin/magazines`):**
    - AI destekli dergi ve gazete oluşturucu. Metin, görsel, yapay zeka resim kutularını sürükle-bırak ile sayfalara yerleştirme, katman hiyerarşisi yönetme ve gerçek zamanlı önizleme imkanı sunar.
 
 ---
