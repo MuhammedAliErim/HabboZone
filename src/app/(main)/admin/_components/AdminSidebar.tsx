@@ -19,7 +19,8 @@ import {
   Users, 
   Image as ImageIcon, 
   MessageSquare,
-  Shirt
+  Shirt,
+  Trophy
 } from 'lucide-react';
 
 export default function AdminSidebar() {
@@ -31,6 +32,7 @@ export default function AdminSidebar() {
     { href: '/admin/id-studio', label: 'Kart & İmza', icon: CreditCard, color: 'text-purple-400 animate-bounce', badge: 'NEW', badgeColor: 'bg-purple-500' },
     { href: '/admin/room-studio', label: 'Harita Stüdyo', icon: Compass, color: 'text-emerald-400 animate-spin-slow', badge: 'MAP', badgeColor: 'bg-emerald-500' },
     { href: '/admin/outfit-studio', label: 'Kombin & Lookbook', icon: Shirt, color: 'text-rose-400 animate-pulse', badge: 'MODA', badgeColor: 'bg-rose-500' },
+    { href: '/admin/giveaway-studio', label: 'Turnuva & Kura', icon: Trophy, color: 'text-amber-400 animate-pulse', badge: 'KURA', badgeColor: 'bg-amber-500' },
     { href: '/admin/news', label: 'Haberler', icon: Newspaper, color: 'text-green-400' },
     { href: '/admin/magazines', label: 'Gazete/Dergi', icon: BookOpen, color: 'text-pink-400' },
     { href: '/admin/values', label: 'Nadire Değerleri', icon: Gem, color: 'text-yellow-400' },

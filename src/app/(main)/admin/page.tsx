@@ -4,7 +4,7 @@ import {
   Users, Newspaper, Gem, MessageSquare, BookOpen, Shield, Calendar, 
   Award, Megaphone, Home, Book, Image as ImageIcon, Wand2, Package, 
   Sparkles, Activity, ShieldCheck, Cpu, ArrowRight, Zap, CheckCircle2, 
-  LayoutDashboard, Wrench, Layers, CreditCard, Compass, Shirt
+  LayoutDashboard, Wrench, Layers, CreditCard, Compass, Shirt, Trophy
 } from 'lucide-react'
 
 export default async function AdminDashboardPage() {
@@ -97,6 +97,7 @@ export default async function AdminDashboardPage() {
     { title: 'Kart & İmza Stüdyosu', desc: 'Resmi yetkili yaka kartları, forum imza barları ve VIP biletleri tasarlayın.', href: '/admin/id-studio', icon: CreditCard, color: 'border-purple-500/50 hover:border-purple-500 bg-purple-500/10 hover:bg-purple-500/20', badge: 'NEW PRO v2' },
     { title: 'Oda & Harita Çözüm Stüdyosu', desc: 'Wired labirentleri ve rozet görevleri için interaktif ok ve adım işaretli haritalar tasarlayın.', href: '/admin/room-studio', icon: Compass, color: 'border-emerald-500/50 hover:border-emerald-500 bg-emerald-500/10 hover:bg-emerald-500/20', badge: 'CANVA MAP v3' },
     { title: 'Kombin & Lookbook Stüdyosu', desc: 'Habbo avatarları, kıyafet kombinleri ve şık moda kartları tasarlayın.', href: '/admin/outfit-studio', icon: Shirt, color: 'border-rose-500/50 hover:border-rose-500 bg-rose-500/10 hover:bg-rose-500/20', badge: 'CANVA MODA v2' },
+    { title: 'Turnuva & Çekiliş Stüdyosu', desc: 'Canlı kura çekimi, rozet talihlileri ve 1v1 turnuva eşleşme şemaları oluşturun.', href: '/admin/giveaway-studio', icon: Trophy, color: 'border-amber-500/50 hover:border-amber-500 bg-amber-500/10 hover:bg-amber-500/20', badge: 'CANVA KURA v2' },
     { title: 'Haberler & Yazılar', desc: 'Haber yayınlayın, içerikleri ve manşetleri düzenleyin.', href: '/admin/news', icon: Newspaper, color: 'border-green-500/30 hover:border-green-500 bg-green-500/5 hover:bg-green-500/10' },
     { title: 'Canva Dergi Stüdyosu', desc: 'AI destekli dergi ve gazete tasarlayıcısı, katman editörü.', href: '/admin/magazines', icon: Layers, color: 'border-pink-500/30 hover:border-pink-500 bg-pink-500/5 hover:bg-pink-500/10', badge: 'CANVA PRO' },
     { title: 'Nadire Değerleri', desc: 'Habbo nadire katalog değerlerini, grafikleri ve fiyatları yönetin.', href: '/admin/values', icon: Gem, color: 'border-yellow-500/30 hover:border-yellow-500 bg-yellow-500/5 hover:bg-yellow-500/10' },
@@ -162,6 +163,12 @@ export default async function AdminDashboardPage() {
               className="bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-400 hover:to-pink-500 text-white font-bold px-5 py-3 rounded-xl shadow-lg shadow-rose-500/25 flex items-center gap-2 transition-all hover:scale-105"
             >
               <Shirt className="w-5 h-5 animate-pulse" /> Kombin Stüdyosu
+            </Link>
+            <Link 
+              href="/admin/giveaway-studio" 
+              className="bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-400 hover:to-yellow-500 text-black font-black px-5 py-3 rounded-xl shadow-lg shadow-amber-500/25 flex items-center gap-2 transition-all hover:scale-105"
+            >
+              <Trophy className="w-5 h-5 animate-pulse" /> Turnuva & Kura
             </Link>
             <Link 
               href="/admin/magazines" 
