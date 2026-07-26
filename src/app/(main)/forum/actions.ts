@@ -48,7 +48,7 @@ export async function createTopic(prevState: any, formData: FormData) {
     }
 
     revalidatePath('/forum');
-    redirect(`/forum/${topic.slug}`);
+    redirect(`/forum/topic/${topic.slug}`);
 }
 
 export async function createReply(prevState: any, formData: FormData) {
@@ -87,7 +87,7 @@ export async function createReply(prevState: any, formData: FormData) {
         .update({ updated_at: new Date().toISOString() })
         .eq('id', topic_id);
 
-    revalidatePath(`/forum/${topic_slug}`);
+    revalidatePath(`/forum/topic/${topic_slug}`);
     revalidatePath('/forum');
     
     return { success: true };
