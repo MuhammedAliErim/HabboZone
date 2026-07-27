@@ -44,6 +44,7 @@ export default async function MarketCategoryPage({ params }: { params: { categor
         <div className="habbo-box-header flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 bg-[#090e17] rounded-[4px] flex items-center justify-center p-1 border border-black/30">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={category.image_url} alt={category.name} className="max-w-full max-h-full object-contain pixelated" />
             </div>
             <h1 className="text-xl font-bold">{category.name}</h1>
@@ -71,6 +72,7 @@ export default async function MarketCategoryPage({ params }: { params: { categor
                     LTD
                   </div>
                 )}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img 
                   src={item.image_url} 
                   alt={item.name} 
@@ -80,6 +82,7 @@ export default async function MarketCategoryPage({ params }: { params: { categor
               <div className="p-3 flex flex-col gap-1 border-t border-[#2b3548]">
                 <h3 className="text-white font-bold text-xs line-clamp-2" title={item.name}>{item.name}</h3>
                 <div className="flex items-center gap-1.5 mt-auto pt-1">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img 
                     src={item.currency_type === 'credits' 
                       ? 'https://images.habbo.com/c_images/album1584/CRED.gif' 

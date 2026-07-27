@@ -226,6 +226,7 @@ export default async function NewsDetail({ params }: Props) {
         <div className="bg-[#0f172a]">
             {/* Hero Image */}
             <div className="w-full h-[300px] md:h-[450px] border-b-2 border-black bg-[#0a1325] relative overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img 
                     src={newsItem.thumbnail_url || 'https://images.habbo.com/c_images/article_images_tr/tr_news_header_1.png'} 
                     alt={newsItem.title}
@@ -342,9 +343,10 @@ export default async function NewsDetail({ params }: Props) {
             {relatedNews.map((rn) => (
                <Link key={rn.id} href={`/news/${rn.slug}`} className="habbo-box bg-[#0f172a] overflow-hidden group/card flex flex-col hover:border-[#facc15] transition-colors">
                  <div className="h-32 w-full relative border-b-2 border-black overflow-hidden bg-[#0a1325]">
-                   <img src={rn.thumbnail_url || 'https://images.habbo.com/c_images/article_images_tr/tr_news_header_1.png'} className="w-full h-full object-cover pixelated group-hover/card:scale-110 transition-transform duration-500" alt={rn.title} />
-                 </div>
-                 <div className="p-3">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={rn.thumbnail_url || 'https://images.habbo.com/c_images/article_images_tr/tr_news_header_1.png'} className="w-full h-full object-cover pixelated group-hover/card:scale-110 transition-transform duration-500" alt={rn.title} />
+                  </div>
+                  <div className="p-3">
                    <h4 className="text-white font-bold text-[13px] line-clamp-2 group-hover/card:text-[#facc15] transition-colors">{rn.title}</h4>
                    <span className="text-gray-500 text-[10px] mt-2 block">{new Date(rn.published_at).toLocaleDateString('tr-TR')}</span>
                  </div>

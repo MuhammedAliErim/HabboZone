@@ -11,6 +11,16 @@ type Props = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 };
 
+interface SearchResultItem {
+  id: string;
+  _type: string;
+  title: string;
+  description: string | null;
+  url: string;
+  imageUrl: string | null;
+  date?: string;
+}
+
 const TABS = [
   { id: 'all', label: 'Tümü' },
   { id: 'news', label: 'Haberler' },
@@ -32,7 +42,7 @@ export default async function SearchPage({ searchParams }: Props) {
   const supabase = await createClient();
   const searchPattern = `%${q}%`;
   
-  const results: any[] = [];
+  const results: SearchResultItem[] = [];
   
   if (q.length >= 2) {
     if (tab === 'all' || tab === 'news') {

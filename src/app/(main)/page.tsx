@@ -6,6 +6,45 @@ import {
   Newspaper, BookOpen, ShoppingBag, ArrowRight, Gift, LifeBuoy, Clock, Eye, Award, Play
 } from 'lucide-react';
 
+interface Announcement {
+  id: string;
+  message: string;
+  is_active: boolean;
+  created_at: string;
+}
+
+interface NewsItem {
+  title: string;
+  slug: string;
+  summary: string;
+  thumbnail_url: string;
+  published_at: string;
+  author?: {
+    username: string;
+    habbo_username: string;
+  } | null;
+}
+
+interface Badge {
+  id: string;
+  name: string;
+  description: string;
+  how_to_get: string;
+  image_url: string;
+}
+
+interface Event {
+  id: string;
+  title: string;
+  description: string;
+  event_time: string;
+  host_username: string;
+  event_type: string;
+  reward_text: string;
+  image_url: string;
+  is_active: boolean;
+}
+
 export const revalidate = 60;
 
 export default async function Home() {
@@ -136,7 +175,7 @@ export default async function Home() {
                     ].map((item, i) => (
                       <Link key={i} href="/news" className="flex items-center gap-3 group hover:bg-[#1e293b] p-1.5 rounded transition-all hover:pl-2">
                         <div className="w-12 h-12 bg-[#050a14] rounded-[4px] border border-[#1e293b] relative overflow-hidden shrink-0">
-                          <img src="https://images.habbo.com/c_images/reception/new_furni_promo.png" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300 pixelated" alt="" />
+                          <Image src="https://images.habbo.com/c_images/reception/new_furni_promo.png" fill className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300 pixelated" alt="" />
                         </div>
                         <div className="flex flex-col items-start">
                           <span className={`${item.tagColor} text-white text-[9px] font-black px-1.5 py-0.5 rounded-[3px] mb-0.5 uppercase`}>{item.tag}</span>
@@ -164,14 +203,14 @@ export default async function Home() {
                  <div className="flex-1 overflow-hidden ml-[100px] flex items-center h-full relative" style={{ maskImage: 'linear-gradient(to right, transparent, black 5%, black 95%, transparent)' }}>
                      <div className="flex w-[200%] animate-ticker">
                          <div className="flex gap-12 shrink-0 items-center whitespace-nowrap text-white text-[12px] font-medium pr-12">
-                             {announcements && announcements.length > 0 ? announcements.map((ann: any, i: number) => (
+                             {announcements && announcements.length > 0 ? announcements.map((ann: Announcement, i: number) => (
                                 <span key={i} className="flex items-center gap-2"><div className="w-1.5 h-1.5 bg-[#facc15] rounded-full"></div> {ann.message}</span>
                              )) : (
                                 <span className="flex items-center gap-2"><div className="w-1.5 h-1.5 bg-[#facc15] rounded-full"></div> HabboZone'a hoş geldiniz! Son gelişmeler burada yer alacak.</span>
                              )}
                          </div>
                          <div className="flex gap-12 shrink-0 items-center whitespace-nowrap text-white text-[12px] font-medium pr-12">
-                             {announcements && announcements.length > 0 ? announcements.map((ann: any, i: number) => (
+                             {announcements && announcements.length > 0 ? announcements.map((ann: Announcement, i: number) => (
                                 <span key={`dup-${i}`} className="flex items-center gap-2"><div className="w-1.5 h-1.5 bg-[#facc15] rounded-full"></div> {ann.message}</span>
                              )) : (
                                 <span className="flex items-center gap-2"><div className="w-1.5 h-1.5 bg-[#facc15] rounded-full"></div> HabboZone'a hoş geldiniz! Son gelişmeler burada yer alacak.</span>
@@ -220,7 +259,7 @@ export default async function Home() {
                </Link>
             </div>
 
-            {newsItems && newsItems.length > 0 ? newsItems.map((news: any) => (
+            {newsItems && newsItems.length > 0 ? newsItems.map((news: NewsItem) => (
                 <Link key={news.slug} href={`/news/${news.slug}`} className="habbo-box hover:border-[#3b82f6]/50 p-3 flex flex-col gap-3 group transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(59,130,246,0.15)]">
                    <div className="w-full h-[140px] bg-[#0a1325] rounded-[4px] relative overflow-hidden border border-[#1e293b]">
                       <Image src={news.thumbnail_url || "https://images.habbo.com/c_images/reception/new_furni_promo.png"} alt={news.title} fill sizes="(max-width: 768px) 100vw, 30vw" className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500 pixelated" />
@@ -233,7 +272,7 @@ export default async function Home() {
                       </div>
                       <div className="flex flex-col gap-2 border-t border-[#1e293b]/50 pt-2">
                         <div className="flex justify-between items-center">
-                          <span className="flex items-center gap-1.5 text-white text-[11px] font-bold"><img src={`https://www.habbo.com.tr/habbo-imaging/avatarimage?user=${news.author?.habbo_username || 'frank'}&direction=2&head_direction=2&action=&gesture=&size=s`} className="w-5 h-5 rounded-full bg-[#0a1325] pixelated border border-[#1e293b]" alt=""/> {news.author?.username || 'HabboZone'}</span>
+                          <span className="flex items-center gap-1.5 text-white text-[11px] font-bold">{/* eslint-disable-next-line @next/next/no-img-element */}<img src={`https://www.habbo.com.tr/habbo-imaging/avatarimage?user=${news.author?.habbo_username || 'frank'}&direction=2&head_direction=2&action=&gesture=&size=s`} className="w-5 h-5 rounded-full bg-[#0a1325] pixelated border border-[#1e293b]" alt=""/> {news.author?.username || 'HabboZone'}</span>
                           <span className="text-[#6b7280] text-[10px] font-bold">{new Date(news.published_at).toLocaleDateString('tr-TR')}</span>
                         </div>
                         <div className="flex justify-between items-center text-[#6b7280] text-[10px] font-bold">
@@ -273,7 +312,7 @@ export default async function Home() {
                             <span className="text-[#facc15] font-black text-[12px]">HABBO ZONE</span>
                          </div>
                          <div className="flex-1 w-full flex items-center justify-center p-2 relative">
-                            <img src={latestMagazine.cover_image_url} className="w-full h-full object-cover pixelated opacity-90" alt="" />
+                             {/* eslint-disable-next-line @next/next/no-img-element */}<img src={latestMagazine.cover_image_url} className="w-full h-full object-cover pixelated opacity-90" alt="" />
                          </div>
                       </div>
                       <div className="flex flex-col flex-1 pt-2">
@@ -295,7 +334,7 @@ export default async function Home() {
                               <span className="text-[#facc15] font-black text-[8px]">HABBO ZONE</span>
                             </div>
                             <div className="flex-1 w-full flex items-center justify-center p-1 relative">
-                              <img src={issue.cover_image_url} className="w-full h-full object-cover pixelated opacity-80" alt="" />
+                               {/* eslint-disable-next-line @next/next/no-img-element */}<img src={issue.cover_image_url} className="w-full h-full object-cover pixelated opacity-80" alt="" />
                             </div>
                           </div>
                         </a>
@@ -343,7 +382,7 @@ export default async function Home() {
                   <div className="flex -space-x-2">
                     {['frank', 'bonnie', 'piccolo', 'admin', 'moderator', 'builder', 'player'].map((usr, i) => (
                        <div key={i} className="w-8 h-8 rounded-full bg-[#0a1325] border border-[#1e293b] overflow-hidden flex items-center justify-center z-10 relative">
-                          <img src={`https://www.habbo.com.tr/habbo-imaging/avatarimage?user=${usr}&direction=2&head_direction=2&action=&gesture=&size=s`} className="pixelated" alt="" />
+                           {/* eslint-disable-next-line @next/next/no-img-element */}<img src={`https://www.habbo.com.tr/habbo-imaging/avatarimage?user=${usr}&direction=2&head_direction=2&action=&gesture=&size=s`} className="pixelated" alt="" />
                        </div>
                     ))}
                   </div>
@@ -378,10 +417,10 @@ export default async function Home() {
                </div>
                <div className="habbo-box p-3">
                   <div className="grid grid-cols-5 gap-2">
-                     {badges && badges.length > 0 ? badges.map((badge: any) => (
+                     {badges && badges.length > 0 ? badges.map((badge: Badge) => (
                         <div key={badge.id} className="bg-[#0a1325] border border-[#1e293b] rounded-[4px] aspect-square flex items-center justify-center hover:bg-[#1e293b] hover:border-gray-500 transition-colors cursor-pointer group relative" title={`${badge.name}\n\nKazanma Yöntemi:\n${badge.how_to_get}`}>
                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                           <img src={badge.image_url} alt={badge.name} className="group-hover:scale-125 transition-transform duration-300 pixelated max-w-[40px] max-h-[40px] object-contain" />
+                            {/* eslint-disable-next-line @next/next/no-img-element */}<img src={badge.image_url} alt={badge.name} className="group-hover:scale-125 transition-transform duration-300 pixelated max-w-[40px] max-h-[40px] object-contain" />
                         </div>
                      )) : (
                         <div className="col-span-5 text-center text-gray-500 py-4 text-xs font-bold">Yeni rozet yok.</div>
@@ -397,7 +436,7 @@ export default async function Home() {
                   <Link href="/events" className="text-gray-400 hover:text-white text-[11px] font-bold flex items-center gap-1 uppercase">TÜMÜ <ArrowRight size={12} /></Link>
                </div>
                <div className="habbo-box p-3 flex flex-col gap-2">
-                  {events && events.length > 0 ? events.map((evt: any) => {
+                  {events && events.length > 0 ? events.map((evt: Event) => {
                      const evtStyle = getEventColor(evt.event_type);
                      return (
                       <div key={evt.id} className={`flex items-center justify-between p-2 bg-[#0a1325] border ${evtStyle.border} rounded-[4px] hover:bg-[#1e293b] transition-colors cursor-pointer`}>

@@ -50,7 +50,7 @@ export default function FontGeneratorTool() {
       <div className="w-full md:w-64 flex flex-col items-center">
         <div className="w-full h-28 bg-[#050a14] border border-[#1e293b] rounded-[3px] flex items-center justify-center p-4 shadow-inner relative overflow-hidden">
            {text.length > 0 ? (
-             <img src={imageUrl} alt="Generated Font" className="max-w-full object-contain pixelated" />
+              <img src={imageUrl} alt="Generated Font" className="max-w-full object-contain pixelated" />
            ) : (
              <span className="text-gray-500 text-xs font-black uppercase tracking-wider">BİR ŞEYLER YAZIN...</span>
            )}

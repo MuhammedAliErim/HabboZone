@@ -66,6 +66,7 @@ export default async function MarketPage() {
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-[#0a1325] rounded-[2px] flex items-center justify-center p-1.5 border border-[#1e293b]">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={category.image_url} alt={category.name} className="max-w-full max-h-full object-contain pixelated drop-shadow" />
                     </div>
                     <div>
@@ -103,6 +104,7 @@ export default async function MarketPage() {
                         LTD
                       </div>
                     )}
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img 
                       src={item.image_url} 
                       alt={item.name} 
@@ -115,6 +117,7 @@ export default async function MarketPage() {
                       <h3 className="text-white font-black text-xs line-clamp-1 group-hover:text-[#facc15] transition-colors uppercase tracking-tight">{item.name}</h3>
                     </div>
                     <div className="flex items-center gap-1 mt-2 pt-2 border-t border-[#1e293b]/50">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img 
                         src={item.currency_type === 'credits' 
                           ? 'https://images.habbo.com/c_images/album1584/CRED.gif' 

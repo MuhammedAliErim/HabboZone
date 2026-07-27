@@ -4,6 +4,18 @@ import { createClient } from '@/utils/supabase/server';
 import { MessageCircle, Eye, ChevronRight, Clock, Lock } from 'lucide-react';
 import Countdown from '@/components/Countdown';
 
+interface NewsItem {
+  title: string;
+  slug: string;
+  summary: string;
+  thumbnail_url: string;
+  published_at: string;
+  author?: {
+    username: string;
+    habbo_username: string;
+  } | null;
+}
+
 export const revalidate = 60; // Cache for 60 seconds
 
 export default async function NewsPage() {
@@ -70,7 +82,7 @@ export default async function NewsPage() {
         
         {/* Left Column - News List */}
         <div className="space-y-4">
-            {newsItems?.map((news: any) => {
+            {newsItems?.map((news: NewsItem) => {
               const isLocked = new Date(news.published_at).getTime() > now;
               
               return (

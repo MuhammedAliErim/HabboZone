@@ -43,6 +43,7 @@ export default async function WikiCategoryPage({ params }: { params: { category:
               className="habbo-box bg-[#0a1325] border border-[#1e293b] rounded-[3px] p-3 flex flex-col items-center text-center hover:border-[#facc15] hover:-translate-y-1 transition-all group shadow"
             >
               <div className="w-16 h-16 relative flex items-center justify-center mb-2">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img 
                   src={item.image_url} 
                   alt={item.name} 

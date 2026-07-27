@@ -4,6 +4,41 @@ import Link from 'next/link';
 import { Users, FileText, MessageCircle, MapPin, Calendar, Award } from 'lucide-react';
 import HabboAvatar from '@/components/HabboAvatar';
 
+interface ProfileNewsItem {
+  id: string;
+  title: string;
+  slug: string;
+  published_at: string;
+}
+
+interface UserRoom {
+  id: string;
+  room_id: string;
+  room_name: string;
+  room_description: string | null;
+  thumbnail_url: string | null;
+  user_id: string;
+  created_at: string;
+  is_pinned: boolean;
+}
+
+interface FollowProfile {
+  id: string;
+  username: string;
+  habbo_username: string | null;
+  avatar_url: string | null;
+  role: string;
+  follow_date?: string;
+}
+
+interface Badge {
+  id: string;
+  name: string;
+  description: string;
+  how_to_get: string;
+  image_url: string;
+}
+
 export const revalidate = 60;
 
 export default async function ProfilePage({ params, searchParams }: { params: Promise<{ username: string }>, searchParams?: Promise<{ [key: string]: string | string[] | undefined }> }) {
@@ -34,7 +69,7 @@ export default async function ProfilePage({ params, searchParams }: { params: Pr
     .order('created_at', { ascending: false })
     .limit(4);
 
-  let news: any[] = [];
+  let news: ProfileNewsItem[] = [];
   if (['Admin', 'Editor', 'Journalist', 'Owner'].includes(profile.role)) {
     const { data } = await supabase
       .from('news')
@@ -58,15 +93,15 @@ export default async function ProfilePage({ params, searchParams }: { params: Pr
   const badges = userBadges ? userBadges.map(ub => ub.badge) : [];
 
   // Fetch Rooms (Defensive)
-  let rooms: any[] = [];
+  let rooms: UserRoom[] = [];
   if (currentTab === 'odalar') {
       const { data, error } = await supabase.from('user_rooms').select('*').eq('user_id', profile.id).order('created_at', { ascending: false });
       if (!error && data) rooms = data;
   }
 
   // Fetch Follows (Defensive)
-  let followers: any[] = [];
-  let following: any[] = [];
+  let followers: FollowProfile[] = [];
+  let following: FollowProfile[] = [];
   if (currentTab === 'arkadaslar') {
       const { data: f1, error: e1 } = await supabase.from('user_follows').select('follower_id, created_at').eq('following_id', profile.id);
       if (!e1 && f1) {
@@ -156,8 +191,9 @@ export default async function ProfilePage({ params, searchParams }: { params: Pr
                         </h3>
                         <div className="flex flex-wrap items-center gap-2 bg-[#050a14] p-2 rounded border border-[#1e293b] min-h-[58px]">
                             {badges.length > 0 ? (
-                                badges.map((b: any, i: number) => (
+                                badges.map((b: Badge, i: number) => (
                                     <div key={i} title={b?.name || ''} className="w-10 h-10 bg-[#050a14] rounded border border-[#1e293b] flex items-center justify-center hover:bg-[#1e293b] transition-colors cursor-pointer group">
+                                        {/* eslint-disable-next-line @next/next/no-img-element */}
                                         <img src={b?.image_url} alt="Badge" className="group-hover:scale-110 transition-transform pixelated" />
                                     </div>
                                 ))
@@ -210,7 +246,7 @@ export default async function ProfilePage({ params, searchParams }: { params: Pr
                                     <div className="flex justify-between items-center text-[10px] text-[#64748b] font-bold">
                                         <span>{new Date(topic.created_at).toLocaleDateString('tr-TR')}</span>
                                         <span className="flex items-center gap-1 text-[#a855f7] bg-[#a855f7]/10 px-1.5 py-0.5 rounded">
-                                            <MessageCircle size={10} /> {(topic.replies as any)?.[0]?.count || 0}
+                                            <MessageCircle size={10} /> {(topic.replies?.[0]?.count ?? 0) || 0}
                                         </span>
                                     </div>
                                 </Link>
@@ -253,9 +289,10 @@ export default async function ProfilePage({ params, searchParams }: { params: Pr
                     
                     {badges.length > 0 ? (
                         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4">
-                            {badges.map((b: any, i: number) => (
+                            {badges.map((b: Badge, i: number) => (
                                 <div key={i} className="bg-[#050a14] border border-[#1e293b] rounded p-4 flex flex-col items-center text-center hover:border-[#facc15] transition-colors group">
                                     <div className="w-16 h-16 flex items-center justify-center mb-3">
+                                        {/* eslint-disable-next-line @next/next/no-img-element */}
                                         <img src={b?.image_url} alt={b?.name} className="group-hover:scale-110 transition-transform pixelated max-w-full max-h-full" />
                                     </div>
                                     <h3 className="text-white font-bold text-[11px] leading-tight mb-1">{b?.name}</h3>
@@ -284,7 +321,7 @@ export default async function ProfilePage({ params, searchParams }: { params: Pr
                         <div>
                             <h3 className="text-[12px] font-bold text-[#64748b] uppercase tracking-wider mb-4 border-b border-[#1e293b] pb-2">Takipçiler ({followers.length})</h3>
                             <div className="space-y-2">
-                                {followers.length > 0 ? followers.map((f: any, i: number) => (
+                                {followers.length > 0 ? followers.map((f: FollowProfile, i: number) => (
                                     <Link href={`/profile/${f.username}`} key={i} className="flex items-center gap-3 bg-[#050a14] border border-[#1e293b] p-2 rounded hover:border-[#3b82f6] transition-colors group">
                                         <div className="w-10 h-10 rounded bg-[#0a1325] border border-[#1e293b] flex items-center justify-center shrink-0 overflow-hidden relative">
                                             <HabboAvatar username={f.habbo_username || f.username} size="m" headOnly direction={3} className="w-8 h-8" />
@@ -303,7 +340,7 @@ export default async function ProfilePage({ params, searchParams }: { params: Pr
                         <div>
                             <h3 className="text-[12px] font-bold text-[#64748b] uppercase tracking-wider mb-4 border-b border-[#1e293b] pb-2">Takip Ettikleri ({following.length})</h3>
                             <div className="space-y-2">
-                                {following.length > 0 ? following.map((f: any, i: number) => (
+                                {following.length > 0 ? following.map((f: FollowProfile, i: number) => (
                                     <Link href={`/profile/${f.username}`} key={i} className="flex items-center gap-3 bg-[#050a14] border border-[#1e293b] p-2 rounded hover:border-[#3b82f6] transition-colors group">
                                         <div className="w-10 h-10 rounded bg-[#0a1325] border border-[#1e293b] flex items-center justify-center shrink-0 overflow-hidden relative">
                                             <HabboAvatar username={f.habbo_username || f.username} size="m" headOnly direction={3} className="w-8 h-8" />
@@ -331,7 +368,7 @@ export default async function ProfilePage({ params, searchParams }: { params: Pr
                     
                     {rooms.length > 0 ? (
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            {rooms.map((room: any, i: number) => (
+                            {rooms.map((room: UserRoom, i: number) => (
                                 <a href={`https://www.habbo.com.tr/hotel?room=${room.room_id}`} target="_blank" rel="noopener noreferrer" key={i} className="bg-[#050a14] border border-[#1e293b] rounded p-3 flex gap-4 hover:border-[#ef4444] transition-colors group">
                                     <div className="w-16 h-16 bg-[#0a1325] rounded border border-[#1e293b] overflow-hidden shrink-0">
                                         {room.thumbnail_url ? (

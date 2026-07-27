@@ -7,7 +7,18 @@ import { Menu, X, Home, AlignLeft, Newspaper, Users, BookOpen, ShoppingBag, Wren
 import { motion, AnimatePresence } from 'framer-motion';
 import GlobalSearch from './search/GlobalSearch';
 
-export default function MobileMenu({ profile }: { profile: any }) {
+interface Profile {
+  id: string;
+  username: string;
+  habbo_username: string;
+  avatar_url: string;
+  motto: string;
+  role: string;
+  hz_points: number;
+  created_at: string;
+}
+
+export default function MobileMenu({ profile }: { profile: Profile | null }) {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
   const staffRoles = ['owner', 'developer', 'administrator', 'moderator', 'admin', 'editor', 'yazar', 'muhabir', 'staff', 'yetkili', 'yönetici', 'birim sorumlusu', 'mod'];

@@ -5,11 +5,32 @@ import { createClient } from "@/utils/supabase/client";
 import { MessageCircle, Send, Trash2 } from "lucide-react";
 import HabboAvatar from "./HabboAvatar";
 
-export default function NewsComments({ newsId, initialComments }: { newsId: string, initialComments: any[] }) {
+interface Comment {
+  id: string;
+  news_id: string;
+  author_id: string;
+  content: string;
+  created_at: string;
+  author?: {
+    username: string;
+    habbo_username: string;
+    role: string;
+    avatar_url: string;
+  } | null;
+}
+
+interface User {
+  id: string;
+  profile?: {
+    role: string;
+  };
+}
+
+export default function NewsComments({ newsId, initialComments }: { newsId: string, initialComments: Comment[] }) {
   const supabase = createClient();
   const [comments, setComments] = useState(initialComments);
   const [newComment, setNewComment] = useState("");
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const fetchComments = async () => {

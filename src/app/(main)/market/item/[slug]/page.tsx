@@ -80,6 +80,7 @@ export default async function MarketItemPage({ params }: { params: { slug: strin
               
               <div className="w-32 h-32 flex items-center justify-center relative">
                 <div className="absolute inset-0 bg-blue-500/20 blur-2xl rounded-full"></div>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img 
                   src={item.image_url} 
                   alt={item.name} 
@@ -92,6 +93,7 @@ export default async function MarketItemPage({ params }: { params: { slug: strin
               <div className="flex flex-col items-center p-4 bg-[#1e293b] border border-[#2b3548] rounded-[4px]">
                 <span className="text-gray-400 text-xs font-bold uppercase tracking-wider mb-2">GÜNCEL DEĞER</span>
                 <div className="flex items-center gap-3">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img 
                     src={item.currency_type === 'credits' 
                       ? 'https://images.habbo.com/c_images/album1584/CRED.gif' 
@@ -178,6 +180,7 @@ export default async function MarketItemPage({ params }: { params: { slug: strin
                     className="flex flex-col bg-[#1e293b] border border-[#2b3548] rounded-[4px] hover:border-blue-500/50 transition-colors overflow-hidden group"
                   >
                     <div className="h-20 bg-[#090e17] flex items-center justify-center p-2 relative">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img 
                         src={relItem.image_url} 
                         alt={relItem.name} 
@@ -187,6 +190,7 @@ export default async function MarketItemPage({ params }: { params: { slug: strin
                     <div className="p-2 flex flex-col gap-1 border-t border-[#2b3548]">
                       <h3 className="text-white font-bold text-[11px] line-clamp-1" title={relItem.name}>{relItem.name}</h3>
                       <div className="flex items-center gap-1 mt-auto pt-1">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img 
                           src={relItem.currency_type === 'credits' 
                             ? 'https://images.habbo.com/c_images/album1584/CRED.gif' 
