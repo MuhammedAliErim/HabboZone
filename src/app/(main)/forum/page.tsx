@@ -1,6 +1,6 @@
 import { createClient } from '@/utils/supabase/server';
 import Link from 'next/link';
-import { MessageCircle, Search, Pin, Clock, Users, Plus, ChevronRight, Activity, MessageCircleQuestion, Sparkles, Flame, ShieldCheck, Star, MessageSquare } from 'lucide-react';
+import { MessageCircle, Plus, ChevronRight, Flame } from 'lucide-react';
 import HabboAvatar from '@/components/HabboAvatar';
 
 export const revalidate = 60;

@@ -12,28 +12,33 @@ export async function createNews(formData: FormData) {
 
   const title = formData.get('title') as string
   const content = formData.get('content') as string
-  const category = formData.get('category') as string
-  const image_url = formData.get('image_url') as string
-  const excerpt = formData.get('excerpt') as string
+  const category_id = formData.get('category') as string
+  const thumbnail_url = formData.get('image_url') as string
+  const summary = formData.get('excerpt') as string
   const status = formData.get('status') as string || 'Published'
   const publishedAtInput = formData.get('published_at') as string
   const published_at = publishedAtInput ? new Date(publishedAtInput).toISOString() : new Date().toISOString()
 
+  const slug = title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '')
+
   const { error } = await supabase.from('news').insert({
     title,
     content,
-    category,
-    image_url,
-    excerpt,
+    category_id: category_id || null,
+    thumbnail_url: thumbnail_url || null,
+    summary: summary || null,
     author_id: user.id,
-    published: true, // auto publish for now
+    slug,
     status,
     published_at
   })
 
   if (error) {
     console.error('Error creating news:', error)
-    throw new Error('Failed to create news')
+    return { error: 'Failed to create news' }
   }
 
   revalidatePath('/admin/news')
@@ -50,9 +55,9 @@ export async function updateNews(id: string, formData: FormData) {
 
   const title = formData.get('title') as string
   const content = formData.get('content') as string
-  const category = formData.get('category') as string
-  const image_url = formData.get('image_url') as string
-  const excerpt = formData.get('excerpt') as string
+  const category_id = formData.get('category') as string
+  const thumbnail_url = formData.get('image_url') as string
+  const summary = formData.get('excerpt') as string
   const status = formData.get('status') as string || 'Published'
   const publishedAtInput = formData.get('published_at') as string
   const published_at = publishedAtInput ? new Date(publishedAtInput).toISOString() : new Date().toISOString()
@@ -62,9 +67,9 @@ export async function updateNews(id: string, formData: FormData) {
     .update({
       title,
       content,
-      category,
-      image_url,
-      excerpt,
+      category_id: category_id || null,
+      thumbnail_url: thumbnail_url || null,
+      summary: summary || null,
       status,
       published_at
     })
@@ -72,7 +77,7 @@ export async function updateNews(id: string, formData: FormData) {
 
   if (error) {
     console.error('Error updating news:', error)
-    throw new Error('Failed to update news')
+    return { error: 'Failed to update news' }
   }
 
   revalidatePath('/admin/news')
@@ -88,7 +93,7 @@ export async function deleteNews(id: string) {
   
   if (error) {
     console.error('Error deleting news:', error)
-    throw new Error('Failed to delete news')
+    return { error: 'Failed to delete news' }
   }
 
   revalidatePath('/admin/news')

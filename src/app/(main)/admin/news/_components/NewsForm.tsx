@@ -29,18 +29,14 @@ export default function NewsForm({ initialData }: NewsFormProps) {
     setLoading(true)
     
     const formData = new FormData(e.currentTarget)
-    // TipTap içeriğini form datasına ekleyelim/üzerine yazalım
     formData.set('content', content)
     
-    try {
-      if (initialData) {
-        await updateNews(initialData.id, formData)
-      } else {
-        await createNews(formData)
-      }
-    } catch (error) {
-      console.error(error)
-      alert('Haber kaydedilirken bir hata oluştu!')
+    const result = initialData
+      ? await updateNews(initialData.id, formData)
+      : await createNews(formData)
+
+    if (result?.error) {
+      alert(result.error)
       setLoading(false)
     }
   }

@@ -17,7 +17,7 @@ export async function generateMetadata(
   const supabase = await createClient();
   const { data: magazine } = await supabase
     .from('magazines')
-    .select('title, issue_number, cover_image_url, cover_image')
+    .select('title, issue_number, cover_image_url')
     .eq(isNaN(Number(resolvedParams.id)) ? 'id' : 'issue_number', resolvedParams.id)
     .single();
 
@@ -30,7 +30,7 @@ export async function generateMetadata(
     description: `Habbo Zone Dergisi Sayı ${magazine.issue_number} okuyun.`,
     openGraph: {
       title: `${magazine.title} - Sayı ${magazine.issue_number || ''}`,
-      images: [magazine.cover_image || magazine.cover_image_url || '/placeholder.png'],
+      images: [magazine.cover_image_url || '/placeholder.png'],
     }
   };
 }

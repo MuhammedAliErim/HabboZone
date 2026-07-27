@@ -29,7 +29,7 @@ export default function ReactionView({
 
   useEffect(() => {
     fetchReactions();
-  }, [targetId]);
+  }, [targetId, targetType]);
 
   const fetchReactions = async () => {
     const { data } = await supabase

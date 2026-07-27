@@ -12,7 +12,7 @@ export default function PollView({ poll, currentUser }: { poll: any, currentUser
 
   useEffect(() => {
     fetchVotes();
-  }, []);
+  }, [poll.poll_options]);
 
   const fetchVotes = async () => {
     // Fetch all votes for this poll's options to calculate percentages

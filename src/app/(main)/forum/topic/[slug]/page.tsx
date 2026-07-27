@@ -1,7 +1,7 @@
 import { createClient } from '@/utils/supabase/server';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { ArrowLeft, MessageCircle, Clock, CheckCircle, ShieldCheck, Flame, MessageSquare, MessageCircleQuestion } from 'lucide-react';
+import { ArrowLeft, MessageCircle, Clock, CheckCircle, ShieldCheck, Flame, MessageSquare } from 'lucide-react';
 import ReplyForm from './ReplyForm';
 import PollView from './PollView';
 import ReactionView from './ReactionView';

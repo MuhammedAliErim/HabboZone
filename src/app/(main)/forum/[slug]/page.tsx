@@ -20,12 +20,12 @@ export default async function LegacyForumSlugRouter({ params }: { params: Promis
   }
 
   // 2. Check in database if it is a forum or category
-  const { data: forum } = await supabase.from('forums').select('slug').eq('slug', slug).single();
+  const { data: forum } = await supabase.from('forums').select('slug').eq('slug', slug).maybeSingle();
   if (forum) {
     redirect(`/forum/category/${slug}`);
   }
 
-  const { data: cat } = await supabase.from('categories').select('slug').eq('slug', slug).single();
+  const { data: cat } = await supabase.from('categories').select('slug').eq('slug', slug).maybeSingle();
   if (cat) {
     redirect(`/forum/category/${slug}`);
   }
