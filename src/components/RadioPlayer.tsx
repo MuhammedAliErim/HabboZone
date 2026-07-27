@@ -76,7 +76,7 @@ export default function RadioPlayer() {
       
       {/* Request Form Popup */}
       {showRequestForm && (
-        <div className="habbo-box w-72 pointer-events-auto shadow-2xl animate-in slide-in-from-bottom-2 fade-in duration-200">
+        <div className="habbo-box w-[calc(100vw-2rem)] sm:w-72 pointer-events-auto shadow-2xl animate-in slide-in-from-bottom-2 fade-in duration-200">
           <div className="habbo-box-header flex justify-between items-center py-2">
             <span className="flex items-center gap-1"><MessageCircle size={14} /> RADYO İSTEK HATTI</span>
             <button onClick={() => setShowRequestForm(false)} className="text-[#94a3b8] hover:text-white font-black hover:bg-red-600 rounded-[2px] px-1.5 transition-colors">X</button>
@@ -111,7 +111,7 @@ export default function RadioPlayer() {
       )}
 
       {/* Main Player Widget */}
-      <div className="habbo-box w-72 pointer-events-auto shadow-2xl flex flex-col group">
+      <div className="habbo-box w-[calc(100vw-2rem)] sm:w-72 pointer-events-auto shadow-2xl flex flex-col group">
         <div className="habbo-box-header">
             <div className="flex items-center justify-between text-xs py-1">
                 <div className="flex items-center gap-1.5 font-black">

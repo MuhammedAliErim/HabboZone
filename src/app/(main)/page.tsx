@@ -118,7 +118,7 @@ export default async function Home() {
     <div className="pb-16 w-full">
       
       {/* HERO SECTION */}
-      <div className="relative w-full h-[450px] overflow-hidden flex justify-center border-b border-[#1e293b]">
+      <div className="relative w-full h-[300px] sm:h-[450px] overflow-hidden flex justify-center border-b border-[#1e293b]">
          <div className="absolute inset-0 pixelated opacity-90 scale-105">
            <Image src="/landing-bg.jpg" alt="HabboZone Landing Background" fill priority className="object-cover object-center" />
          </div>
@@ -132,7 +132,7 @@ export default async function Home() {
                   <span className="bg-[#ef4444] text-white px-2 py-1 rounded-[3px] text-[10px] font-black uppercase tracking-wider shadow-[0_2px_0_#991b1b]">GÜNÜN MANŞETİ</span>
                   <span className="text-gray-300 text-[11px] font-bold bg-black/40 px-2 py-1 rounded">Yeni Sezon</span>
                </div>
-               <h1 className="text-[40px] md:text-[50px] font-black mb-4 leading-[1.1] tracking-tighter hover:scale-[1.02] transition-transform duration-300">
+               <h1 className="text-[24px] sm:text-[36px] md:text-[50px] font-black mb-4 leading-[1.1] tracking-tighter hover:scale-[1.02] transition-transform duration-300">
                   <span className="text-white block hover:text-[#facc15] transition-colors cursor-pointer" style={{ textShadow: '2px 2px 0 #000' }}>Habbo Yaz Etkinlikleri Tüm Hızıyla Sürüyor!</span>
                </h1>
                <p className="text-base text-gray-200 mb-8 font-medium leading-relaxed max-w-[450px]" style={{ textShadow: '1px 1px 0 #000' }}>
@@ -322,7 +322,7 @@ export default async function Home() {
                    </div>
                    
                    {/* Grid of issues */}
-                   <div className="grid grid-cols-4 gap-3 pt-2">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 pt-2">
                       {magazines.slice(1).map((issue) => (
                         <a key={issue.id} href={issue.pdf_url} target="_blank" rel="noreferrer" className="flex flex-col items-center gap-2 group">
                           <span className="text-white font-bold text-[12px]">#{issue.issue_number}</span>
@@ -413,7 +413,7 @@ export default async function Home() {
                   <Link href="/badges" className="text-gray-400 hover:text-white text-[11px] font-bold flex items-center gap-1 uppercase">TÜMÜ <ArrowRight size={12} /></Link>
                </div>
                <div className="habbo-box p-3">
-                  <div className="grid grid-cols-5 gap-2">
+                   <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
                      {badges && badges.length > 0 ? badges.map((badge: Badge) => (
                         <div key={badge.id} className="bg-[#0a1325] border border-[#1e293b] rounded-[4px] aspect-square flex items-center justify-center hover:bg-[#1e293b] hover:border-gray-500 transition-colors cursor-pointer group relative" title={`${badge.name}\n\nKazanma Yöntemi:\n${badge.how_to_get}`}>
                            {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -463,7 +463,7 @@ export default async function Home() {
                <div className="flex justify-between items-center border-b border-[#1e293b] pb-2">
                   <h2 className="text-[#facc15] font-black text-sm tracking-wide">HIZLI ERİŞİM</h2>
                </div>
-               <div className="grid grid-cols-4 gap-2 habbo-box p-3">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 habbo-box p-3">
                   {[
                     { icon: Newspaper, label: 'Habbo Hotel', href: 'https://www.habbo.com.tr' },
                     { icon: BookOpen, label: 'Habbo Rehber', href: '/guides' },
