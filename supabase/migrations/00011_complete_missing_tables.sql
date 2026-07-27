@@ -231,6 +231,13 @@ DROP POLICY IF EXISTS "Admins can manage taggables" ON public.taggables;
 CREATE POLICY "Admins can manage taggables" ON public.taggables FOR ALL USING (public.is_admin());
 
 -- 3s. Announcements
+CREATE TABLE IF NOT EXISTS public.announcements (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  message TEXT NOT NULL,
+  is_active BOOLEAN DEFAULT true,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now()
+);
 ALTER TABLE public.announcements ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Active announcements viewable by everyone" ON public.announcements;
 CREATE POLICY "Active announcements viewable by everyone" ON public.announcements FOR SELECT USING (is_active = true OR public.is_admin());
@@ -238,6 +245,18 @@ DROP POLICY IF EXISTS "Admins can manage announcements" ON public.announcements;
 CREATE POLICY "Admins can manage announcements" ON public.announcements FOR ALL USING (public.is_admin());
 
 -- 3t. Rooms
+CREATE TABLE IF NOT EXISTS public.rooms (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL,
+  owner TEXT NOT NULL,
+  description TEXT,
+  max_users INTEGER DEFAULT 100,
+  current_users INTEGER DEFAULT 0,
+  image_url TEXT,
+  category TEXT DEFAULT 'Popüler',
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now()
+);
 ALTER TABLE public.rooms ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Rooms viewable by everyone" ON public.rooms;
 CREATE POLICY "Rooms viewable by everyone" ON public.rooms FOR SELECT USING (true);
