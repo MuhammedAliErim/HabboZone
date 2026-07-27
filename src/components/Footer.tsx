@@ -20,13 +20,13 @@ export default function Footer() {
                 
                 {/* Socials */}
                 <div className="flex gap-2 mt-2">
-                    <Link href="#" className="w-10 h-10 bg-[#1e293b] border-2 border-black rounded-[4px] flex items-center justify-center text-gray-300 hover:text-[#facc15] hover:-translate-y-1 hover:bg-[#0a1325] shadow-[2px_2px_0_#000] hover:shadow-none transition-all">
+                    <Link href="https://x.com/habbozone" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-[#1e293b] border-2 border-black rounded-[4px] flex items-center justify-center text-gray-300 hover:text-[#facc15] hover:-translate-y-1 hover:bg-[#0a1325] shadow-[2px_2px_0_#000] hover:shadow-none transition-all">
                         <Twitter size={18} />
                     </Link>
-                    <Link href="#" className="w-10 h-10 bg-[#1e293b] border-2 border-black rounded-[4px] flex items-center justify-center text-gray-300 hover:text-[#facc15] hover:-translate-y-1 hover:bg-[#0a1325] shadow-[2px_2px_0_#000] hover:shadow-none transition-all">
+                    <Link href="https://instagram.com/habbozone" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-[#1e293b] border-2 border-black rounded-[4px] flex items-center justify-center text-gray-300 hover:text-[#facc15] hover:-translate-y-1 hover:bg-[#0a1325] shadow-[2px_2px_0_#000] hover:shadow-none transition-all">
                         <Instagram size={18} />
                     </Link>
-                    <Link href="#" className="w-10 h-10 bg-[#1e293b] border-2 border-black rounded-[4px] flex items-center justify-center text-gray-300 hover:text-[#facc15] hover:-translate-y-1 hover:bg-[#0a1325] shadow-[2px_2px_0_#000] hover:shadow-none transition-all">
+                    <Link href="https://discord.gg/habbozone" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-[#1e293b] border-2 border-black rounded-[4px] flex items-center justify-center text-gray-300 hover:text-[#facc15] hover:-translate-y-1 hover:bg-[#0a1325] shadow-[2px_2px_0_#000] hover:shadow-none transition-all">
                         <Discord size={18} />
                     </Link>
                 </div>

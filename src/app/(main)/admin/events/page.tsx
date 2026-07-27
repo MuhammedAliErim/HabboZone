@@ -21,21 +21,21 @@ export default async function AdminEventsPage() {
     <div className="space-y-8 animate-in fade-in duration-500">
       
       {/* Üst Başlık */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 border-b border-white/10">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 border-b border-[#1e293b]">
         <div>
-          <h1 className="text-3xl font-black text-white tracking-tight flex items-center gap-3">
-            <Calendar className="text-purple-400" size={32} /> ETKİNLİK TAKVİMİ YÖNETİMİ
+          <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight uppercase flex items-center gap-3">
+            <Calendar className="text-purple-400" size={28} /> ETKİNLİK TAKVİMİ YÖNETİMİ
           </h1>
-          <p className="text-sm text-gray-400 font-medium mt-1">
+          <p className="text-xs text-gray-300 font-bold uppercase tracking-wide mt-1">
             Topluluk için planlanan oda yarışmaları, partiler ve turnuvaların takvimini organize edin.
           </p>
         </div>
 
-        <div className="habbo-box bg-[#0a1224] border border-white/10 px-4 py-2 rounded-xl flex items-center gap-3">
-          <Layers className="text-purple-400" size={20} />
+        <div className="habbo-box bg-[#050a14] border border-[#1e293b] px-4 py-2 rounded-[2px] flex items-center gap-3 shadow">
+          <Layers className="text-purple-400" size={18} />
           <div>
-            <span className="block text-[10px] text-gray-400 font-bold uppercase">Planlı Etkinlik</span>
-            <span className="text-base font-black text-white">{events?.length || 0} Adet</span>
+            <span className="block text-[10px] text-gray-400 font-black uppercase tracking-wider">PLANLI ETKİNLİK</span>
+            <span className="text-sm font-black text-white uppercase">{events?.length || 0} ADET</span>
           </div>
         </div>
       </div>
@@ -44,9 +44,9 @@ export default async function AdminEventsPage() {
         
         {/* Sol Sütun: Yeni Etkinlik Ekle Formu */}
         <div className="lg:col-span-1 space-y-6">
-          <div className="habbo-box bg-[#0a1224] border-2 border-white/10 p-6 rounded-xl shadow-2xl">
-            <h2 className="text-base font-black text-white uppercase tracking-wider mb-4 pb-3 border-b border-white/10 flex items-center gap-2">
-              <Sparkles className="text-purple-400" size={18} /> Takvime Etkinlik Ekle
+          <div className="habbo-box bg-[#0a1325] border border-[#1e293b] p-6 rounded-[3px] shadow-2xl">
+            <h2 className="text-sm font-black text-white uppercase tracking-wider mb-4 pb-3 border-b border-[#1e293b] flex items-center gap-2">
+              <Sparkles className="text-purple-400" size={16} /> TAKVİME ETKİNLİK EKLE
             </h2>
             <EventForm />
           </div>
@@ -54,63 +54,58 @@ export default async function AdminEventsPage() {
 
         {/* Sağ Sütun: Planlanmış Etkinlikler Listesi */}
         <div className="lg:col-span-2">
-          <div className="habbo-box bg-[#0a1224] border-2 border-white/10 rounded-xl overflow-hidden shadow-2xl">
-            <div className="p-4 border-b border-white/10 flex justify-between items-center bg-[#050a14]">
-              <h2 className="text-sm font-black text-white uppercase tracking-wider flex items-center gap-2">
-                <Clock className="text-yellow-400" size={18} /> Planlanan ve Yayındaki Etkinlikler
+          <div className="habbo-box bg-[#0a1325] border border-[#1e293b] rounded-[3px] overflow-hidden shadow-2xl">
+            <div className="habbo-box-header flex justify-between items-center">
+              <h2 className="text-xs font-black text-white uppercase tracking-wider flex items-center gap-2">
+                <Clock className="text-[#facc15]" size={16} /> PLANLANAN VE YAYINDAKİ ETKİNLİKLER
               </h2>
-              <span className="text-xs text-gray-400 font-bold">
-                {events?.length || 0} etkinlik
+              <span className="text-[10px] text-gray-300 font-black uppercase tracking-wider bg-[#050a14] border border-[#1e293b] px-2.5 py-1 rounded-[2px]">
+                {events?.length || 0} ETKİNLİK
               </span>
             </div>
             
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-sm text-gray-300">
-                <thead className="bg-[#050a14] text-gray-400 uppercase text-xs font-black border-b border-white/10">
+              <table className="w-full text-left text-xs text-gray-300">
+                <thead className="bg-[#050a14] text-gray-400 uppercase text-xs font-black border-b border-[#1e293b] tracking-wider">
                   <tr>
-                    <th className="px-6 py-4">TARİH & TÜR</th>
-                    <th className="px-6 py-4">ETKİNLİK BAŞLIĞI & DETAYI</th>
-                    <th className="px-6 py-4">ÖDÜL</th>
-                    <th className="px-6 py-4">ORGANİZATÖR</th>
-                    <th className="px-6 py-4 text-right">İŞLEM</th>
+                    <th className="px-5 py-3.5">TARİH & TÜR</th>
+                    <th className="px-5 py-3.5">ETKİNLİK BAŞLIĞI & DETAYI</th>
+                    <th className="px-5 py-3.5">ÖDÜL</th>
+                    <th className="px-5 py-3.5">ORGANİZATÖR</th>
+                    <th className="px-5 py-3.5 text-right">İŞLEM</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-white/5">
+                <tbody className="divide-y divide-[#1e293b]">
                   {events && events.length > 0 ? (
                     events.map((ev) => (
-                      <tr key={ev.id} className="hover:bg-white/5 transition-colors group">
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="font-black text-yellow-400 text-xs flex items-center gap-1.5">
-                            <Clock size={14} className="text-purple-400" />
-                            {new Date(ev.event_date).toLocaleDateString('tr-TR', {
-                              day: 'numeric',
-                              month: 'short',
-                              hour: '2-digit',
-                              minute: '2-digit'
-                            })}
+                      <tr key={ev.id} className="hover:bg-[#050a14] transition-colors group">
+                        <td className="px-5 py-3.5 whitespace-nowrap">
+                          <div className="font-black text-[#facc15] text-[11px] flex items-center gap-1.5 uppercase">
+                            <Clock size={13} className="text-purple-400" />
+                            {ev.event_date ? `${ev.event_date.slice(0, 10).split('-').reverse().join('.')} ${ev.event_date.slice(11, 16)}` : '-'}
                           </div>
-                          <span className="inline-block mt-1 px-2.5 py-0.5 rounded bg-purple-500/20 text-purple-300 text-[10px] font-bold uppercase border border-purple-500/30">
+                          <span className="inline-block mt-1 px-2 py-0.5 rounded-[2px] bg-purple-500/20 text-purple-300 text-[10px] font-black uppercase border border-purple-500/30 tracking-wider">
                             {ev.event_type}
                           </span>
                         </td>
-                        <td className="px-6 py-4">
-                          <div className="font-black text-white text-base group-hover:text-purple-300 transition-colors">
+                        <td className="px-5 py-3.5">
+                          <div className="font-black text-white text-sm uppercase tracking-tight group-hover:text-purple-300 transition-colors">
                             {ev.title}
                           </div>
                           {ev.description && (
-                            <div className="text-xs text-gray-400 mt-0.5 max-w-[200px] truncate">
+                            <div className="text-[11px] text-gray-400 mt-0.5 max-w-[200px] truncate font-bold">
                               {ev.description}
                             </div>
                           )}
                         </td>
-                        <td className="px-6 py-4 max-w-[180px]">
+                        <td className="px-5 py-3.5 max-w-[180px]">
                           {ev.reward_text ? (
-                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-amber-500/10 border border-amber-500/20 text-xs text-amber-300 font-semibold">
-                              <Gift size={12} className="shrink-0 text-amber-400" />
+                            <span className="inline-flex items-center gap-1 px-2 py-1 rounded-[2px] bg-[#050a14] border border-[#facc15]/30 text-[11px] text-[#facc15] font-black uppercase tracking-wider">
+                              <Gift size={12} className="shrink-0 text-[#facc15]" />
                               <span className="truncate">{ev.reward_text}</span>
                             </span>
                           ) : (
-                            <span className="text-gray-600 text-xs">-</span>
+                            <span className="text-gray-600 text-xs font-black">-</span>
                           )}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-xs text-gray-400">

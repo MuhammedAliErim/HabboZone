@@ -12,6 +12,15 @@ export default function NewsComments({ newsId, initialComments }: { newsId: stri
   const [user, setUser] = useState<any>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const fetchComments = async () => {
+    const { data } = await supabase
+      .from('comments')
+      .select('*, author:profiles(username, habbo_username, role, avatar_url)')
+      .eq('news_id', newsId)
+      .order('created_at', { ascending: true });
+    if (data) setComments(data);
+  };
+
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
       if (data.user) {
@@ -21,10 +30,8 @@ export default function NewsComments({ newsId, initialComments }: { newsId: stri
       }
     });
 
-    // Realtime subscription (optional, but good for UX)
     const channel = supabase.channel(`news_comments_${newsId}`)
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'comments', filter: `news_id=eq.${newsId}` }, (payload) => {
-        // Simple reload logic for brevity. In a real app, you'd merge the payload.
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'comments', filter: `news_id=eq.${newsId}` }, () => {
         fetchComments();
       })
       .subscribe();
@@ -33,15 +40,6 @@ export default function NewsComments({ newsId, initialComments }: { newsId: stri
       supabase.removeChannel(channel);
     };
   }, [newsId]);
-
-  const fetchComments = async () => {
-    const { data } = await supabase
-      .from('comments')
-      .select('*, author:profiles(username, habbo_username, role, avatar_url)')
-      .eq('news_id', newsId)
-      .order('created_at', { ascending: true });
-    if (data) setComments(data);
-  };
 
   const handlePostComment = async (e: React.FormEvent) => {
     e.preventDefault();

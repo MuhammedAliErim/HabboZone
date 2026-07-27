@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabaseClient';
+import { createClient } from '@/utils/supabase/server';
 
 export async function GET() {
   try {
+    const supabase = await createClient();
     const { data: news, error } = await supabase
       .from('news')
       .select(`
@@ -22,7 +23,7 @@ export async function GET() {
     }
 
     return NextResponse.json({ news }, { status: 200 });
-  } catch (err) {
+  } catch {
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

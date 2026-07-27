@@ -26,14 +26,18 @@ export default async function NotificationsPage() {
   return (
     <div className="w-full">
       {/* Header Alanı */}
-      <div className="bg-[#0f172a] border-b border-[#1e293b] py-8">
+      <div className="bg-[#0a1325] border-b border-[#1e293b] py-8">
         <div className="max-w-[1280px] mx-auto px-4">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-              <h1 className="text-3xl font-black text-white tracking-tight">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="w-2 h-2 bg-[#facc15] rounded-[1px]"></span>
+                <span className="text-[#facc15] text-[10px] font-black tracking-widest uppercase">HABBOZONE BİLDİRİM MERKEZİ</span>
+              </div>
+              <h1 className="text-3xl font-black text-white tracking-tight uppercase" style={{ textShadow: '2px 2px 0 #000' }}>
                 BİLDİRİMLER
               </h1>
-              <p className="text-gray-400 mt-2 text-sm max-w-2xl">
+              <p className="text-gray-300 mt-2 text-xs max-w-2xl font-medium">
                 Sistemden, forumdan ve etkileşimlerinizden gelen tüm güncel bildirimleriniz.
               </p>
             </div>
@@ -42,7 +46,7 @@ export default async function NotificationsPage() {
       </div>
 
       <div className="max-w-[1280px] mx-auto px-4 py-8">
-        <div className="bg-[#0f172a] border border-[#1e293b] rounded-xl p-6">
+        <div className="habbo-box bg-[#0a1325] border border-[#1e293b] rounded-[3px] p-6 shadow">
           <NotificationsClient initialNotifications={notifications || []} userId={user.id} />
         </div>
       </div>

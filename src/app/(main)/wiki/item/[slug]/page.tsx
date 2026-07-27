@@ -19,85 +19,89 @@ export default async function WikiItemPage({ params }: { params: { slug: string 
     notFound()
   }
 
+  const formatDeterministicDate = (dateStr?: string) => {
+    if (!dateStr) return 'Bilinmiyor';
+    const parts = dateStr.split('T')[0].split('-');
+    if (parts.length === 3) return `${parts[2]}.${parts[1]}.${parts[0]}`;
+    return dateStr;
+  };
+
   const rarityColor = 
-    item.rarity_level === 'Legendary' ? 'text-yellow-500 bg-yellow-500/10 border-yellow-500/30' :
-    item.rarity_level === 'Epic' ? 'text-purple-400 bg-purple-500/10 border-purple-500/30' :
-    item.rarity_level === 'Rare' ? 'text-blue-400 bg-blue-500/10 border-blue-500/30' :
-    'text-gray-300 bg-gray-500/10 border-gray-500/30'
+    item.rarity_level === 'Legendary' ? 'text-[#facc15] bg-[#facc15]/10 border-[#facc15]' :
+    item.rarity_level === 'Epic' ? 'text-purple-400 bg-purple-500/10 border-purple-500' :
+    item.rarity_level === 'Rare' ? 'text-[#3b82f6] bg-[#3b82f6]/10 border-[#3b82f6]' :
+    'text-gray-300 bg-gray-500/10 border-gray-500'
 
   return (
-    <div className="w-full">
+    <div className="w-full pb-16 animate-in fade-in duration-500">
       {/* Header Alanı */}
-      <div className="bg-[#0f172a] border-b border-[#1e293b] py-6">
-        <div className="max-w-[1280px] mx-auto px-4">
-          <Link href={`/wiki/${item.wiki_categories?.slug}`} className="inline-flex items-center gap-1 text-sm font-bold text-gray-400 hover:text-white transition-colors">
-            <ArrowLeft size={16} /> {item.wiki_categories?.name} Kategorisine Dön
+      <div className="bg-[#050a14] border-b border-[#1e293b] py-6">
+        <div className="max-w-[1200px] mx-auto px-6">
+          <Link href={`/wiki/${item.wiki_categories?.slug}`} className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-wider text-gray-400 hover:text-white transition-colors">
+            <ArrowLeft size={16} /> {item.wiki_categories?.name} KATEGORİSİNE DÖN
           </Link>
         </div>
       </div>
 
-      <div className="max-w-[1000px] mx-auto px-4 py-8">
-        <div className="bg-[#0f172a] border border-[#1e293b] rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row">
+      <div className="max-w-[1000px] mx-auto px-6 py-8">
+        <div className="habbo-box bg-[#0a1325] border border-[#1e293b] rounded-[3px] overflow-hidden shadow-md flex flex-col md:flex-row">
           
           {/* Sol Kısım: Resim (Vurgulu) */}
-          <div className="w-full md:w-2/5 bg-[#090e17] p-8 md:p-12 flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-[#1e293b] relative group">
-            {/* Arka plan parlaklığı */}
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent pointer-events-none"></div>
-            
+          <div className="w-full md:w-2/5 bg-[#050a14] p-8 md:p-12 flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-[#1e293b] relative group">
             <div className="relative w-48 h-48 md:w-64 md:h-64 flex items-center justify-center">
               <img 
                 src={item.image_url} 
                 alt={item.name} 
-                className="max-w-full max-h-full object-contain drop-shadow-[0_10px_20px_rgba(0,0,0,0.6)] group-hover:scale-110 transition-transform duration-500"
+                className="max-w-full max-h-full object-contain drop-shadow-[0_10px_20px_rgba(0,0,0,0.6)] group-hover:scale-110 transition-transform duration-500 pixelated"
               />
             </div>
           </div>
 
           {/* Sağ Kısım: Detaylar */}
-          <div className="w-full md:w-3/5 p-6 md:p-10 flex flex-col">
-            <div className="flex items-start justify-between gap-4 mb-2">
-              <h1 className="text-3xl md:text-4xl font-black text-white leading-tight">
-                {item.name}
-              </h1>
-            </div>
+          <div className="w-full md:w-3/5 p-6 md:p-10 flex flex-col justify-between">
+            <div>
+              <div className="flex items-start justify-between gap-4 mb-3">
+                <h1 className="text-3xl md:text-4xl font-black text-white leading-tight uppercase tracking-tight" style={{ textShadow: '2px 2px 0 #000' }}>
+                  {item.name}
+                </h1>
+              </div>
 
-            <div className="flex flex-wrap items-center gap-2 mb-6">
-              <Link href={`/wiki/${item.wiki_categories?.slug}`} className="inline-flex items-center gap-1.5 px-3 py-1 rounded bg-[#111827] border border-[#1e293b] text-sm font-bold text-gray-300 hover:text-white hover:bg-[#1e293b] transition-colors">
-                <Package size={14} className="text-[#facc15]" />
-                {item.wiki_categories?.name}
-              </Link>
-              
-              <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded border text-sm font-bold ${rarityColor}`}>
-                <ShieldAlert size={14} />
-                {item.rarity_level}
+              <div className="flex flex-wrap items-center gap-2 mb-6">
+                <Link href={`/wiki/${item.wiki_categories?.slug}`} className="inline-flex items-center gap-1.5 px-3 py-1 rounded-[2px] bg-[#050a14] border border-[#1e293b] text-xs font-black uppercase tracking-wider text-gray-300 hover:text-white hover:border-[#3b82f6] transition-colors">
+                  <Package size={14} className="text-[#facc15]" />
+                  {item.wiki_categories?.name}
+                </Link>
+                
+                <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-[2px] border text-xs font-black uppercase tracking-wider ${rarityColor}`}>
+                  <ShieldAlert size={14} />
+                  {item.rarity_level}
+                </div>
+              </div>
+
+              <div className="prose prose-invert max-w-none text-gray-300 mb-8">
+                <p className="text-sm leading-relaxed font-medium">{item.description}</p>
               </div>
             </div>
 
-            <div className="prose prose-invert max-w-none text-gray-300 mb-8">
-              <p className="text-lg leading-relaxed">{item.description}</p>
-            </div>
-
-            <div className="mt-auto grid grid-cols-2 gap-4 border-t border-[#1e293b] pt-6">
+            <div className="mt-auto grid grid-cols-2 gap-4 border-t border-[#1e293b] pt-6 bg-[#050a14] -mx-6 md:-mx-10 -mb-6 md:-mb-10 p-6 md:p-10">
               <div className="flex flex-col">
-                <span className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1 flex items-center gap-1">
-                  <Calendar size={12} /> Çıkış Tarihi
+                <span className="text-[10px] font-black text-gray-400 uppercase tracking-wider mb-1 flex items-center gap-1">
+                  <Calendar size={12} className="text-[#3b82f6]" /> Çıkış Tarihi
                 </span>
-                <span className="text-white font-medium">
-                  {item.release_date 
-                    ? new Date(item.release_date).toLocaleDateString('tr-TR', { year: 'numeric', month: 'long', day: 'numeric' })
-                    : 'Bilinmiyor'}
+                <span className="text-white font-bold text-sm">
+                  {formatDeterministicDate(item.release_date)}
                 </span>
               </div>
               
               <div className="flex flex-col">
-                <span className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1 flex items-center gap-1">
-                  <Tag size={12} /> Market Değeri
+                <span className="text-[10px] font-black text-gray-400 uppercase tracking-wider mb-1 flex items-center gap-1">
+                  <Tag size={12} className="text-[#facc15]" /> Market Değeri
                 </span>
-                <span className="text-white font-medium">
+                <span className="text-white font-bold text-sm">
                   {item.market_value ? (
-                    <span className="flex items-center gap-1">
+                    <span className="flex items-center gap-1 font-black text-[#facc15]">
                       <img src="https://images.habbo.com/c_images/catalogue/icon_273.png" alt="kredi" className="w-4 h-4 object-contain" />
-                      {item.market_value}
+                      {item.market_value} c
                     </span>
                   ) : 'Belirlenmedi'}
                 </span>

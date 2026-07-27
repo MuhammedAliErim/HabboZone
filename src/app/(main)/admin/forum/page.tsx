@@ -31,30 +31,30 @@ export default async function AdminForumPage() {
     <div className="space-y-8 animate-in fade-in duration-500">
       
       {/* Üst Başlık & İstatistikler */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-6 border-b border-white/10">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-6 border-b border-[#1e293b]">
         <div>
-          <h1 className="text-3xl font-black text-white tracking-tight flex items-center gap-3">
-            <MessageSquare className="text-yellow-400" size={32} /> FORUM & KATEGORİ YÖNETİM MERKEZİ
+          <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight uppercase flex items-center gap-3">
+            <MessageSquare className="text-[#facc15]" size={28} /> FORUM & KATEGORİ YÖNETİM MERKEZİ
           </h1>
-          <p className="text-sm text-gray-400 font-medium mt-1">
+          <p className="text-xs text-gray-300 font-bold uppercase tracking-wide mt-1">
             Topluluk tartışma alanlarını, ana kategorileri, alt forum bölümlerini ve ikonları yönetin.
           </p>
         </div>
 
         <div className="flex items-center gap-3 flex-wrap">
-          <div className="habbo-box bg-[#0a1224] border border-white/10 px-4 py-2 rounded-xl flex items-center gap-3 shadow-lg">
-            <Folder className="text-yellow-400" size={20} />
+          <div className="habbo-box bg-[#050a14] border border-[#1e293b] px-4 py-2 rounded-[2px] flex items-center gap-3 shadow">
+            <Folder className="text-[#facc15]" size={18} />
             <div>
-              <span className="block text-[10px] text-gray-400 font-bold uppercase">Ana Kategori</span>
-              <span className="text-base font-black text-yellow-300">{catCount} Başlık</span>
+              <span className="block text-[10px] text-gray-400 font-black uppercase tracking-wider">ANA KATEGORİ</span>
+              <span className="text-sm font-black text-[#facc15] uppercase">{catCount} BAŞLIK</span>
             </div>
           </div>
 
-          <div className="habbo-box bg-[#0a1224] border border-white/10 px-4 py-2 rounded-xl flex items-center gap-3 shadow-lg">
-            <Layers className="text-blue-400" size={20} />
+          <div className="habbo-box bg-[#050a14] border border-[#1e293b] px-4 py-2 rounded-[2px] flex items-center gap-3 shadow">
+            <Layers className="text-[#3b82f6]" size={18} />
             <div>
-              <span className="block text-[10px] text-gray-400 font-bold uppercase">Alt Forum</span>
-              <span className="text-base font-black text-blue-300">{forumCount} Bölüm</span>
+              <span className="block text-[10px] text-gray-400 font-black uppercase tracking-wider">ALT FORUM</span>
+              <span className="text-sm font-black text-[#3b82f6] uppercase">{forumCount} BÖLÜM</span>
             </div>
           </div>
         </div>

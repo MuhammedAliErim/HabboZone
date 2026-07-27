@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { createClient } from '@/utils/supabase/server';
 import GroupCard from '@/components/ui/groups/GroupCard';
-import { Users, Search } from 'lucide-react';
+import { Users, Search, Plus } from 'lucide-react';
 
 export const revalidate = 60; // Cache for 60 seconds
 
@@ -44,55 +44,55 @@ export default async function GroupsPage() {
         />
         <div className="absolute inset-0 z-10 bg-gradient-to-t from-[#020610] to-[#020610]/10"></div>
         
-        <div className="relative z-20 max-w-[1400px] w-full mx-auto flex items-end justify-between">
+        <div className="relative z-20 max-w-[1200px] w-full mx-auto flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4">
             <div>
               <h1 className="text-4xl font-black text-white tracking-tight text-shadow-sm mb-1">GRUPLAR & KULÜPLER</h1>
-              <p className="text-[#94a3b8] text-sm font-medium">Birlikten kuvvet doğar! Habbo Zone kulüplerine katıl veya kendi topluluğunu kur.</p>
+              <p className="text-[#94a3b8] text-sm font-medium">Birlikten kuvvet doğar! HabboZone kulüplerine katıl veya kendi topluluğunu kur.</p>
             </div>
             
-            <div className="hidden md:flex gap-3">
-              <button className="habbo-button flex items-center gap-2">
-                <Users size={16} /> GRUBUNU OLUŞTUR
+            <div className="flex gap-3">
+              <button className="bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-black text-xs px-6 py-3 rounded-[3px] border border-[#3b82f6] transition-colors flex items-center gap-2 uppercase tracking-wider shadow-md">
+                <Plus size={16} /> GRUBUNU OLUŞTUR
               </button>
             </div>
         </div>
       </section>
 
       {/* Main Content Grid */}
-      <div className="max-w-[1400px] mx-auto px-6">
+      <div className="max-w-[1200px] mx-auto px-6">
         
         {/* Filters and Search Bar */}
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4 pb-4 mb-4">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4 pb-6 mb-6 border-b border-[#1e293b]">
           <div className="flex overflow-x-auto gap-2 scrollbar-hide w-full md:w-auto">
-            <button className="habbo-button bg-[#3b82f6] border-[#2563eb] text-white px-4 py-2 text-[12px] font-bold whitespace-nowrap">
+            <button className="px-5 py-2 bg-[#0a1325] text-[#facc15] font-black text-xs rounded-[3px] border border-[#3b82f6] uppercase tracking-wider transition-colors shadow">
               Tümü
             </button>
-            <button className="habbo-box bg-[#050a14] px-4 py-2 hover:border-[#3b82f6] hover:bg-[#0a1325] text-gray-400 hover:text-white transition-colors text-[12px] font-bold whitespace-nowrap">
+            <button className="px-5 py-2 bg-[#050a14] text-gray-400 hover:text-white font-bold text-xs rounded-[3px] border border-[#1e293b] hover:bg-[#0a1325] uppercase tracking-wider transition-colors">
               Benim Gruplarım
             </button>
-            <button className="habbo-box bg-[#050a14] px-4 py-2 hover:border-[#3b82f6] hover:bg-[#0a1325] text-gray-400 hover:text-white transition-colors text-[12px] font-bold whitespace-nowrap">
+            <button className="px-5 py-2 bg-[#050a14] text-gray-400 hover:text-white font-bold text-xs rounded-[3px] border border-[#1e293b] hover:bg-[#0a1325] uppercase tracking-wider transition-colors">
               Popüler
             </button>
           </div>
           
-          <div className="relative w-full md:w-[300px]">
+          <div className="relative w-full md:w-[280px]">
             <input 
               type="text" 
               placeholder="Grup ara..." 
-              className="w-full bg-[#0a1325] border-2 border-[#1e293b] text-white px-4 py-2 pl-10 rounded text-sm outline-none focus:border-[#3b82f6] transition-colors"
+              className="w-full bg-[#050a14] border border-[#1e293b] text-white px-4 py-2 pl-9 rounded-[3px] text-xs font-medium outline-none focus:border-[#3b82f6] transition-colors"
             />
-            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
           </div>
         </div>
 
         {/* Groups Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {formattedGroups.length > 0 ? (
             formattedGroups.map((group: any) => (
               <GroupCard key={group.slug} group={group} />
             ))
           ) : (
-            <div className="col-span-full py-16 text-center text-gray-500 font-bold border-2 border-dashed border-[#1e293b] rounded-lg bg-[#050a14]">
+            <div className="col-span-full py-16 text-center text-gray-400 font-bold border border-dashed border-[#1e293b] rounded-[3px] bg-[#0a1325]">
               Henüz hiçbir grup oluşturulmamış.
             </div>
           )}

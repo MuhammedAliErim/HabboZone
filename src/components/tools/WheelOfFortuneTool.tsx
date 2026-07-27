@@ -61,26 +61,26 @@ export default function WheelOfFortuneTool() {
     <div className="space-y-6 text-white font-sans">
       
       {/* Üst Bilgi */}
-      <div className="bg-[#070e1d] border border-[#1e293b] rounded-xl p-4 flex items-center justify-between gap-4">
+      <div className="habbo-box bg-[#0a1325] border border-[#1e293b] rounded-[3px] p-4 flex items-center justify-between gap-4 shadow">
         <div className="flex items-center gap-3">
-          <div className="p-2.5 rounded-lg bg-pink-500/10 border border-pink-500/20 text-pink-400 shrink-0">
-            <Trophy className="w-6 h-6 animate-bounce" />
+          <div className="p-2.5 rounded-[2px] bg-[#050a14] border border-[#1e293b] text-[#facc15] shrink-0">
+            <Trophy className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="text-sm font-black text-white">Habbo Çekiliş & Şans Çarkı</h3>
-            <p className="text-xs text-gray-400">Oda turnuvaları, sandalye kapmaca ve rozet çekilişlerinde kazananları adil bir şekilde belirleyin!</p>
+            <h3 className="text-xs font-black text-white uppercase tracking-wider">HABBO ÇEKİLİŞ & ŞANS ÇARKI</h3>
+            <p className="text-xs text-gray-300 font-medium mt-0.5">Oda turnuvaları, sandalye kapmaca ve rozet çekilişlerinde kazananları adil bir şekilde belirleyin!</p>
           </div>
         </div>
-        <div className="text-right shrink-0">
-          <span className="text-[10px] text-gray-400 uppercase font-bold block">Katılımcı Sayısı</span>
-          <span className="text-base font-black text-yellow-400">{participants.length} Kişi</span>
+        <div className="text-right shrink-0 bg-[#050a14] px-4 py-2 rounded-[2px] border border-[#1e293b]">
+          <span className="text-[9px] text-gray-400 uppercase font-black tracking-wider block">KATILIMCI SAYISI</span>
+          <span className="text-sm font-black text-[#facc15]">{participants.length} Kişi</span>
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
         
         {/* SOL: ÇARK ALANI (7 Kolon) */}
-        <div className="md:col-span-7 flex flex-col items-center justify-center py-6 bg-[#070e1d] border border-white/10 rounded-xl relative overflow-hidden min-h-[340px]">
+        <div className="md:col-span-7 flex flex-col items-center justify-center py-6 habbo-box bg-[#0a1325] border border-[#1e293b] rounded-[3px] relative overflow-hidden min-h-[340px] shadow">
           <div className="absolute inset-0 bg-gradient-to-t from-pink-500/5 to-transparent pointer-events-none"></div>
 
           {/* Wheel Pointer */}
@@ -95,7 +95,7 @@ export default function WheelOfFortuneTool() {
             }}
           >
             {participants.length === 0 ? (
-              <div className="text-center p-6 text-gray-500 text-xs font-bold">Katılımcı eklenmedi</div>
+              <div className="text-center p-6 text-gray-400 text-xs font-black uppercase tracking-wider">Katılımcı eklenmedi</div>
             ) : (
               participants.map((name, i) => {
                 const angle = (360 / participants.length) * i;
@@ -124,10 +124,10 @@ export default function WheelOfFortuneTool() {
 
           {/* Winner Banner */}
           {winner && (
-            <div className="mt-6 px-6 py-3 bg-gradient-to-r from-yellow-500 to-amber-600 rounded-xl border border-yellow-300 text-black font-black text-center shadow-xl animate-in zoom-in-50 duration-300 flex items-center gap-2">
-              <Award className="w-5 h-5 animate-bounce" />
-              <span>KAZANAN: <strong className="underline text-white drop-shadow">{winner}</strong></span>
-              <Award className="w-5 h-5 animate-bounce" />
+            <div className="mt-6 px-6 py-3 bg-[#facc15] rounded-[2px] border border-[#1e293b] text-black font-black text-center shadow-xl animate-in zoom-in-50 duration-300 flex items-center gap-2 uppercase tracking-tight text-xs">
+              <Award className="w-4 h-4 text-black" />
+              <span>KAZANAN: <strong className="underline text-black drop-shadow">{winner}</strong></span>
+              <Award className="w-4 h-4 text-black" />
             </div>
           )}
 
@@ -135,28 +135,28 @@ export default function WheelOfFortuneTool() {
           <button
             onClick={spinWheel}
             disabled={spinning || participants.length < 2}
-            className={`mt-6 px-8 py-3.5 rounded-xl font-black text-sm uppercase tracking-wider shadow-lg flex items-center gap-2 transition-all ${
+            className={`mt-6 px-8 py-3 rounded-[2px] font-black text-xs uppercase tracking-wider shadow flex items-center gap-2 transition-all ${
               spinning || participants.length < 2
-                ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
-                : 'bg-gradient-to-r from-pink-500 via-rose-600 to-amber-500 hover:scale-105 text-white shadow-pink-500/25'
+                ? 'bg-[#050a14] border border-[#1e293b] text-gray-500 cursor-not-allowed'
+                : 'bg-[#ec4899] hover:bg-[#db2777] border border-[#db2777] text-white'
             }`}
           >
-            {spinning ? <RefreshCw className="w-5 h-5 animate-spin" /> : <Trophy className="w-5 h-5 text-yellow-300" />}
+            {spinning ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Trophy className="w-4 h-4 text-white" />}
             {spinning ? 'ÇARK DÖNÜYOR...' : 'ÇARKI ÇEVİR & KAZANANI SEÇ'}
           </button>
         </div>
 
         {/* SAĞ: KATILIMCI LİSTESİ (5 Kolon) */}
-        <div className="md:col-span-5 bg-[#070e1d] border border-white/10 rounded-xl p-4 space-y-4 max-h-[420px] flex flex-col">
-          <div className="flex justify-between items-center border-b border-white/10 pb-2">
-            <span className="text-xs font-black uppercase text-pink-400 flex items-center gap-1.5">
+        <div className="md:col-span-5 habbo-box bg-[#0a1325] border border-[#1e293b] rounded-[3px] p-4 space-y-4 max-h-[420px] flex flex-col shadow">
+          <div className="flex justify-between items-center border-b border-[#1e293b] pb-2.5">
+            <span className="text-xs font-black uppercase tracking-wider text-[#ec4899] flex items-center gap-1.5">
               <Users className="w-4 h-4" /> KATILIMCILAR ({participants.length})
             </span>
             <button
               onClick={handleClearAll}
-              className="text-[11px] text-gray-400 hover:text-red-400 font-bold underline"
+              className="text-[11px] text-gray-400 hover:text-red-400 font-black uppercase tracking-tight transition-colors"
             >
-              Temizle
+              TEMİZLE
             </button>
           </div>
 
@@ -168,11 +168,11 @@ export default function WheelOfFortuneTool() {
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleAddName()}
-              className="flex-1 bg-[#0a1325] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white font-bold focus:outline-none focus:border-pink-500"
+              className="flex-1 bg-[#050a14] border border-[#1e293b] rounded-[2px] px-3 py-2 text-xs text-white font-black focus:outline-none focus:border-[#ec4899]"
             />
             <button
               onClick={handleAddName}
-              className="bg-pink-600 hover:bg-pink-500 text-white font-black px-3 py-1.5 rounded-lg text-xs flex items-center gap-1 transition-all shadow"
+              className="bg-[#ec4899] hover:bg-[#db2777] border border-[#db2777] text-white font-black px-4 py-2 rounded-[2px] text-xs flex items-center gap-1 transition-colors shadow uppercase"
             >
               <Plus className="w-3.5 h-3.5" />
             </button>
@@ -181,19 +181,19 @@ export default function WheelOfFortuneTool() {
           {/* Liste */}
           <div className="space-y-1.5 overflow-y-auto flex-1 pr-1">
             {participants.length === 0 ? (
-              <div className="text-center py-8 text-gray-500 text-xs font-medium">Listede isim yok. Yukarıdan ekleyin.</div>
+              <div className="text-center py-8 text-gray-400 text-xs font-bold bg-[#050a14] rounded-[2px] border border-[#1e293b]">Listede isim yok. Yukarıdan ekleyin.</div>
             ) : (
               participants.map((name, idx) => (
-                <div key={idx} className="flex items-center justify-between bg-[#0a1325] border border-white/5 px-3 py-2 rounded-lg text-xs hover:border-white/15 transition-colors">
+                <div key={idx} className="flex items-center justify-between bg-[#050a14] border border-[#1e293b] px-3 py-2 rounded-[2px] text-xs hover:border-[#ec4899]/50 transition-colors">
                   <div className="flex items-center gap-2 truncate">
-                    <span className="w-5 h-5 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[10px] font-black text-gray-400 shrink-0">
+                    <span className="w-5 h-5 rounded-[2px] bg-[#0a1325] border border-[#1e293b] flex items-center justify-center text-[10px] font-black text-gray-300 shrink-0">
                       {idx + 1}
                     </span>
-                    <span className="font-bold text-white truncate">{name}</span>
+                    <span className="font-black text-white truncate uppercase tracking-tight">{name}</span>
                   </div>
                   <button
                     onClick={() => handleRemoveName(name)}
-                    className="text-gray-500 hover:text-red-400 p-1 shrink-0"
+                    className="text-gray-500 hover:text-red-400 p-1 shrink-0 transition-colors"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>

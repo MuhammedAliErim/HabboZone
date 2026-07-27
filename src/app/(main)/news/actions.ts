@@ -60,7 +60,7 @@ export async function toggleVote(targetId: string, targetType: string, reactionT
 
     revalidatePath(`/news`); // We can be more specific, but this ensures updates are visible
     return { success: true };
-  } catch (error: any) {
+  } catch (error) {
     console.error('Vote error:', error);
     return { success: false, message: 'İşlem sırasında bir hata oluştu.' };
   }

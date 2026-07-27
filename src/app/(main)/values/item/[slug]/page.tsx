@@ -10,7 +10,6 @@ export default async function ValuesItemPage({ params }: { params: Promise<{ slu
   const resolvedParams = await params;
   const supabase = await createClient();
 
-  // 1. Fetch item from database
   let item: any = null;
   const { data: dbItem } = await supabase
     .from('habbo_items')
@@ -21,7 +20,6 @@ export default async function ValuesItemPage({ params }: { params: Promise<{ slu
   if (dbItem) {
     item = dbItem;
   } else {
-    // Fallback mock items dictionary so clicking catalog cards always displays a rich details page
     const mockItemsMap: Record<string, any> = {
       'altin-ejderha-lamba': {
         id: 201, name: 'Altın Ejderha Lamba', slug: 'altin-ejderha-lamba', current_value: 750, currency_type: 'credit', is_ltd: true, ltd_count: 250, description: 'Habbo Şarkısının efsanevi altın ejderha lambası. Oda tasarımlarında statü sembolü.', image_url: 'https://images.habbo.com/c_images/catalogue/icon_270.png', habbo_item_categories: { name: 'LTD Sınırlı Sürüm', slug: 'ltd-sinirli-surum' }
@@ -55,7 +53,6 @@ export default async function ValuesItemPage({ params }: { params: Promise<{ slu
     notFound();
   }
 
-  // 2. Fetch value history
   let history: any[] = [];
   if (item.id && typeof item.id === 'number' && item.id < 200) {
     const { data: dbHistory } = await supabase
@@ -66,7 +63,6 @@ export default async function ValuesItemPage({ params }: { params: Promise<{ slu
     history = dbHistory || [];
   }
 
-  // Fallback mock price history for chart rendering
   if (history.length === 0) {
     const baseVal = item.current_value || 100;
     history = [
@@ -78,7 +74,6 @@ export default async function ValuesItemPage({ params }: { params: Promise<{ slu
     ];
   }
 
-  // Format data for Recharts (Deterministic string slicing for React 19 saflık)
   const chartData = history.map(h => {
     const dateStr = h.created_at ? h.created_at.split('T')[0] : '2026-07-01';
     return {
@@ -88,78 +83,74 @@ export default async function ValuesItemPage({ params }: { params: Promise<{ slu
   });
 
   return (
-    <div className="max-w-[1400px] mx-auto space-y-8 pb-20 animate-in fade-in slide-in-from-bottom-4 duration-700 py-8 px-6">
+    <div className="max-w-[1200px] mx-auto px-4 pb-20 pt-6">
       
-      {/* Breadcrumb / Back Button */}
-      <div className="flex items-center justify-between">
-        <Link href={`/values/category/${item.habbo_item_categories?.slug || 'tumu'}`} className="inline-flex items-center gap-2 text-xs font-bold text-gray-400 hover:text-white transition-colors bg-[#0a1325]/80 border border-white/10 hover:border-white/30 px-4 py-2.5 rounded-xl shadow-md">
-          <ArrowLeft size={16} className="text-cyan-400" /> {item.habbo_item_categories?.name || 'Kataloğa'} Geri Dön
+      {/* Navigation Buttons */}
+      <div className="flex items-center justify-between mb-6 flex-wrap gap-2">
+        <Link href={`/values/category/${item.habbo_item_categories?.slug || 'tumu'}`} className="bg-[#0a1325] hover:bg-[#1e293b] text-gray-300 hover:text-white px-3 py-1.5 rounded-[3px] font-bold text-xs border border-[#1e293b] uppercase inline-flex items-center gap-2 transition-colors">
+          <ArrowLeft size={14} className="text-[#3b82f6]" /> {item.habbo_item_categories?.name || 'Kataloğa'} Geri Dön
         </Link>
-        <Link href="/tools" className="inline-flex items-center gap-2 text-xs font-black uppercase text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 px-4 py-2.5 rounded-xl transition-all">
-          <ArrowRightLeft size={16} /> Takas Hesaplayıcısında Aç
+        <Link href="/tools" className="bg-[#15803d] hover:bg-[#16a34a] text-white px-3 py-1.5 rounded-[3px] font-black text-xs uppercase inline-flex items-center gap-1.5 transition-colors">
+          <ArrowRightLeft size={14} /> Takas Hesapla
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
-        {/* Left Column: Item Details - Dark Premium Habbo-Box v4.0 */}
-        <div className="lg:col-span-1 space-y-6">
-          <div className="habbo-box bg-[#0a1325]/80 border-2 border-white/10 shadow-2xl rounded-2xl overflow-hidden relative text-center">
-            <div className="habbo-box-header bg-gradient-to-r from-[#14233d] to-[#0d172a] border-b border-white/10 text-white font-black text-xs uppercase tracking-wider px-6 py-4 flex items-center justify-between">
+        {/* Left Column: Item Details */}
+        <div className="lg:col-span-1 space-y-4">
+          <div className="habbo-box bg-[#0a1325] border border-[#1e293b] text-center">
+            <div className="bg-[#050a14] border-b border-[#1e293b] text-[#facc15] font-black text-xs uppercase tracking-wider px-4 py-2.5 flex items-center justify-between">
               <span className="flex items-center gap-2">
                 💎 EŞYA KÜNYESİ
               </span>
-              <span className="text-[10px] font-black text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/30 uppercase">
+              <span className="text-[9px] font-black text-[#22c55e] bg-[#0a1325] px-1.5 py-0.5 rounded-[2px] border border-[#1e293b] uppercase">
                 ONAYLI VERİ
               </span>
             </div>
             
-            <div className="p-8 bg-[#050b14] flex flex-col items-center relative overflow-hidden">
-              <div className="absolute inset-0 bg-radial-gradient from-blue-600/10 via-transparent to-transparent pointer-events-none"></div>
-              
-              {/* Item Avatar Showcase */}
-              <div className="h-40 w-40 flex items-center justify-center mb-6 relative z-10 bg-[#0a1325]/90 border-2 border-white/10 rounded-2xl shadow-[0_0_30px_rgba(34,211,238,0.15)] p-4 group">
-                <div className="absolute inset-0 bg-cyan-400/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <div className="p-6 bg-[#0a1325] flex flex-col items-center">
+              {/* Item Image */}
+              <div className="h-32 w-32 flex items-center justify-center mb-4 bg-[#050a14] border border-[#1e293b] rounded-[3px] p-4">
                 {item.image_url ? (
                   /* eslint-disable-next-line @next/next/no-img-element */
-                  <img src={item.image_url} alt={item.name} className="max-h-full max-w-full object-contain filter drop-shadow-[0_12px_12px_rgba(0,0,0,0.8)] scale-110 group-hover:scale-125 transition-transform duration-300" />
+                  <img src={item.image_url} alt={item.name} className="max-h-full max-w-full object-contain filter drop-shadow scale-110" />
                 ) : (
-                  <Diamond size={56} className="text-cyan-400 drop-shadow-[0_0_15px_rgba(34,211,238,0.5)]" />
+                  <Diamond size={48} className="text-[#3b82f6]" />
                 )}
               </div>
 
-              <h1 className="text-2xl md:text-3xl font-black uppercase tracking-tight mb-3 text-white drop-shadow-md">{item.name}</h1>
+              <h1 className="text-xl md:text-2xl font-black uppercase tracking-tight mb-2 text-white">{item.name}</h1>
               
-              <div className="flex items-center gap-2 mb-8 justify-center flex-wrap">
-                <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-lg text-xs font-bold uppercase tracking-wider text-gray-300 shadow-sm">
+              <div className="flex items-center gap-2 mb-6 justify-center flex-wrap">
+                <span className="px-2 py-0.5 bg-[#050a14] border border-[#1e293b] rounded-[2px] text-[10px] font-bold uppercase text-gray-300">
                   {item.habbo_item_categories?.name || 'Katalog Öğesi'}
                 </span>
                 {item.is_ltd && (
-                  <span className="px-3 py-1 bg-red-500/20 border border-red-500/50 text-red-400 rounded-lg text-xs font-black uppercase tracking-wider shadow-sm flex items-center gap-1">
-                    <Flame size={14} /> LTD {item.ltd_count > 0 && `(#${item.ltd_count})`}
+                  <span className="px-2 py-0.5 bg-red-500/20 border border-red-500/50 text-red-400 rounded-[2px] text-[10px] font-black uppercase flex items-center gap-1">
+                    <Flame size={12} /> LTD {item.ltd_count > 0 && `(#${item.ltd_count})`}
                   </span>
                 )}
               </div>
 
-              {/* Price Display Box */}
-              <div className="w-full bg-[#0a1325]/90 border-2 border-white/10 rounded-2xl p-5 shadow-2xl relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/10 rounded-full blur-xl pointer-events-none"></div>
-                <div className="text-[11px] font-black text-gray-400 uppercase tracking-widest mb-1.5 flex items-center justify-center gap-1.5">
-                  <TrendingUp size={14} className="text-emerald-400" /> GÜNCEL PİYASA DEĞERİ
+              {/* Price Box */}
+              <div className="w-full bg-[#050a14] border border-[#1e293b] rounded-[3px] p-4 text-center">
+                <div className="text-[10px] font-bold text-gray-400 uppercase mb-1 flex items-center justify-center gap-1">
+                  <TrendingUp size={13} className="text-[#22c55e]" /> GÜNCEL PİYASA DEĞERİ
                 </div>
-                <div className="text-3xl font-black text-white flex justify-center items-center gap-2 drop-shadow-md">
+                <div className="text-2xl font-black text-white flex justify-center items-center gap-1.5">
                   {item.current_value || item.price}{' '}
                   {item.currency_type === 'diamond' || item.currency === 'diamond' ? (
-                    <span className="text-xs font-black text-cyan-400 bg-cyan-950 px-2.5 py-1 rounded-md border border-cyan-500/40 uppercase">Elmas</span>
+                    <span className="text-[10px] font-black text-cyan-400 bg-[#0a1325] px-2 py-0.5 rounded-[2px] border border-[#1e293b] uppercase">Elmas</span>
                   ) : (
-                    <span className="text-xs font-black text-amber-400 bg-amber-950 px-2.5 py-1 rounded-md border border-amber-500/40 uppercase">Kredi</span>
+                    <span className="text-[10px] font-black text-[#f59e0b] bg-[#0a1325] px-2 py-0.5 rounded-[2px] border border-[#1e293b] uppercase">Kredi</span>
                   )}
                 </div>
               </div>
 
               {item.description && (
-                <div className="mt-6 text-gray-300 text-xs font-medium leading-relaxed bg-[#0a1325]/60 p-4 rounded-xl border border-white/10 w-full text-left">
-                  <div className="text-[10px] font-black text-cyan-400 uppercase tracking-wider mb-1">Eşya Hakkında</div>
+                <div className="mt-4 text-gray-300 text-xs font-medium leading-relaxed bg-[#050a14] p-3 rounded-[3px] border border-[#1e293b] w-full text-left">
+                  <div className="text-[10px] font-black text-[#facc15] uppercase mb-1">Eşya Hakkında</div>
                   {item.description}
                 </div>
               )}
@@ -167,84 +158,83 @@ export default async function ValuesItemPage({ params }: { params: Promise<{ slu
           </div>
 
           {/* Quick Stats Box */}
-          <div className="habbo-box bg-[#0a1325]/80 border-2 border-white/10 shadow-2xl rounded-2xl overflow-hidden p-6">
-            <h3 className="text-xs font-black uppercase tracking-wider text-white mb-4 flex items-center gap-2">
-              <ShieldCheck size={16} className="text-emerald-400" /> PİYASA GÜVENİLİRLİK ENDEKSİ
-            </h3>
-            <div className="space-y-3 text-xs text-gray-300">
-              <div className="flex justify-between py-2 border-b border-white/10">
-                <span className="text-gray-400">Takas Hacmi:</span>
-                <span className="font-bold text-white">Yüksek (Aktif)</span>
+          <div className="habbo-box bg-[#0a1325] border border-[#1e293b]">
+            <div className="bg-[#050a14] border-b border-[#1e293b] text-[#facc15] font-black text-xs uppercase tracking-wider px-4 py-2 flex items-center gap-2">
+              <ShieldCheck size={15} className="text-[#22c55e]" /> PİYASA GÜVENİLİRLİK ENDEKSİ
+            </div>
+            <div className="p-4 space-y-2.5 text-xs text-gray-300">
+              <div className="flex justify-between py-1.5 border-b border-[#1e293b]">
+                <span className="text-gray-400 font-bold">Takas Hacmi:</span>
+                <span className="font-black text-white">Yüksek (Aktif)</span>
               </div>
-              <div className="flex justify-between py-2 border-b border-white/10">
-                <span className="text-gray-400">Değer Trendi:</span>
-                <span className="font-bold text-emerald-400 flex items-center gap-1">📈 Yükseliş Eğilimi</span>
+              <div className="flex justify-between py-1.5 border-b border-[#1e293b]">
+                <span className="text-gray-400 font-bold">Değer Trendi:</span>
+                <span className="font-black text-[#22c55e] flex items-center gap-1">📈 Yükseliş Eğilimi</span>
               </div>
-              <div className="flex justify-between py-2">
-                <span className="text-gray-400">Son Güncelleme:</span>
-                <span className="font-bold text-cyan-400">Bugün (Canlı)</span>
+              <div className="flex justify-between py-1.5">
+                <span className="text-gray-400 font-bold">Son Güncelleme:</span>
+                <span className="font-black text-[#3b82f6]">Bugün (Canlı)</span>
               </div>
             </div>
           </div>
         </div>
 
         {/* Right Column: Price History Chart and Updates */}
-        <div className="lg:col-span-2 space-y-6">
-          <div className="habbo-box bg-[#0a1325]/80 border-2 border-white/10 shadow-2xl rounded-2xl overflow-hidden">
-            <div className="habbo-box-header bg-gradient-to-r from-[#14233d] to-[#0d172a] border-b border-white/10 text-white font-black text-xs uppercase tracking-wider px-6 py-4 flex items-center justify-between">
+        <div className="lg:col-span-2 space-y-4">
+          <div className="habbo-box bg-[#0a1325] border border-[#1e293b]">
+            <div className="bg-[#050a14] border-b border-[#1e293b] text-[#facc15] font-black text-xs uppercase tracking-wider px-4 py-2.5 flex items-center justify-between">
               <span className="flex items-center gap-2">
-                <History size={18} className="text-cyan-400" /> FİYAT ANALİZ GRAFİĞİ & DEĞER GEÇMİŞİ
+                <History size={16} className="text-[#3b82f6]" /> FİYAT ANALİZ GRAFİĞİ & DEĞER GEÇMİŞİ
               </span>
               <span className="text-[10px] font-bold text-gray-400">Son 6 Aylık Seyir</span>
             </div>
             
-            <div className="p-6 bg-[#050b14]">
-              <div className="bg-[#0a1325]/90 border-2 border-white/10 rounded-2xl p-6 shadow-2xl">
-                {/* ItemPriceChart renders natively in dark theme */}
+            <div className="p-4 bg-[#0a1325]">
+              <div className="bg-[#050a14] border border-[#1e293b] rounded-[3px] p-4">
                 <ItemPriceChart data={chartData} currencyType={item.currency_type || item.currency || 'credit'} />
               </div>
             </div>
           </div>
 
           {/* Price Update Logs */}
-          <div className="habbo-box bg-[#0a1325]/80 border-2 border-white/10 shadow-2xl rounded-2xl overflow-hidden">
-            <div className="habbo-box-header bg-gradient-to-r from-[#14233d] to-[#0d172a] border-b border-white/10 text-white font-black text-xs uppercase tracking-wider px-6 py-4 flex items-center justify-between">
+          <div className="habbo-box bg-[#0a1325] border border-[#1e293b]">
+            <div className="bg-[#050a14] border-b border-[#1e293b] text-[#facc15] font-black text-xs uppercase tracking-wider px-4 py-2.5 flex items-center justify-between">
               <span className="flex items-center gap-2">
-                <Sparkles size={16} className="text-amber-400" /> SON DEĞER GÜNCELLEME KAYITLARI
+                <Sparkles size={15} className="text-[#f59e0b]" /> SON DEĞER GÜNCELLEME KAYITLARI
               </span>
-              <span className="text-[10px] bg-white/10 text-gray-300 px-2.5 py-1 rounded font-black uppercase">
+              <span className="text-[9px] bg-[#0a1325] text-gray-300 px-2 py-0.5 rounded-[2px] border border-[#1e293b] font-black uppercase">
                 DOĞRULANMIŞ KAYITLAR
               </span>
             </div>
 
-            <div className="p-6 bg-[#050b14]">
-              <div className="space-y-3">
+            <div className="p-4 bg-[#0a1325]">
+              <div className="space-y-2">
                 {history && history.length > 0 ? (
                   [...history].reverse().slice(0, 5).map((record, index) => (
-                    <div key={index} className="flex items-center justify-between p-4 bg-[#0a1325]/80 hover:bg-[#111e38] rounded-xl border border-white/10 shadow-md transition-colors">
-                      <div className="flex items-center gap-4">
-                        <div className="w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.8)]" />
+                    <div key={index} className="flex items-center justify-between p-3 bg-[#050a14] hover:bg-[#1e293b] rounded-[2px] border border-[#1e293b] transition-colors">
+                      <div className="flex items-center gap-3">
+                        <div className="w-2 h-2 rounded-[1px] bg-[#3b82f6]" />
                         <div>
-                          <div className="font-black text-white text-base flex items-center gap-1.5">
+                          <div className="font-black text-white text-sm flex items-center gap-1.5">
                             {record.value}{' '}
-                            <span className="text-xs font-bold text-cyan-400 uppercase">
+                            <span className="text-[10px] font-black text-[#f59e0b] uppercase">
                               {item.currency_type || item.currency || 'credit'}
                             </span>
                           </div>
-                          <div className="text-xs font-medium text-gray-400 mt-0.5">
+                          <div className="text-[11px] font-medium text-gray-400 mt-0.5">
                             Tarih: {record.created_at ? record.created_at.split('T')[0] : '2026-07-01'}
                           </div>
                         </div>
                       </div>
                       {record.profiles && (
-                        <div className="text-xs font-black text-gray-300 bg-white/5 border border-white/10 px-3 py-1.5 rounded-lg flex items-center gap-1">
-                          <ShieldCheck size={14} className="text-emerald-400" /> @{(record.profiles as any)?.username}
+                        <div className="text-[11px] font-bold text-gray-300 bg-[#0a1325] border border-[#1e293b] px-2.5 py-1 rounded-[2px] flex items-center gap-1">
+                          <ShieldCheck size={13} className="text-[#22c55e]" /> @{(record.profiles as any)?.username}
                         </div>
                       )}
                     </div>
                   ))
                 ) : (
-                  <div className="text-center text-gray-400 py-8 text-xs font-bold bg-[#0a1325]/40 border border-white/10 rounded-xl">
+                  <div className="text-center text-gray-400 py-6 text-xs font-bold bg-[#050a14] border border-[#1e293b] rounded-[2px]">
                     Geçmiş kaydı bulunamadı.
                   </div>
                 )}

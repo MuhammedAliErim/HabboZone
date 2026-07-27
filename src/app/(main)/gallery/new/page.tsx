@@ -55,7 +55,6 @@ export default function NewGallerySubmissionPage() {
           description,
           image_url: publicUrl,
           author_id: user.id,
-          // Not: Supabase veritabanında "is_approved" sütunu varsayılan olarak false kabul edilmelidir.
         });
 
       if (insertError) throw insertError;
@@ -70,121 +69,133 @@ export default function NewGallerySubmissionPage() {
 
   if (success) {
     return (
-      <div className="max-w-2xl mx-auto py-20 px-8 text-center space-y-6 animate-in fade-in zoom-in duration-500">
-        <div className="inline-flex p-4 bg-green-500/20 text-green-500 rounded-full mb-4">
-          <CheckCircle size={64} />
-        </div>
-        <h2 className="text-4xl font-black uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-600">
-          Başarıyla Gönderildi!
-        </h2>
-        <p className="text-xl text-white/70">
-          Görseliniz admin onayına sunuldu. Onaylandıktan sonra galeride yerini alacaktır.
-        </p>
-        <div className="pt-8 flex justify-center gap-4">
-          <Link href="/gallery" className="px-6 py-3 bg-white/10 hover:bg-white/20 rounded-lg font-bold transition-colors">
-            Galeriye Dön
-          </Link>
-          <button 
-            onClick={() => {
-              setSuccess(false);
-              setTitle('');
-              setDescription('');
-              setImageFile(null);
-            }} 
-            className="px-6 py-3 bg-primary text-white rounded-lg font-bold pixel-borders hover:bg-primary/90 transition-colors"
-          >
-            Yeni Görsel Gönder
-          </button>
+      <div className="max-w-xl mx-auto py-16 px-4 animate-in fade-in zoom-in duration-500">
+        <div className="habbo-box bg-[#0a1325] border border-[#1e293b] p-8 text-center">
+          <div className="inline-flex p-3 bg-[#22c55e]/10 text-[#22c55e] border border-[#22c55e] rounded-[3px] mb-4">
+            <CheckCircle size={48} />
+          </div>
+          <h2 className="text-2xl font-black uppercase tracking-wider text-[#facc15] mb-2">
+            BAŞARIYLA GÖNDERİLDİ!
+          </h2>
+          <p className="text-sm text-gray-300 mb-6 font-medium">
+            Görseliniz admin onayına sunuldu. Onaylandıktan sonra galeride yerini alacaktır.
+          </p>
+          <div className="flex flex-col sm:flex-row justify-center gap-3">
+            <Link href="/gallery" className="px-5 py-2.5 bg-[#050a14] hover:bg-[#1e293b] text-white rounded-[3px] border border-[#1e293b] font-black text-xs uppercase tracking-wider transition-colors">
+              Galeriye Dön
+            </Link>
+            <button 
+              onClick={() => {
+                setSuccess(false);
+                setTitle('');
+                setDescription('');
+                setImageFile(null);
+              }} 
+              className="px-5 py-2.5 bg-[#2563eb] text-white rounded-[3px] border border-[#3b82f6] font-black text-xs uppercase tracking-wider hover:bg-[#1d4ed8] transition-colors"
+            >
+              Yeni Görsel Gönder
+            </button>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6 py-12 px-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <div className="flex items-center gap-4 mb-8">
-        <Link href="/gallery" className="p-2 bg-white/5 hover:bg-white/10 rounded-lg transition-colors">
-          <ArrowLeft size={24} />
+    <div className="max-w-2xl mx-auto space-y-6 py-10 px-4 animate-in fade-in duration-500">
+      <div className="flex items-center gap-3">
+        <Link href="/gallery" className="p-2 bg-[#0a1325] border border-[#1e293b] hover:border-[#3b82f6] text-gray-300 hover:text-white rounded-[3px] transition-colors">
+          <ArrowLeft size={18} />
         </Link>
         <div>
-          <h2 className="text-3xl font-black mb-1 uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-500">Görsel Gönder</h2>
-          <p className="text-white/60">HabboZone galerisinde yer almak için görselini bizimle paylaş.</p>
+          <h2 className="text-2xl font-black uppercase tracking-wider text-[#facc15] drop-shadow">GÖRSEL GÖNDER</h2>
+          <p className="text-xs text-gray-400 font-medium">HabboZone galerisinde yer almak için görselini bizimle paylaş.</p>
         </div>
       </div>
 
       {error && (
-        <div className="bg-red-500/20 border border-red-500 text-red-500 p-4 rounded-xl font-bold animate-pulse">
-          {error}
+        <div className="bg-red-500/10 border border-red-500/50 text-red-400 p-3 rounded-[3px] text-xs font-bold">
+          ⚠️ {error}
         </div>
       )}
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-6 space-y-6">
+        <div className="habbo-box bg-[#0a1325] border border-[#1e293b] overflow-hidden">
+          <div className="bg-[#050a14] border-b border-[#1e293b] px-4 py-3">
+            <h3 className="text-xs font-black text-[#facc15] uppercase tracking-wider flex items-center gap-2">
+              <ImageIcon size={16} className="text-[#3b82f6]"/> GÖRSEL BİLGİLERİ
+            </h3>
+          </div>
           
-          <div>
-            <label className="block text-sm font-bold mb-2 opacity-80 uppercase">Görsel Başlığı</label>
-            <input
-              type="text"
-              required
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              className="w-full bg-black/40 border border-white/20 rounded-xl px-4 py-3 outline-none focus:border-primary transition-colors focus:ring-2 focus:ring-primary/20"
-              placeholder="Örn: 2026 Yılbaşı Partisi"
-              maxLength={100}
-            />
-          </div>
+          <div className="p-6 space-y-5">
+            <div>
+              <label className="block text-xs font-black mb-1.5 text-gray-300 uppercase tracking-wider">Görsel Başlığı <span className="text-red-400">*</span></label>
+              <input
+                type="text"
+                required
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                className="w-full bg-[#050a14] border border-[#1e293b] rounded-[3px] px-3.5 py-2.5 text-sm text-white outline-none focus:border-[#3b82f6] transition-colors font-medium"
+                placeholder="Örn: 2026 Yılbaşı Partisi"
+                maxLength={100}
+              />
+            </div>
 
-          <div>
-            <label className="block text-sm font-bold mb-2 opacity-80 uppercase">Açıklama (İsteğe Bağlı)</label>
-            <textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              rows={3}
-              className="w-full bg-black/40 border border-white/20 rounded-xl px-4 py-3 outline-none focus:border-primary transition-colors focus:ring-2 focus:ring-primary/20 resize-none"
-              placeholder="Görselle ilgili eklemek istedikleriniz..."
-              maxLength={500}
-            />
+            <div>
+              <label className="block text-xs font-black mb-1.5 text-gray-300 uppercase tracking-wider">Açıklama (İsteğe Bağlı)</label>
+              <textarea
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                rows={3}
+                className="w-full bg-[#050a14] border border-[#1e293b] rounded-[3px] px-3.5 py-2.5 text-sm text-white outline-none focus:border-[#3b82f6] transition-colors font-medium resize-none"
+                placeholder="Görselle ilgili eklemek istedikleriniz..."
+                maxLength={500}
+              />
+            </div>
           </div>
-
         </div>
 
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-          <h3 className="text-lg font-bold mb-4 uppercase tracking-widest flex items-center gap-2">
-            <ImageIcon size={20} className="text-primary"/> Dosya Seç
-          </h3>
-          <div className="relative group">
-            <div className="absolute inset-0 bg-primary/10 rounded-xl border-2 border-dashed border-primary/30 group-hover:border-primary/60 transition-colors pointer-events-none" />
-            <input
-              type="file"
-              accept="image/*"
-              required
-              onChange={(e) => setImageFile(e.target.files?.[0] || null)}
-              className="block w-full text-sm text-white/60 p-8 cursor-pointer
-                file:mr-4 file:py-2 file:px-4
-                file:rounded-full file:border-0
-                file:text-sm file:font-semibold
-                file:bg-primary file:text-white
-                hover:file:bg-primary/80 transition-colors z-10 relative"
-            />
+        <div className="habbo-box bg-[#0a1325] border border-[#1e293b] overflow-hidden">
+          <div className="bg-[#050a14] border-b border-[#1e293b] px-4 py-3">
+            <h3 className="text-xs font-black text-[#facc15] uppercase tracking-wider flex items-center gap-2">
+              📁 DOSYA SEÇİMİ
+            </h3>
           </div>
-          {imageFile && (
-            <div className="mt-4 text-sm text-green-400 flex items-center gap-2">
-              <CheckCircle size={16} /> {imageFile.name} seçildi.
+          
+          <div className="p-6">
+            <div className="relative group bg-[#050a14] border-2 border-dashed border-[#1e293b] hover:border-[#3b82f6] rounded-[3px] p-6 text-center transition-colors">
+              <input
+                type="file"
+                accept="image/*"
+                required
+                onChange={(e) => setImageFile(e.target.files?.[0] || null)}
+                className="block w-full text-xs text-gray-400 cursor-pointer
+                  file:mr-4 file:py-2 file:px-4
+                  file:rounded-[2px] file:border file:border-[#3b82f6]
+                  file:text-xs file:font-black file:uppercase file:tracking-wider
+                  file:bg-[#2563eb] file:text-white
+                  hover:file:bg-[#1d4ed8] transition-colors"
+              />
             </div>
-          )}
+            {imageFile && (
+              <div className="mt-3 text-xs text-[#22c55e] font-bold flex items-center gap-1.5">
+                <CheckCircle size={14} /> {imageFile.name} seçildi.
+              </div>
+            )}
+          </div>
         </div>
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-purple-600 text-white px-8 py-4 rounded-xl font-black uppercase tracking-widest hover:brightness-110 transition-all disabled:opacity-50 text-lg shadow-xl shadow-primary/20 group hover:-translate-y-1"
+          className="w-full flex items-center justify-center gap-2 bg-[#22c55e] hover:bg-[#16a34a] border border-[#16a34a] text-black font-black uppercase tracking-widest px-6 py-3.5 rounded-[3px] transition-all disabled:opacity-50 text-sm shadow-md"
         >
           {loading ? (
-            <span className="animate-pulse">Yükleniyor...</span>
+            <span className="animate-pulse">YÜKLENİYOR...</span>
           ) : (
             <>
-              <Save size={24} className="group-hover:scale-110 transition-transform" /> 
-              Onaya Gönder
+              <Save size={18} /> 
+              ONAYA GÖNDER
             </>
           )}
         </button>

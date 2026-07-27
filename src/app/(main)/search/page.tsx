@@ -32,7 +32,7 @@ export default async function SearchPage({ searchParams }: Props) {
   const supabase = await createClient();
   const searchPattern = `%${q}%`;
   
-  let results: any[] = [];
+  const results: any[] = [];
   
   if (q.length >= 2) {
     if (tab === 'all' || tab === 'news') {
@@ -114,14 +114,14 @@ export default async function SearchPage({ searchParams }: Props) {
     <div className="max-w-[1000px] mx-auto w-full py-8 px-4">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-black text-white mb-2 tracking-tight">Arama Sonuçları</h1>
-        <p className="text-gray-400 text-sm">
+        <h1 className="text-3xl font-black text-white mb-2 tracking-tight uppercase" style={{ textShadow: '2px 2px 0 #000' }}>ARAMA SONUÇLARI</h1>
+        <p className="text-gray-400 text-xs font-bold uppercase tracking-wider">
           <strong className="text-white">"{q}"</strong> için {q.length >= 2 ? results.length : 0} sonuç bulundu
         </p>
       </div>
 
       {/* Search Input (Big) */}
-      <div className="bg-[#1e293b] p-4 rounded-lg border-2 border-black mb-8 shadow-[4px_4px_0_#000]">
+      <div className="habbo-box bg-[#0a1325] p-4 rounded-[3px] border border-[#1e293b] mb-8 shadow">
         <form action="/search" method="GET" className="relative">
           <input type="hidden" name="tab" value={tab} />
           <input
@@ -129,10 +129,10 @@ export default async function SearchPage({ searchParams }: Props) {
             name="q"
             defaultValue={q}
             placeholder="Ne aramak istersin?"
-            className="w-full bg-[#0f172a] text-white border-2 border-[#0f172a] rounded-[4px] py-3 pl-12 pr-4 text-lg font-bold shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)] focus:outline-none focus:border-[#38bdf8] transition-colors"
+            className="w-full bg-[#050a14] text-white border border-[#1e293b] rounded-[2px] py-3 pl-12 pr-28 text-sm font-bold shadow-inner focus:outline-none focus:border-[#3b82f6] transition-colors"
           />
-          <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
-          <button type="submit" className="absolute right-2 top-1/2 -translate-y-1/2 habbo-button success px-4 py-1.5 text-sm">
+          <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
+          <button type="submit" className="absolute right-2 top-1/2 -translate-y-1/2 habbo-button success px-6 py-1.5 text-xs font-black uppercase tracking-wider">
             ARA
           </button>
         </form>
@@ -144,10 +144,10 @@ export default async function SearchPage({ searchParams }: Props) {
           <Link
             key={t.id}
             href={`/search?q=${encodeURIComponent(q)}&tab=${t.id}`}
-            className={`px-4 py-2 rounded-[4px] font-bold text-sm whitespace-nowrap transition-colors ${
+            className={`px-4 py-2 rounded-[2px] font-black text-xs uppercase tracking-wider whitespace-nowrap transition-colors ${
               tab === t.id 
-                ? 'bg-[#38bdf8] text-black shadow-[2px_2px_0_#000]' 
-                : 'bg-[#1e293b] text-gray-400 hover:text-white border-2 border-transparent hover:border-gray-700'
+                ? 'bg-[#facc15] text-black shadow' 
+                : 'bg-[#0a1325] text-gray-400 hover:text-white border border-[#1e293b] hover:border-[#facc15]'
             }`}
           >
             {t.label}
@@ -157,10 +157,10 @@ export default async function SearchPage({ searchParams }: Props) {
 
       {/* Results */}
       {q.length < 2 ? (
-        <div className="bg-[#1e293b] border-2 border-dashed border-gray-700 rounded-lg p-12 text-center flex flex-col items-center">
-          <Search size={48} className="text-gray-600 mb-4" />
-          <h3 className="text-xl font-black text-white mb-2">Aramaya Başla</h3>
-          <p className="text-gray-400 text-sm">Arama yapmak için en az 2 karakter girmelisiniz.</p>
+        <div className="habbo-box bg-[#0a1325] border border-dashed border-[#1e293b] rounded-[3px] p-12 text-center flex flex-col items-center shadow">
+          <Search size={40} className="text-gray-500 mb-4" />
+          <h3 className="text-lg font-black text-white uppercase tracking-wider mb-2">ARAMAYA BAŞLA</h3>
+          <p className="text-gray-400 text-xs font-medium">Arama yapmak için en az 2 karakter girmelisiniz.</p>
         </div>
       ) : results.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -168,30 +168,30 @@ export default async function SearchPage({ searchParams }: Props) {
             <Link
               href={item.url}
               key={`${item._type}-${item.id}`}
-              className="bg-[#1e293b] border-2 border-black rounded-lg p-4 hover:border-[#38bdf8] hover:-translate-y-1 transition-all shadow-[4px_4px_0_#000] flex flex-col group"
+              className="bg-[#0a1325] border border-[#1e293b] rounded-[3px] p-4 hover:border-[#facc15] hover:-translate-y-1 transition-all shadow flex flex-col group"
             >
               <div className="flex items-start gap-3 mb-3">
-                <div className="w-12 h-12 rounded-[4px] border border-black bg-[#0a1325] overflow-hidden shrink-0 flex items-center justify-center relative">
+                <div className="w-12 h-12 rounded-[2px] border border-[#1e293b] bg-[#050a14] overflow-hidden shrink-0 flex items-center justify-center relative">
                   {item.imageUrl ? (
                     <img src={item.imageUrl} alt={item.title} className="w-full h-full object-cover pixelated" />
                   ) : (
                     getTypeIcon(item._type)
                   )}
-                  <div className="absolute top-0 right-0 bg-black/60 p-1 rounded-bl-[4px]">
+                  <div className="absolute top-0 right-0 bg-black/60 p-1 rounded-bl-[2px]">
                     {getTypeIcon(item._type)}
                   </div>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-white font-bold text-base truncate group-hover:text-[#38bdf8] transition-colors">{item.title}</h3>
+                  <h3 className="text-white font-bold text-sm truncate group-hover:text-[#facc15] transition-colors">{item.title}</h3>
                   <div className="inline-block mt-1">
-                    <span className="text-[10px] px-2 py-0.5 rounded-[2px] bg-[#0f172a] border border-gray-700 text-gray-400 font-bold uppercase tracking-wider">
+                    <span className="text-[10px] px-2 py-0.5 rounded-[2px] bg-[#050a14] border border-[#1e293b] text-gray-400 font-bold uppercase tracking-wider">
                       {getTypeName(item._type)}
                     </span>
                   </div>
                 </div>
               </div>
               {item.description && (
-                <p className="text-gray-400 text-sm line-clamp-2 mt-auto text-left leading-relaxed">
+                <p className="text-gray-400 text-xs line-clamp-2 mt-auto text-left leading-relaxed">
                   {item.description}
                 </p>
               )}
@@ -199,10 +199,10 @@ export default async function SearchPage({ searchParams }: Props) {
           ))}
         </div>
       ) : (
-        <div className="bg-[#1e293b] border-2 border-dashed border-gray-700 rounded-lg p-12 text-center flex flex-col items-center">
-          <AlertCircle size={48} className="text-gray-600 mb-4" />
-          <h3 className="text-xl font-black text-white mb-2">Sonuç Bulunamadı</h3>
-          <p className="text-gray-400 text-sm">
+        <div className="habbo-box bg-[#0a1325] border border-dashed border-[#1e293b] rounded-[3px] p-12 text-center flex flex-col items-center shadow">
+          <AlertCircle size={40} className="text-gray-500 mb-4" />
+          <h3 className="text-lg font-black text-white uppercase tracking-wider mb-2">SONUÇ BULUNAMADI</h3>
+          <p className="text-gray-400 text-xs font-medium">
             "<strong className="text-white">{q}</strong>" kelimesi için sonuç bulamadık. Lütfen farklı kelimelerle tekrar deneyin.
           </p>
         </div>

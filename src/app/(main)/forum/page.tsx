@@ -14,34 +14,33 @@ export default async function ForumIndexPage() {
     .from('categories')
     .select(`
       id, name, slug, description,
-      forums:forums(id, title, slug, description, icon)
+      forums(id, title, slug, description, icon)
     `)
-    .eq('type', 'forum');
+    .order('id', { ascending: true });
   
   if (dbCategories && dbCategories.length > 0) {
     categories = dbCategories;
   } else {
-    // Fallback mock forum categories
     categories = [
       {
-        id: 'cat-1', name: 'Duyurular & Kurallar', slug: 'duyurular', description: 'Site ve oyun hakkındaki en güncel resmi duyurular',
+        id: 'cat-1', name: 'Duyurular & Kurallar', slug: 'duyurular-ve-kurallar',
         forums: [
-          { id: 'f-1', title: 'Resmi Haberler', slug: 'resmi-haberler', description: 'Habbo ve HabboZone resmi duyuru panosu', icon: '📢' },
-          { id: 'f-2', title: 'Yarışmalar & Çekilişler', slug: 'yarismalar-cekilisler', description: 'Ödüllü yarışmalar ve rozet etkinlikleri', icon: '🏆' }
+          { id: 'f-1', title: 'Resmi Haberler', slug: 'resmi-haberler', icon: '📢' },
+          { id: 'f-2', title: 'Yarışmalar & Çekilişler', slug: 'yarismalar-cekilisler', icon: '🎁' }
         ]
       },
       {
-        id: 'cat-2', name: 'Topluluk & Sohbet', slug: 'topluluk', description: 'Habbo oyuncuları arası muhabbet ve tartışma alanı',
+        id: 'cat-2', name: 'Topluluk & Sohbet', slug: 'topluluk-ve-sohbet',
         forums: [
-          { id: 'f-3', title: 'Genel Sohbet', slug: 'genel-sohbet', description: 'Oyun içi ve dışı her türlü keyifli sohbet', icon: '💬' },
-          { id: 'f-4', title: 'Oda Tasarımları & Mimarlık', slug: 'oda-tasarimlari', description: 'En iyi oda tasarımları ve mimari fikirler', icon: '🏰' }
+          { id: 'f-3', title: 'Genel Sohbet', slug: 'genel-sohbet', icon: '💬' },
+          { id: 'f-4', title: 'Oda Tasarımları', slug: 'oda-tasarimlari', icon: '🏰' }
         ]
       },
       {
-        id: 'cat-3', name: 'Ekonomi & Nadireler', slug: 'ekonomi', description: 'Piyasa analizi, nadire takasları ve değerleme panosu',
+        id: 'cat-3', name: 'Ekonomi & Nadireler', slug: 'ekonomi-ve-nadireler',
         forums: [
-          { id: 'f-5', title: 'Takas & Pazaryeri', slug: 'takas-pazaryeri', description: 'Alım, satım ve takas ilanlarınızı paylaşın', icon: '💎' },
-          { id: 'f-6', title: 'Fiyat & Değer Tartışmaları', slug: 'fiyat-tartismalari', description: 'Hangi nadire değerlenecek? Tahmin ve analizler', icon: '📈' }
+          { id: 'f-5', title: 'Fiyat Tartışmaları', slug: 'fiyat-tartismalari', icon: '💎' },
+          { id: 'f-6', title: 'Takas Pazaryeri', slug: 'takas-pazaryeri', icon: '🔄' }
         ]
       }
     ];
@@ -64,7 +63,6 @@ export default async function ForumIndexPage() {
   if (dbTopics && dbTopics.length > 0) {
     topics = dbTopics;
   } else {
-    // Fallback mock topics for a lively forum preview
     topics = [
       {
         id: 'top-1', title: '🔥 2026 Yaz Etkinliği Ödülleri ve Yeni Rozetler Hakkında Ne Düşünüyorsunuz?', slug: '2026-yaz-etkinligi-odulleri', is_pinned: true, is_locked: false, created_at: '2026-07-26T10:00:00Z',
@@ -121,7 +119,6 @@ export default async function ForumIndexPage() {
     ];
   }
 
-  // Deterministik Tarih Formatlama (React 19 saflık kuralı - new Date() render gövdesinde kullanılmaz)
   const formatDeterministicDate = (dateStr?: string) => {
     if (!dateStr) return '26.07.2026';
     const parts = dateStr.split('T')[0].split('-');
@@ -130,156 +127,128 @@ export default async function ForumIndexPage() {
   };
 
   return (
-    <div className="pb-20 animate-in fade-in duration-500">
+    <div className="pb-16 w-full max-w-[1200px] mx-auto px-4 pt-6">
       
-      {/* Hero Banner - Dark Premium v4.0 */}
-      <section className="relative w-full min-h-[260px] mb-8 border-b-2 border-white/10 overflow-hidden flex flex-col justify-end p-8 bg-[#050b14]">
-        <div 
-          className="absolute inset-0 z-0 opacity-30 pixelated"
-          style={{
-            backgroundImage: 'url("https://images.habbo.com/c_images/reception/reception_backdrop_4.png")',
-            backgroundPosition: 'center',
-            backgroundSize: 'cover'
-          }}
-        />
-        <div className="absolute inset-0 z-10 bg-gradient-to-t from-[#0a1224] via-[#0a1224]/80 to-transparent"></div>
-        <div className="absolute -top-24 -left-24 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl pointer-events-none"></div>
-        
-        <div className="relative z-20 max-w-[1400px] w-full mx-auto flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 text-xs font-bold mb-3 shadow-[0_0_12px_rgba(59,130,246,0.2)]">
-              <Sparkles size={14} className="text-cyan-400 animate-pulse" />
-              TOPLULUK TARTIŞMA & PAYLAŞIM MERKEZİ V4.0
-            </div>
-            <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight drop-shadow-md mb-2 flex items-center gap-3">
-              <MessageCircle size={36} className="text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.5)]" /> 
-              HABBOZONE FORUM
-            </h1>
-            <p className="text-gray-300 text-sm md:text-base font-medium max-w-2xl">
-              Habbo dünyasının en güncel haberlerini tartışın, oda tasarımlarınızı sergileyin ve nadire piyasasının nabzını tutun!
-            </p>
+      {/* AUTHENTIC HABBO HERO SECTION */}
+      <div className="habbo-box mb-6 p-6 bg-[#0a1325] border border-[#1e293b] flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
+        <div>
+          <div className="flex items-center gap-2 mb-2">
+            <span className="bg-[#ef4444] text-white px-2 py-0.5 rounded-[3px] text-[10px] font-black uppercase tracking-wider shadow-[0_2px_0_#991b1b]">TOPLULUK MERKEZİ</span>
+            <span className="text-gray-300 text-[11px] font-bold bg-black/40 px-2 py-0.5 rounded-[3px]">Tüm Konular</span>
           </div>
-          
-          <Link href="/forum/new" className="bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-black text-xs uppercase tracking-wider px-6 py-3 rounded-xl transition-all flex items-center gap-2 shadow-[0_0_20px_rgba(16,185,129,0.4)] shrink-0 self-start md:self-auto border border-emerald-400/30">
-            <Plus size={18} />
-            YENİ KONU AÇ
-          </Link>
+          <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight mb-2 uppercase" style={{ textShadow: '2px 2px 0 #000' }}>
+            HABBOZONE FORUM & TARTIŞMA
+          </h1>
+          <p className="text-gray-300 text-xs md:text-sm max-w-2xl font-medium">
+            Habbo otelinin en güncel gelişmelerini değerlendir, oda tasarımlarını paylaş, nadire piyasasını takip et ve toplulukla etkileşime geç!
+          </p>
         </div>
-      </section>
-
-      {/* Main Content Grid */}
-      <div className="max-w-[1400px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-8">
         
-        {/* Left Column - Topics */}
-        <div className="min-w-0 space-y-6">
+        <Link href="/forum/new" className="bg-[#facc15] hover:bg-[#eab308] text-black px-6 py-3 rounded-[4px] font-black text-xs border-2 border-black shadow-[0_4px_0_#a16207] hover:translate-y-1 hover:shadow-none transition-all uppercase tracking-wider shrink-0 flex items-center gap-2">
+          <Plus size={16} /> YENİ KONU AÇ
+        </Link>
+      </div>
+
+      {/* Main Content 2 Columns */}
+      <div className="flex flex-col lg:flex-row gap-6">
+        
+        {/* Left Col: TOPICS */}
+        <div className="flex-1 lg:w-[70%] flex flex-col gap-4">
             
-          {/* Categories Bar / Tabs */}
-          <div className="flex flex-wrap items-center gap-2.5 border-b border-white/10 pb-4">
-            <Link href="/forum" className="px-5 py-2.5 bg-cyan-500/20 text-cyan-300 font-black text-xs rounded-xl border border-cyan-500/50 shadow-md transition-all flex items-center gap-1.5">
-              <Flame size={14} className="text-cyan-400" /> TÜM KONULAR
+          {/* Categories Filter Tabs */}
+          <div className="flex flex-wrap items-center gap-2 border-b border-[#1e293b] pb-3">
+            <Link href="/forum" className="bg-[#3b82f6] text-white px-4 py-1.5 rounded-[3px] font-bold text-xs border-b-2 border-[#1d4ed8] uppercase flex items-center gap-1.5">
+              <Flame size={14} className="text-yellow-300" /> TÜMÜ
             </Link>
             {categories?.map((cat) => (
-              <Link key={cat.id} href={`/forum/category/${cat.slug}`} className="px-5 py-2.5 text-gray-400 hover:text-white font-bold text-xs rounded-xl bg-[#0a1325]/60 hover:bg-[#0a1325] border border-white/5 hover:border-white/20 transition-all uppercase tracking-wider">
+              <Link key={cat.id} href={`/forum/category/${cat.slug}`} className="bg-[#0a1325] hover:bg-[#1e293b] text-gray-300 hover:text-white px-4 py-1.5 rounded-[3px] font-bold text-xs border border-[#1e293b] uppercase transition-colors">
                 {cat.name}
               </Link>
             ))}
           </div>
 
-          {/* Topic List - Dark Premium Habbo-Box */}
-          <div className="habbo-box bg-[#0a1325]/80 border-2 border-white/10 shadow-2xl rounded-2xl overflow-hidden">
-            <div className="habbo-box-header bg-gradient-to-r from-[#14233d] to-[#0d172a] border-b border-white/10 text-white font-black text-xs uppercase tracking-wider px-6 py-4 flex items-center justify-between">
-              <span className="flex items-center gap-2">
-                <MessageSquare size={16} className="text-cyan-400" /> GÜNCEL FORUM BAŞLIKLARI
-              </span>
-              <span className="text-[10px] font-bold text-gray-400 bg-white/5 px-2.5 py-1 rounded border border-white/10">
-                TOPLAM {topics.length} KONU
-              </span>
+          <div className="flex justify-between items-center border-b border-[#1e293b] pb-2">
+            <div className="flex items-center gap-2">
+              <MessageCircle size={16} className="text-[#facc15]" />
+              <h2 className="text-[#facc15] font-black text-sm tracking-wide">GÜNCEL FORUM BAŞLIKLARI</h2>
             </div>
+            <span className="text-gray-400 text-[11px] font-bold uppercase">TOPLAM {topics.length} KONU</span>
+          </div>
 
-            <div className="p-4 bg-[#050b14] space-y-3">
-              {topics && topics.length > 0 ? topics.map((topic: any) => (
-                <Link href={`/forum/topic/${topic.slug}`} key={topic.id} className="block bg-[#0a1325]/90 hover:bg-[#111e38] border-2 border-white/10 hover:border-cyan-500/40 p-4 rounded-xl shadow-md transition-all group">
-                  <div className="flex items-center gap-4">
-                    {/* Avatar */}
-                    <div className="w-12 h-12 rounded-xl bg-[#050b14] border border-white/10 flex items-center justify-center shrink-0 overflow-hidden relative shadow-inner group-hover:scale-105 transition-transform">
-                      <HabboAvatar username={topic.author?.habbo_username || topic.author?.username || 'Admin'} size="m" headOnly direction={3} className="w-8 h-8" />
-                    </div>
+          {/* Authentic Habbo Box Topic List */}
+          <div className="flex flex-col gap-2.5">
+            {topics && topics.length > 0 ? topics.map((topic: any) => (
+              <Link href={`/forum/topic/${topic.slug}`} key={topic.id} className="habbo-box hover:border-[#3b82f6]/50 p-3.5 flex items-center justify-between gap-4 group transition-all duration-200 bg-[#0a1325]">
+                <div className="flex items-center gap-3.5 min-w-0">
+                  <div className="w-10 h-10 rounded-[4px] bg-[#050a14] border border-[#1e293b] flex items-center justify-center shrink-0 overflow-hidden relative">
+                    <HabboAvatar username={topic.author?.habbo_username || topic.author?.username || 'Admin'} size="m" headOnly direction={3} className="w-7 h-7" />
+                  </div>
 
-                    {/* Topic Info */}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        {topic.is_pinned && (
-                          <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase text-amber-400 bg-amber-500/10 border border-amber-500/30 px-2 py-0.5 rounded shadow-sm shrink-0">
-                            <Pin size={10} /> SABİT
-                          </span>
-                        )}
-                        <span className="text-cyan-400 text-[10px] font-black uppercase bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/20 shrink-0">
-                          {topic.forum?.title || 'Genel'}
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      {topic.is_pinned && (
+                        <span className="bg-[#ef4444] text-white text-[9px] font-black px-1.5 py-0.5 rounded-[2px] uppercase shrink-0">
+                          SABİT
                         </span>
-                        <h3 className="text-sm md:text-base font-black text-white group-hover:text-cyan-300 transition-colors truncate">
-                          {topic.title}
-                        </h3>
-                      </div>
-                      
-                      <div className="flex flex-wrap items-center gap-4 text-xs text-gray-400 font-medium mt-1.5">
-                        <span className="flex items-center gap-1">
-                          <Users size={14} className="text-gray-500" /> Yazar: <span className="text-white font-bold">@{topic.author?.username || 'Anonim'}</span>
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Clock size={14} className="text-gray-500" /> {formatDeterministicDate(topic.created_at)}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Replies Count Badge */}
-                    <div className="hidden sm:flex flex-col items-center justify-center bg-white/5 border border-white/10 px-4 py-2 rounded-xl shrink-0 text-center">
-                      <span className="text-lg font-black text-white group-hover:text-cyan-400 transition-colors">
-                        {topic.replies?.length || 0}
+                      )}
+                      <span className="bg-[#1e293b] text-cyan-300 text-[10px] font-bold px-2 py-0.5 rounded-[2px] shrink-0">
+                        {topic.forum?.title || 'Genel'}
                       </span>
-                      <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Cevap</span>
+                      <h3 className="text-white font-bold text-[14px] md:text-[15px] group-hover:text-[#facc15] transition-colors truncate">
+                        {topic.title}
+                      </h3>
+                    </div>
+                    
+                    <div className="flex items-center gap-3 text-[11px] text-[#64748b] font-bold">
+                      <span>Yazar: <strong className="text-gray-300">@{topic.author?.username || 'Anonim'}</strong></span>
+                      <span>•</span>
+                      <span>{formatDeterministicDate(topic.created_at)}</span>
                     </div>
                   </div>
-                </Link>
-              )) : (
-                <div className="text-center py-12 text-gray-400">
-                  <MessageCircleQuestion size={48} className="mx-auto mb-3 opacity-20" />
-                  <p className="text-sm font-bold text-white">Henüz bir konu açılmadı.</p>
-                  <p className="text-xs text-gray-400 mt-1 mb-4">İlk konuyu sen açarak tartışmayı başlat!</p>
-                  <Link href="/forum/new" className="inline-flex items-center gap-2 px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black rounded-xl transition-all">
-                    <Plus size={16} /> KONU AÇ
-                  </Link>
                 </div>
-              )}
-            </div>
+
+                <div className="hidden sm:flex flex-col items-end shrink-0 border-l border-[#1e293b] pl-4">
+                  <span className="text-white font-black text-sm group-hover:text-[#3b82f6] transition-colors">
+                    {topic.replies?.length || 0}
+                  </span>
+                  <span className="text-[10px] text-[#64748b] font-bold uppercase">Cevap</span>
+                </div>
+              </Link>
+            )) : (
+              <div className="habbo-box p-8 text-center text-gray-400">
+                <p className="font-bold text-sm text-white">Henüz konu açılmamış.</p>
+                <p className="text-xs text-gray-400 mt-1 mb-4">İlk konuyu açarak tartışmayı sen başlat!</p>
+                <Link href="/forum/new" className="bg-[#22c55e] text-white px-6 py-2 rounded-[4px] font-bold text-xs border-b-4 border-[#15803d] uppercase inline-block">
+                  KONU AÇ
+                </Link>
+              </div>
+            )}
           </div>
         </div>
 
-        {/* Right Column - Sidebar */}
-        <div className="space-y-6">
+        {/* Right Col: SIDEBAR WIDGETS */}
+        <div className="flex-1 lg:w-[30%] flex flex-col gap-6">
             
-          {/* Categories Widget */}
-          <div className="habbo-box bg-[#0a1325]/80 border-2 border-white/10 shadow-2xl rounded-2xl overflow-hidden">
-            <div className="habbo-box-header bg-gradient-to-r from-[#14233d] to-[#0d172a] border-b border-white/10 text-white font-black text-xs uppercase tracking-wider px-5 py-3.5 flex items-center justify-between">
-              <span className="flex items-center gap-2">
-                <Star size={16} className="text-amber-400" /> FORUM KATEGORİLERİ
-              </span>
+          {/* Forum Categories Widget */}
+          <div className="flex flex-col gap-2">
+            <div className="flex justify-between items-center border-b border-[#1e293b] pb-2">
+              <h2 className="text-[#facc15] font-black text-sm tracking-wide">FORUM KATEGORİLERİ</h2>
             </div>
 
-            <div className="p-4 bg-[#050b14] space-y-4">
+            <div className="habbo-box p-3 bg-[#0a1325] flex flex-col gap-3">
               {categories?.map((cat) => (
-                <div key={cat.id} className="space-y-2">
-                  <Link href={`/forum/category/${cat.slug}`} className="block text-xs font-black uppercase tracking-wider text-cyan-400 px-2 py-1 bg-cyan-500/10 border border-cyan-500/20 rounded-lg hover:bg-cyan-500/20 transition-colors">
+                <div key={cat.id} className="flex flex-col gap-1.5">
+                  <Link href={`/forum/category/${cat.slug}`} className="text-xs font-black uppercase text-[#3b82f6] hover:underline">
                     {cat.name}
                   </Link>
                   
-                  <div className="space-y-1 pl-2 border-l-2 border-white/10">
+                  <div className="flex flex-col gap-1 pl-2 border-l-2 border-[#1e293b]">
                     {cat.forums?.map((forum: any) => (
-                      <Link href={`/forum/category/${forum.slug}`} key={forum.id} className="flex items-center justify-between p-2.5 rounded-xl hover:bg-white/5 transition-colors group">
-                        <span className="text-xs font-bold text-gray-300 group-hover:text-white transition-colors flex items-center gap-2">
-                          <span className="text-base">{forum.icon || '📌'}</span> {forum.title}
+                      <Link href={`/forum/category/${forum.slug}`} key={forum.id} className="flex items-center justify-between p-1.5 hover:bg-[#1e293b] rounded-[3px] transition-colors group">
+                        <span className="text-xs font-bold text-gray-300 group-hover:text-white flex items-center gap-1.5">
+                          <span>{forum.icon || '📌'}</span> {forum.title}
                         </span>
-                        <ChevronRight size={14} className="text-gray-500 group-hover:text-cyan-400 group-hover:translate-x-1 transition-all" />
+                        <ChevronRight size={14} className="text-gray-500 group-hover:text-white transition-all" />
                       </Link>
                     ))}
                   </div>
@@ -288,51 +257,37 @@ export default async function ForumIndexPage() {
             </div>
           </div>
 
-          {/* Activity Feed Widget */}
-          <div className="habbo-box bg-[#0a1325]/80 border-2 border-white/10 shadow-2xl rounded-2xl overflow-hidden">
-            <div className="habbo-box-header bg-gradient-to-r from-[#14233d] to-[#0d172a] border-b border-white/10 text-white font-black text-xs uppercase tracking-wider px-5 py-3.5 flex items-center justify-between">
-              <span className="flex items-center gap-2">
-                <Activity size={16} className="text-emerald-400 animate-pulse" /> SON ETKİLEŞİMLER
-              </span>
+          {/* Recent Activity Widget */}
+          <div className="flex flex-col gap-2">
+            <div className="flex justify-between items-center border-b border-[#1e293b] pb-2">
+              <h2 className="text-[#facc15] font-black text-sm tracking-wide">SON ETKİLEŞİMLER</h2>
             </div>
 
-            <div className="p-4 bg-[#050b14] space-y-3">
+            <div className="habbo-box p-3 bg-[#0a1325] flex flex-col gap-2.5">
               {latestReplies && latestReplies.length > 0 ? (
                 latestReplies.map((reply: any) => (
-                  <div key={reply.id} className="p-3 bg-[#0a1325]/90 rounded-xl border border-white/10 hover:border-white/20 transition-all">
-                    <Link href={`/forum/topic/${reply.topic?.slug}`} className="text-xs font-bold text-cyan-400 line-clamp-1 mb-1 hover:underline block">
-                      {reply.topic?.title}
-                    </Link>
-                    <div className="flex items-center justify-between text-[11px] text-gray-400">
-                      <span className="flex items-center gap-1 font-medium">
-                        <ShieldCheck size={12} className="text-emerald-400" /> @{reply.author?.username || 'Oyuncu'}
-                      </span>
-                      <span className="text-gray-500 font-bold">{formatDeterministicDate(reply.created_at)}</span>
+                  <Link href={`/forum/topic/${reply.topic?.slug || 'genel'}`} key={reply.id} className="flex flex-col gap-1 p-2 hover:bg-[#1e293b] rounded-[3px] transition-colors group border-b border-[#1e293b]/50 last:border-0 pb-2.5 last:pb-2">
+                    <div className="flex items-center justify-between text-[10px] text-[#64748b] font-bold">
+                      <span className="text-cyan-400">@{reply.author?.username || 'Üye'}</span>
+                      <span>{formatDeterministicDate(reply.created_at)}</span>
                     </div>
-                  </div>
+                    <span className="text-xs font-bold text-gray-200 group-hover:text-white line-clamp-1">
+                      {reply.topic?.title || 'Konu Başlığı'}
+                    </span>
+                  </Link>
                 ))
               ) : (
-                <div className="text-center text-xs text-gray-500 py-6">
-                  Henüz bir aktivite yok.
+                <div className="text-center py-4 text-xs font-bold text-gray-500">
+                  Henüz son aktivite bulunmuyor.
                 </div>
               )}
             </div>
           </div>
 
-          {/* Quick Help Widget */}
-          <div className="habbo-box bg-gradient-to-br from-blue-900/30 to-purple-900/30 border-2 border-white/10 shadow-2xl rounded-2xl p-6 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-cyan-400/10 rounded-full blur-xl pointer-events-none"></div>
-            <h4 className="text-xs font-black uppercase tracking-wider text-white mb-2 flex items-center gap-2">
-              <ShieldCheck size={16} className="text-cyan-400" /> FORUM KURALLARI
-            </h4>
-            <p className="text-xs text-gray-300 leading-relaxed font-medium">
-              HabboZone forumlarında saygı çerçevesinde tartışalım. Spam yapmak, hakaret etmek veya yanıltıcı nadire fiyatları paylaşmak uyarı veya hesaptan uzaklaştırma sebebidir.
-            </p>
-          </div>
-
         </div>
 
       </div>
+
     </div>
   );
 }

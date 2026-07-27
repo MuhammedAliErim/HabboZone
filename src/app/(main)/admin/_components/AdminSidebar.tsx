@@ -56,7 +56,7 @@ export default function AdminSidebar() {
   };
 
   return (
-    <nav className="space-y-1 text-sm font-bold">
+    <nav className="space-y-1 text-xs font-black uppercase tracking-wider">
       {menuItems.map((item) => {
         const Icon = item.icon;
         const active = isActive(item);
@@ -65,18 +65,18 @@ export default function AdminSidebar() {
           <Link
             key={item.href}
             href={item.href}
-            className={`flex items-center justify-between px-3 py-2.5 rounded-lg transition-all ${
+            className={`flex items-center justify-between px-3 py-2.5 rounded-[2px] border transition-all ${
               active
-                ? 'bg-gradient-to-r from-yellow-500/20 via-blue-500/10 to-transparent text-white border-l-4 border-yellow-400 shadow-md shadow-yellow-500/5 font-black'
-                : 'text-gray-300 hover:text-white hover:bg-white/5 border-l-4 border-transparent'
+                ? 'bg-[#050a14] text-white border-[#facc15] shadow-[0_0_10px_rgba(250,204,21,0.15)] font-black'
+                : 'bg-transparent text-gray-400 border-transparent hover:text-white hover:bg-[#050a14] hover:border-[#1e293b]'
             }`}
           >
             <div className="flex items-center gap-3">
-              <Icon size={18} className={item.color} />
+              <Icon size={16} className={item.color} />
               <span>{item.label}</span>
             </div>
             {item.badge && (
-              <span className={`px-1.5 py-0.5 rounded ${item.badgeColor} text-white text-[9px] font-black uppercase tracking-wider shadow`}>
+              <span className={`px-1.5 py-0.5 rounded-[2px] ${item.badgeColor} text-white text-[9px] font-black uppercase tracking-wider shadow border border-black/20`}>
                 {item.badge}
               </span>
             )}

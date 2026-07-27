@@ -255,7 +255,7 @@ export default async function GuideDetail({ params }: Props) {
               </p>
 
               {/* Meta info & Custom Data row */}
-              <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-4 pt-4 border-t border-white/10 w-full max-w-2xl">
+              <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-4 pt-4 border-t border-[#1e293b] w-full max-w-2xl">
                 <ArticleMeta 
                   author={guideItem.author} 
                   publishedAt={guideItem.published_at} 
@@ -264,17 +264,17 @@ export default async function GuideDetail({ params }: Props) {
                 
                 {/* Guide Specs */}
                 <div className="flex items-center gap-3 ml-auto">
-                    <div className={`flex items-center gap-1.5 text-[12px] font-bold px-3 py-1.5 rounded-md border shadow-sm ${diffColorClass}`}>
+                    <div className={`flex items-center gap-1.5 text-xs font-black uppercase tracking-tight px-3 py-1.5 rounded-[2px] border shadow-sm ${diffColorClass}`}>
                         <BarChart2 size={14} /> {difficulty}
                     </div>
                     {estimatedTime && (
-                        <div className="flex items-center gap-1.5 text-[12px] font-bold px-3 py-1.5 rounded-md border border-white/20 bg-white/10 text-gray-200 shadow-sm backdrop-blur-sm">
+                        <div className="flex items-center gap-1.5 text-xs font-black uppercase tracking-tight px-3 py-1.5 rounded-[2px] border border-[#1e293b] bg-[#050a14] text-gray-200 shadow-sm">
                             <Clock size={14} /> {estimatedTime}
                         </div>
                     )}
                     {rewardBadge && (
-                        <div className="flex items-center gap-1.5 text-[12px] font-bold px-3 py-1.5 rounded-md border border-purple-500/50 bg-purple-500/20 text-purple-300 shadow-sm backdrop-blur-sm">
-                            ⭐ Rozet: {rewardBadge}
+                        <div className="flex items-center gap-1.5 text-xs font-black uppercase tracking-tight px-3 py-1.5 rounded-[2px] border border-purple-500/50 bg-purple-500/20 text-purple-300 shadow-sm">
+                            ⭐ ROZET: {rewardBadge}
                         </div>
                     )}
                 </div>
@@ -285,14 +285,14 @@ export default async function GuideDetail({ params }: Props) {
 
         {isLocked && !isAuthor ? (
           <div className="max-w-3xl mx-auto px-6 py-16">
-            <div className="habbo-box border-yellow-500/30 bg-[#0f172a] p-12 text-center flex flex-col items-center">
-               <div className="w-20 h-20 bg-yellow-500/10 rounded-full flex items-center justify-center mb-6">
-                 <Lock size={40} className="text-yellow-500" />
+            <div className="habbo-box border-[#1e293b] bg-[#0a1325] p-12 text-center flex flex-col items-center rounded-[3px] shadow">
+               <div className="w-16 h-16 bg-[#050a14] border border-[#1e293b] rounded-[2px] flex items-center justify-center mb-6">
+                 <Lock size={32} className="text-[#facc15]" />
                </div>
-               <h2 className="text-2xl font-black text-white mb-4">Bu Rehber Henüz Yayınlanmadı</h2>
-               <p className="text-gray-400 mb-8 max-w-md mx-auto">Bu rehber için belirlenen yayın tarihi henüz gelmedi. Aşağıdaki geri sayım bittiğinde rehber otomatik olarak erişime açılacaktır.</p>
-               <div className="bg-[#050a14] border border-[#1e293b] p-6 rounded-xl shadow-inner min-w-[300px]">
-                  <div className="text-3xl font-black text-yellow-400">
+               <h2 className="text-xl font-black uppercase tracking-wider text-white mb-2">BU REHBER HENÜZ YAYINLANMADI</h2>
+               <p className="text-gray-300 text-xs font-medium mb-8 max-w-md mx-auto">Bu rehber için belirlenen yayın tarihi henüz gelmedi. Aşağıdaki geri sayım bittiğinde rehber otomatik olarak erişime açılacaktır.</p>
+               <div className="bg-[#050a14] border border-[#1e293b] p-6 rounded-[3px] shadow-inner min-w-[300px]">
+                  <div className="text-3xl font-black text-[#facc15]">
                     <Countdown targetDate={guideItem.published_at} />
                   </div>
                </div>
@@ -304,20 +304,20 @@ export default async function GuideDetail({ params }: Props) {
             {/* Left Column - Article Body */}
             <div className="w-full min-w-0">
               
-              <div className="habbo-box bg-[#090e17] p-6 md:p-10 mb-8 border-t-4 border-t-[#3b82f6]">
+              <div className="habbo-box bg-[#0a1325] p-6 md:p-10 mb-8 border-t-4 border-t-[#3b82f6] rounded-[3px] shadow">
                 
                 {/* Desktop Share (Floating/Sticky) usually handled by ShareButtons if designed so, but here inline */}
-                <div className="flex justify-end mb-6 pb-6 border-b border-white/5">
+                <div className="flex justify-end mb-6 pb-6 border-b border-[#1e293b]">
                    <ShareButtons title={guideItem.title} url={`https://habbozone.com/guides/${guideItem.slug}`} />
                 </div>
 
                 <div 
                   id="guide-content"
-                  className="prose prose-invert prose-blue max-w-none prose-img:rounded-xl prose-img:border prose-img:border-[#1e293b] prose-headings:font-black prose-a:text-[#3b82f6] prose-a:no-underline hover:prose-a:underline"
+                  className="prose prose-invert prose-blue max-w-none prose-img:rounded-[2px] prose-img:border prose-img:border-[#1e293b] prose-headings:font-black prose-a:text-[#3b82f6] prose-a:no-underline hover:prose-a:underline"
                   dangerouslySetInnerHTML={{ __html: guideItem.content }}
                 />
 
-                <div className="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6">
+                <div className="mt-12 pt-8 border-t border-[#1e293b] flex flex-col sm:flex-row items-center justify-between gap-6">
                   {tags.length > 0 && <TagList tags={tags} />}
                   <div className="shrink-0">
                      <VoteButtons 
@@ -334,21 +334,21 @@ export default async function GuideDetail({ params }: Props) {
 
               {/* Author Box */}
               {guideItem.author && (
-                <div className="habbo-box bg-gradient-to-r from-[#0f172a] to-[#090e17] p-6 mb-12 flex flex-col sm:flex-row items-center sm:items-start gap-6">
-                   <div className="w-24 h-24 rounded-2xl bg-[#050a14] border-2 border-black flex items-center justify-center shrink-0 relative overflow-hidden shadow-lg">
+                <div className="habbo-box bg-[#0a1325] border border-[#1e293b] rounded-[3px] p-6 mb-12 flex flex-col sm:flex-row items-center sm:items-start gap-6">
+                   <div className="w-24 h-24 rounded-[2px] bg-[#050a14] border border-[#1e293b] flex items-center justify-center shrink-0 relative overflow-hidden shadow">
                       <img 
                         src={`https://www.habbo.com.tr/habbo-imaging/avatarimage?user=${(guideItem.author as any).username}&action=std&direction=2&head_direction=2&gesture=sml&size=m`} 
                         alt={(guideItem.author as any).username}
-                        className="absolute -top-4 drop-shadow-md scale-[1.5] pixelated"
+                        className="absolute -top-4 drop-shadow scale-[1.5] pixelated"
                       />
                    </div>
                    <div className="flex-1 text-center sm:text-left">
-                      <div className="text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-1">Rehberi Hazırlayan</div>
-                      <Link href={`/profile/${(guideItem.author as any).username}`} className="text-2xl font-black text-white hover:text-[#facc15] transition-colors">
+                      <div className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">REHBERİ HAZIRLAYAN</div>
+                      <Link href={`/profile/${(guideItem.author as any).username}`} className="text-2xl font-black text-white hover:text-[#facc15] transition-colors uppercase tracking-tight">
                         {(guideItem.author as any).username}
                       </Link>
-                      <p className="text-gray-400 text-sm mt-3 font-medium">
-                        Habbo Zone ekibinden. Bu rehber sana yardımcı olduysa oy vermeyi ve yorum yapmayı unutma!
+                      <p className="text-gray-300 text-xs mt-2 font-medium leading-relaxed">
+                        HabboZone ekibinden. Bu rehber sana yardımcı olduysa oy vermeyi ve yorum yapmayı unutma!
                       </p>
                    </div>
                 </div>
@@ -366,26 +366,26 @@ export default async function GuideDetail({ params }: Props) {
 
                {/* Related Guides Widget */}
                {relatedGuides.length > 0 && (
-                 <div className="habbo-box bg-[#090e17] p-5">
-                   <h3 className="font-black text-white text-[15px] uppercase tracking-wider mb-4 pb-3 border-b border-white/10 flex items-center gap-2">
-                     <span className="w-2 h-2 bg-[#facc15] rounded-full"></span>
-                     İlgili Rehberler
+                 <div className="habbo-box bg-[#0a1325] border border-[#1e293b] rounded-[3px] p-5">
+                   <h3 className="font-black text-[#facc15] text-xs uppercase tracking-wider mb-4 pb-3 border-b border-[#1e293b] flex items-center gap-2">
+                     <span className="w-2 h-2 bg-[#facc15] rounded-[1px]"></span>
+                     İLGİLİ REHBERLER
                    </h3>
-                   <div className="space-y-4">
+                   <div className="space-y-3">
                      {relatedGuides.map((related: any) => (
-                       <Link key={related.slug} href={`/guides/${related.slug}`} className="flex gap-4 group">
-                         <div className="w-20 h-16 rounded bg-[#050a14] border border-[#1e293b] overflow-hidden relative shrink-0">
+                       <Link key={related.slug} href={`/guides/${related.slug}`} className="flex gap-3.5 group bg-[#050a14] p-2 rounded-[2px] border border-[#1e293b] hover:border-[#3b82f6] transition-colors">
+                         <div className="w-16 h-12 rounded-[2px] bg-[#0a1325] border border-[#1e293b] overflow-hidden relative shrink-0">
                             {related.thumbnail_url && (
                               <Image src={related.thumbnail_url} alt={related.title} fill className="object-cover group-hover:scale-110 transition-transform duration-300" />
                             )}
                          </div>
-                         <div className="flex flex-col justify-center">
-                            <h4 className="text-sm font-bold text-gray-200 group-hover:text-[#3b82f6] transition-colors line-clamp-2 leading-tight">
+                         <div className="flex flex-col justify-center min-w-0">
+                            <h4 className="text-xs font-black text-gray-200 group-hover:text-[#facc15] transition-colors line-clamp-2 leading-tight uppercase tracking-tight">
                               {related.title}
                             </h4>
-                            <div className="text-[10px] text-gray-500 mt-1 flex items-center gap-1">
-                               <Clock size={10} />
-                               {new Date(related.published_at).toLocaleDateString('tr-TR')}
+                            <div className="text-[10px] text-gray-400 font-bold mt-1 flex items-center gap-1">
+                               <Clock size={10} className="text-[#3b82f6]" />
+                               {related.published_at ? related.published_at.split('T')[0].split('-').reverse().join('.') : '26.07.2026'}
                             </div>
                          </div>
                        </Link>

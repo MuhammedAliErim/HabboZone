@@ -31,24 +31,24 @@ export default function AnnouncementForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-5 animate-in fade-in duration-300">
       {error && (
-        <div className="p-3 bg-red-500/10 border-2 border-red-500/30 text-red-400 rounded-xl text-xs flex items-center gap-2">
+        <div className="p-3 bg-red-500/10 border border-red-500/30 text-red-400 rounded-[2px] text-xs flex items-center gap-2 font-bold">
           <AlertCircle size={16} className="shrink-0 text-red-500" />
           <span>{error}</span>
         </div>
       )}
 
       <div>
-        <label className="block text-xs font-bold uppercase tracking-wider text-red-400 mb-2 flex items-center gap-1.5">
-          <Sparkles size={14} /> Duyuru / Son Dakika Mesajı <span className="text-red-500">*</span>
+        <label className="block text-xs font-black uppercase tracking-wider text-[#facc15] mb-2 flex items-center gap-1.5">
+          <Sparkles size={14} /> DUYURU / SON DAKİKA MESAJI <span className="text-red-500">*</span>
         </label>
         <textarea 
           name="message" 
           rows={4}
           required
-          className="w-full bg-[#050a14] border-2 border-white/10 rounded-xl px-4 py-3 text-white text-sm font-bold focus:outline-none focus:border-red-500 transition-colors shadow-inner resize-none placeholder:text-gray-600"
+          className="w-full bg-[#050a14] border border-[#1e293b] rounded-[2px] px-3.5 py-2.5 text-white text-sm font-bold focus:outline-none focus:border-[#facc15] transition-colors shadow-inner resize-none placeholder:text-gray-600"
           placeholder="Örn: 🚨 BÜYÜK YAZ TURNUVASI BAŞLADI! Hemen kayıt olmak için etkinlik odasını ziyaret edin..."
         />
-        <p className="text-[10px] text-gray-500 mt-1.5">
+        <p className="text-[10px] text-gray-400 mt-1.5 font-medium uppercase tracking-wide">
           Bu mesaj sitenin üst kısmındaki son dakika bantında kayan yazı olarak yayınlanacaktır.
         </p>
       </div>
@@ -56,9 +56,9 @@ export default function AnnouncementForm() {
       <button 
         type="submit" 
         disabled={loading}
-        className="habbo-button w-full bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-black py-3.5 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 text-xs uppercase disabled:opacity-50 mt-2 shadow-red-500/20"
+        className="habbo-button w-full bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-black py-3 rounded-[2px] shadow transition-all flex items-center justify-center gap-2 text-xs uppercase tracking-wider disabled:opacity-50 mt-2 shadow-red-500/20"
       >
-        <CheckCircle2 size={18} />
+        <CheckCircle2 size={16} />
         {loading ? 'YAYINLANIYOR...' : 'SON DAKİKA DUYURUSU YAYINLA'}
       </button>
     </form>

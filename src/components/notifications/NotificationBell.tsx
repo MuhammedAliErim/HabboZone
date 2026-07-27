@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { Bell, Info, MessageSquare, Heart, Award, Check } from 'lucide-react'
+import { Bell, Info, MessageSquare, Heart, Award } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { markAsRead } from '@/app/(main)/notifications/actions'
@@ -24,11 +24,20 @@ export default function NotificationBell({ userId }: { userId: string }) {
   const router = useRouter()
   const supabase = createClient()
 
-  // Sadece ilk yüklemede ve Realtime güncellemelerinde çalışır
+  const fetchNotifications = async () => {
+    const { data } = await supabase
+      .from('notifications')
+      .select('*')
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false })
+      .limit(10)
+    
+    if (data) setNotifications(data)
+  }
+
   useEffect(() => {
     fetchNotifications()
 
-    // Realtime subscription (yeni bildirim gelirse)
     const channel = supabase
       .channel('public:notifications')
       .on(
@@ -50,7 +59,6 @@ export default function NotificationBell({ userId }: { userId: string }) {
     }
   }, [userId, supabase])
 
-  // Dışarı tıklandığında menüyü kapat
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -60,17 +68,6 @@ export default function NotificationBell({ userId }: { userId: string }) {
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
-
-  const fetchNotifications = async () => {
-    const { data } = await supabase
-      .from('notifications')
-      .select('*')
-      .eq('user_id', userId)
-      .order('created_at', { ascending: false })
-      .limit(10)
-    
-    if (data) setNotifications(data)
-  }
 
   const handleNotificationClick = async (notification: Notification) => {
     setIsOpen(false)
@@ -103,70 +100,70 @@ export default function NotificationBell({ userId }: { userId: string }) {
     <div className="relative" ref={dropdownRef}>
       <button 
         onClick={() => setIsOpen(!isOpen)}
-        className="relative flex items-center justify-center w-10 h-10 rounded-full bg-[#111827] hover:bg-[#1e293b] border border-[#1e293b] transition-colors"
+        className="relative flex items-center justify-center w-10 h-10 rounded-[2px] bg-[#050a14] hover:bg-[#0a1325] border border-[#1e293b] hover:border-[#facc15] transition-colors shadow"
       >
         <Bell size={18} className="text-gray-300" />
         {unreadCount > 0 && (
-          <div className="absolute -top-1 -right-1 w-5 h-5 flex items-center justify-center bg-red-500 text-white text-[10px] font-bold rounded-full border-2 border-[#090e17]">
+          <div className="absolute -top-1 -right-1 w-5 h-5 flex items-center justify-center bg-red-600 text-white text-[10px] font-black rounded-[2px] border border-[#050a14] shadow">
             {unreadCount > 9 ? '9+' : unreadCount}
           </div>
         )}
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-[#0f172a] border border-[#1e293b] rounded-lg shadow-2xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
-          <div className="p-4 border-b border-[#1e293b] flex items-center justify-between bg-[#111827]">
-            <h3 className="font-bold text-white">Bildirimler</h3>
+        <div className="absolute right-0 mt-2 w-80 sm:w-96 habbo-box bg-[#0a1325] border border-[#1e293b] rounded-[3px] shadow-2xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+          <div className="p-4 border-b border-[#1e293b] flex items-center justify-between bg-[#050a14]">
+            <h3 className="font-black uppercase tracking-wider text-white text-sm">BİLDİRİMLER</h3>
             {unreadCount > 0 && (
-              <span className="text-xs font-bold text-blue-400 bg-blue-400/10 px-2 py-1 rounded">
-                {unreadCount} Okunmamış
+              <span className="text-[10px] font-black uppercase tracking-wider text-[#3b82f6] bg-[#3b82f6]/10 px-2 py-0.5 rounded-[2px] border border-[#3b82f6]/30">
+                {unreadCount} OKUNMAMIŞ
               </span>
             )}
           </div>
 
-          <div className="max-h-[350px] overflow-y-auto">
+          <div className="max-h-[350px] overflow-y-auto custom-scrollbar">
             {notifications.length > 0 ? (
               notifications.map(notif => (
                 <div 
                   key={notif.id}
                   onClick={() => handleNotificationClick(notif)}
-                  className={`flex gap-3 p-4 border-b border-[#1e293b] cursor-pointer hover:bg-[#1e293b] transition-colors ${!notif.is_read ? 'bg-[#1e293b]/30' : ''}`}
+                  className={`flex gap-3 p-4 border-b border-[#1e293b] cursor-pointer hover:bg-[#050a14]/60 transition-colors ${!notif.is_read ? 'bg-[#050a14]/80' : ''}`}
                 >
                   <div className="shrink-0 mt-0.5">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center bg-[#111827] border ${!notif.is_read ? 'border-blue-500/30' : 'border-[#334155]'}`}>
+                    <div className={`w-8 h-8 rounded-[2px] flex items-center justify-center bg-[#050a14] border ${!notif.is_read ? 'border-[#3b82f6]' : 'border-[#1e293b]'}`}>
                       {getIcon(notif.type)}
                     </div>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className={`text-sm ${!notif.is_read ? 'text-white font-bold' : 'text-gray-300 font-medium'}`}>
+                    <p className={`text-xs leading-relaxed ${!notif.is_read ? 'text-white font-black uppercase tracking-tight' : 'text-gray-300 font-medium'}`}>
                       {notif.message}
                     </p>
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className="text-[10px] font-bold text-gray-500 mt-1 uppercase tracking-wider">
                       {new Date(notif.created_at).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' })}
                     </p>
                   </div>
                   {!notif.is_read && (
                     <div className="shrink-0 flex items-center justify-center">
-                      <div className="w-2.5 h-2.5 bg-blue-500 rounded-full shadow-[0_0_8px_rgba(59,130,246,0.6)]"></div>
+                      <div className="w-2 h-2 bg-[#facc15] rounded-full shadow-[0_0_8px_rgba(250,204,21,0.8)]"></div>
                     </div>
                   )}
                 </div>
               ))
             ) : (
               <div className="py-8 text-center flex flex-col items-center justify-center">
-                <Bell size={32} className="text-[#334155] mb-2" />
-                <p className="text-sm text-gray-400">Henüz bildiriminiz yok.</p>
+                <Bell size={28} className="text-gray-600 mb-2" />
+                <p className="text-xs font-black uppercase tracking-wider text-gray-400">HENÜZ BİLDİRİMİNİZ YOK.</p>
               </div>
             )}
           </div>
 
-          <div className="p-2 border-t border-[#1e293b] bg-[#111827]">
+          <div className="p-2 border-t border-[#1e293b] bg-[#050a14]">
             <Link 
               href="/notifications" 
               onClick={() => setIsOpen(false)}
-              className="block w-full py-2 text-center text-xs font-bold text-blue-400 hover:text-blue-300 transition-colors"
+              className="block w-full py-2 text-center text-xs font-black uppercase tracking-wider text-[#3b82f6] hover:text-[#facc15] transition-colors"
             >
-              Tüm Bildirimleri Gör
+              TÜM BİLDİRİMLERİ GÖR
             </Link>
           </div>
         </div>

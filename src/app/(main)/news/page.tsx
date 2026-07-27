@@ -1,13 +1,14 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { createClient } from '@/utils/supabase/server';
-import { MessageCircle, Eye, Tag, ChevronRight, Clock, Lock } from 'lucide-react';
+import { MessageCircle, Eye, ChevronRight, Clock, Lock } from 'lucide-react';
 import Countdown from '@/components/Countdown';
 
 export const revalidate = 60; // Cache for 60 seconds
 
 export default async function NewsPage() {
   const supabase = await createClient();
+  const now = Date.now();
 
   // Fetch News
   const { data: newsItems } = await supabase
@@ -70,7 +71,7 @@ export default async function NewsPage() {
         {/* Left Column - News List */}
         <div className="space-y-4">
             {newsItems?.map((news: any) => {
-              const isLocked = new Date(news.published_at).getTime() > Date.now();
+              const isLocked = new Date(news.published_at).getTime() > now;
               
               return (
                 <Link key={news.slug} href={`/news/${news.slug}`} className="habbo-box habbo-card-hover p-4 flex flex-col sm:flex-row gap-5 group relative overflow-hidden">
@@ -146,7 +147,7 @@ export default async function NewsPage() {
                 </div>
                 <div className="p-2 flex flex-col">
                     {categories.map((cat, idx) => (
-                        <Link key={cat.name} href="#" className={`flex items-center gap-3 p-3 rounded-md transition-colors ${idx === 0 ? 'bg-[#1e293b] text-white' : 'text-[#94a3b8] hover:bg-[#0a1325] hover:text-white'}`}>
+                        <Link key={cat.name} href={`/news?category=${cat.name}`} className={`flex items-center gap-3 p-3 rounded-md transition-colors ${idx === 0 ? 'bg-[#1e293b] text-white' : 'text-[#94a3b8] hover:bg-[#0a1325] hover:text-white'}`}>
                             <span className="text-lg leading-none">{cat.icon}</span>
                             <span className="text-sm font-bold flex-1">{cat.name}</span>
                             {idx === 0 && <ChevronRight size={16} className="text-[#facc15]" />}
@@ -162,7 +163,7 @@ export default async function NewsPage() {
                 </div>
                 <div className="p-4 flex flex-col gap-3">
                     {mostRead.map((item, idx) => (
-                        <Link key={idx} href="#" className="flex gap-3 group">
+                        <Link key={idx} href="/news" className="flex gap-3 group">
                             <span className="text-[#facc15] font-black text-sm">{idx + 1}.</span>
                             <span className="text-[#94a3b8] text-sm font-bold group-hover:text-white transition-colors">{item}</span>
                         </Link>

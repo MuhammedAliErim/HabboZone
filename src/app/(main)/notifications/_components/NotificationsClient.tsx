@@ -87,11 +87,11 @@ export default function NotificationsClient({
   return (
     <div>
       <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#1e293b]">
-        <h2 className="text-xl font-bold text-white flex items-center gap-2">
-          Tüm Bildirimleriniz
+        <h2 className="text-lg font-black uppercase tracking-wider text-white flex items-center gap-2">
+          TÜM BİLDİRİMLERİNİZ
           {unreadCount > 0 && (
-            <span className="bg-red-500/10 text-red-400 text-xs py-1 px-2 rounded-full border border-red-500/20">
-              {unreadCount} Okunmamış
+            <span className="bg-red-500/10 text-red-400 text-[10px] font-black uppercase py-0.5 px-2 rounded-[2px] border border-red-500/30">
+              {unreadCount} OKUNMAMIŞ
             </span>
           )}
         </h2>
@@ -100,10 +100,10 @@ export default function NotificationsClient({
           <button 
             onClick={handleMarkAllAsRead}
             disabled={isMarkingAll}
-            className="flex items-center gap-2 px-4 py-2 bg-[#1e293b] hover:bg-[#334155] text-white text-sm font-bold rounded transition-colors disabled:opacity-50"
+            className="habbo-button blue px-3 py-1.5 flex items-center gap-1.5 text-xs font-black uppercase tracking-tight disabled:opacity-50"
           >
-            <CheckCircle2 size={16} className="text-blue-400" />
-            {isMarkingAll ? 'İşaretleniyor...' : 'Tümünü Okundu İşaretle'}
+            <CheckCircle2 size={14} />
+            {isMarkingAll ? 'İŞARETLENİYOR...' : 'TÜMÜNÜ OKUNDU İŞARETLE'}
           </button>
         )}
       </div>
@@ -114,40 +114,40 @@ export default function NotificationsClient({
             <div 
               key={notif.id}
               onClick={() => handleNotificationClick(notif)}
-              className={`flex flex-col sm:flex-row gap-4 p-5 rounded-lg border cursor-pointer transition-all ${
+              className={`flex flex-col sm:flex-row gap-4 p-4 rounded-[3px] border cursor-pointer transition-all ${
                 !notif.is_read 
-                  ? 'bg-[#1e293b]/40 border-blue-500/30 hover:bg-[#1e293b]/60' 
-                  : 'bg-[#111827] border-[#1e293b] hover:bg-[#1e293b]/30'
+                  ? 'bg-[#050a14] border-[#3b82f6] shadow-[inset_0_0_8px_rgba(59,130,246,0.15)] hover:bg-[#0a1325]' 
+                  : 'bg-[#050a14] border-[#1e293b] hover:bg-[#0a1325]'
               }`}
             >
-              <div className="shrink-0 flex items-center justify-center w-12 h-12 rounded-full bg-[#090e17] border border-[#1e293b]">
+              <div className="shrink-0 flex items-center justify-center w-10 h-10 rounded-[2px] bg-[#0a1325] border border-[#1e293b]">
                 {getIcon(notif.type)}
               </div>
               <div className="flex-1">
-                <p className={`text-base ${!notif.is_read ? 'text-white font-bold' : 'text-gray-300 font-medium'}`}>
+                <p className={`text-sm ${!notif.is_read ? 'text-white font-black' : 'text-gray-300 font-medium'}`}>
                   {notif.message}
                 </p>
                 <div className="flex items-center gap-4 mt-2">
-                  <span className="text-sm text-gray-500 flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-gray-500"></span>
-                    {new Date(notif.created_at).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                  <span className="text-[11px] font-bold text-gray-500 flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-[1px] bg-[#facc15]"></span>
+                    {notif.created_at.replace('T', ' ').slice(0, 16)}
                   </span>
                 </div>
               </div>
               {!notif.is_read && (
                 <div className="shrink-0 flex items-center justify-center sm:self-center self-start">
-                  <div className="w-3 h-3 bg-blue-500 rounded-full shadow-[0_0_12px_rgba(59,130,246,0.8)]"></div>
+                  <div className="w-2.5 h-2.5 bg-[#3b82f6] rounded-[1px] shadow-[0_0_8px_rgba(59,130,246,0.8)]"></div>
                 </div>
               )}
             </div>
           ))
         ) : (
-          <div className="py-16 text-center flex flex-col items-center justify-center bg-[#111827] rounded-lg border border-[#1e293b] border-dashed">
-            <div className="w-16 h-16 rounded-full bg-[#1e293b] flex items-center justify-center mb-4">
-              <Bell size={32} className="text-[#64748b]" />
+          <div className="py-16 text-center flex flex-col items-center justify-center bg-[#050a14] rounded-[3px] border border-[#1e293b] border-dashed">
+            <div className="w-12 h-12 rounded-[2px] bg-[#0a1325] border border-[#1e293b] flex items-center justify-center mb-4">
+              <Bell size={24} className="text-[#facc15]" />
             </div>
-            <h3 className="text-lg font-bold text-white mb-1">Bildirim Kutusu Boş</h3>
-            <p className="text-gray-400 max-w-md mx-auto">
+            <h3 className="text-sm font-black uppercase text-white mb-1">BİLDİRİM KUTUSU BOŞ</h3>
+            <p className="text-gray-400 text-xs max-w-md mx-auto">
               Şu anda gösterilecek herhangi bir bildiriminiz bulunmuyor. Etkileşimde bulundukça bildirimleriniz burada listelenecektir.
             </p>
           </div>

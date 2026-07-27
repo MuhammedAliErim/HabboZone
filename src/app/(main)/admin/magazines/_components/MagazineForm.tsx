@@ -85,76 +85,76 @@ export default function MagazineForm({ initialData }: MagazineFormProps) {
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">Başlık</label>
+          <label className="block text-xs font-black uppercase tracking-wider text-[#facc15] mb-1.5">BAŞLIK</label>
           <input 
             name="title"
             defaultValue={initialData?.title}
             required
             placeholder="Örn: HabboZone Temmuz Sayısı"
-            className="w-full px-4 py-2 bg-[#1f1f1f] border border-[#333] rounded-md text-white focus:outline-none focus:border-yellow-500"
+            className="w-full px-3.5 py-2.5 bg-[#050a14] border border-[#1e293b] rounded-[2px] text-white text-xs font-bold focus:outline-none focus:border-[#facc15] transition-colors shadow-inner"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">Sayı No</label>
+          <label className="block text-xs font-black uppercase tracking-wider text-gray-300 mb-1.5">SAYI NO</label>
           <input 
             type="number"
             name="issue_number"
             defaultValue={initialData?.issue_number}
             required
             placeholder="Örn: 1"
-            className="w-full px-4 py-2 bg-[#1f1f1f] border border-[#333] rounded-md text-white focus:outline-none focus:border-yellow-500"
+            className="w-full px-3.5 py-2.5 bg-[#050a14] border border-[#1e293b] rounded-[2px] text-white text-xs font-bold focus:outline-none focus:border-[#facc15] transition-colors shadow-inner"
           />
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="bg-[#1f1f1f] border border-[#333] rounded-md p-4">
-          <label className="block text-sm font-medium text-gray-300 mb-2 flex items-center gap-2">
-            <ImageIcon size={16} /> Kapak Görseli {initialData?.cover_image_url && '(Yüklü)'}
+        <div className="bg-[#0a1325] border border-[#1e293b] rounded-[2px] p-4 shadow">
+          <label className="block text-xs font-black uppercase tracking-wider text-gray-300 mb-2 flex items-center gap-2">
+            <ImageIcon size={16} className="text-[#facc15]" /> KAPAK GÖRSELİ {initialData?.cover_image_url && '(YÜKLÜ)'}
           </label>
           <input 
             type="file"
             accept="image/*"
             onChange={(e) => setCoverFile(e.target.files?.[0] || null)}
-            className="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-yellow-500 file:text-black hover:file:bg-yellow-600"
+            className="w-full text-xs text-gray-300 font-bold file:mr-4 file:py-1.5 file:px-3 file:rounded-[2px] file:border-0 file:text-xs file:font-black file:uppercase file:tracking-wider file:bg-[#facc15] file:text-black hover:file:bg-yellow-400 transition-colors"
           />
-          {coverFile && <p className="text-xs text-green-400 mt-2 flex items-center gap-1"><CheckCircle size={12}/> Seçildi</p>}
+          {coverFile && <p className="text-xs text-green-400 font-bold mt-2 flex items-center gap-1 uppercase"><CheckCircle size={14}/> SEÇİLDİ</p>}
         </div>
 
-        <div className="bg-[#1f1f1f] border border-[#333] rounded-md p-4">
-          <label className="block text-sm font-medium text-gray-300 mb-2 flex items-center gap-2">
-            <FileText size={16} /> PDF Dosyası {initialData?.pdf_url && '(Yüklü)'}
+        <div className="bg-[#0a1325] border border-[#1e293b] rounded-[2px] p-4 shadow">
+          <label className="block text-xs font-black uppercase tracking-wider text-gray-300 mb-2 flex items-center gap-2">
+            <FileText size={16} className="text-[#3b82f6]" /> PDF DOSYASI {initialData?.pdf_url && '(YÜKLÜ)'}
           </label>
           <input 
             type="file"
             accept="application/pdf"
             onChange={(e) => setPdfFile(e.target.files?.[0] || null)}
-            className="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-yellow-500 file:text-black hover:file:bg-yellow-600"
+            className="w-full text-xs text-gray-300 font-bold file:mr-4 file:py-1.5 file:px-3 file:rounded-[2px] file:border-0 file:text-xs file:font-black file:uppercase file:tracking-wider file:bg-[#3b82f6] file:text-white hover:file:bg-blue-600 transition-colors"
           />
-          {pdfFile && <p className="text-xs text-green-400 mt-2 flex items-center gap-1"><CheckCircle size={12}/> Seçildi</p>}
+          {pdfFile && <p className="text-xs text-green-400 font-bold mt-2 flex items-center gap-1 uppercase"><CheckCircle size={14}/> SEÇİLDİ</p>}
         </div>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-300 mb-2">Yayınlanma Tarihi</label>
+        <label className="block text-xs font-black uppercase tracking-wider text-gray-300 mb-1.5">YAYINLANMA TARİHİ</label>
         <input 
           type="datetime-local"
           name="published_at"
-          defaultValue={initialData?.published_at ? new Date(initialData.published_at).toISOString().slice(0, 16) : ''}
-          className="w-full px-4 py-2 bg-[#1f1f1f] border border-[#333] rounded-md text-white focus:outline-none focus:border-yellow-500"
+          defaultValue={initialData?.published_at ? initialData.published_at.slice(0, 16) : ''}
+          className="w-full px-3.5 py-2 bg-[#050a14] border border-[#1e293b] rounded-[2px] text-white text-xs font-bold focus:outline-none focus:border-[#facc15] transition-colors"
         />
-        <p className="text-xs text-gray-500 mt-1">Eğer boş bırakırsanız otomatik olarak "Şimdi" kabul edilir.</p>
+        <p className="text-[11px] text-gray-400 font-medium mt-1">Eğer boş bırakırsanız otomatik olarak "Şimdi" kabul edilir.</p>
       </div>
 
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2.5 pt-1">
         <input 
           type="checkbox" 
           name="is_active" 
           id="is_active"
           defaultChecked={initialData?.is_active ?? true}
-          className="w-4 h-4 rounded border-[#333] bg-[#1f1f1f] text-yellow-500 focus:ring-yellow-500"
+          className="w-4 h-4 rounded-[2px] border-[#1e293b] bg-[#050a14] text-[#facc15] focus:ring-0 cursor-pointer"
         />
-        <label htmlFor="is_active" className="text-sm font-medium text-gray-300">
+        <label htmlFor="is_active" className="text-xs font-bold uppercase tracking-wide text-gray-300 cursor-pointer">
           Aktif mi? (İşaretli değilse yayın tarihi gelse bile gizlenir)
         </label>
       </div>
@@ -166,19 +166,19 @@ export default function MagazineForm({ initialData }: MagazineFormProps) {
           <input type="hidden" name="pdf_url" value={initialData.pdf_url} />
       )}
 
-      <div className="flex justify-end gap-4">
+      <div className="flex justify-end gap-3 pt-4 border-t border-[#1e293b]">
         <a 
           href="/admin/magazines" 
-          className="px-6 py-2 bg-[#333] text-white rounded-md hover:bg-[#444] transition-colors"
+          className="px-5 py-2.5 bg-[#0a1325] border border-[#1e293b] text-white font-bold uppercase tracking-wider text-xs rounded-[2px] hover:bg-white/5 transition-colors"
         >
-          İptal
+          İPTAL
         </a>
         <button 
           type="submit" 
           disabled={loading}
-          className="px-6 py-2 bg-yellow-500 text-black font-bold rounded-md hover:bg-yellow-600 transition-colors disabled:opacity-50"
+          className="habbo-button px-6 py-2.5 bg-[#facc15] text-black font-black uppercase tracking-wider text-xs rounded-[2px] hover:bg-yellow-400 transition-all shadow disabled:opacity-50"
         >
-          {loading ? 'Kaydediliyor...' : 'Kaydet'}
+          {loading ? 'KAYDEDİLİYOR...' : 'KAYDET'}
         </button>
       </div>
     </form>

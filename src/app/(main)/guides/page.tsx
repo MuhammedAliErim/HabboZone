@@ -81,7 +81,7 @@ export default async function GuidesPage() {
               <GuideCard key={guide.slug} guide={guide} />
             ))
           ) : (
-            <div className="col-span-full py-16 text-center text-gray-500 font-bold border-2 border-dashed border-[#1e293b] rounded-lg bg-[#050a14]">
+            <div className="col-span-full py-16 text-center text-gray-500 font-bold border border-dashed border-[#1e293b] rounded-[2px] bg-[#050a14]">
               Henüz bu kategoride hiç rehber yayınlanmamış.
             </div>
           )}

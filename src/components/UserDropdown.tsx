@@ -48,34 +48,34 @@ export default function UserDropdown({ profile }: UserDropdownProps) {
     <div className="relative" ref={dropdownRef}>
       <button 
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-3 bg-[#111827] hover:bg-[#1e293b] border border-[#1e293b] rounded-lg p-1.5 pr-4 transition-colors text-left"
+        className="flex items-center gap-3 bg-[#0a1325] hover:bg-[#1e293b] border border-[#1e293b] rounded-[2px] p-1.5 pr-3.5 transition-colors text-left shadow-sm"
       >
-        <div className="w-9 h-9 rounded bg-[#1e293b] flex items-center justify-center overflow-hidden shrink-0">
+        <div className="w-9 h-9 rounded-[2px] bg-[#050a14] border border-[#1e293b] flex items-center justify-center overflow-hidden shrink-0">
           <HabboAvatar username={profile.habbo_username || 'Habbo'} size="m" headDirection={3} direction={3} className="w-12 h-12 -mt-2" />
         </div>
         <div className="hidden sm:flex flex-col justify-center">
-          <span className="font-bold text-white text-[12px] leading-tight">{profile.username}</span>
-          {isVip && <span className="text-[#facc15] text-[10px] font-bold">VIP ÜYE</span>}
+          <span className="font-black text-white text-xs leading-tight uppercase tracking-tight">{profile.username}</span>
+          {isVip && <span className="text-[#facc15] text-[9px] font-black tracking-wider uppercase">VIP ÜYE</span>}
         </div>
         <ChevronDown size={14} className={`hidden sm:block text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-52 bg-[#0f172a] border-2 border-white/10 rounded-xl shadow-2xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+        <div className="absolute right-0 mt-2 w-52 bg-[#0a1325] border border-[#1e293b] rounded-[3px] shadow-xl z-50 overflow-hidden animate-in fade-in duration-150">
           {isStaff && (
             <Link 
               href="/admin"
               onClick={() => setIsOpen(false)}
-              className="flex items-center gap-2.5 px-4 py-3 text-[12px] font-black text-black bg-gradient-to-r from-yellow-400 via-amber-400 to-yellow-500 hover:brightness-110 transition-all shadow-md border-b border-yellow-600/50"
+              className="flex items-center gap-2.5 px-4 py-3 text-xs font-black text-black bg-[#facc15] hover:bg-[#eab308] transition-colors border-b border-[#1e293b] uppercase tracking-tight"
             >
-              <LayoutDashboard size={16} className="text-black animate-bounce" />
+              <LayoutDashboard size={15} className="text-black" />
               <span>ADMİN PANELİNE GİT</span>
             </Link>
           )}
           <Link 
             href={`/profile/${profile.username}`}
             onClick={() => setIsOpen(false)}
-            className="flex items-center gap-2 px-4 py-3 text-[12px] font-bold text-gray-300 hover:text-white hover:bg-[#1e293b] transition-colors border-b border-[#1e293b]"
+            className="flex items-center gap-2 px-4 py-3 text-xs font-bold text-gray-300 hover:text-white hover:bg-[#1e293b] transition-colors border-b border-[#1e293b] uppercase tracking-tight"
           >
             <User size={14} className="text-[#3b82f6]" />
             PROFİLİM
@@ -83,14 +83,14 @@ export default function UserDropdown({ profile }: UserDropdownProps) {
           <Link 
             href="/settings"
             onClick={() => setIsOpen(false)}
-            className="flex items-center gap-2 px-4 py-3 text-[12px] font-bold text-gray-300 hover:text-white hover:bg-[#1e293b] transition-colors border-b border-[#1e293b]"
+            className="flex items-center gap-2 px-4 py-3 text-xs font-bold text-gray-300 hover:text-white hover:bg-[#1e293b] transition-colors border-b border-[#1e293b] uppercase tracking-tight"
           >
             <Settings size={14} className="text-[#a855f7]" />
             AYARLAR
           </Link>
           <button 
             onClick={handleLogout}
-            className="w-full flex items-center gap-2 px-4 py-3 text-[12px] font-bold text-[#ef4444] hover:bg-[#ef4444]/10 transition-colors"
+            className="w-full flex items-center gap-2 px-4 py-3 text-xs font-bold text-[#ef4444] hover:bg-[#050a14] transition-colors uppercase tracking-tight"
           >
             <LogOut size={14} />
             ÇIKIŞ YAP

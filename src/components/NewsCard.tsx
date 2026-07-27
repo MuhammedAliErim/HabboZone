@@ -21,8 +21,9 @@ export default function NewsCard({ news }: NewsCardProps) {
   const avatarUrl = `https://www.habbo.com.tr/habbo-imaging/avatarimage?user=${news.author.habbo_username}&direction=2&head_direction=2&gesture=sml&size=s`;
 
   // Mocks for now if not provided
-  const views = news.views || Math.floor(Math.random() * 500 + 100).toString();
-  const comments = news.comments || Math.floor(Math.random() * 50 + 5).toString();
+  const stableSeed = news.slug.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
+  const views = news.views || ((stableSeed % 500) + 100).toString();
+  const comments = news.comments || ((stableSeed % 50) + 5).toString();
   const time = news.time || "3 dk";
   const tag = news.tag || "HABER";
   const tagColor = news.tagColor || "bg-[#3b82f6]";

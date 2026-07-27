@@ -1,7 +1,7 @@
 import { createClient } from '@/utils/supabase/server';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { ArrowLeft, MessageCircle, Clock, CheckCircle, ShieldCheck, Sparkles, Flame, ThumbsUp, MessageSquare, MessageCircleQuestion } from 'lucide-react';
+import { ArrowLeft, MessageCircle, Clock, CheckCircle, ShieldCheck, Flame, MessageSquare, MessageCircleQuestion } from 'lucide-react';
 import ReplyForm from './ReplyForm';
 import PollView from './PollView';
 import ReactionView from './ReactionView';
@@ -46,7 +46,6 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
   if (dbTopic) {
     topic = dbTopic;
   } else {
-    // Fallback mock topic dictionary so clicking any preview card opens a rich topic page
     const mockTopics: Record<string, any> = {
       '2026-yaz-etkinligi-odulleri': {
         id: 'top-1', title: '🔥 2026 Yaz Etkinliği Ödülleri ve Yeni Rozetler Hakkında Ne Düşünüyorsunuz?', slug: '2026-yaz-etkinligi-odulleri', is_pinned: true, is_locked: false, is_solved: false, views: 342, created_at: '2026-07-26T10:00:00Z',
@@ -75,12 +74,10 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
     notFound();
   }
 
-  // Increment views asynchronously
   if (topic.id && typeof topic.id === 'string' && !topic.id.startsWith('top-')) {
     await supabase.from('topics').update({ views: (topic.views || 0) + 1 }).eq('id', topic.id);
   }
 
-  // Fetch Replies
   let replies: any[] = [];
   if (topic.id && typeof topic.id === 'string' && !topic.id.startsWith('top-')) {
     const { data: dbReplies } = await supabase
@@ -96,7 +93,6 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
       .order('created_at', { ascending: true });
     replies = dbReplies || [];
   } else {
-    // Fallback mock replies for rich discussion view
     replies = [
       {
         id: 'rep-1', content: '<p>Kesinlikle katılıyorum! Özellikle yaz etkinliklerinde gelen rozet görevleri hem çok keyifli hem de otelde büyük bir aktiflik yaratıyor. Ellerine sağlık paylaşım için!</p>', is_solution: false, created_at: '2026-07-26T11:00:00Z',
@@ -109,7 +105,6 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
     ];
   }
 
-  // Deterministik Tarih ve Saat Formatlama (React 19 saflık kuralı)
   const formatDeterministicDateTime = (dateStr?: string) => {
     if (!dateStr) return '26.07.2026, 14:30';
     const parts = dateStr.split('T');
@@ -120,91 +115,88 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
   };
 
   return (
-    <div className="max-w-[1400px] mx-auto space-y-8 pb-20 animate-in fade-in slide-in-from-bottom-4 duration-700 py-8 px-6">
+    <div className="pb-16 w-full max-w-[1200px] mx-auto px-4 pt-6">
       
-      {/* Üst Kısım: Breadcrumb & Başlık */}
-      <div className="space-y-4">
-        <Link href={`/forum/category/${(topic.forums as any)?.slug || 'duyurular'}`} className="inline-flex items-center gap-2 text-xs font-bold text-gray-400 hover:text-white transition-colors bg-[#0a1325]/80 border border-white/10 hover:border-white/30 px-4 py-2.5 rounded-xl shadow-md">
-          <ArrowLeft size={16} className="text-cyan-400" /> {(topic.forums as any)?.title || 'Kategori'} Forumuna Dön
+      {/* Top Breadcrumb */}
+      <div className="mb-4">
+        <Link href={`/forum/category/${(topic.forums as any)?.slug || 'duyurular'}`} className="bg-[#0a1325] hover:bg-[#1e293b] text-gray-300 hover:text-white px-4 py-2 rounded-[3px] font-bold text-xs border border-[#1e293b] uppercase inline-flex items-center gap-2 transition-colors">
+          <ArrowLeft size={16} className="text-[#3b82f6]" /> {(topic.forums as any)?.title || 'Kategori'} FORUMUNA DÖN
         </Link>
-        
-        <div className="flex items-center justify-between flex-wrap gap-4 border-b-2 border-white/10 pb-6">
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <span className="px-3 py-1 bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 rounded-lg text-xs font-black uppercase tracking-wider shadow-sm">
-                {(topic.forums as any)?.title || 'Genel Tartışma'}
+      </div>
+      
+      {/* AUTHENTIC HABBO TOPIC HEADER */}
+      <div className="habbo-box mb-6 p-6 bg-[#0a1325] border border-[#1e293b] flex flex-col gap-4">
+        <div className="flex items-center justify-between flex-wrap gap-2">
+          <div className="flex items-center gap-2">
+            <span className="bg-[#3b82f6] text-white text-[10px] font-black px-2 py-0.5 rounded-[2px] uppercase tracking-wider">
+              {(topic.forums as any)?.title || 'Genel Tartışma'}
+            </span>
+            {topic.is_solved && (
+              <span className="bg-[#22c55e] text-white text-[10px] font-black px-2 py-0.5 rounded-[2px] uppercase tracking-wider flex items-center gap-1">
+                <CheckCircle size={12} /> ÇÖZÜLDÜ
               </span>
-              {topic.is_solved && (
-                <span className="px-3 py-1 bg-emerald-500/20 border border-emerald-500/50 text-emerald-300 rounded-lg text-xs font-black uppercase tracking-wider flex items-center gap-1 shadow-sm">
-                  <CheckCircle size={14} /> ÇÖZÜLDÜ
-                </span>
-              )}
-            </div>
-            <h1 className="text-3xl md:text-4xl font-black uppercase tracking-tight text-white drop-shadow-md">
-              {topic.title}
-            </h1>
+            )}
           </div>
 
-          <div className="flex items-center gap-4 bg-[#0a1325]/80 border border-white/10 px-5 py-2.5 rounded-xl shadow-md">
-            <span className="text-xs font-bold text-gray-400 flex items-center gap-1.5">
-              <Clock size={16} className="text-cyan-400" /> {formatDeterministicDateTime(topic.created_at)}
+          <div className="flex items-center gap-4 text-xs font-bold text-[#64748b]">
+            <span className="flex items-center gap-1">
+              <Clock size={14} className="text-gray-400" /> {formatDeterministicDateTime(topic.created_at)}
             </span>
-            <div className="h-4 w-px bg-white/10"></div>
-            <span className="text-xs font-black text-emerald-400 flex items-center gap-1.5">
-              <MessageCircle size={16} /> {replies?.length || 0} Cevap
+            <span>•</span>
+            <span className="text-[#3b82f6] font-black">
+              {replies?.length || 0} Cevap
             </span>
           </div>
         </div>
+
+        <h1 className="text-2xl md:text-3xl font-black text-white tracking-tight uppercase" style={{ textShadow: '2px 2px 0 #000' }}>
+          {topic.title}
+        </h1>
       </div>
 
-      {/* Anket Gösterimi (Eğer varsa) */}
+      {/* Poll Display if any */}
       {topic.polls && topic.polls.length > 0 && (
-        <div className="habbo-box bg-[#0a1325]/80 border-2 border-white/10 shadow-2xl rounded-2xl overflow-hidden p-6">
+        <div className="habbo-box mb-6 p-6 bg-[#0a1325] border border-[#1e293b]">
           <PollView poll={topic.polls[0]} currentUser={user} />
         </div>
       )}
 
-      {/* Ana Konu Gövdesi - Dark Premium v4.0 */}
-      <div className="flex flex-col md:flex-row gap-6">
+      {/* Main Topic Content Area */}
+      <div className="flex flex-col md:flex-row gap-6 mb-8">
         
-        {/* Yazar Bilgi Kutusu */}
-        <div className="w-full md:w-64 habbo-box bg-[#0a1325]/80 border-2 border-white/10 shadow-2xl rounded-2xl overflow-hidden shrink-0 self-start">
-          <div className="habbo-box-header bg-gradient-to-r from-[#14233d] to-[#0d172a] border-b border-white/10 text-white font-black text-xs uppercase tracking-wider px-5 py-3.5 text-center flex items-center justify-center gap-1.5">
-            <ShieldCheck size={16} className="text-cyan-400" /> KONU SAHİBİ
+        {/* Author Box */}
+        <div className="w-full md:w-64 habbo-box bg-[#0a1325] border border-[#1e293b] shrink-0 self-start">
+          <div className="bg-[#050a14] border-b border-[#1e293b] text-white font-black text-xs uppercase tracking-wider px-4 py-2.5 text-center flex items-center justify-center gap-1.5">
+            <ShieldCheck size={14} className="text-[#facc15]" /> KONU SAHİBİ
           </div>
           
-          <div className="p-6 bg-[#050b14] flex flex-col items-center text-center relative overflow-hidden">
-            <div className="absolute inset-0 bg-radial-gradient from-blue-600/10 via-transparent to-transparent pointer-events-none"></div>
-            
-            <div className="w-24 h-24 rounded-2xl bg-[#0a1325] border-2 border-white/10 mb-4 overflow-hidden flex items-center justify-center shadow-[0_0_20px_rgba(34,211,238,0.15)] relative group">
-              <HabboAvatar username={(topic.author as any)?.habbo_username || (topic.author as any)?.username || 'Admin'} size="l" direction={2} className="w-20 h-20 scale-110" />
+          <div className="p-5 flex flex-col items-center text-center">
+            <div className="w-20 h-20 rounded-[4px] bg-[#050a14] border border-[#1e293b] mb-3 overflow-hidden flex items-center justify-center relative">
+              <HabboAvatar username={(topic.author as any)?.habbo_username || (topic.author as any)?.username || 'Admin'} size="l" direction={2} className="w-16 h-16 scale-110" />
             </div>
             
-            <Link href={`/profile/${(topic.author as any)?.username}`} className="text-base font-black text-white hover:text-cyan-300 transition-colors truncate w-full">
+            <Link href={`/profile/${(topic.author as any)?.username}`} className="text-sm font-black text-white hover:text-[#facc15] transition-colors truncate w-full">
               @{(topic.author as any)?.username || 'Anonim'}
             </Link>
             
-            <div className="text-xs font-bold text-cyan-400 bg-cyan-500/10 border border-cyan-500/30 px-3 py-1 rounded-lg mt-2 uppercase tracking-wider">
+            <div className="text-[10px] font-black text-black bg-[#facc15] px-2.5 py-0.5 rounded-[2px] mt-2 uppercase tracking-wider">
               {(topic.author as any)?.role || 'Topluluk Üyesi'}
             </div>
           </div>
         </div>
 
-        {/* Konu İçeriği */}
-        <div className="flex-1 habbo-box bg-[#0a1325]/80 border-2 border-white/10 shadow-2xl rounded-2xl overflow-hidden flex flex-col min-h-[300px]">
-          <div className="habbo-box-header bg-gradient-to-r from-[#14233d] to-[#0d172a] border-b border-white/10 text-white font-black text-xs uppercase tracking-wider px-6 py-4 flex items-center justify-between">
+        {/* Content Box */}
+        <div className="flex-1 habbo-box bg-[#0a1325] border border-[#1e293b] flex flex-col min-h-[250px]">
+          <div className="bg-[#050a14] border-b border-[#1e293b] text-white font-black text-xs uppercase tracking-wider px-5 py-2.5 flex items-center justify-between">
             <span className="flex items-center gap-2">
-              <MessageSquare size={16} className="text-amber-400" /> TARTIŞMA İÇERİĞİ
-            </span>
-            <span className="text-[11px] font-bold text-gray-400">
-              Yayınlanma: {formatDeterministicDateTime(topic.created_at)}
+              <MessageSquare size={14} className="text-[#facc15]" /> TARTIŞMA İÇERİĞİ
             </span>
           </div>
 
-          <div className="p-8 bg-[#050b14] flex flex-col flex-1 justify-between text-gray-200 leading-relaxed text-sm md:text-base">
+          <div className="p-6 flex flex-col flex-1 justify-between text-gray-200 leading-relaxed text-sm md:text-base">
             <div className="prose prose-invert max-w-none space-y-4" dangerouslySetInnerHTML={{ __html: topic.content }} />
             
-            <div className="mt-8 pt-6 border-t border-white/10 flex flex-wrap gap-4 justify-between items-center bg-[#0a1325]/50 -mx-8 -mb-8 px-8 pb-6 rounded-b-2xl">
+            <div className="mt-8 pt-4 border-t border-[#1e293b] flex flex-wrap gap-4 justify-between items-center">
               <ReactionView targetId={topic.id} targetType="topic" currentUser={user} />
               <TopicModeration topic={topic} userProfile={userProfile} />
             </div>
@@ -212,50 +204,51 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
         </div>
       </div>
 
-      {/* Cevaplar Bölümü */}
-      <div className="space-y-6 pt-6">
-        <div className="flex items-center justify-between border-b-2 border-white/10 pb-3">
-          <h3 className="text-lg font-black uppercase tracking-wider text-white flex items-center gap-2">
-            <MessageCircle size={20} className="text-cyan-400" /> TARTIŞMA CEVAPLARI ({replies?.length || 0})
-          </h3>
-          <span className="text-xs font-bold text-gray-400">Kronolojik Sıralama</span>
+      {/* Replies Section */}
+      <div className="space-y-4">
+        <div className="flex justify-between items-center border-b border-[#1e293b] pb-2 mb-2">
+          <div className="flex items-center gap-2">
+            <MessageCircle size={16} className="text-[#facc15]" />
+            <h2 className="text-[#facc15] font-black text-sm tracking-wide uppercase">TARTIŞMA CEVAPLARI ({replies?.length || 0})</h2>
+          </div>
+          <span className="text-gray-400 text-[11px] font-bold uppercase">KRONOLOJİK SIRALAMA</span>
         </div>
         
         {replies && replies.length > 0 ? (
           replies.map((reply: any, idx: number) => (
             <div key={reply.id} className="flex flex-col md:flex-row gap-6">
               
-              {/* Cevaplayan Bilgi Kutusu */}
-              <div className="w-full md:w-56 habbo-box bg-[#0a1325]/80 border-2 border-white/10 shadow-xl rounded-2xl overflow-hidden shrink-0 self-start">
-                <div className="habbo-box-header bg-gradient-to-r from-[#14233d] to-[#0d172a] border-b border-white/10 text-white font-black text-[11px] uppercase tracking-wider px-4 py-3 text-center flex items-center justify-center gap-1">
+              {/* Replier Box */}
+              <div className="w-full md:w-56 habbo-box bg-[#0a1325] border border-[#1e293b] shrink-0 self-start">
+                <div className="bg-[#050a14] border-b border-[#1e293b] text-white font-black text-[11px] uppercase tracking-wider px-3 py-2 text-center">
                   <span>CEVAP #{idx + 1}</span>
                 </div>
                 
-                <div className="p-4 bg-[#050b14] flex flex-col items-center text-center">
-                  <div className="w-16 h-16 rounded-xl bg-[#0a1325] border border-white/10 mb-2 overflow-hidden flex items-center justify-center shadow-inner">
-                    <HabboAvatar username={(reply.author as any)?.habbo_username || (reply.author as any)?.username || 'Admin'} size="m" direction={2} className="w-14 h-14 scale-110" />
+                <div className="p-4 flex flex-col items-center text-center">
+                  <div className="w-14 h-14 rounded-[4px] bg-[#050a14] border border-[#1e293b] mb-2 overflow-hidden flex items-center justify-center">
+                    <HabboAvatar username={(reply.author as any)?.habbo_username || (reply.author as any)?.username || 'Admin'} size="m" direction={2} className="w-12 h-12 scale-110" />
                   </div>
-                  <Link href={`/profile/${(reply.author as any)?.username}`} className="text-sm font-black text-white hover:text-cyan-300 transition-colors truncate w-full">
+                  <Link href={`/profile/${(reply.author as any)?.username}`} className="text-xs font-black text-white hover:text-[#facc15] transition-colors truncate w-full">
                     @{(reply.author as any)?.username || 'Anonim'}
                   </Link>
                 </div>
               </div>
 
-              {/* Cevap İçeriği */}
-              <div className={`flex-1 habbo-box bg-[#0a1325]/80 border-2 shadow-xl rounded-2xl overflow-hidden flex flex-col ${reply.is_solution ? 'border-emerald-500 shadow-[0_0_20px_rgba(16,185,129,0.2)]' : 'border-white/10'}`}>
-                <div className={`habbo-box-header border-b border-white/10 text-white font-black text-xs uppercase tracking-wider px-6 py-3.5 flex justify-between items-center ${reply.is_solution ? 'bg-gradient-to-r from-emerald-900/60 to-[#0d172a]' : 'bg-gradient-to-r from-[#14233d] to-[#0d172a]'}`}>
-                  <span className="text-gray-300 text-[11px]">{formatDeterministicDateTime(reply.created_at)}</span>
+              {/* Reply Content */}
+              <div className={`flex-1 habbo-box bg-[#0a1325] border flex flex-col ${reply.is_solution ? 'border-[#22c55e]' : 'border-[#1e293b]'}`}>
+                <div className={`border-b border-[#1e293b] text-white font-black text-xs uppercase tracking-wider px-5 py-2.5 flex justify-between items-center ${reply.is_solution ? 'bg-[#14532d]' : 'bg-[#050a14]'}`}>
+                  <span className="text-gray-400 text-[11px]">{formatDeterministicDateTime(reply.created_at)}</span>
                   {reply.is_solution && (
-                    <span className="text-emerald-400 font-black tracking-wider flex items-center gap-1 bg-emerald-950 px-3 py-1 rounded-md border border-emerald-500/40">
+                    <span className="text-[#22c55e] font-black tracking-wider flex items-center gap-1 uppercase">
                       <CheckCircle size={14} /> ONAYLI ÇÖZÜM
                     </span>
                   )}
                 </div>
                 
-                <div className="p-6 bg-[#050b14] flex flex-col flex-1 justify-between text-gray-200 leading-relaxed text-sm md:text-base">
+                <div className="p-5 flex flex-col flex-1 justify-between text-gray-200 leading-relaxed text-sm md:text-base">
                   <div className="prose prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: reply.content }} />
                   
-                  <div className="mt-6 pt-4 border-t border-white/10 flex justify-end">
+                  <div className="mt-6 pt-3 border-t border-[#1e293b] flex justify-end">
                     <ReactionView targetId={reply.id} targetType="reply" currentUser={user} />
                   </div>
                 </div>
@@ -264,24 +257,23 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
             </div>
           ))
         ) : (
-          <div className="text-center p-12 text-gray-400 bg-[#0a1325]/40 border-2 border-dashed border-white/10 rounded-2xl">
-            <MessageCircleQuestion size={40} className="mx-auto mb-3 opacity-30" />
-            <p className="text-base font-bold text-white">Bu konuya henüz cevap yazılmamış.</p>
+          <div className="habbo-box p-8 text-center text-gray-400 bg-[#0a1325]">
+            <p className="font-bold text-sm text-white">Bu konuya henüz cevap yazılmamış.</p>
             <p className="text-xs text-gray-400 mt-1">İlk cevabı yazarak görüşlerini toplulukla paylaş!</p>
           </div>
         )}
       </div>
 
-      {/* Cevap Yazma Formu */}
+      {/* Reply Form */}
       {!topic.is_locked ? (
-        <div className="mt-12 bg-[#0a1325]/80 border-2 border-white/10 rounded-2xl p-6 shadow-2xl">
-          <h4 className="text-sm font-black uppercase tracking-wider text-white mb-4 flex items-center gap-2">
-            <Sparkles size={16} className="text-cyan-400" /> CEVAP VEYA GÖRÜŞ BİLDİR
-          </h4>
+        <div className="mt-8 habbo-box p-6 bg-[#0a1325] border border-[#1e293b]">
+          <h3 className="text-sm font-black uppercase tracking-wider text-[#facc15] mb-4 flex items-center gap-2">
+            <MessageSquare size={16} /> CEVAP VEYA GÖRÜŞ BİLDİR
+          </h3>
           <ReplyForm topicId={topic.id} currentUser={user} />
         </div>
       ) : (
-        <div className="mt-8 p-6 bg-red-500/10 border-2 border-red-500/40 text-red-300 text-center font-black rounded-2xl shadow-xl text-xs uppercase tracking-widest flex items-center justify-center gap-2">
+        <div className="mt-8 habbo-box p-4 bg-[#7f1d1d] border-2 border-black text-white text-center font-black text-xs uppercase tracking-widest flex items-center justify-center gap-2">
           🔒 BU KONU YÖNETİCİ TARAFINDAN KİLİTLENMİŞTİR VE YENİ CEVAPLARA KAPALIDIR.
         </div>
       )}

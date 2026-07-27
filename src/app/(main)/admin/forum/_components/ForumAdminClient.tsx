@@ -137,25 +137,25 @@ export default function ForumAdminClient({
       
       {/* Categories Header */}
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-bold text-white flex items-center gap-2">
-          <Folder className="text-yellow-400" /> Kategoriler
+        <h2 className="text-lg font-black text-white uppercase tracking-wider flex items-center gap-2">
+          <Folder className="text-[#facc15]" size={20} /> KATEGORİLER
         </h2>
         {!isAddingCat && (
           <button 
             onClick={() => setIsAddingCat(true)}
-            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm transition-colors"
+            className="habbo-button flex items-center gap-2 bg-[#3b82f6] hover:bg-blue-600 text-white px-4 py-2 rounded-[2px] text-xs font-black uppercase tracking-wider shadow transition-colors"
           >
-            <Plus size={16} /> Yeni Kategori Ekle
+            <Plus size={16} /> YENİ KATEGORİ EKLE
           </button>
         )}
       </div>
 
       {/* Add Category Form */}
       {isAddingCat && (
-        <div className="bg-[#2a2a2a] border border-[#333] rounded-lg p-4 space-y-4">
+        <div className="habbo-box bg-[#0a1325] border border-[#1e293b] rounded-[2px] p-5 space-y-4 shadow-lg">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs text-gray-400 mb-1">Kategori Adı</label>
+              <label className="block text-[11px] font-black uppercase tracking-wider text-gray-300 mb-1.5">KATEGORİ ADI</label>
               <input 
                 type="text" 
                 value={newCatName}
@@ -163,42 +163,45 @@ export default function ForumAdminClient({
                   setNewCatName(e.target.value)
                   if (!newCatSlug) setNewCatSlug(generateSlug(e.target.value))
                 }}
-                className="w-full bg-[#1f1f1f] border border-[#333] text-white rounded px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+                className="w-full bg-[#050a14] border border-[#1e293b] text-white rounded-[2px] px-3.5 py-2 text-xs font-bold focus:border-[#facc15] focus:outline-none transition-colors"
+                placeholder="Örn: Topluluk & Etkinlikler"
               />
             </div>
             <div>
-              <label className="block text-xs text-gray-400 mb-1">URL (Slug)</label>
+              <label className="block text-[11px] font-black uppercase tracking-wider text-gray-300 mb-1.5">URL (SLUG)</label>
               <input 
                 type="text" 
                 value={newCatSlug}
                 onChange={(e) => setNewCatSlug(e.target.value)}
-                className="w-full bg-[#1f1f1f] border border-[#333] text-white rounded px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+                className="w-full bg-[#050a14] border border-[#1e293b] text-white rounded-[2px] px-3.5 py-2 text-xs font-bold focus:border-[#facc15] focus:outline-none transition-colors"
+                placeholder="topluluk-etkinlikler"
               />
             </div>
             <div className="md:col-span-2">
-              <label className="block text-xs text-gray-400 mb-1">Açıklama (İsteğe bağlı)</label>
+              <label className="block text-[11px] font-black uppercase tracking-wider text-gray-300 mb-1.5">AÇIKLAMA (İSTEĞE BAĞLI)</label>
               <input 
                 type="text" 
                 value={newCatDesc}
                 onChange={(e) => setNewCatDesc(e.target.value)}
-                className="w-full bg-[#1f1f1f] border border-[#333] text-white rounded px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+                className="w-full bg-[#050a14] border border-[#1e293b] text-white rounded-[2px] px-3.5 py-2 text-xs font-medium focus:border-[#facc15] focus:outline-none transition-colors"
+                placeholder="Kategori hakkında kısa açıklama..."
               />
             </div>
           </div>
-          <div className="flex justify-end gap-2">
+          <div className="flex justify-end gap-2 pt-2">
             <button 
               onClick={() => setIsAddingCat(false)}
-              className="px-4 py-2 text-sm text-gray-400 hover:text-white transition-colors"
+              className="px-4 py-2 text-xs font-bold uppercase tracking-wider text-gray-400 hover:text-white transition-colors"
               disabled={loading}
             >
-              İptal
+              İPTAL
             </button>
             <button 
               onClick={handleCreateCategory}
-              className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm transition-colors"
+              className="habbo-button bg-[#22c55e] hover:bg-green-600 text-black font-black uppercase tracking-wider px-5 py-2 rounded-[2px] text-xs transition-colors shadow"
               disabled={loading}
             >
-              Kaydet
+              KAYDET
             </button>
           </div>
         </div>
@@ -207,38 +210,39 @@ export default function ForumAdminClient({
       {/* Category List */}
       <div className="space-y-6">
         {categories.map(cat => (
-          <div key={cat.id} className="bg-[#1f1f1f] border border-[#333] rounded-lg overflow-hidden">
+          <div key={cat.id} className="habbo-box bg-[#0a1325] border border-[#1e293b] rounded-[2px] overflow-hidden shadow-lg">
             {/* Category Header */}
-            <div className="bg-[#2a2a2a] p-4 flex items-center justify-between border-b border-[#333]">
+            <div className="bg-[#050a14] p-4 flex items-center justify-between border-b border-[#1e293b]">
               <div>
-                <h3 className="font-bold text-white flex items-center gap-2">
+                <h3 className="font-black text-white text-base uppercase tracking-wider flex items-center gap-2">
+                  <Folder className="text-[#facc15]" size={18} />
                   {cat.name}
                 </h3>
-                {cat.description && <p className="text-xs text-gray-400 mt-1">{cat.description}</p>}
+                {cat.description && <p className="text-xs text-gray-300 font-medium mt-1">{cat.description}</p>}
               </div>
-              <div className="flex gap-2">
+              <div className="flex items-center gap-2">
                 <button 
                   onClick={() => setAddingForumToCat(addingForumToCat === cat.id ? null : cat.id)}
-                  className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded transition-colors text-xs flex items-center gap-1"
+                  className="habbo-button bg-[#3b82f6] hover:bg-blue-600 text-white px-3 py-1.5 rounded-[2px] transition-colors text-xs font-black uppercase tracking-wider flex items-center gap-1.5 shadow"
                 >
-                  <Plus size={14} /> Forum Ekle
+                  <Plus size={14} /> FORUM EKLE
                 </button>
                 <button 
                   onClick={() => handleDeleteCategory(cat.id)}
-                  className="bg-red-900/50 hover:bg-red-800 text-red-400 p-2 rounded transition-colors"
+                  className="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 p-1.5 rounded-[2px] transition-colors"
                   title="Kategoriyi Sil"
                 >
-                  <Trash2 size={14} />
+                  <Trash2 size={16} />
                 </button>
               </div>
             </div>
 
             {/* Add Forum Form */}
             {addingForumToCat === cat.id && (
-              <div className="bg-[#222] p-4 border-b border-[#333] space-y-4">
+              <div className="bg-[#050a14]/60 p-5 border-b border-[#1e293b] space-y-4 animate-in fade-in duration-200">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                   <div>
-                    <label className="block text-xs text-gray-400 mb-1">Forum Adı</label>
+                    <label className="block text-[11px] font-black uppercase tracking-wider text-gray-300 mb-1.5">FORUM ADI</label>
                     <input 
                       type="text" 
                       value={newForumTitle}
@@ -246,119 +250,125 @@ export default function ForumAdminClient({
                         setNewForumTitle(e.target.value)
                         if (!newForumSlug) setNewForumSlug(generateSlug(e.target.value))
                       }}
-                      className="w-full bg-[#111] border border-[#333] text-white rounded px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+                      className="w-full bg-[#0a1325] border border-[#1e293b] text-white rounded-[2px] px-3.5 py-2 text-xs font-bold focus:border-[#facc15] focus:outline-none transition-colors"
+                      placeholder="Örn: Genel Tartışma"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs text-gray-400 mb-1">URL (Slug)</label>
+                    <label className="block text-[11px] font-black uppercase tracking-wider text-gray-300 mb-1.5">URL (SLUG)</label>
                     <input 
                       type="text" 
                       value={newForumSlug}
                       onChange={(e) => setNewForumSlug(e.target.value)}
-                      className="w-full bg-[#111] border border-[#333] text-white rounded px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+                      className="w-full bg-[#0a1325] border border-[#1e293b] text-white rounded-[2px] px-3.5 py-2 text-xs font-bold focus:border-[#facc15] focus:outline-none transition-colors"
+                      placeholder="genel-tartisma"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs text-gray-400 mb-1">İkon URL (İsteğe bağlı)</label>
+                    <label className="block text-[11px] font-black uppercase tracking-wider text-gray-300 mb-1.5">İKON URL (İSTEĞE BAĞLI)</label>
                     <input 
                       type="text" 
                       value={newForumIcon}
                       onChange={(e) => setNewForumIcon(e.target.value)}
-                      className="w-full bg-[#111] border border-[#333] text-white rounded px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+                      className="w-full bg-[#0a1325] border border-[#1e293b] text-white rounded-[2px] px-3.5 py-2 text-xs font-bold focus:border-[#facc15] focus:outline-none transition-colors"
+                      placeholder="https://..."
                     />
                   </div>
                   <div>
-                    <label className="block text-xs text-gray-400 mb-1">Sıralama (Küçük önce)</label>
+                    <label className="block text-[11px] font-black uppercase tracking-wider text-gray-300 mb-1.5">SIRALAMA (KÜÇÜK ÖNCE)</label>
                     <input 
                       type="number" 
                       value={newForumOrder}
                       onChange={(e) => setNewForumOrder(e.target.value)}
-                      className="w-full bg-[#111] border border-[#333] text-white rounded px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+                      className="w-full bg-[#0a1325] border border-[#1e293b] text-white rounded-[2px] px-3.5 py-2 text-xs font-bold focus:border-[#facc15] focus:outline-none transition-colors"
                     />
                   </div>
                   <div className="lg:col-span-4">
-                    <label className="block text-xs text-gray-400 mb-1">Açıklama</label>
+                    <label className="block text-[11px] font-black uppercase tracking-wider text-gray-300 mb-1.5">AÇIKLAMA</label>
                     <input 
                       type="text" 
                       value={newForumDesc}
                       onChange={(e) => setNewForumDesc(e.target.value)}
-                      className="w-full bg-[#111] border border-[#333] text-white rounded px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+                      className="w-full bg-[#0a1325] border border-[#1e293b] text-white rounded-[2px] px-3.5 py-2 text-xs font-medium focus:border-[#facc15] focus:outline-none transition-colors"
+                      placeholder="Bu forum bölümünde neler konuşuluyor..."
                     />
                   </div>
                 </div>
-                <div className="flex justify-end gap-2">
+                <div className="flex justify-end gap-2 pt-2">
                   <button 
                     onClick={() => setAddingForumToCat(null)}
-                    className="px-4 py-2 text-sm text-gray-400 hover:text-white transition-colors"
+                    className="px-4 py-2 text-xs font-bold uppercase tracking-wider text-gray-400 hover:text-white transition-colors"
                     disabled={loading}
                   >
-                    İptal
+                    İPTAL
                   </button>
                   <button 
                     onClick={() => handleCreateForum(cat.id)}
-                    className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm transition-colors"
+                    className="habbo-button bg-[#22c55e] hover:bg-green-600 text-black font-black uppercase tracking-wider px-5 py-2 rounded-[2px] text-xs transition-colors shadow"
                     disabled={loading}
                   >
-                    Ekle
+                    EKLE
                   </button>
                 </div>
               </div>
             )}
 
             {/* Forums List */}
-            <div className="divide-y divide-[#333]">
+            <div className="divide-y divide-[#1e293b]">
               {forums.filter(f => f.category_id === cat.id).map(forum => (
-                <div key={forum.id} className="p-4 flex items-start justify-between hover:bg-[#252525] transition-colors">
+                <div key={forum.id} className="p-4 flex items-start justify-between hover:bg-white/[0.02] transition-colors">
                   {editingForumId === forum.id ? (
                     <div className="w-full space-y-4">
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         <div>
-                          <label className="block text-xs text-gray-400 mb-1">Forum Adı</label>
+                          <label className="block text-[11px] font-black uppercase tracking-wider text-gray-300 mb-1.5">FORUM ADI</label>
                           <input 
                             type="text" 
                             value={editForumTitle}
                             onChange={(e) => setEditForumTitle(e.target.value)}
-                            className="w-full bg-[#111] border border-[#333] text-white rounded px-3 py-2 text-sm"
+                            className="w-full bg-[#050a14] border border-[#1e293b] text-white rounded-[2px] px-3.5 py-2 text-xs font-bold focus:border-[#facc15] focus:outline-none transition-colors"
                           />
                         </div>
                         <div>
-                          <label className="block text-xs text-gray-400 mb-1">İkon URL</label>
+                          <label className="block text-[11px] font-black uppercase tracking-wider text-gray-300 mb-1.5">İKON URL</label>
                           <input 
                             type="text" 
                             value={editForumIcon}
                             onChange={(e) => setEditForumIcon(e.target.value)}
-                            className="w-full bg-[#111] border border-[#333] text-white rounded px-3 py-2 text-sm"
+                            className="w-full bg-[#050a14] border border-[#1e293b] text-white rounded-[2px] px-3.5 py-2 text-xs font-bold focus:border-[#facc15] focus:outline-none transition-colors"
                           />
                         </div>
                         <div>
-                          <label className="block text-xs text-gray-400 mb-1">Sıralama</label>
+                          <label className="block text-[11px] font-black uppercase tracking-wider text-gray-300 mb-1.5">SIRALAMA</label>
                           <input 
                             type="number" 
                             value={editForumOrder}
                             onChange={(e) => setEditForumOrder(e.target.value)}
-                            className="w-full bg-[#111] border border-[#333] text-white rounded px-3 py-2 text-sm"
+                            className="w-full bg-[#050a14] border border-[#1e293b] text-white rounded-[2px] px-3.5 py-2 text-xs font-bold focus:border-[#facc15] focus:outline-none transition-colors"
                           />
                         </div>
                         <div className="lg:col-span-3">
-                          <label className="block text-xs text-gray-400 mb-1">Açıklama</label>
+                          <label className="block text-[11px] font-black uppercase tracking-wider text-gray-300 mb-1.5">AÇIKLAMA</label>
                           <input 
                             type="text" 
                             value={editForumDesc}
                             onChange={(e) => setEditForumDesc(e.target.value)}
-                            className="w-full bg-[#111] border border-[#333] text-white rounded px-3 py-2 text-sm"
+                            className="w-full bg-[#050a14] border border-[#1e293b] text-white rounded-[2px] px-3.5 py-2 text-xs font-medium focus:border-[#facc15] focus:outline-none transition-colors"
                           />
                         </div>
                       </div>
                       <div className="flex justify-end gap-2">
                         <button 
                           onClick={() => setEditingForumId(null)}
-                          className="p-2 text-gray-400 hover:bg-gray-400/10 rounded"
+                          className="p-2 text-gray-400 hover:bg-white/10 rounded-[2px] transition-colors"
+                          title="İptal"
                         >
                           <X size={16} />
                         </button>
                         <button 
                           onClick={() => handleUpdateForum(forum.id)}
-                          className="p-2 text-green-500 hover:bg-green-500/10 rounded"
+                          className="p-2 text-[#22c55e] hover:bg-green-500/10 rounded-[2px] transition-colors"
+                          title="Kaydet"
                         >
                           <Save size={16} />
                         </button>
@@ -367,7 +377,7 @@ export default function ForumAdminClient({
                   ) : (
                     <>
                       <div className="flex items-start gap-3">
-                        <div className="w-10 h-10 bg-[#333] rounded flex items-center justify-center shrink-0">
+                        <div className="w-10 h-10 bg-[#050a14] border border-[#1e293b] rounded-[2px] flex items-center justify-center shrink-0 shadow-inner">
                           {forum.icon ? (
                             // eslint-disable-next-line @next/next/no-img-element
                             <img src={forum.icon} alt="" className="w-6 h-6 object-contain" />
@@ -376,15 +386,15 @@ export default function ForumAdminClient({
                           )}
                         </div>
                         <div>
-                          <h4 className="font-bold text-white text-sm">{forum.title}</h4>
-                          <p className="text-xs text-gray-400 mt-1">{forum.description}</p>
-                          <div className="text-[10px] text-gray-500 mt-2 flex gap-3">
-                            <span>Sıra: {forum.order_index}</span>
-                            <span>URL: /{forum.slug}</span>
+                          <h4 className="font-black text-white text-sm tracking-wide">{forum.title}</h4>
+                          <p className="text-xs text-gray-300 font-medium mt-0.5">{forum.description}</p>
+                          <div className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mt-2 flex gap-4">
+                            <span className="text-[#facc15]">SIRA: {forum.order_index}</span>
+                            <span className="text-[#3b82f6]">URL: /{forum.slug}</span>
                           </div>
                         </div>
                       </div>
-                      <div className="flex gap-2">
+                      <div className="flex gap-1.5">
                         <button 
                           onClick={() => {
                             setEditingForumId(forum.id)
@@ -393,13 +403,15 @@ export default function ForumAdminClient({
                             setEditForumIcon(forum.icon || '')
                             setEditForumOrder(forum.order_index.toString())
                           }}
-                          className="p-2 text-blue-400 hover:bg-blue-400/10 rounded transition-colors"
+                          className="p-2 text-[#3b82f6] hover:bg-blue-500/10 rounded-[2px] transition-colors"
+                          title="Düzenle"
                         >
                           <Edit2 size={16} />
                         </button>
                         <button 
                           onClick={() => handleDeleteForum(forum.id)}
-                          className="p-2 text-red-400 hover:bg-red-400/10 rounded transition-colors"
+                          className="p-2 text-red-400 hover:bg-red-500/10 rounded-[2px] transition-colors"
+                          title="Sil"
                         >
                           <Trash2 size={16} />
                         </button>
@@ -409,16 +421,16 @@ export default function ForumAdminClient({
                 </div>
               ))}
               {forums.filter(f => f.category_id === cat.id).length === 0 && (
-                <div className="p-6 text-center text-gray-500 text-sm">
-                  Bu kategoride henüz alt forum yok.
+                <div className="p-6 text-center text-gray-400 font-bold text-xs uppercase tracking-wider">
+                  BU KATEGORİDE HENÜZ ALT FORUM YOK.
                 </div>
               )}
             </div>
           </div>
         ))}
         {categories.length === 0 && (
-          <div className="py-12 text-center text-gray-500 bg-[#1f1f1f] rounded-lg border border-[#333]">
-            Henüz kategori bulunmuyor.
+          <div className="py-12 text-center text-gray-400 font-bold text-sm uppercase tracking-wider bg-[#0a1325] rounded-[2px] border border-[#1e293b]">
+            HENÜZ KATEGORİ BULUNMUYOR.
           </div>
         )}
       </div>

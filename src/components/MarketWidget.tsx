@@ -1,6 +1,8 @@
 'use client';
 
-// Mock data representing marketplace API data
+import Link from 'next/link';
+import { TrendingUp, Activity, ArrowRight } from 'lucide-react';
+
 const MOCK_MARKET_DATA = [
   { id: 1, name: 'Altın Ejderha', price: 850, trend: 'up', icon: 'https://images.habbo.com/c_images/catalogue/icon_256.png' },
   { id: 2, name: 'Mor Şemsiye', price: 1200, trend: 'down', icon: 'https://images.habbo.com/c_images/catalogue/icon_215.png' },
@@ -10,46 +12,46 @@ const MOCK_MARKET_DATA = [
 
 export default function MarketWidget() {
   return (
-    <div className="bg-white/10 dark:bg-black/20 p-6 rounded-2xl border-4 border-white/20 shadow-lg relative overflow-hidden">
+    <div className="habbo-box bg-[#0a1325] border border-[#1e293b] overflow-hidden">
       {/* Header */}
-      <h3 className="text-xl font-black uppercase tracking-wider mb-6 flex items-center justify-between relative z-10">
+      <div className="bg-[#050a14] border-b border-[#1e293b] text-[#facc15] font-black text-xs uppercase tracking-wider px-4 py-2.5 flex items-center justify-between">
         <span className="flex items-center gap-2">
-          <span className="text-2xl">📈</span> Pazar Yeri
+          <Activity size={16} className="text-[#3b82f6]" /> PAZAR YERİ ENDEKSİ
         </span>
-        <span className="text-xs bg-primary/20 text-primary border border-primary/50 px-2 py-1 rounded pixel-borders">Canlı</span>
-      </h3>
+        <span className="text-[9px] font-black text-[#22c55e] bg-[#0a1325] px-1.5 py-0.5 rounded-[2px] border border-[#1e293b] uppercase">Canlı</span>
+      </div>
 
       {/* List */}
-      <div className="space-y-4 relative z-10">
+      <div className="p-3 bg-[#0a1325] space-y-2">
         {MOCK_MARKET_DATA.map((item) => (
-          <div key={item.id} className="flex items-center justify-between bg-black/10 p-3 rounded-xl border border-white/10 hover:bg-black/20 transition-colors group">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center p-1">
+          <Link key={item.id} href="/values" className="flex items-center justify-between bg-[#050a14] p-2.5 rounded-[2px] border border-[#1e293b] hover:border-[#3b82f6] transition-colors group">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 bg-[#0a1325] border border-[#1e293b] rounded-[2px] flex items-center justify-center p-1">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={item.icon} alt={item.name} className="w-full h-full object-contain drop-shadow-md group-hover:scale-110 transition-transform" />
+                <img src={item.icon} alt={item.name} className="w-full h-full object-contain drop-shadow group-hover:scale-110 transition-transform" />
               </div>
-              <span className="font-bold text-sm">{item.name}</span>
+              <span className="font-bold text-xs text-white group-hover:text-[#facc15] transition-colors">{item.name}</span>
             </div>
             
             <div className="flex flex-col items-end">
-              <div className="font-black text-amber-500 drop-shadow-sm flex items-center gap-1">
+              <div className="font-black text-[#f59e0b] text-xs flex items-center gap-1">
                 {item.price} 
-                <span className="text-xs">c</span>
+                <span className="text-[10px] uppercase font-black">c</span>
               </div>
-              <div className="text-xs font-bold flex items-center gap-1">
-                {item.trend === 'up' && <span className="text-green-500">▲ +%5</span>}
-                {item.trend === 'down' && <span className="text-red-500">▼ -%2</span>}
-                {item.trend === 'stable' && <span className="text-gray-400 opacity-80">▬ %0</span>}
+              <div className="text-[10px] font-bold flex items-center gap-0.5">
+                {item.trend === 'up' && <span className="text-[#22c55e]">▲ +%5</span>}
+                {item.trend === 'down' && <span className="text-red-400">▼ -%2</span>}
+                {item.trend === 'stable' && <span className="text-gray-400">▬ %0</span>}
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
 
-      <div className="mt-6 pt-4 border-t-2 border-black/10 dark:border-white/10 text-center">
-        <button className="text-xs font-bold text-primary hover:underline uppercase tracking-widest">
-          Tüm Piyasayı Gör →
-        </button>
+      <div className="p-3 bg-[#050a14] border-t border-[#1e293b] text-center">
+        <Link href="/values" className="inline-flex items-center justify-center gap-1 w-full py-1.5 bg-[#2563eb] hover:bg-[#1d4ed8] text-white text-xs font-black rounded-[2px] uppercase tracking-wider transition-colors">
+          Tüm Piyasayı Gör <ArrowRight size={13} />
+        </Link>
       </div>
     </div>
   );

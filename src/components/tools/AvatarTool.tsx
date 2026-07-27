@@ -29,20 +29,20 @@ export default function AvatarTool() {
       {/* Controls */}
       <div className="flex-1 space-y-4">
         <div>
-          <label className="block text-xs font-bold text-gray-700 mb-1">Habbo Adı</label>
+          <label className="block text-[11px] font-black text-gray-300 uppercase tracking-wider mb-1.5">HABBO ADI</label>
           <input 
             type="text" 
             value={username}
             onChange={(e) => handleChange(setUsername, e.target.value)}
-            className="w-full bg-gray-50 border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-blue-500"
+            className="w-full bg-[#050a14] border border-[#1e293b] rounded-[2px] px-3 py-2 text-xs text-white font-black focus:outline-none focus:border-[#3b82f6]"
             placeholder="Kullanıcı adı girin..."
           />
         </div>
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Eylem</label>
-            <select value={action} onChange={(e) => handleChange(setAction, e.target.value)} className="w-full bg-gray-50 border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
+            <label className="block text-[11px] font-black text-gray-300 uppercase tracking-wider mb-1.5">EYLEM</label>
+            <select value={action} onChange={(e) => handleChange(setAction, e.target.value)} className="w-full bg-[#050a14] border border-[#1e293b] rounded-[2px] px-3 py-2 text-xs text-white font-black focus:outline-none focus:border-[#3b82f6]">
               <option value="std">Ayakta</option>
               <option value="sit">Oturuyor</option>
               <option value="wlk">Yürüyor</option>
@@ -51,8 +51,8 @@ export default function AvatarTool() {
             </select>
           </div>
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Yüz İfadesi</label>
-            <select value={gesture} onChange={(e) => handleChange(setGesture, e.target.value)} className="w-full bg-gray-50 border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
+            <label className="block text-[11px] font-black text-gray-300 uppercase tracking-wider mb-1.5">YÜZ İFADESİ</label>
+            <select value={gesture} onChange={(e) => handleChange(setGesture, e.target.value)} className="w-full bg-[#050a14] border border-[#1e293b] rounded-[2px] px-3 py-2 text-xs text-white font-black focus:outline-none focus:border-[#3b82f6]">
               <option value="std">Normal</option>
               <option value="sml">Gülümsüyor</option>
               <option value="sad">Üzgün</option>
@@ -64,8 +64,8 @@ export default function AvatarTool() {
 
         <div className="grid grid-cols-3 gap-3">
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Yön</label>
-            <select value={direction} onChange={(e) => handleChange(setDirection, e.target.value)} className="w-full bg-gray-50 border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
+            <label className="block text-[11px] font-black text-gray-300 uppercase tracking-wider mb-1.5">YÖN</label>
+            <select value={direction} onChange={(e) => handleChange(setDirection, e.target.value)} className="w-full bg-[#050a14] border border-[#1e293b] rounded-[2px] px-3 py-2 text-xs text-white font-black focus:outline-none focus:border-[#3b82f6]">
               <option value="2">Güney Doğu</option>
               <option value="3">Güney</option>
               <option value="4">Güney Batı</option>
@@ -73,8 +73,8 @@ export default function AvatarTool() {
             </select>
           </div>
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Baş Yönü</label>
-            <select value={headDirection} onChange={(e) => handleChange(setHeadDirection, e.target.value)} className="w-full bg-gray-50 border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
+            <label className="block text-[11px] font-black text-gray-300 uppercase tracking-wider mb-1.5">BAŞ YÖNÜ</label>
+            <select value={headDirection} onChange={(e) => handleChange(setHeadDirection, e.target.value)} className="w-full bg-[#050a14] border border-[#1e293b] rounded-[2px] px-3 py-2 text-xs text-white font-black focus:outline-none focus:border-[#3b82f6]">
               <option value="2">Güney Doğu</option>
               <option value="3">Güney</option>
               <option value="4">Güney Batı</option>
@@ -82,8 +82,8 @@ export default function AvatarTool() {
             </select>
           </div>
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Boyut</label>
-            <select value={size} onChange={(e) => handleChange(setSize, e.target.value)} className="w-full bg-gray-50 border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
+            <label className="block text-[11px] font-black text-gray-300 uppercase tracking-wider mb-1.5">BOYUT</label>
+            <select value={size} onChange={(e) => handleChange(setSize, e.target.value)} className="w-full bg-[#050a14] border border-[#1e293b] rounded-[2px] px-3 py-2 text-xs text-white font-black focus:outline-none focus:border-[#3b82f6]">
               <option value="b">Büyük (L)</option>
               <option value="s">Küçük (S)</option>
             </select>
@@ -93,10 +93,10 @@ export default function AvatarTool() {
 
       {/* Preview */}
       <div className="w-full md:w-48 flex flex-col items-center">
-        <div className="w-full aspect-square bg-[#f8fafc] border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center relative group overflow-hidden">
+        <div className="w-full aspect-square bg-[#050a14] border border-[#1e293b] rounded-[3px] flex items-center justify-center relative group overflow-hidden shadow-inner p-4">
           {loading && (
-            <div className="absolute inset-0 bg-white/70 flex items-center justify-center z-10">
-              <RefreshCw size={24} className="text-blue-500 animate-spin" />
+            <div className="absolute inset-0 bg-[#050a14]/80 flex items-center justify-center z-10">
+              <RefreshCw size={24} className="text-[#3b82f6] animate-spin" />
             </div>
           )}
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -109,11 +109,11 @@ export default function AvatarTool() {
           />
         </div>
         <div className="flex w-full gap-2 mt-4">
-           <button onClick={handleCopyLink} className="flex-1 habbo-button px-2 py-2 flex items-center justify-center gap-1 text-[10px]">
-             <Copy size={14} /> Link
+           <button onClick={handleCopyLink} className="flex-1 habbo-button px-3 py-2 flex items-center justify-center gap-1.5 text-xs font-black uppercase tracking-tight">
+             <Copy size={14} /> LİNKİ AL
            </button>
-           <a href={imageUrl} target="_blank" download={`${username}_avatar.png`} className="flex-1 habbo-button blue px-2 py-2 flex items-center justify-center gap-1 text-[10px]">
-             <Download size={14} /> İndir
+           <a href={imageUrl} target="_blank" download={`${username}_avatar.png`} className="flex-1 habbo-button blue px-3 py-2 flex items-center justify-center gap-1.5 text-xs font-black uppercase tracking-tight">
+             <Download size={14} /> İNDİR
            </a>
         </div>
       </div>

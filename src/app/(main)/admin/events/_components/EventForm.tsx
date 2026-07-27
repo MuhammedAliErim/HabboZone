@@ -33,45 +33,45 @@ export default function EventForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-5 animate-in fade-in duration-300">
       {error && (
-        <div className="p-3 bg-red-500/10 border-2 border-red-500/30 text-red-400 rounded-xl text-xs flex items-center gap-2">
+        <div className="p-3 bg-red-500/10 border border-red-500/30 text-red-400 rounded-[2px] text-xs flex items-center gap-2 font-bold">
           <AlertCircle size={16} className="shrink-0 text-red-500" />
           <span>{error}</span>
         </div>
       )}
 
       <div>
-        <label className="block text-xs font-bold uppercase tracking-wider text-purple-400 mb-1.5 flex items-center gap-1">
-          <Sparkles size={14} /> Etkinlik Başlığı <span className="text-red-500">*</span>
+        <label className="block text-xs font-black uppercase tracking-wider text-[#facc15] mb-1.5 flex items-center gap-1">
+          <Sparkles size={14} /> ETKİNLİK BAŞLIĞI <span className="text-red-500">*</span>
         </label>
         <input 
           type="text" 
           name="title" 
           required
-          className="w-full bg-[#050a14] border-2 border-white/10 rounded-xl px-4 py-2.5 text-white text-sm font-bold focus:outline-none focus:border-purple-500 transition-colors shadow-inner"
+          className="w-full bg-[#050a14] border border-[#1e293b] rounded-[2px] px-3.5 py-2.5 text-white text-sm font-bold focus:outline-none focus:border-[#facc15] transition-colors shadow-inner"
           placeholder="Örn: 2026 Büyük Kış Turnuvası"
         />
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-xs font-bold uppercase tracking-wider text-gray-300 mb-1.5 flex items-center gap-1">
-            <Clock size={14} className="text-yellow-400" /> Tarih ve Saat <span className="text-red-500">*</span>
+          <label className="block text-xs font-black uppercase tracking-wider text-gray-300 mb-1.5 flex items-center gap-1">
+            <Clock size={14} className="text-[#facc15]" /> TARİH VE SAAT <span className="text-red-500">*</span>
           </label>
           <input 
             type="datetime-local" 
             name="event_date" 
             required
-            className="w-full bg-[#050a14] border border-white/10 rounded-xl px-3 py-2 text-gray-300 text-xs focus:outline-none focus:border-purple-500 transition-colors"
+            className="w-full bg-[#050a14] border border-[#1e293b] rounded-[2px] px-3 py-2 text-gray-300 text-xs font-bold focus:outline-none focus:border-[#facc15] transition-colors"
           />
         </div>
 
         <div>
-          <label className="block text-xs font-bold uppercase tracking-wider text-gray-300 mb-1.5">
-            Kategori Türü
+          <label className="block text-xs font-black uppercase tracking-wider text-gray-300 mb-1.5">
+            KATEGORİ TÜRÜ
           </label>
           <select 
             name="event_type" 
-            className="w-full bg-[#050a14] border border-white/10 rounded-xl px-3 py-2 text-white font-bold text-xs focus:outline-none focus:border-purple-500 transition-colors"
+            className="w-full bg-[#050a14] border border-[#1e293b] rounded-[2px] px-3 py-2 text-white font-bold text-xs focus:outline-none focus:border-[#facc15] transition-colors"
           >
             <option value="Oyun">🎮 Oda Oyunu</option>
             <option value="Yarışma">🏆 Yarışma / Turnuva</option>
@@ -83,48 +83,48 @@ export default function EventForm() {
       </div>
 
       <div>
-        <label className="block text-xs font-bold uppercase tracking-wider text-gray-300 mb-1.5">
-          Etkinlik Açıklaması
+        <label className="block text-xs font-black uppercase tracking-wider text-gray-300 mb-1.5">
+          ETKİNLİK AÇIKLAMASI
         </label>
         <textarea 
           name="description" 
           rows={3}
-          className="w-full bg-[#050a14] border border-white/10 rounded-xl px-4 py-2.5 text-gray-300 text-xs focus:outline-none focus:border-purple-500 transition-colors shadow-inner font-medium resize-none"
+          className="w-full bg-[#050a14] border border-[#1e293b] rounded-[2px] px-3.5 py-2 text-gray-300 text-xs font-medium focus:outline-none focus:border-[#facc15] transition-colors shadow-inner resize-none"
           placeholder="Etkinlik kuralları, nerede yapılacağı ve detaylar..."
         />
       </div>
 
       <div>
-        <label className="block text-xs font-bold uppercase tracking-wider text-amber-400 mb-1.5 flex items-center gap-1">
-          <Gift size={14} /> Ödül Tanımı (Opsiyonel)
+        <label className="block text-xs font-black uppercase tracking-wider text-[#facc15] mb-1.5 flex items-center gap-1">
+          <Gift size={14} /> ÖDÜL TANIMI (OPSİYONEL)
         </label>
         <input 
           type="text" 
           name="reward_text" 
-          className="w-full bg-[#050a14] border border-white/10 rounded-xl px-4 py-2.5 text-amber-300 text-xs font-semibold focus:outline-none focus:border-amber-500 transition-colors shadow-inner"
+          className="w-full bg-[#050a14] border border-[#1e293b] rounded-[2px] px-3.5 py-2 text-[#facc15] text-xs font-bold focus:outline-none focus:border-[#facc15] transition-colors shadow-inner"
           placeholder="Örn: 50 Kredi + Özel Şampiyon Rozeti + NADİRE!"
         />
       </div>
 
       <div>
-        <label className="block text-xs font-bold uppercase tracking-wider text-pink-400 mb-1.5 flex items-center gap-1">
-          <ImageIcon size={14} /> Afiş / Banner URL Adresi
+        <label className="block text-xs font-black uppercase tracking-wider text-pink-400 mb-1.5 flex items-center gap-1">
+          <ImageIcon size={14} /> AFİŞ / BANNER URL ADRESİ
         </label>
         <input 
           type="url" 
           name="image_url" 
           value={imageUrl}
           onChange={(e) => setImageUrl(e.target.value)}
-          className="w-full bg-[#050a14] border border-white/10 rounded-xl px-4 py-2.5 text-gray-300 text-xs focus:outline-none focus:border-pink-500 transition-colors"
+          className="w-full bg-[#050a14] border border-[#1e293b] rounded-[2px] px-3.5 py-2 text-gray-300 text-xs font-bold focus:outline-none focus:border-pink-500 transition-colors"
           placeholder="https://..."
         />
 
         {imageUrl ? (
-          <div className="mt-3 relative rounded-xl overflow-hidden border-2 border-white/20 aspect-video bg-black/50 group">
+          <div className="mt-3 relative rounded-[2px] overflow-hidden border border-[#1e293b] aspect-video bg-black/50 group">
             <img src={imageUrl} alt="Afiş Önizleme" className="w-full h-full object-cover" />
           </div>
         ) : (
-          <div className="mt-2 border-2 border-dashed border-white/10 rounded-xl h-24 flex items-center justify-center text-gray-500 text-xs bg-black/20">
+          <div className="mt-2 border border-dashed border-[#1e293b] rounded-[2px] h-24 flex items-center justify-center text-gray-400 text-xs font-black uppercase tracking-wide bg-black/20">
             Afiş görseli URL'si yapıştırıldığında burada önizleme belirecektir.
           </div>
         )}
@@ -133,9 +133,9 @@ export default function EventForm() {
       <button 
         type="submit" 
         disabled={loading}
-        className="habbo-button w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-black py-3.5 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 text-sm uppercase disabled:opacity-50 mt-2"
+        className="habbo-button w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-black py-3 rounded-[2px] shadow transition-all flex items-center justify-center gap-2 text-xs uppercase tracking-wider disabled:opacity-50 mt-2"
       >
-        <CheckCircle2 size={18} />
+        <CheckCircle2 size={16} />
         {loading ? 'TAKVİME İŞLENİYOR...' : 'ETKİNLİĞİ TAKVİME YAYINLA'}
       </button>
     </form>

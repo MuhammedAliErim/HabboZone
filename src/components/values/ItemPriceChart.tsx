@@ -44,10 +44,10 @@ export default function ItemPriceChart({ data, currencyType }: { data: DataPoint
             content={({ active, payload, label }) => {
               if (active && payload && payload.length) {
                 return (
-                  <div className="bg-black/80 border border-white/20 p-3 rounded-lg shadow-xl backdrop-blur-sm">
-                    <p className="text-white/60 text-xs mb-1">{label}</p>
-                    <p className="font-black text-primary text-lg flex items-center gap-1">
-                      {payload[0].value} <span className="text-xs uppercase text-white/50">{currencyType}</span>
+                  <div className="bg-[#0a1325] border border-[#1e293b] p-3 rounded-[2px] shadow-xl">
+                    <p className="text-gray-400 text-[10px] font-black uppercase tracking-wider mb-1">{label}</p>
+                    <p className="font-black text-[#facc15] text-base flex items-center gap-1">
+                      {payload[0].value} <span className="text-[10px] font-black uppercase text-gray-400">{currencyType}</span>
                     </p>
                   </div>
                 );

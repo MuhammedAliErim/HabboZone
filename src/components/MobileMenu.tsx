@@ -32,9 +32,9 @@ export default function MobileMenu({ profile }: { profile: any }) {
     <div className="lg:hidden flex items-center">
       <button 
         onClick={() => setIsOpen(true)}
-        className="w-10 h-10 bg-[#1e293b] rounded-lg border border-gray-700 flex items-center justify-center text-white ml-2"
+        className="w-10 h-10 bg-[#050a14] hover:bg-[#0a1325] rounded-[2px] border border-[#1e293b] hover:border-[#facc15] flex items-center justify-center text-white ml-2 transition-colors shadow"
       >
-        <Menu size={24} />
+        <Menu size={22} />
       </button>
 
       <AnimatePresence>
@@ -45,30 +45,30 @@ export default function MobileMenu({ profile }: { profile: any }) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsOpen(false)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100]"
+              className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100]"
             />
             <motion.div 
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed top-0 right-0 h-full w-[280px] bg-[#090e17] border-l-2 border-black shadow-[-8px_0_0_rgba(0,0,0,0.5)] z-[101] flex flex-col"
+              className="fixed top-0 right-0 h-full w-[280px] habbo-box bg-[#0a1325] border-l border-[#1e293b] shadow-2xl z-[101] flex flex-col"
             >
-              <div className="h-[80px] flex items-center justify-between px-6 border-b border-white/10 flex-none">
+              <div className="h-[80px] flex items-center justify-between px-6 border-b border-[#1e293b] bg-[#050a14] flex-none">
                 <div className="font-black leading-[0.8] tracking-tight">
                   <div className="text-[#facc15] text-[20px]">HABBO</div>
                   <div className="text-white text-[20px]">ZONE</div>
                 </div>
-                <button onClick={() => setIsOpen(false)} className="w-8 h-8 flex items-center justify-center bg-white/10 rounded text-white hover:bg-white/20 transition-colors">
-                  <X size={20} />
+                <button onClick={() => setIsOpen(false)} className="w-8 h-8 flex items-center justify-center bg-[#0a1325] border border-[#1e293b] rounded-[2px] text-white hover:border-[#facc15] hover:text-[#facc15] transition-colors">
+                  <X size={18} />
                 </button>
               </div>
 
-              <div className="p-4 border-b border-white/10">
+              <div className="p-4 border-b border-[#1e293b] bg-[#050a14]/50">
                 <GlobalSearch />
               </div>
 
-              <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-2">
+              <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-2 custom-scrollbar">
                 {navItems.map((item) => {
                   const isActive = item.href === '/' 
                     ? pathname === '/' 
@@ -79,14 +79,14 @@ export default function MobileMenu({ profile }: { profile: any }) {
                       key={item.href}
                       href={item.href}
                       onClick={() => setIsOpen(false)}
-                      className={`flex items-center gap-3 p-3 rounded-lg border-2 transition-all ${
+                      className={`flex items-center gap-3 p-3 rounded-[2px] border transition-all ${
                         isActive 
-                          ? 'border-[#facc15] bg-[#facc15]/10 text-white' 
-                          : 'border-transparent text-gray-400 hover:bg-white/5 hover:text-white'
+                          ? 'border-[#facc15] bg-[#facc15]/10 text-white shadow-[0_0_10px_rgba(250,204,21,0.2)]' 
+                          : 'border-[#1e293b] bg-[#050a14] text-gray-400 hover:border-[#3b82f6] hover:bg-[#0a1325] hover:text-white'
                       }`}
                     >
-                      <item.icon size={20} className={isActive ? 'text-[#facc15]' : ''} />
-                      <span className="font-bold text-sm tracking-wide">{item.label}</span>
+                      <item.icon size={18} className={isActive ? 'text-[#facc15]' : 'text-gray-400'} />
+                      <span className="font-black text-xs uppercase tracking-wider">{item.label}</span>
                     </Link>
                   );
                 })}

@@ -187,14 +187,14 @@ export default async function Home() {
       <div className="max-w-[1200px] mx-auto px-4 -mt-8 relative z-20">
          <div className="habbo-box p-4 flex justify-between items-center shadow-xl gap-4 flex-wrap">
             {[
-              { icon: Newspaper, title: 'HABERLER', desc: 'En güncel duyurular', color: 'text-yellow-400' },
-              { icon: BookOpen, title: 'GAZETE', desc: 'Habbo Zone Gazetesi', color: 'text-green-400' },
-              { icon: MessageSquare, title: 'REHBERLER', desc: 'Strateji ve ipuçları', color: 'text-blue-400' },
-              { icon: Users, title: 'TOPLULUK', desc: 'Habbo severler burada', color: 'text-orange-400' },
-              { icon: Gift, title: 'ETKİNLİKLER', desc: 'Yarışmalar & Etkinlikler', color: 'text-purple-400' },
-              { icon: ShoppingBag, title: 'DEĞERLER', desc: 'Nadir Eşyalar & Fiyatlar', color: 'text-pink-400' }
+              { icon: Newspaper, title: 'HABERLER', desc: 'En güncel duyurular', color: 'text-yellow-400', href: '/news' },
+              { icon: BookOpen, title: 'GAZETE', desc: 'Habbo Zone Gazetesi', color: 'text-green-400', href: '/magazines' },
+              { icon: MessageSquare, title: 'REHBERLER', desc: 'Strateji ve ipuçları', color: 'text-blue-400', href: '/guides' },
+              { icon: Users, title: 'TOPLULUK', desc: 'Habbo severler burada', color: 'text-orange-400', href: '/forum' },
+              { icon: Gift, title: 'ETKİNLİKLER', desc: 'Yarışmalar & Etkinlikler', color: 'text-purple-400', href: '/events' },
+              { icon: ShoppingBag, title: 'DEĞERLER', desc: 'Nadir Eşyalar & Fiyatlar', color: 'text-pink-400', href: '/values' }
             ].map((item, i) => (
-              <Link key={i} href="#" className="flex items-center gap-3 flex-1 min-w-[150px] group cursor-pointer hover:bg-[#1e293b] p-2 rounded-[6px] transition-colors">
+              <Link key={i} href={item.href} className="flex items-center gap-3 flex-1 min-w-[150px] group cursor-pointer hover:bg-[#1e293b] p-2 rounded-[6px] transition-colors">
                 <item.icon size={28} strokeWidth={1.5} className={`${item.color} group-hover:scale-110 transition-transform`} />
                 <div className="flex flex-col">
                   <span className="text-white font-bold text-[13px] tracking-wide group-hover:text-white">{item.title}</span>
@@ -318,14 +318,14 @@ export default async function Home() {
                   <Link href="/forum" className="text-gray-400 hover:text-white text-[11px] font-bold flex items-center gap-1 uppercase">TÜMÜ <ArrowRight size={12} /></Link>
                </div>
                <div className="habbo-box p-2 flex flex-col gap-1">
-                  {[
+                   {[
                     'Yeni nadir geldi!',
                     'Habbo 20. Yıl kutlaması başlıyor!',
                     'Best Habbo Odaları',
                     'Güvenli Takas Rehberi',
                     'Habbo\'nun Eski Dönemleri'
                   ].map((topic, i) => (
-                    <Link key={i} href="#" className="flex items-center gap-2 p-2 hover:bg-[#1e293b] rounded-[4px] transition-colors group">
+                    <Link key={i} href="/forum" className="flex items-center gap-2 p-2 hover:bg-[#1e293b] rounded-[4px] transition-colors group">
                        <Flame size={14} className="text-orange-500 group-hover:scale-125 transition-transform" />
                        <span className="text-gray-200 text-[13px] font-medium group-hover:text-white">{topic}</span>
                     </Link>
@@ -363,7 +363,7 @@ export default async function Home() {
                   <div>
                     <h3 className="text-white font-bold text-[14px] mb-1">HabboZone Discord</h3>
                     <p className="text-gray-400 text-[11px] mb-3">Sohbete katıl, etkinlikleri kaçırma ve yeni arkadaşlar edin!</p>
-                    <Link href="#" className="inline-block bg-[#5865F2] hover:bg-[#4752C4] text-white px-6 py-2 rounded-[4px] font-bold text-[12px] transition-colors">
+                    <Link href="https://discord.gg/habbozone" target="_blank" rel="noopener noreferrer" className="inline-block bg-[#5865F2] hover:bg-[#4752C4] text-white px-6 py-2 rounded-[4px] font-bold text-[12px] transition-colors">
                       Topluluğa Katıl
                     </Link>
                   </div>
@@ -429,12 +429,12 @@ export default async function Home() {
                </div>
                <div className="grid grid-cols-4 gap-2 habbo-box p-3">
                   {[
-                    { icon: Newspaper, label: 'Habbo Hotel' },
-                    { icon: BookOpen, label: 'Habbo Rehber' },
-                    { icon: MessageSquare, label: 'Habbo Forum' },
-                    { icon: LifeBuoy, label: 'Destek Merkezi' }
+                    { icon: Newspaper, label: 'Habbo Hotel', href: 'https://www.habbo.com.tr' },
+                    { icon: BookOpen, label: 'Habbo Rehber', href: '/guides' },
+                    { icon: MessageSquare, label: 'Habbo Forum', href: '/forum' },
+                    { icon: LifeBuoy, label: 'Destek Merkezi', href: '/contact' }
                   ].map((item, i) => (
-                    <Link key={i} href="#" className="flex flex-col items-center gap-1.5 p-2 hover:bg-[#1e293b] rounded-[4px] transition-colors group text-center">
+                    <Link key={i} href={item.href} className="flex flex-col items-center gap-1.5 p-2 hover:bg-[#1e293b] rounded-[4px] transition-colors group text-center">
                       <div className="w-8 h-8 rounded bg-[#0a1325] border border-[#1e293b] flex items-center justify-center text-[#facc15] group-hover:scale-110 transition-transform">
                          <item.icon size={16} />
                       </div>

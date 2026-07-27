@@ -43,7 +43,7 @@ export default async function TagPage({ params }: Props) {
     notFound();
   }
 
-  let items: any[] = [];
+  const items: any[] = [];
 
   try {
     // 2. Try fetching from polymorphic taggables
@@ -200,22 +200,22 @@ export default async function TagPage({ params }: Props) {
   return (
     <div className="max-w-[1000px] mx-auto w-full py-12 px-4">
       {/* Header */}
-      <div className="mb-10 relative overflow-hidden rounded-xl border-2 border-black shadow-[8px_8px_0_#000] min-h-[250px] flex items-center justify-center">
+      <div className="mb-10 relative overflow-hidden habbo-box bg-[#0a1325] border border-[#1e293b] rounded-[3px] shadow min-h-[220px] flex items-center justify-center">
         {/* Abstract Background Image */}
         <div className="absolute inset-0 z-0">
-           <img src="/images/assets/Gemini_Generated_Image_2zj0l42zj0l42zj0.png" className="w-full h-full object-cover opacity-30 pixelated" alt="Tag Background" onError={(e) => (e.currentTarget.style.display = 'none')} />
-           <div className="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-[#0f172a]/80 to-transparent"></div>
+           <img src="/images/assets/Gemini_Generated_Image_2zj0l42zj0l42zj0.png" className="w-full h-full object-cover opacity-20 pixelated" alt="Tag Background" onError={(e) => (e.currentTarget.style.display = 'none')} />
+           <div className="absolute inset-0 bg-gradient-to-t from-[#0a1325] via-[#0a1325]/80 to-transparent"></div>
         </div>
         
         <div className="relative z-10 text-center p-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-[#1e293b] rounded-full border-4 border-[#38bdf8] shadow-[0_0_20px_rgba(56,189,248,0.3)] mb-4">
-            <Hash size={32} className="text-[#38bdf8]" />
+          <div className="inline-flex items-center justify-center w-14 h-14 bg-[#050a14] rounded-[2px] border border-[#1e293b] shadow mb-4">
+            <Hash size={28} className="text-[#facc15]" />
           </div>
-          <h1 className="text-4xl md:text-5xl font-black text-white mb-3 tracking-tight drop-shadow-lg">
+          <h1 className="text-4xl md:text-5xl font-black text-white mb-3 tracking-tight uppercase" style={{ textShadow: '2px 2px 0 #000' }}>
             {tag.name}
           </h1>
-          <p className="text-gray-300 text-lg font-bold bg-black/40 px-4 py-1 rounded-full inline-block backdrop-blur-sm border border-gray-700">
-            Bu etiketle ilgili <strong className="text-white">{items.length}</strong> içerik bulundu
+          <p className="text-gray-300 text-xs font-black uppercase tracking-wider bg-[#050a14]/80 px-3 py-1 rounded-[2px] inline-block border border-[#1e293b]">
+            BU ETİKETLE İLGİLİ <strong className="text-[#facc15]">{items.length}</strong> İÇERİK BULUNDU
           </p>
         </div>
       </div>
@@ -227,9 +227,9 @@ export default async function TagPage({ params }: Props) {
             <Link
               href={item.url}
               key={`${item._type}-${item.id}`}
-              className="bg-[#1e293b] border-2 border-black rounded-lg hover:border-[#38bdf8] hover:-translate-y-2 transition-all shadow-[4px_4px_0_#000] flex flex-col group overflow-hidden"
+              className="habbo-box bg-[#0a1325] border border-[#1e293b] rounded-[3px] hover:border-[#facc15] hover:-translate-y-1 transition-all shadow flex flex-col group overflow-hidden"
             >
-              <div className="h-40 w-full relative border-b-2 border-black bg-[#0a1325]">
+              <div className="h-40 w-full relative border-b border-[#1e293b] bg-[#050a14]">
                 {item.imageUrl ? (
                   <img src={item.imageUrl} alt={item.title} className="w-full h-full object-cover pixelated group-hover:scale-105 transition-transform duration-500" />
                 ) : (
@@ -238,20 +238,20 @@ export default async function TagPage({ params }: Props) {
                   </div>
                 )}
                 
-                <div className="absolute top-2 right-2 bg-black/80 backdrop-blur-sm px-2 py-1 rounded-[4px] flex items-center gap-1.5 border border-gray-700">
+                <div className="absolute top-2 right-2 bg-[#050a14]/90 px-2 py-1 rounded-[2px] flex items-center gap-1.5 border border-[#1e293b]">
                   {getTypeIcon(item._type)}
-                  <span className="text-[10px] font-bold text-white uppercase tracking-wider">{getTypeName(item._type)}</span>
+                  <span className="text-[10px] font-black text-white uppercase tracking-wider">{getTypeName(item._type)}</span>
                 </div>
               </div>
               
               <div className="p-4 flex flex-col flex-1">
-                <h3 className="text-white font-bold text-lg leading-tight mb-2 group-hover:text-[#38bdf8] transition-colors">{item.title}</h3>
+                <h3 className="text-white font-black uppercase tracking-tight text-base leading-tight mb-2 group-hover:text-[#facc15] transition-colors">{item.title}</h3>
                 {item.description && (
-                  <p className="text-gray-400 text-sm line-clamp-3 mb-4">
+                  <p className="text-gray-400 text-xs line-clamp-3 mb-4 font-medium">
                     {item.description}
                   </p>
                 )}
-                <div className="mt-auto flex items-center text-gray-500 text-[11px] font-bold">
+                <div className="mt-auto flex items-center text-gray-500 text-[10px] font-bold uppercase tracking-wider">
                   {new Date(item.date).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' })}
                 </div>
               </div>
@@ -259,13 +259,13 @@ export default async function TagPage({ params }: Props) {
           ))}
         </div>
       ) : (
-        <div className="bg-[#1e293b] border-2 border-dashed border-gray-700 rounded-lg p-16 text-center flex flex-col items-center">
-          <Hash size={48} className="text-gray-600 mb-4" />
-          <h3 className="text-xl font-black text-white mb-2">İçerik Bulunamadı</h3>
-          <p className="text-gray-400 text-sm">
+        <div className="habbo-box bg-[#0a1325] border border-[#1e293b] rounded-[3px] p-16 text-center flex flex-col items-center">
+          <Hash size={40} className="text-[#facc15] mb-4" />
+          <h3 className="text-base font-black uppercase tracking-wider text-white mb-2">İÇERİK BULUNAMADI</h3>
+          <p className="text-gray-400 text-xs max-w-md mb-6">
             Şu anda bu etikete ait herhangi bir içerik bulunmuyor.
           </p>
-          <Link href="/" className="mt-6 habbo-button success px-6 py-2">
+          <Link href="/" className="habbo-button px-6 py-2 text-xs font-black uppercase tracking-wider">
             ANA SAYFAYA DÖN
           </Link>
         </div>

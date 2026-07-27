@@ -109,21 +109,21 @@ export default function TradeCalculatorTool() {
     <div className="space-y-6 text-white font-sans">
       
       {/* Üst Bilgi */}
-      <div className="bg-[#070e1d] border border-[#1e293b] rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="habbo-box bg-[#0a1325] border border-[#1e293b] rounded-[3px] p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow">
         <div className="flex items-center gap-3">
-          <div className="p-2.5 rounded-lg bg-yellow-500/10 border border-yellow-500/20 text-yellow-400 shrink-0">
-            <ArrowRightLeft className="w-6 h-6" />
+          <div className="p-2.5 rounded-[2px] bg-[#050a14] border border-[#1e293b] text-[#facc15] shrink-0">
+            <ArrowRightLeft className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="text-sm font-black text-white">Canlı Nadire Takas Değer Hesaplayıcısı</h3>
-            <p className="text-xs text-gray-400">Teklifleri sepetinize ekleyin; Kredi ve Elmas endeksine göre kâr/zarar durumunu görün.</p>
+            <h3 className="text-xs font-black text-white uppercase tracking-wider">CANLI NADİRE TAKAS DEĞER HESAPLAYICISI</h3>
+            <p className="text-xs text-gray-300 font-medium mt-0.5">Teklifleri sepetinize ekleyin; Kredi ve Elmas endeksine göre kâr/zarar durumunu görün.</p>
           </div>
         </div>
         <button
           onClick={handleCopyAnalysis}
-          className="bg-[#1e293b] hover:bg-[#334155] border border-white/10 text-white font-bold px-3 py-2 rounded-lg text-xs flex items-center gap-1.5 transition-all shrink-0"
+          className="bg-[#050a14] hover:bg-[#1e293b] border border-[#1e293b] hover:border-[#facc15] text-white font-black px-4 py-2 rounded-[2px] text-xs flex items-center gap-1.5 transition-colors shrink-0 uppercase tracking-tight shadow"
         >
-          {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4 text-gray-300" />}
+          {copied ? <Check className="w-4 h-4 text-[#22c55e]" /> : <Copy className="w-4 h-4 text-[#3b82f6]" />}
           {copied ? 'ANALİZ KOPYALANDI!' : 'SONUCU KOPYALA / PAYLAŞ'}
         </button>
       </div>
@@ -132,14 +132,14 @@ export default function TradeCalculatorTool() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         
         {/* SOL: BENİM TEKLİFİM */}
-        <div className="bg-[#070e1d] border border-emerald-500/30 rounded-xl p-4 space-y-4">
-          <div className="flex justify-between items-center border-b border-white/10 pb-2">
-            <span className="text-xs font-black uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+        <div className="habbo-box bg-[#0a1325] border border-[#1e293b] rounded-[3px] p-4 space-y-4 shadow">
+          <div className="flex justify-between items-center border-b border-[#1e293b] pb-2.5">
+            <span className="text-xs font-black uppercase tracking-wider text-[#22c55e] flex items-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5" /> SENİN VERDİKLERİN
             </span>
             <div className="text-right">
-              <span className="text-xs font-black text-yellow-400">{myTotal.credits} Kredi</span>
-              <span className="text-[11px] text-cyan-300 ml-2 font-bold">+ {myTotal.diamonds} Elmas</span>
+              <span className="text-xs font-black text-[#facc15]">{myTotal.credits} Kredi</span>
+              <span className="text-[11px] text-[#3b82f6] ml-2 font-black">+ {myTotal.diamonds} Elmas</span>
             </div>
           </div>
 
@@ -148,7 +148,7 @@ export default function TradeCalculatorTool() {
             <select
               value={selectedMyItemId}
               onChange={(e) => setSelectedMyItemId(e.target.value)}
-              className="flex-1 bg-[#0a1325] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white font-bold focus:outline-none focus:border-emerald-500"
+              className="flex-1 bg-[#050a14] border border-[#1e293b] rounded-[2px] px-2.5 py-2 text-xs text-white font-black focus:outline-none focus:border-[#22c55e]"
             >
               {POPULAR_RARES.map(r => (
                 <option key={r.id} value={r.id}>{r.icon} {r.name} ({r.credits}c + {r.diamonds}e)</option>
@@ -156,27 +156,27 @@ export default function TradeCalculatorTool() {
             </select>
             <button
               onClick={addToMyOffer}
-              className="bg-emerald-600 hover:bg-emerald-500 text-white font-black px-3 py-1.5 rounded-lg text-xs flex items-center gap-1 transition-all shrink-0 shadow"
+              className="bg-[#22c55e] hover:bg-[#16a34a] border border-[#16a34a] text-black font-black px-4 py-2 rounded-[2px] text-xs flex items-center gap-1 transition-colors shrink-0 shadow uppercase"
             >
-              <Plus className="w-3.5 h-3.5" /> Ekle
+              <Plus className="w-3.5 h-3.5" /> EKLE
             </button>
           </div>
 
           {/* Liste */}
           <div className="space-y-1.5 max-h-[160px] overflow-y-auto pr-1">
             {myOffer.length === 0 ? (
-              <div className="text-center py-6 text-gray-500 text-xs font-medium">Sepet boş. Yukarıdan nadire ekleyin.</div>
+              <div className="text-center py-6 text-gray-400 text-xs font-bold bg-[#050a14] rounded-[2px] border border-[#1e293b]">Sepet boş. Yukarıdan nadire ekleyin.</div>
             ) : (
               myOffer.map((o, idx) => (
-                <div key={idx} className="flex items-center justify-between bg-[#0a1325] border border-white/5 px-3 py-2 rounded-lg text-xs">
+                <div key={idx} className="flex items-center justify-between bg-[#050a14] border border-[#1e293b] px-3 py-2 rounded-[2px] text-xs">
                   <div className="flex items-center gap-2 truncate">
                     <span className="text-base">{o.item.icon}</span>
-                    <span className="font-bold text-white">{o.item.name}</span>
-                    <span className="text-[10px] font-black text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20">x{o.qty}</span>
+                    <span className="font-black text-white uppercase tracking-tight">{o.item.name}</span>
+                    <span className="text-[10px] font-black text-[#22c55e] bg-[#0a1325] px-1.5 py-0.5 rounded-[2px] border border-[#1e293b]">x{o.qty}</span>
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
-                    <span className="text-yellow-400 font-extrabold">{o.item.credits * o.qty}c</span>
-                    <button onClick={() => removeFromOffer('my', idx)} className="text-gray-500 hover:text-red-400 p-1">
+                    <span className="text-[#facc15] font-black">{o.item.credits * o.qty}c</span>
+                    <button onClick={() => removeFromOffer('my', idx)} className="text-gray-500 hover:text-red-400 p-1 transition-colors">
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
                   </div>
@@ -187,14 +187,14 @@ export default function TradeCalculatorTool() {
         </div>
 
         {/* SAĞ: KARŞI TEKLİF */}
-        <div className="bg-[#070e1d] border border-blue-500/30 rounded-xl p-4 space-y-4">
-          <div className="flex justify-between items-center border-b border-white/10 pb-2">
-            <span className="text-xs font-black uppercase tracking-wider text-blue-400 flex items-center gap-1.5">
+        <div className="habbo-box bg-[#0a1325] border border-[#1e293b] rounded-[3px] p-4 space-y-4 shadow">
+          <div className="flex justify-between items-center border-b border-[#1e293b] pb-2.5">
+            <span className="text-xs font-black uppercase tracking-wider text-[#3b82f6] flex items-center gap-1.5">
               <TrendingUp className="w-3.5 h-3.5" /> KARŞIDAN ALACAKLARIN
             </span>
             <div className="text-right">
-              <span className="text-xs font-black text-yellow-400">{theirTotal.credits} Kredi</span>
-              <span className="text-[11px] text-cyan-300 ml-2 font-bold">+ {theirTotal.diamonds} Elmas</span>
+              <span className="text-xs font-black text-[#facc15]">{theirTotal.credits} Kredi</span>
+              <span className="text-[11px] text-[#3b82f6] ml-2 font-black">+ {theirTotal.diamonds} Elmas</span>
             </div>
           </div>
 
@@ -203,7 +203,7 @@ export default function TradeCalculatorTool() {
             <select
               value={selectedTheirItemId}
               onChange={(e) => setSelectedTheirItemId(e.target.value)}
-              className="flex-1 bg-[#0a1325] border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white font-bold focus:outline-none focus:border-blue-500"
+              className="flex-1 bg-[#050a14] border border-[#1e293b] rounded-[2px] px-2.5 py-2 text-xs text-white font-black focus:outline-none focus:border-[#3b82f6]"
             >
               {POPULAR_RARES.map(r => (
                 <option key={r.id} value={r.id}>{r.icon} {r.name} ({r.credits}c + {r.diamonds}e)</option>
@@ -211,27 +211,27 @@ export default function TradeCalculatorTool() {
             </select>
             <button
               onClick={addToTheirOffer}
-              className="bg-blue-600 hover:bg-blue-500 text-white font-black px-3 py-1.5 rounded-lg text-xs flex items-center gap-1 transition-all shrink-0 shadow"
+              className="bg-[#2563eb] hover:bg-[#1d4ed8] border border-[#3b82f6] text-white font-black px-4 py-2 rounded-[2px] text-xs flex items-center gap-1 transition-colors shrink-0 shadow uppercase"
             >
-              <Plus className="w-3.5 h-3.5" /> Ekle
+              <Plus className="w-3.5 h-3.5" /> EKLE
             </button>
           </div>
 
           {/* Liste */}
           <div className="space-y-1.5 max-h-[160px] overflow-y-auto pr-1">
             {theirOffer.length === 0 ? (
-              <div className="text-center py-6 text-gray-500 text-xs font-medium">Sepet boş. Karşı tarafın eşyalarını ekleyin.</div>
+              <div className="text-center py-6 text-gray-400 text-xs font-bold bg-[#050a14] rounded-[2px] border border-[#1e293b]">Sepet boş. Karşı tarafın eşyalarını ekleyin.</div>
             ) : (
               theirOffer.map((o, idx) => (
-                <div key={idx} className="flex items-center justify-between bg-[#0a1325] border border-white/5 px-3 py-2 rounded-lg text-xs">
+                <div key={idx} className="flex items-center justify-between bg-[#050a14] border border-[#1e293b] px-3 py-2 rounded-[2px] text-xs">
                   <div className="flex items-center gap-2 truncate">
                     <span className="text-base">{o.item.icon}</span>
-                    <span className="font-bold text-white">{o.item.name}</span>
-                    <span className="text-[10px] font-black text-blue-400 bg-blue-500/10 px-1.5 py-0.5 rounded border border-blue-500/20">x{o.qty}</span>
+                    <span className="font-black text-white uppercase tracking-tight">{o.item.name}</span>
+                    <span className="text-[10px] font-black text-[#3b82f6] bg-[#0a1325] px-1.5 py-0.5 rounded-[2px] border border-[#1e293b]">x{o.qty}</span>
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
-                    <span className="text-yellow-400 font-extrabold">{o.item.credits * o.qty}c</span>
-                    <button onClick={() => removeFromOffer('their', idx)} className="text-gray-500 hover:text-red-400 p-1">
+                    <span className="text-[#facc15] font-black">{o.item.credits * o.qty}c</span>
+                    <button onClick={() => removeFromOffer('their', idx)} className="text-gray-500 hover:text-red-400 p-1 transition-colors">
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
                   </div>
@@ -244,30 +244,30 @@ export default function TradeCalculatorTool() {
       </div>
 
       {/* ALT: TAKAS ANALİZİ BANNERI */}
-      <div className={`p-4 rounded-xl border flex flex-col sm:flex-row items-center justify-between gap-4 transition-all duration-300 shadow-lg ${
+      <div className={`habbo-box p-4 rounded-[3px] border flex flex-col sm:flex-row items-center justify-between gap-4 transition-all duration-300 shadow ${
         diffIndex > 30 
-          ? 'bg-gradient-to-r from-emerald-950/60 to-emerald-900/40 border-emerald-500/50 text-emerald-200'
+          ? 'bg-[#0a1325] border-[#22c55e] text-emerald-200'
           : diffIndex < -30
-          ? 'bg-gradient-to-r from-red-950/60 to-red-900/40 border-red-500/50 text-red-200'
-          : 'bg-gradient-to-r from-yellow-950/60 to-amber-900/40 border-yellow-500/50 text-yellow-200'
+          ? 'bg-[#0a1325] border-[#ef4444] text-red-200'
+          : 'bg-[#0a1325] border-[#facc15] text-yellow-200'
       }`}>
         <div className="flex items-center gap-3">
           {diffIndex > 30 ? (
-            <CheckCircle2 className="w-8 h-8 text-emerald-400 shrink-0" />
+            <CheckCircle2 className="w-8 h-8 text-[#22c55e] shrink-0" />
           ) : diffIndex < -30 ? (
-            <AlertTriangle className="w-8 h-8 text-red-400 shrink-0" />
+            <AlertTriangle className="w-8 h-8 text-[#ef4444] shrink-0" />
           ) : (
-            <Coins className="w-8 h-8 text-yellow-400 shrink-0" />
+            <Coins className="w-8 h-8 text-[#facc15] shrink-0" />
           )}
           <div>
-            <div className="text-sm font-black uppercase tracking-wide">
+            <div className="text-xs font-black uppercase tracking-wider">
               {diffIndex > 30 
                 ? '🟢 KAZANÇLI & HARİKA TAKAS TEKLİFİ!' 
                 : diffIndex < -30 
                 ? '🔴 DİKKAT! ZARARLI TEKLİF (FAZLA ÖDEME)' 
                 : '🟡 ADİL & DENGELİ TAKAS TEKLİFİ'}
             </div>
-            <div className="text-xs opacity-90 mt-0.5">
+            <div className="text-xs text-gray-300 font-medium mt-1">
               {diffIndex > 30 
                 ? `Bu takastan yaklaşık ~${diffIndex} Kredi değerinde (+%${diffPercent}) kârlı çıkıyorsunuz.` 
                 : diffIndex < -30 
@@ -277,9 +277,9 @@ export default function TradeCalculatorTool() {
           </div>
         </div>
 
-        <div className="text-center sm:text-right shrink-0 bg-black/40 px-4 py-2 rounded-lg border border-white/10">
-          <span className="text-[10px] text-gray-400 uppercase font-bold block">Fark Değeri</span>
-          <span className={`text-base font-black ${diffIndex > 0 ? 'text-emerald-400' : diffIndex < 0 ? 'text-red-400' : 'text-yellow-400'}`}>
+        <div className="text-center sm:text-right shrink-0 bg-[#050a14] px-4 py-2 rounded-[2px] border border-[#1e293b]">
+          <span className="text-[9px] text-gray-400 uppercase font-black tracking-wider block">FARK DEĞERİ</span>
+          <span className={`text-sm font-black ${diffIndex > 0 ? 'text-[#22c55e]' : diffIndex < 0 ? 'text-[#ef4444]' : 'text-[#facc15]'}`}>
             {diffIndex > 0 ? `+${diffIndex} Kredi` : `${diffIndex} Kredi`}
           </span>
         </div>
