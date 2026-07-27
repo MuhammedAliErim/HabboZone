@@ -10,10 +10,7 @@ interface NewsItem {
   summary: string;
   thumbnail_url: string;
   published_at: string;
-  author?: {
-    username: string;
-    habbo_username: string;
-  } | null;
+  author?: { username: string; habbo_username: string } | { username: string; habbo_username: string }[] | null;
 }
 
 export const revalidate = 60; // Cache for 60 seconds

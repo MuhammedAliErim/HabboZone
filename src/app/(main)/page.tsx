@@ -19,10 +19,7 @@ interface NewsItem {
   summary: string;
   thumbnail_url: string;
   published_at: string;
-  author?: {
-    username: string;
-    habbo_username: string;
-  } | null;
+  author?: { username: string; habbo_username: string } | { username: string; habbo_username: string }[] | null;
 }
 
 interface Badge {
@@ -272,7 +269,7 @@ export default async function Home() {
                       </div>
                       <div className="flex flex-col gap-2 border-t border-[#1e293b]/50 pt-2">
                         <div className="flex justify-between items-center">
-                          <span className="flex items-center gap-1.5 text-white text-[11px] font-bold">{/* eslint-disable-next-line @next/next/no-img-element */}<img src={`https://www.habbo.com.tr/habbo-imaging/avatarimage?user=${news.author?.habbo_username || 'frank'}&direction=2&head_direction=2&action=&gesture=&size=s`} className="w-5 h-5 rounded-full bg-[#0a1325] pixelated border border-[#1e293b]" alt=""/> {news.author?.username || 'HabboZone'}</span>
+                          <span className="flex items-center gap-1.5 text-white text-[11px] font-bold">{/* eslint-disable-next-line @next/next/no-img-element */}<img src={`https://www.habbo.com.tr/habbo-imaging/avatarimage?user=${(Array.isArray(news.author) ? news.author[0]?.habbo_username : news.author?.habbo_username) || 'frank'}&direction=2&head_direction=2&action=&gesture=&size=s`} className="w-5 h-5 rounded-full bg-[#0a1325] pixelated border border-[#1e293b]" alt=""/> {(Array.isArray(news.author) ? news.author[0]?.username : news.author?.username) || 'HabboZone'}</span>
                           <span className="text-[#6b7280] text-[10px] font-bold">{new Date(news.published_at).toLocaleDateString('tr-TR')}</span>
                         </div>
                         <div className="flex justify-between items-center text-[#6b7280] text-[10px] font-bold">

@@ -116,7 +116,7 @@ export default function NewsComments({ newsId, initialComments }: { newsId: stri
               </p>
             </div>
             {/* Delete button if owner or admin */}
-            {user && (user.id === comment.author_id || ['Owner', 'Administrator', 'Moderator'].includes(user.profile?.role)) && (
+            {user && (user.id === comment.author_id || ['Owner', 'Administrator', 'Moderator'].includes(user.profile?.role ?? '')) && (
               <button 
                 onClick={() => handleDelete(comment.id)}
                 className="absolute top-4 right-4 text-[#ef4444] hover:text-red-400 transition-colors"
