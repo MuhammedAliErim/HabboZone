@@ -34,7 +34,7 @@ interface Event {
   id: string;
   title: string;
   description: string;
-  event_time: string;
+  event_date: string;
   host_username: string;
   event_type: string;
   reward_text: string;
@@ -72,8 +72,8 @@ export default async function Home() {
   const { data: events } = await supabase
     .from('events')
     .select('*')
-    .gte('event_time', new Date().toISOString()) // Only upcoming events
-    .order('event_time', { ascending: true })
+    .gte('event_date', new Date().toISOString()) // Only upcoming events
+    .order('event_date', { ascending: true })
     .limit(5);
 
   const { data: badges } = await supabase
@@ -439,9 +439,9 @@ export default async function Home() {
                       <div key={evt.id} className={`flex items-center justify-between p-2 bg-[#0a1325] border ${evtStyle.border} rounded-[4px] hover:bg-[#1e293b] transition-colors cursor-pointer`}>
                           <div className="flex items-center gap-3 w-full overflow-hidden">
                             <div className="flex flex-col items-center justify-center min-w-[40px] shrink-0">
-                                <span className={`text-[10px] font-black ${evtStyle.text}`}>{formatEventDay(evt.event_time)}</span>
+                                <span className={`text-[10px] font-black ${evtStyle.text}`}>{formatEventDay(evt.event_date)}</span>
                                 <span className="text-white text-[11px] font-bold">
-                                  {new Date(evt.event_time).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' })}
+                                  {new Date(evt.event_date).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' })}
                                 </span>
                             </div>
                             <div className="w-px h-8 bg-[#1e293b] shrink-0"></div>

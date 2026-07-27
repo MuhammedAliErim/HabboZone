@@ -32,7 +32,7 @@ CREATE INDEX IF NOT EXISTS idx_magazines_issue_number ON magazines(issue_number 
 CREATE INDEX IF NOT EXISTS idx_magazines_published_at ON magazines(published_at);
 
 -- Events
-CREATE INDEX IF NOT EXISTS idx_events_event_time ON events(event_time);
+CREATE INDEX IF NOT EXISTS idx_events_event_date ON events(event_date);
 CREATE INDEX IF NOT EXISTS idx_events_is_active ON events(is_active);
 
 -- Badges
