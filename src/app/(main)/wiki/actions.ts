@@ -46,7 +46,7 @@ export async function getWikiItemsByCategory(categorySlug: string) {
     .from('wiki_categories')
     .select('id, name, description')
     .eq('slug', categorySlug)
-    .single()
+    .maybeSingle()
 
   if (categoryError || !categoryData) {
     console.error('Category not found:', categoryError)
@@ -79,7 +79,7 @@ export async function getWikiItemBySlug(slug: string) {
     .from('wiki_items')
     .select('*, wiki_categories(name, slug)')
     .eq('slug', slug)
-    .single()
+    .maybeSingle()
 
   if (error) {
     console.error('Error fetching wiki item:', error)

@@ -35,7 +35,7 @@ async function checkAdmin() {
     .from('profiles')
     .select('role')
     .eq('id', user.id)
-    .single()
+    .maybeSingle()
 
   if (!profile || !['Owner', 'Developer', 'Administrator'].includes(profile.role)) {
     return { supabase: null as any, error: 'Yetkisiz erişim' }

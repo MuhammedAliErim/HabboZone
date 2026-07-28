@@ -36,10 +36,8 @@ export async function createMagazine(title: string, description: string = '') {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
-  if (!user) throw new Error("Giriş yapmanız gerekiyor.");
+  if (!user) return null;
 
-  // Veritabanı şemasına tam uyumlu insert: 
-  // magazines tablosu: id, title, issue_number, cover_image_url, pdf_url, read_link, published_at, created_at
   const { data, error } = await supabase
     .from('magazines')
     .insert({ 
@@ -53,7 +51,7 @@ export async function createMagazine(title: string, description: string = '') {
 
   if (error) {
     console.error("createMagazine err:", JSON.stringify(error));
-    throw new Error(error.message);
+    return null;
   }
   
   revalidatePath('/admin/magazines');
@@ -68,7 +66,10 @@ export async function updateMagazine(id: string, updates: Partial<Magazine>) {
     .update(updates)
     .eq('id', id);
 
-  if (error) throw new Error(error.message);
+  if (error) {
+    console.error("updateMagazine err:", JSON.stringify(error));
+    return;
+  }
   revalidatePath('/admin/magazines');
   revalidatePath(`/admin/magazines/${id}/edit`);
 }
@@ -120,7 +121,7 @@ export async function getMagazineWithPages(id: string) {
     .from('magazines')
     .select('*')
     .eq('id', id)
-    .single();
+    .maybeSingle();
 
   if (magErr || !magazine) {
     console.error("getMagazineWithPages mag err:", magErr?.message);
@@ -160,7 +161,10 @@ export async function saveMagazinePage(magazineId: string, pageNumber: number, l
       .from('magazine_pages')
       .update({ layout_data: layoutData, background_color: backgroundColor, background_image: backgroundImage })
       .eq('id', existingPage.id);
-    if (error) throw new Error(error.message);
+    if (error) {
+      console.error("saveMagazinePage update err:", JSON.stringify(error));
+      return;
+    }
   } else {
     // Yeni Ekle
     const { error } = await supabase
@@ -172,13 +176,19 @@ export async function saveMagazinePage(magazineId: string, pageNumber: number, l
         background_color: backgroundColor,
         background_image: backgroundImage
       });
-    if (error) throw new Error(error.message);
+    if (error) {
+      console.error("saveMagazinePage insert err:", JSON.stringify(error));
+      return;
+    }
   }
 }
 
 export async function deleteMagazine(id: string) {
   const supabase = await createClient();
   const { error } = await supabase.from('magazines').delete().eq('id', id);
-  if (error) throw new Error(error.message);
+  if (error) {
+    console.error("deleteMagazine err:", JSON.stringify(error));
+    return;
+  }
   revalidatePath('/admin/magazines');
 }

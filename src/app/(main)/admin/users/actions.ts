@@ -13,7 +13,7 @@ export async function updateUserRole(userId: string, newRole: string) {
     .from('profiles')
     .select('role')
     .eq('id', user.id)
-    .single()
+    .maybeSingle()
 
   if (!currentUserProfile || !['Owner', 'Developer', 'Administrator'].includes(currentUserProfile.role)) {
     return { error: 'Yetkisiz işlem' }
@@ -23,7 +23,7 @@ export async function updateUserRole(userId: string, newRole: string) {
     .from('profiles')
     .select('role')
     .eq('id', userId)
-    .single()
+    .maybeSingle()
 
   if (targetProfile) {
     if (targetProfile.role === 'Owner' && currentUserProfile.role !== 'Owner') {

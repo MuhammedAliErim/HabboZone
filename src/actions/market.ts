@@ -69,7 +69,7 @@ export const getItemDetails = cache(async (itemSlug: string) => {
       category:habbo_item_categories(name, slug)
     `)
     .eq('slug', itemSlug)
-    .single()
+    .maybeSingle()
     
   if (itemError) {
     console.error(`Error fetching market item ${itemSlug}:`, itemError)

@@ -48,7 +48,7 @@ export async function updateSession(request: NextRequest) {
       .from('profiles')
       .select('role')
       .eq('id', user.id)
-      .single()
+      .maybeSingle()
 
     const role = profile?.role || 'Member';
     const hasAdminAccess = ['Owner', 'Developer', 'Administrator', 'Moderator', 'Editor', 'Journalist'].includes(role);

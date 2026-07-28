@@ -22,7 +22,7 @@ export default async function AdminStaffPage() {
     .from('profiles')
     .select('role')
     .eq('id', user.id)
-    .single()
+    .maybeSingle()
 
   if (!profile || !['Owner', 'Developer', 'Administrator'].includes(profile.role)) {
     redirect('/')

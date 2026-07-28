@@ -38,10 +38,15 @@ export default async function AdminMagazinesPage() {
 
           <form action={async () => {
             'use server';
-            const { createMagazine } = await import('@/app/actions/magazine');
+            const { createMagazine } = await import('@/app/(main)/admin/magazines/actions');
             const { redirect } = await import('next/navigation');
-            const newMag = await createMagazine('Yeni Sayı', 'Yapay zeka ile hazırlanan yeni sayı açıklaması...');
-            redirect(`/admin/magazines/${newMag.id}/edit`);
+            const fd = new FormData();
+            fd.set('title', 'Yeni Sayı');
+            fd.set('issue_number', String(Math.floor(Math.random() * 8999) + 1000));
+            fd.set('cover_image_url', '/placeholder.png');
+            const result = await createMagazine(fd);
+            if (result?.error) return;
+            redirect('/admin/magazines');
           }}>
             <button 
               type="submit"
@@ -123,7 +128,7 @@ export default async function AdminMagazinesPage() {
                         </Link>
                         <form action={async () => {
                           'use server';
-                          const { deleteMagazine } = await import('@/app/actions/magazine');
+                          const { deleteMagazine } = await import('@/app/(main)/admin/magazines/actions');
                           await deleteMagazine(item.id);
                         }}>
                           <button 
