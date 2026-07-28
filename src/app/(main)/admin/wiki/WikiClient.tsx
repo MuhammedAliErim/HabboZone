@@ -20,7 +20,6 @@ export default function WikiClient({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   
-  // Arama ve Filtreleme
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
@@ -99,45 +98,45 @@ export default function WikiClient({
     setLoading(true);
     setError(null);
 
-    // Kategori kontrolü
     if (!formData.category_id) {
       setError("Lütfen bir kategori seçin.");
       setLoading(false);
       return;
     }
 
-    try {
-      const dataToSubmit = {
-        ...formData,
-        market_value: formData.market_value === '' ? null : formData.market_value,
-        release_date: formData.release_date === '' ? null : formData.release_date,
-      };
+    const dataToSubmit = {
+      ...formData,
+      market_value: formData.market_value === '' ? null : formData.market_value,
+      release_date: formData.release_date === '' ? null : formData.release_date,
+    };
 
-      if (isEditMode && editingId) {
-        await updateWikiItem(editingId, dataToSubmit);
-      } else {
-        await addWikiItem(dataToSubmit);
-      }
-      window.location.reload();
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
+    let result;
+    if (isEditMode && editingId) {
+      result = await updateWikiItem(editingId, dataToSubmit);
+    } else {
+      result = await addWikiItem(dataToSubmit);
     }
+
+    if (result?.error) {
+      setError(result.error);
+    } else {
+      window.location.reload();
+    }
+
+    setLoading(false);
   };
 
   const handleDelete = async (id: string) => {
     if (confirm('Bu eşyayı silmek istediğinize emin misiniz?')) {
-      try {
-        await deleteWikiItem(id);
+      const result = await deleteWikiItem(id);
+      if (result?.error) {
+        alert('Hata: ' + result.error);
+      } else {
         setItems(items.filter(c => c.id !== id));
-      } catch (err: any) {
-        alert('Hata: ' + err.message);
       }
     }
   };
 
-  // Filtrelenmiş Liste
   const filteredItems = items.filter(item => {
     const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
                           item.description?.toLowerCase().includes(searchTerm.toLowerCase());
@@ -171,7 +170,6 @@ export default function WikiClient({
         </div>
       </div>
 
-      {/* Filtreler */}
       <div className="bg-[#1e293b] border border-[#334155] rounded-xl p-4 mb-6 flex flex-col sm:flex-row gap-4">
         <div className="flex-1 relative">
           <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -285,7 +283,6 @@ export default function WikiClient({
         </div>
       </div>
 
-      {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-[#1e293b] border-2 border-black rounded-xl shadow-[8px_8px_0_#000] w-full max-w-2xl max-h-[90vh] overflow-y-auto animate-in fade-in zoom-in duration-200">

@@ -75,30 +75,35 @@ export default function CategoriesClient({ initialCategories }: { initialCategor
     setLoading(true);
     setError(null);
 
-    try {
-      if (isEditMode && editingId) {
-        await updateWikiCategory(editingId, formData);
+    let result;
+    if (isEditMode && editingId) {
+      result = await updateWikiCategory(editingId, formData);
+      if (!result?.error) {
         setCategories(categories.map(c => c.id === editingId ? { ...c, ...formData } : c));
-      } else {
-        await addWikiCategory(formData);
-        // Refresh page to get new categories with proper IDs
+      }
+    } else {
+      result = await addWikiCategory(formData);
+      if (!result?.error) {
         window.location.reload();
       }
-      closeModal();
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
     }
+
+    if (result?.error) {
+      setError(result.error);
+    } else {
+      closeModal();
+    }
+
+    setLoading(false);
   };
 
   const handleDelete = async (id: string) => {
     if (confirm('Bu kategoriyi silmek istediğinize emin misiniz? (İçindeki eşyalar da silinebilir veya hata verebilir)')) {
-      try {
-        await deleteWikiCategory(id);
+      const result = await deleteWikiCategory(id);
+      if (result?.error) {
+        alert('Hata: ' + result.error);
+      } else {
         setCategories(categories.filter(c => c.id !== id));
-      } catch (err: any) {
-        alert('Hata: ' + err.message);
       }
     }
   };
@@ -170,7 +175,6 @@ export default function CategoriesClient({ initialCategories }: { initialCategor
         </div>
       </div>
 
-      {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-[#1e293b] border-2 border-black rounded-xl shadow-[8px_8px_0_#000] w-full max-w-md overflow-hidden animate-in fade-in zoom-in duration-200">

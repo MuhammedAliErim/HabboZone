@@ -9,7 +9,7 @@ export async function submitGalleryImage(formData: FormData) {
 
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) {
-    throw new Error('Giriş yapmalısınız.')
+    return { error: 'Giriş yapmalısınız.' }
   }
 
   const file = formData.get('image') as File
@@ -17,10 +17,9 @@ export async function submitGalleryImage(formData: FormData) {
   const description = formData.get('description') as string
 
   if (!file || !title) {
-    throw new Error('Lütfen bir resim ve başlık girin.')
+    return { error: 'Lütfen bir resim ve başlık girin.' }
   }
 
-  // Upload to Storage
   const fileExt = file.name.split('.').pop()
   const fileName = `${uuidv4()}.${fileExt}`
   const filePath = `${fileName}`
@@ -31,14 +30,13 @@ export async function submitGalleryImage(formData: FormData) {
 
   if (uploadError) {
     console.error('Upload Error:', uploadError)
-    throw new Error('Resim yüklenirken hata oluştu.')
+    return { error: 'Resim yüklenirken hata oluştu.' }
   }
 
   const { data: { publicUrl } } = supabase.storage
     .from('gallery')
     .getPublicUrl(filePath)
 
-  // Insert to database
   const { error: dbError } = await supabase
     .from('gallery')
     .insert({
@@ -51,8 +49,9 @@ export async function submitGalleryImage(formData: FormData) {
 
   if (dbError) {
     console.error('DB Error:', dbError)
-    throw new Error('Kayıt oluşturulurken hata oluştu.')
+    return { error: 'Kayıt oluşturulurken hata oluştu.' }
   }
 
   revalidatePath('/gallery')
+  return { success: true }
 }

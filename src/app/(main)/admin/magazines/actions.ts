@@ -8,7 +8,7 @@ export async function createMagazine(formData: FormData) {
   const supabase = await createClient()
 
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Not authenticated')
+  if (!user) return { error: 'Not authenticated' }
 
   const title = formData.get('title') as string
   const issue_number = parseInt(formData.get('issue_number') as string, 10)
@@ -20,17 +20,12 @@ export async function createMagazine(formData: FormData) {
   const is_active = formData.get('is_active') === 'on'
 
   const { error } = await supabase.from('magazines').insert({
-    title,
-    issue_number,
-    cover_image_url,
-    pdf_url,
-    published_at,
-    is_active
+    title, issue_number, cover_image_url, pdf_url, published_at, is_active
   })
 
   if (error) {
     console.error('Error creating magazine:', error)
-    throw new Error('Failed to create magazine: ' + error.message)
+    return { error: 'Failed to create magazine: ' + error.message }
   }
 
   revalidatePath('/admin/magazines')
@@ -43,7 +38,7 @@ export async function updateMagazine(id: string, formData: FormData) {
   const supabase = await createClient()
 
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Not authenticated')
+  if (!user) return { error: 'Not authenticated' }
 
   const title = formData.get('title') as string
   const issue_number = parseInt(formData.get('issue_number') as string, 10)
@@ -54,21 +49,13 @@ export async function updateMagazine(id: string, formData: FormData) {
   const published_at = publishedAtInput ? new Date(publishedAtInput).toISOString() : new Date().toISOString()
   const is_active = formData.get('is_active') === 'on'
 
-  const { error } = await supabase
-    .from('magazines')
-    .update({
-      title,
-      issue_number,
-      cover_image_url,
-      pdf_url,
-      published_at,
-      is_active
-    })
-    .eq('id', id)
+  const { error } = await supabase.from('magazines').update({
+    title, issue_number, cover_image_url, pdf_url, published_at, is_active
+  }).eq('id', id)
 
   if (error) {
     console.error('Error updating magazine:', error)
-    throw new Error('Failed to update magazine: ' + error.message)
+    return { error: 'Failed to update magazine: ' + error.message }
   }
 
   revalidatePath('/admin/magazines')
@@ -84,10 +71,11 @@ export async function deleteMagazine(id: string) {
   
   if (error) {
     console.error('Error deleting magazine:', error)
-    throw new Error('Failed to delete magazine')
+    return { error: 'Failed to delete magazine' }
   }
 
   revalidatePath('/admin/magazines')
   revalidatePath('/magazines')
   revalidatePath('/')
+  return { success: true }
 }

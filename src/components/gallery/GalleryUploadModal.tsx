@@ -20,23 +20,23 @@ export default function GalleryUploadModal() {
     }
 
     setLoading(true)
-    try {
-      const formData = new FormData()
-      formData.append('image', file)
-      formData.append('title', title)
-      formData.append('description', description)
+    const formData = new FormData()
+    formData.append('image', file)
+    formData.append('title', title)
+    formData.append('description', description)
 
-      await submitGalleryImage(formData)
+    const result = await submitGalleryImage(formData)
+
+    if (result?.error) {
+      alert(result.error)
+    } else {
       alert('Resminiz başarıyla gönderildi! Yöneticiler onayladıktan sonra galeride yerini alacaktır.')
       setIsOpen(false)
       setTitle('')
       setDescription('')
       setFile(null)
-    } catch (err: any) {
-      alert(err.message || 'Bir hata oluştu')
-    } finally {
-      setLoading(false)
     }
+    setLoading(false)
   }
 
   return (

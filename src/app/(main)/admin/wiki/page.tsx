@@ -6,8 +6,12 @@ export const metadata = {
 };
 
 export default async function AdminWikiItemsPage() {
-  const items = await getAdminWikiItems();
-  const categories = await getAdminWikiCategories();
-  
+  const { data: items, error: itemsError } = await getAdminWikiItems();
+  const { data: categories, error: categoriesError } = await getAdminWikiCategories();
+
+  if (itemsError || categoriesError) {
+    return <div className="p-6 text-red-400">Veriler yüklenirken hata oluştu.</div>;
+  }
+
   return <WikiClient initialItems={items} categories={categories} />;
 }

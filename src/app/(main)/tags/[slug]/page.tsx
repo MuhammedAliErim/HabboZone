@@ -16,7 +16,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const resolvedParams = await params;
   const supabase = await createClient();
-  const { data: tag } = await supabase.from('tags').select('name').eq('slug', resolvedParams.slug).single();
+  const { data: tag } = await supabase.from('tags').select('name').eq('slug', resolvedParams.slug).maybeSingle();
 
   if (!tag) {
     return { title: 'Etiket Bulunamadı' };
@@ -37,7 +37,7 @@ export default async function TagPage({ params }: Props) {
     .from('tags')
     .select('id, name, slug')
     .eq('slug', resolvedParams.slug)
-    .single();
+    .maybeSingle();
 
   if (!tag) {
     notFound();

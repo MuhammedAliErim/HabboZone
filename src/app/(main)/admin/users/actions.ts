@@ -7,9 +7,8 @@ export async function updateUserRole(userId: string, newRole: string) {
   const supabase = await createClient()
 
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Not authenticated')
+  if (!user) return { error: 'Not authenticated' }
 
-  // Check if current user is Owner or Developer or Admin (Role Hierarchy logic)
   const { data: currentUserProfile } = await supabase
     .from('profiles')
     .select('role')
@@ -17,10 +16,9 @@ export async function updateUserRole(userId: string, newRole: string) {
     .single()
 
   if (!currentUserProfile || !['Owner', 'Developer', 'Administrator'].includes(currentUserProfile.role)) {
-    throw new Error('Yetkisiz işlem')
+    return { error: 'Yetkisiz işlem' }
   }
 
-  // Prevent modifying another Owner or Developer unless you are an Owner
   const { data: targetProfile } = await supabase
     .from('profiles')
     .select('role')
@@ -29,7 +27,7 @@ export async function updateUserRole(userId: string, newRole: string) {
 
   if (targetProfile) {
     if (targetProfile.role === 'Owner' && currentUserProfile.role !== 'Owner') {
-       throw new Error('Owner rolünü değiştiremezsiniz.')
+      return { error: 'Owner rolünü değiştiremezsiniz.' }
     }
   }
 
@@ -40,8 +38,9 @@ export async function updateUserRole(userId: string, newRole: string) {
 
   if (error) {
     console.error('Error updating role:', error)
-    throw new Error('Rol güncellenemedi')
+    return { error: 'Rol güncellenemedi' }
   }
 
   revalidatePath('/admin/users')
+  return { success: true }
 }

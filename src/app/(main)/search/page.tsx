@@ -87,7 +87,18 @@ export default async function SearchPage({ searchParams }: Props) {
         id: d.id, _type: 'wiki', title: d.name, description: d.description, url: `/wiki/item/${d.slug}`, imageUrl: d.image_url 
       })));
     }
-    // TODO: Add magazines, groups when those tables/pages are fully ready
+    if (tab === 'all' || tab === 'magazines') {
+      const { data } = await supabase.from('magazines').select('id, title, issue_number, cover_image_url, published_at').ilike('title', searchPattern).eq('is_active', true).limit(20);
+      if (data) results.push(...data.map(d => ({
+        id: d.id, _type: 'magazine', title: `${d.title} #${d.issue_number}`, description: null, url: `/magazines/${d.id}`, imageUrl: d.cover_image_url, date: d.published_at
+      })));
+    }
+    if (tab === 'all' || tab === 'groups') {
+      const { data } = await supabase.from('groups').select('id, name, description, slug, image_url').ilike('name', searchPattern).limit(20);
+      if (data) results.push(...data.map(d => ({
+        id: d.id, _type: 'group', title: d.name, description: d.description, url: `/groups/${d.slug}`, imageUrl: d.image_url
+      })));
+    }
   }
 
   const getTypeIcon = (type: string) => {

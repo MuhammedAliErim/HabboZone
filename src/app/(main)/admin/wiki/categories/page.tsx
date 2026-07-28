@@ -6,7 +6,11 @@ export const metadata = {
 };
 
 export default async function AdminWikiCategoriesPage() {
-  const categories = await getAdminWikiCategories();
-  
+  const { data: categories, error } = await getAdminWikiCategories();
+
+  if (error) {
+    return <div className="p-6 text-red-400">Kategoriler yüklenirken hata oluştu.</div>;
+  }
+
   return <CategoriesClient initialCategories={categories} />;
 }

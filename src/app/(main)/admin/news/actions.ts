@@ -8,7 +8,7 @@ export async function createNews(formData: FormData) {
   const supabase = await createClient()
 
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Not authenticated')
+  if (!user) return { error: 'Not authenticated' }
 
   const title = formData.get('title') as string
   const content = formData.get('content') as string
@@ -51,7 +51,7 @@ export async function updateNews(id: string, formData: FormData) {
   const supabase = await createClient()
 
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Not authenticated')
+  if (!user) return { error: 'Not authenticated' }
 
   const title = formData.get('title') as string
   const content = formData.get('content') as string

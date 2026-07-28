@@ -10,16 +10,16 @@ export async function createCategory(formData: FormData) {
   const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-')
   
   const { error } = await supabase.from('habbo_item_categories').insert({
-    name,
-    slug
+    name, slug
   })
 
   if (error) {
     console.error('Error creating category:', error)
-    throw new Error('Kategori eklenemedi')
+    return { error: 'Kategori eklenemedi' }
   }
 
   revalidatePath('/admin/values')
+  return { success: true }
 }
 
 export async function createItem(formData: FormData) {
@@ -33,19 +33,15 @@ export async function createItem(formData: FormData) {
   const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-' + Math.floor(Math.random() * 1000)
 
   const { error } = await supabase.from('habbo_items').insert({
-    category_id,
-    name,
-    slug,
-    current_value,
-    currency_type,
-    image_url
+    category_id, name, slug, current_value, currency_type, image_url
   })
 
   if (error) {
     console.error('Error creating item:', error)
-    throw new Error('Eşya eklenemedi')
+    return { error: 'Eşya eklenemedi' }
   }
 
   revalidatePath('/admin/values')
   revalidatePath('/values')
+  return { success: true }
 }

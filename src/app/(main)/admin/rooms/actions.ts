@@ -8,7 +8,7 @@ export async function createRoom(formData: FormData) {
   const supabase = await createClient()
 
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Not authenticated')
+  if (!user) return { error: 'Not authenticated' }
 
   const name = formData.get('name') as string
   const owner = formData.get('owner') as string
@@ -19,18 +19,12 @@ export async function createRoom(formData: FormData) {
   const image_url = formData.get('image_url') as string
 
   const { error } = await supabase.from('rooms').insert({
-    name,
-    owner,
-    description,
-    category,
-    max_users,
-    current_users,
-    image_url
+    name, owner, description, category, max_users, current_users, image_url
   })
 
   if (error) {
     console.error('Error creating room:', error)
-    throw new Error('Failed to create room: ' + error.message)
+    return { error: 'Failed to create room: ' + error.message }
   }
 
   revalidatePath('/admin/rooms')
@@ -43,7 +37,7 @@ export async function updateRoom(id: string, formData: FormData) {
   const supabase = await createClient()
 
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Not authenticated')
+  if (!user) return { error: 'Not authenticated' }
 
   const name = formData.get('name') as string
   const owner = formData.get('owner') as string
@@ -53,22 +47,13 @@ export async function updateRoom(id: string, formData: FormData) {
   const current_users = parseInt(formData.get('current_users') as string, 10) || 0
   const image_url = formData.get('image_url') as string
 
-  const { error } = await supabase
-    .from('rooms')
-    .update({
-      name,
-      owner,
-      description,
-      category,
-      max_users,
-      current_users,
-      image_url
-    })
-    .eq('id', id)
+  const { error } = await supabase.from('rooms').update({
+    name, owner, description, category, max_users, current_users, image_url
+  }).eq('id', id)
 
   if (error) {
     console.error('Error updating room:', error)
-    throw new Error('Failed to update room: ' + error.message)
+    return { error: 'Failed to update room: ' + error.message }
   }
 
   revalidatePath('/admin/rooms')
@@ -84,10 +69,11 @@ export async function deleteRoom(id: string) {
   
   if (error) {
     console.error('Error deleting room:', error)
-    throw new Error('Failed to delete room')
+    return { error: 'Failed to delete room' }
   }
 
   revalidatePath('/admin/rooms')
   revalidatePath('/rooms')
   revalidatePath('/')
+  return { success: true }
 }

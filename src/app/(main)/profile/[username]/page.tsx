@@ -53,7 +53,7 @@ export default async function ProfilePage({ params, searchParams }: { params: Pr
     .from('profiles')
     .select('*')
     .ilike('username', username)
-    .single();
+    .maybeSingle();
 
   if (!profile) {
     notFound();

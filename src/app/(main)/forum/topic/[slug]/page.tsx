@@ -17,7 +17,7 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
 
   let userProfile = null;
   if (user) {
-    const { data } = await supabase.from('profiles').select('*').eq('id', user.id).single();
+    const { data } = await supabase.from('profiles').select('*').eq('id', user.id).maybeSingle();
     userProfile = data;
   }
 
@@ -41,7 +41,7 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
       polls(id, question, is_multiple_choice, poll_options(id, option_text))
     `)
     .eq('slug', resolvedParams.slug)
-    .single();
+    .maybeSingle();
 
   if (dbTopic) {
     topic = dbTopic;
