@@ -1,6 +1,7 @@
 import { createClient } from '@/utils/supabase/server';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import DOMPurify from 'isomorphic-dompurify';
 import { ArrowLeft, MessageCircle, Clock, CheckCircle, ShieldCheck, Flame, MessageSquare } from 'lucide-react';
 import ReplyForm from './ReplyForm';
 import PollView from './PollView';
@@ -194,7 +195,7 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
           </div>
 
           <div className="p-6 flex flex-col flex-1 justify-between text-gray-200 leading-relaxed text-sm md:text-base">
-            <div className="prose prose-invert max-w-none space-y-4" dangerouslySetInnerHTML={{ __html: topic.content }} />
+            <div className="prose prose-invert max-w-none space-y-4" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(topic.content) }} />
             
             <div className="mt-8 pt-4 border-t border-[#1e293b] flex flex-wrap gap-4 justify-between items-center">
               <ReactionView targetId={topic.id} targetType="topic" currentUser={user} />
@@ -246,7 +247,7 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
                 </div>
                 
                 <div className="p-5 flex flex-col flex-1 justify-between text-gray-200 leading-relaxed text-sm md:text-base">
-                  <div className="prose prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: reply.content }} />
+                  <div className="prose prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(reply.content) }} />
                   
                   <div className="mt-6 pt-3 border-t border-[#1e293b] flex justify-end">
                     <ReactionView targetId={reply.id} targetType="reply" currentUser={user} />

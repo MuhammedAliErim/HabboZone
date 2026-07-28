@@ -3,21 +3,34 @@
 import { createClient } from '@/utils/supabase/server'
 import { revalidatePath } from 'next/cache'
 
-export async function addAnnouncement(formData: FormData) {
+async function checkAdmin() {
   const supabase = await createClient()
-  
-  const message = formData.get('message') as string
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { supabase: null as any, error: 'Not authenticated' }
 
-  if (!message) {
-    return { error: 'Mesaj zorunludur.' }
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', user.id)
+    .maybeSingle()
+
+  if (!profile || !['Owner', 'Developer', 'Administrator', 'Moderator'].includes(profile.role)) {
+    return { supabase: null as any, error: 'Yetkisiz işlem' }
   }
 
-  const { error } = await supabase
-    .from('announcements')
-    .insert({
-      message,
-      is_active: true
-    })
+  return { supabase, error: null as string | null }
+}
+
+export async function addAnnouncement(formData: FormData) {
+  const { supabase, error: authError } = await checkAdmin()
+  if (authError) return { error: authError }
+
+  const message = formData.get('message') as string
+  if (!message) return { error: 'Mesaj zorunludur.' }
+
+  const { error } = await supabase.from('announcements').insert({
+    message, is_active: true
+  })
 
   if (error) {
     console.error('Add announcement error:', error)
@@ -30,7 +43,8 @@ export async function addAnnouncement(formData: FormData) {
 }
 
 export async function toggleAnnouncement(id: string, currentStatus: boolean) {
-  const supabase = await createClient()
+  const { supabase, error: authError } = await checkAdmin()
+  if (authError) return { error: authError }
 
   const { error } = await supabase
     .from('announcements')
@@ -48,12 +62,10 @@ export async function toggleAnnouncement(id: string, currentStatus: boolean) {
 }
 
 export async function deleteAnnouncement(id: string) {
-  const supabase = await createClient()
+  const { supabase, error: authError } = await checkAdmin()
+  if (authError) return { error: authError }
 
-  const { error } = await supabase
-    .from('announcements')
-    .delete()
-    .eq('id', id)
+  const { error } = await supabase.from('announcements').delete().eq('id', id)
 
   if (error) {
     console.error('Delete announcement error:', error)

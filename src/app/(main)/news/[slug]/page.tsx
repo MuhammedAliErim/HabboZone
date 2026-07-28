@@ -1,6 +1,7 @@
 import { createClient } from '@/utils/supabase/server';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import DOMPurify from 'isomorphic-dompurify';
 import NewsComments from '@/components/NewsComments';
 import { Lock } from 'lucide-react';
 import Countdown from '@/components/Countdown';
@@ -290,7 +291,7 @@ export default async function NewsDetail({ params }: Props) {
                     <div 
                         id="article-content"
                         className="prose prose-sm md:prose-base max-w-none prose-headings:font-black prose-headings:text-white prose-a:text-[#38bdf8] hover:prose-a:text-[#7dd3fc] prose-p:text-gray-300 prose-p:leading-relaxed prose-strong:text-white prose-li:text-gray-300 prose-img:rounded-[4px] prose-img:border-2 prose-img:border-black prose-img:shadow-[4px_4px_0_#000]"
-                        dangerouslySetInnerHTML={{ __html: newsItem.content.replace(/\n/g, '<br/>') }} 
+                        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(newsItem.content.replace(/\n/g, '<br/>')) }} 
                     />
 
                     <div className="mt-12 pt-8 border-t border-gray-800 flex flex-col md:flex-row items-center justify-between gap-6">

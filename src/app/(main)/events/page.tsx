@@ -1,14 +1,14 @@
 import { createClient } from '@/utils/supabase/server';
 import { Calendar, Clock, Trophy, MapPin, Tag } from 'lucide-react';
 
-export const revalidate = 60; // Cache for 60 seconds
+export const revalidate = 60;
 
 export default async function EventsPage() {
   const supabase = await createClient();
 
   const { data: events } = await supabase
     .from('events')
-    .select('*, profiles:author_id(username)')
+    .select('*')
     .order('event_date', { ascending: false });
 
   const formatDeterministicDate = (dateStr?: string) => {
@@ -30,7 +30,6 @@ export default async function EventsPage() {
   return (
     <div className="max-w-[1200px] mx-auto px-4 pb-20 pt-6">
       
-      {/* AUTHENTIC HABBO HERO */}
       <div className="habbo-box mb-6 p-6 bg-[#0a1325] border border-[#1e293b] flex flex-col md:flex-row items-center justify-between gap-6">
         <div>
           <div className="flex items-center gap-2 mb-2">
@@ -58,7 +57,6 @@ export default async function EventsPage() {
         </div>
       </div>
 
-      {/* Section Header */}
       <div className="flex justify-between items-center border-b border-[#1e293b] pb-2 mb-4">
         <div className="flex items-center gap-2">
           <Calendar size={16} className="text-[#facc15]" />
@@ -67,7 +65,6 @@ export default async function EventsPage() {
         <span className="text-gray-400 text-[11px] font-bold uppercase">TOPLAM {events?.length || 0} ETKİNLİK</span>
       </div>
 
-      {/* List */}
       <div className="space-y-4">
         {events?.map((ev) => {
           const isActive = ev.is_active !== false; 
@@ -75,10 +72,8 @@ export default async function EventsPage() {
           return (
             <div key={ev.id} className={`flex flex-col md:flex-row gap-0 habbo-box bg-[#0a1325] border border-[#1e293b] transition-all ${!isActive ? 'opacity-70 bg-[#050a14]' : 'hover:border-[#3b82f6]'}`}>
               
-              {/* Thumbnail */}
               <div className="w-full md:w-72 shrink-0 bg-[#050a14] flex items-center justify-center p-4 relative min-h-[180px] border-b md:border-b-0 md:border-r border-[#1e293b] overflow-hidden">
                 {ev.image_url ? (
-                  // eslint-disable-next-line @next/next/no-img-element
                   <img src={ev.image_url} alt={ev.title} className="max-w-full max-h-48 object-contain filter drop-shadow" />
                 ) : (
                   <Calendar size={56} className="text-gray-600" />
@@ -99,7 +94,6 @@ export default async function EventsPage() {
                 )}
               </div>
               
-              {/* Details */}
               <div className="p-5 flex-1 flex flex-col justify-between">
                 <div>
                   <div className="flex flex-wrap items-center gap-2 text-xs font-bold text-gray-300 mb-3">
@@ -139,7 +133,7 @@ export default async function EventsPage() {
                 <div className="mt-auto flex items-center justify-between border-t border-[#1e293b] pt-3">
                   <div className="flex items-center gap-2 text-xs text-gray-400 font-bold">
                     <span>Yetkili:</span>
-                    <span className="text-white bg-[#050a14] px-2 py-0.5 rounded-[2px] border border-[#1e293b]">@{ev.profiles?.username || 'HabboZone'}</span>
+                    <span className="text-white bg-[#050a14] px-2 py-0.5 rounded-[2px] border border-[#1e293b]">@HabboZone</span>
                   </div>
                   
                   {ev.room_link && (

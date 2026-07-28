@@ -4,17 +4,32 @@ import { createClient } from '@/utils/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
-export async function createMagazine(formData: FormData) {
+async function checkAdmin() {
   const supabase = await createClient()
-
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return { error: 'Not authenticated' }
+  if (!user) return { supabase: null as any, error: 'Not authenticated' }
+
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', user.id)
+    .maybeSingle()
+
+  if (!profile || !['Owner', 'Developer', 'Administrator', 'Moderator', 'Journalist', 'Editor'].includes(profile.role)) {
+    return { supabase: null as any, error: 'Yetkisiz işlem' }
+  }
+
+  return { supabase, error: null as string | null }
+}
+
+export async function createMagazine(formData: FormData) {
+  const { supabase, error: authError } = await checkAdmin()
+  if (authError) return { error: authError }
 
   const title = formData.get('title') as string
   const issue_number = parseInt(formData.get('issue_number') as string, 10)
   const cover_image_url = formData.get('cover_image_url') as string
   const pdf_url = formData.get('pdf_url') as string
-  
   const publishedAtInput = formData.get('published_at') as string
   const published_at = publishedAtInput ? new Date(publishedAtInput).toISOString() : new Date().toISOString()
   const is_active = formData.get('is_active') === 'on'
@@ -35,16 +50,13 @@ export async function createMagazine(formData: FormData) {
 }
 
 export async function updateMagazine(id: string, formData: FormData) {
-  const supabase = await createClient()
-
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return { error: 'Not authenticated' }
+  const { supabase, error: authError } = await checkAdmin()
+  if (authError) return { error: authError }
 
   const title = formData.get('title') as string
   const issue_number = parseInt(formData.get('issue_number') as string, 10)
   const cover_image_url = formData.get('cover_image_url') as string
   const pdf_url = formData.get('pdf_url') as string
-  
   const publishedAtInput = formData.get('published_at') as string
   const published_at = publishedAtInput ? new Date(publishedAtInput).toISOString() : new Date().toISOString()
   const is_active = formData.get('is_active') === 'on'
@@ -65,10 +77,11 @@ export async function updateMagazine(id: string, formData: FormData) {
 }
 
 export async function deleteMagazine(id: string) {
-  const supabase = await createClient()
-  
+  const { supabase, error: authError } = await checkAdmin()
+  if (authError) return { error: authError }
+
   const { error } = await supabase.from('magazines').delete().eq('id', id)
-  
+
   if (error) {
     console.error('Error deleting magazine:', error)
     return { error: 'Failed to delete magazine' }

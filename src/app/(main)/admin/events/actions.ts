@@ -3,13 +3,27 @@
 import { createClient } from '@/utils/supabase/server'
 import { revalidatePath } from 'next/cache'
 
-export async function addEvent(formData: FormData) {
+async function checkAdmin() {
   const supabase = await createClient()
-  
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user) {
-    return { error: 'Yetkisiz erişim.' }
+  if (!user) return { supabase: null as any, error: 'Not authenticated' }
+
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', user.id)
+    .maybeSingle()
+
+  if (!profile || !['Owner', 'Developer', 'Administrator', 'Moderator'].includes(profile.role)) {
+    return { supabase: null as any, error: 'Yetkisiz işlem' }
   }
+
+  return { supabase, error: null as string | null }
+}
+
+export async function addEvent(formData: FormData) {
+  const { supabase, error: authError } = await checkAdmin()
+  if (authError) return { error: authError }
 
   const title = formData.get('title') as string
   const description = formData.get('description') as string
@@ -23,19 +37,16 @@ export async function addEvent(formData: FormData) {
     return { error: 'Başlık ve Tarih zorunludur.' }
   }
 
-  const { error } = await supabase
-    .from('events')
-    .insert({
-      title,
-      description: description || null,
-      author_id: user.id,
-      event_date: new Date(event_date).toISOString(),
-      event_type: event_type || 'Genel',
-      image_url: image_url || null,
-      reward_text: reward_text || null,
-      room_link: room_link || null,
-      is_active: true
-    })
+  const { error } = await supabase.from('events').insert({
+    title,
+    description: description || null,
+    event_date: new Date(event_date).toISOString(),
+    event_type: event_type || 'Genel',
+    image_url: image_url || null,
+    reward_text: reward_text || null,
+    room_link: room_link || null,
+    is_active: true
+  })
 
   if (error) {
     console.error('Add event error:', error)
@@ -49,12 +60,10 @@ export async function addEvent(formData: FormData) {
 }
 
 export async function deleteEvent(id: string) {
-  const supabase = await createClient()
+  const { supabase, error: authError } = await checkAdmin()
+  if (authError) return { error: authError }
 
-  const { error } = await supabase
-    .from('events')
-    .delete()
-    .eq('id', id)
+  const { error } = await supabase.from('events').delete().eq('id', id)
 
   if (error) {
     console.error('Delete event error:', error)

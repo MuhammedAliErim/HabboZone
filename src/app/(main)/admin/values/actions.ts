@@ -3,8 +3,27 @@
 import { createClient } from '@/utils/supabase/server'
 import { revalidatePath } from 'next/cache'
 
-export async function createCategory(formData: FormData) {
+async function checkAdmin() {
   const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { supabase: null as any, error: 'Not authenticated' }
+
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', user.id)
+    .maybeSingle()
+
+  if (!profile || !['Owner', 'Developer', 'Administrator', 'Moderator'].includes(profile.role)) {
+    return { supabase: null as any, error: 'Yetkisiz işlem' }
+  }
+
+  return { supabase, error: null as string | null }
+}
+
+export async function createCategory(formData: FormData) {
+  const { supabase, error: authError } = await checkAdmin()
+  if (authError) return { error: authError }
 
   const name = formData.get('name') as string
   const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-')
@@ -23,7 +42,8 @@ export async function createCategory(formData: FormData) {
 }
 
 export async function createItem(formData: FormData) {
-  const supabase = await createClient()
+  const { supabase, error: authError } = await checkAdmin()
+  if (authError) return { error: authError }
 
   const category_id = formData.get('category_id') as string
   const name = formData.get('name') as string

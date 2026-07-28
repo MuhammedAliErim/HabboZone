@@ -4,11 +4,27 @@ import { createClient } from '@/utils/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
-export async function createRoom(formData: FormData) {
+async function checkAdmin() {
   const supabase = await createClient()
-
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return { error: 'Not authenticated' }
+  if (!user) return { supabase: null as any, error: 'Not authenticated' }
+
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', user.id)
+    .maybeSingle()
+
+  if (!profile || !['Owner', 'Developer', 'Administrator', 'Moderator'].includes(profile.role)) {
+    return { supabase: null as any, error: 'Yetkisiz işlem' }
+  }
+
+  return { supabase, error: null as string | null }
+}
+
+export async function createRoom(formData: FormData) {
+  const { supabase, error: authError } = await checkAdmin()
+  if (authError) return { error: authError }
 
   const name = formData.get('name') as string
   const owner = formData.get('owner') as string
@@ -34,10 +50,8 @@ export async function createRoom(formData: FormData) {
 }
 
 export async function updateRoom(id: string, formData: FormData) {
-  const supabase = await createClient()
-
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return { error: 'Not authenticated' }
+  const { supabase, error: authError } = await checkAdmin()
+  if (authError) return { error: authError }
 
   const name = formData.get('name') as string
   const owner = formData.get('owner') as string
@@ -63,10 +77,11 @@ export async function updateRoom(id: string, formData: FormData) {
 }
 
 export async function deleteRoom(id: string) {
-  const supabase = await createClient()
-  
+  const { supabase, error: authError } = await checkAdmin()
+  if (authError) return { error: authError }
+
   const { error } = await supabase.from('rooms').delete().eq('id', id)
-  
+
   if (error) {
     console.error('Error deleting room:', error)
     return { error: 'Failed to delete room' }

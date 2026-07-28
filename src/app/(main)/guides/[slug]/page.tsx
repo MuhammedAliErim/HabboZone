@@ -1,6 +1,7 @@
 import { createClient } from '@/utils/supabase/server';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import DOMPurify from 'isomorphic-dompurify';
 import NewsComments from '@/components/NewsComments';
 import { Lock, Clock, BarChart2 } from 'lucide-react';
 import Countdown from '@/components/Countdown';
@@ -314,7 +315,7 @@ export default async function GuideDetail({ params }: Props) {
                 <div 
                   id="guide-content"
                   className="prose prose-invert prose-blue max-w-none prose-img:rounded-[2px] prose-img:border prose-img:border-[#1e293b] prose-headings:font-black prose-a:text-[#3b82f6] prose-a:no-underline hover:prose-a:underline"
-                  dangerouslySetInnerHTML={{ __html: guideItem.content }}
+                  dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(guideItem.content) }}
                 />
 
                 <div className="mt-12 pt-8 border-t border-[#1e293b] flex flex-col sm:flex-row items-center justify-between gap-6">

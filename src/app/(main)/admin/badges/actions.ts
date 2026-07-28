@@ -3,9 +3,28 @@
 import { createClient } from '@/utils/supabase/server'
 import { revalidatePath } from 'next/cache'
 
-export async function addBadge(formData: FormData) {
+async function checkAdmin() {
   const supabase = await createClient()
-  
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { supabase: null as any, error: 'Not authenticated' }
+
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', user.id)
+    .maybeSingle()
+
+  if (!profile || !['Owner', 'Developer', 'Administrator'].includes(profile.role)) {
+    return { supabase: null as any, error: 'Yetkisiz işlem' }
+  }
+
+  return { supabase, error: null as string | null }
+}
+
+export async function addBadge(formData: FormData) {
+  const { supabase, error: authError } = await checkAdmin()
+  if (authError) return { error: authError }
+
   const name = formData.get('name') as string
   const description = formData.get('description') as string
   const how_to_get = formData.get('how_to_get') as string
@@ -15,7 +34,6 @@ export async function addBadge(formData: FormData) {
     return { error: 'Rozet adı ve görseli zorunludur.' }
   }
 
-  // Upload image to Supabase Storage
   const fileExt = image_file.name.split('.').pop()
   const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`
 
@@ -28,21 +46,12 @@ export async function addBadge(formData: FormData) {
     return { error: 'Görsel yüklenirken bir hata oluştu.' }
   }
 
-  const { data: publicUrlData } = supabase.storage
-    .from('badges')
-    .getPublicUrl(fileName)
-
+  const { data: publicUrlData } = supabase.storage.from('badges').getPublicUrl(fileName)
   const image_url = publicUrlData.publicUrl
 
-  // Insert into database
-  const { error } = await supabase
-    .from('badges')
-    .insert({
-      name,
-      description,
-      how_to_get,
-      image_url
-    })
+  const { error } = await supabase.from('badges').insert({
+    name, description, how_to_get, image_url
+  })
 
   if (error) {
     console.error('Add badge error:', error)
@@ -55,14 +64,10 @@ export async function addBadge(formData: FormData) {
 }
 
 export async function deleteBadge(id: string) {
-  const supabase = await createClient()
+  const { supabase, error: authError } = await checkAdmin()
+  if (authError) return { error: authError }
 
-  // We could also delete the file from storage if we had the filename, 
-  // but for simplicity we'll just delete the database record.
-  const { error } = await supabase
-    .from('badges')
-    .delete()
-    .eq('id', id)
+  const { error } = await supabase.from('badges').delete().eq('id', id)
 
   if (error) {
     console.error('Delete badge error:', error)

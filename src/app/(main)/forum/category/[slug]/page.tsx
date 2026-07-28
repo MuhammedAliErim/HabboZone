@@ -12,6 +12,7 @@ export default async function ForumCategoryPage({ params }: { params: Promise<{ 
 
   // 1. Fetch forum / category details
   let categoryInfo: any = null;
+  let dbCat: any = null;
   const { data: dbForum } = await supabase
     .from('forums')
     .select('id, title, slug, description, icon, category:categories(name, slug)')
@@ -27,13 +28,14 @@ export default async function ForumCategoryPage({ params }: { params: Promise<{ 
       parentCategoryName: (Array.isArray(dbForum.category) ? dbForum.category[0]?.name : (dbForum.category as any)?.name) || 'Topluluk'
     };
   } else {
-    const { data: dbCat } = await supabase
+    const { data: catData } = await supabase
       .from('categories')
       .select('id, name, slug, description')
       .eq('slug', resolvedParams.slug)
     .maybeSingle();
 
-  if (dbCat) {
+    dbCat = catData;
+    if (dbCat) {
       categoryInfo = {
         title: dbCat.name,
         slug: dbCat.slug,
@@ -64,17 +66,44 @@ export default async function ForumCategoryPage({ params }: { params: Promise<{ 
 
   // 2. Fetch Topics for this category/forum
   let topics: any[] = [];
-  const { data: dbTopics } = await supabase
-    .from('topics')
-    .select(`
-      id, title, slug, is_pinned, is_locked, created_at, updated_at,
-      author:profiles!topics_author_id_fkey(username, habbo_username),
-      forum:forums(title, slug),
-      replies:replies(id)
-    `)
-    .eq(dbForum ? 'forum_id' : 'id', dbForum ? dbForum.id : '00000000-0000-0000-0000-000000000000')
-    .order('is_pinned', { ascending: false })
-    .order('updated_at', { ascending: false });
+
+  // Fetch topics from DB for real forums/categories
+  let dbTopics: any[] | null = null;
+  if (dbForum) {
+    const result = await supabase
+      .from('topics')
+      .select(`
+        id, title, slug, is_pinned, is_locked, created_at, updated_at,
+        author:profiles!topics_author_id_fkey(username, habbo_username),
+        forum:forums(title, slug),
+        replies:replies(id)
+      `)
+      .eq('forum_id', dbForum.id)
+      .order('is_pinned', { ascending: false })
+      .order('updated_at', { ascending: false });
+    dbTopics = result.data;
+  } else if (dbCat) {
+    // Get forum IDs for this category
+    const { data: forumsForCat } = await supabase
+      .from('forums')
+      .select('id')
+      .eq('category_id', dbCat.id);
+    if (forumsForCat && forumsForCat.length > 0) {
+      const forumIds = forumsForCat.map(f => f.id);
+      const result = await supabase
+        .from('topics')
+        .select(`
+          id, title, slug, is_pinned, is_locked, created_at, updated_at,
+          author:profiles!topics_author_id_fkey(username, habbo_username),
+          forum:forums(title, slug),
+          replies:replies(id)
+        `)
+        .in('forum_id', forumIds)
+        .order('is_pinned', { ascending: false })
+        .order('updated_at', { ascending: false });
+      dbTopics = result.data;
+    }
+  }
 
   if (dbTopics && dbTopics.length > 0) {
     topics = dbTopics;
