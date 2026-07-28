@@ -113,6 +113,7 @@ export default function ReactionView({
         <button 
           onClick={() => handleReact('like')}
           disabled={loading}
+          aria-label={myReaction ? 'Tepkiyi kaldır' : 'Beğen'}
           className={`flex items-center gap-2 text-sm font-bold transition-colors ${
             myReaction 
               ? REACTIONS.find(r => r.type === myReaction.reaction_type)?.color 
@@ -140,6 +141,7 @@ export default function ReactionView({
                   key={r.type}
                   onClick={() => handleReact(r.type)}
                   className={`p-2 rounded-full hover:bg-white/10 transition-transform hover:scale-125 group relative`}
+                  aria-label={r.label}
                 >
                   <Icon size={24} className={r.color} />
                   <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-[10px] px-2 py-1 rounded font-bold opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">

@@ -2,7 +2,8 @@ import { createClient } from '@/utils/supabase/server';
 import Link from 'next/link';
 import { Star, LayoutGrid, Diamond, TrendingUp, Sparkles, ArrowRight, ShieldCheck, Flame } from 'lucide-react';
 
-export const revalidate = 60; // Cache for 60 seconds
+export const metadata = { title: 'Nadire Değerleri - HabboZone', description: 'Habbo nadire eşya değerleri, fiyat grafikleri ve piyasa analizi.' };
+export const revalidate = 60;
 
 export default async function ValuesPage() {
   const supabase = await createClient();

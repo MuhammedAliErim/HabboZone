@@ -3,6 +3,7 @@ import { Users, Shield, Award, PenTool } from 'lucide-react';
 import HabboAvatar from '@/components/HabboAvatar';
 import Link from 'next/link';
 
+export const metadata = { title: 'Ekip Kadrosu - HabboZone', description: 'HabboZone yönetim ekibi, moderatörler ve yetkili kadrosu.' };
 export const revalidate = 60;
 
 export default async function StaffPage() {

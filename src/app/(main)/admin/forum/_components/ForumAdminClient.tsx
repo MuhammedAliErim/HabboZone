@@ -230,7 +230,7 @@ export default function ForumAdminClient({
                 <button 
                   onClick={() => handleDeleteCategory(cat.id)}
                   className="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 p-1.5 rounded-[2px] transition-colors"
-                  title="Kategoriyi Sil"
+                  aria-label="Kategoriyi Sil"
                 >
                   <Trash2 size={16} />
                 </button>
@@ -404,14 +404,14 @@ export default function ForumAdminClient({
                             setEditForumOrder(forum.order_index.toString())
                           }}
                           className="p-2 text-[#3b82f6] hover:bg-blue-500/10 rounded-[2px] transition-colors"
-                          title="Düzenle"
+                          aria-label="Düzenle"
                         >
                           <Edit2 size={16} />
                         </button>
                         <button 
                           onClick={() => handleDeleteForum(forum.id)}
                           className="p-2 text-red-400 hover:bg-red-500/10 rounded-[2px] transition-colors"
-                          title="Sil"
+                          aria-label="Sil"
                         >
                           <Trash2 size={16} />
                         </button>

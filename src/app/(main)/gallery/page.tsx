@@ -3,7 +3,8 @@ import { Image as ImageIcon, Camera } from 'lucide-react';
 import Link from 'next/link';
 import GalleryUploadModal from '@/components/gallery/GalleryUploadModal';
 
-export const revalidate = 60; // Cache for 60 seconds
+export const metadata = { title: 'Galeri - HabboZone', description: 'HabboZone topluluk galerisi — görsel ve medya arşivi.' };
+export const revalidate = 60;
 
 export default async function GalleryPage() {
   const supabase = await createClient();

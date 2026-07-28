@@ -1,6 +1,7 @@
 import { createClient } from '@/utils/supabase/server';
 import { Calendar, Clock, Trophy, MapPin, Tag } from 'lucide-react';
 
+export const metadata = { title: 'Etkinlikler - HabboZone', description: 'HabboZone canlı oyunlar, turnuvalar ve ödüllü yarışma takvimi.' };
 export const revalidate = 60;
 
 export default async function EventsPage() {

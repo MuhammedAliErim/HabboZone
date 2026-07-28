@@ -2,7 +2,8 @@ import Link from 'next/link';
 import { createClient } from '@/utils/supabase/server';
 import GuideCard from '@/components/ui/guides/GuideCard';
 
-export const revalidate = 60; // Cache for 60 seconds
+export const metadata = { title: 'Rehberler - HabboZone', description: 'HabboZone rehberleri — yeni başlayanlar için ipuçları, rozet rehberleri ve oyun talimatları.' };
+export const revalidate = 60;
 
 export default async function GuidesPage() {
   const supabase = await createClient();

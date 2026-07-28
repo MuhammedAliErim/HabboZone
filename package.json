@@ -25,7 +25,7 @@
     "@tiptap/starter-kit": "^3.28.0",
     "@tiptap/suggestion": "^3.28.0",
     "date-fns": "^4.4.0",
-    "dotenv": "^17.4.2",
+
     "framer-motion": "^12.42.2",
     "isomorphic-dompurify": "^3.19.0",
     "lucide-react": "^1.25.0",
@@ -36,6 +36,7 @@
     "react-pageflip": "^2.0.3",
     "react-rnd": "^10.5.3",
     "recharts": "^3.10.0",
+    "sharp": "^0.35.3",
     "tippy.js": "^6.3.7",
     "use-debounce": "^10.1.1",
     "uuid": "^14.0.1",

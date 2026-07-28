@@ -6,8 +6,8 @@ export async function GET() {
 
   const result: any = {
     env: {
-      NVIDIA_TEXT_API_KEY: textKey ? `Var (Başlıyor: ${textKey.substring(0, 7)}...)` : 'YOK! (Vercel Environment Variables kısmından eklenmeli)',
-      NVIDIA_IMAGE_API_KEY: imageKey ? `Var (Başlıyor: ${imageKey.substring(0, 7)}...)` : 'YOK! (Vercel Environment Variables kısmından eklenmeli)',
+      NVIDIA_TEXT_API_KEY: textKey ? 'Var' : 'YOK! (Vercel Environment Variables kısmından eklenmeli)',
+      NVIDIA_IMAGE_API_KEY: imageKey ? 'Var' : 'YOK! (Vercel Environment Variables kısmından eklenmeli)',
     },
     testCall: null,
   };

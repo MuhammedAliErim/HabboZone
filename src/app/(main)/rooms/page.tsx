@@ -3,7 +3,8 @@ import Link from 'next/link';
 import { Users, Plus, ArrowRight } from 'lucide-react';
 import HabboAvatar from '@/components/HabboAvatar';
 
-export const revalidate = 60; // Cache for 60 seconds
+export const metadata = { title: 'Odalar - HabboZone', description: 'HabboZone öne çıkan odaları, labirentler ve oyun alanları.' };
+export const revalidate = 60;
 
 export default async function RoomsPage() {
   const supabase = await createClient();

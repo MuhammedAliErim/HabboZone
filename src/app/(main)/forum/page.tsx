@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { MessageCircle, Plus, ChevronRight, Flame } from 'lucide-react';
 import HabboAvatar from '@/components/HabboAvatar';
 
+export const metadata = { title: 'Topluluk Forumu - HabboZone', description: 'HabboZone topluluk forumu — tartışmalar, oyuncu sohbetleri ve duyurular.' };
 export const revalidate = 60;
 
 export default async function ForumIndexPage() {

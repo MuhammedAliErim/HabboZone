@@ -2,6 +2,8 @@ import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { Settings, User, MessageSquare, Save } from 'lucide-react';
+
+export const metadata = { title: 'Ayarlar - HabboZone', description: 'Hesap ayarlarınızı görüntüleyin ve düzenleyin.' };
 import HabboAvatar from '@/components/HabboAvatar';
 
 export default async function SettingsPage() {

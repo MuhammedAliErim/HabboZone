@@ -2,6 +2,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { createClient } from '@/utils/supabase/server';
 import { MessageCircle, Eye, ChevronRight, Clock, Lock } from 'lucide-react';
+
+export const metadata = { title: 'Haberler - HabboZone', description: 'HabboZone güncel haberler, duyurular ve etkinlik yazıları.' };
 import Countdown from '@/components/Countdown';
 
 interface NewsItem {

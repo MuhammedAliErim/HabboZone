@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { createClient } from '@/utils/supabase/client';
+
 import { UserPlus, User, Lock, Mail, AlertTriangle } from 'lucide-react';
 
 export default function RegisterPage() {
@@ -47,7 +48,7 @@ export default function RegisterPage() {
         }
     }
 
-    window.location.href = '/';
+    router.push('/');
   };
 
   return (

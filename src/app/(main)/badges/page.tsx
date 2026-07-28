@@ -1,7 +1,8 @@
 import { createClient } from '@/utils/supabase/server';
 import { Award } from 'lucide-react';
 
-export const revalidate = 60; // Cache for 60 seconds
+export const metadata = { title: 'Rozetler - HabboZone', description: 'Habbo rozet arşivi — tüm rozetleri keşfedin ve nasıl kazanılacağını öğrenin.' };
+export const revalidate = 60;
 
 export default async function BadgesPage() {
   const supabase = await createClient();

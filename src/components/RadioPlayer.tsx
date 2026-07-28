@@ -1,14 +1,16 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Play, Pause, Volume2, VolumeX, Music, MessageCircle, Send, RadioReceiver } from 'lucide-react';
+import { Play, Pause, Volume2, VolumeX, Music, MessageCircle, Send, RadioReceiver, Loader2 } from 'lucide-react';
 import { createClient } from '@/utils/supabase/client';
 
 export default function RadioPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [volume, setVolume] = useState(0.5);
   const [isMuted, setIsMuted] = useState(false);
   const [showRequestForm, setShowRequestForm] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   
   const [requestName, setRequestName] = useState('');
   const [requestSong, setRequestSong] = useState('');
@@ -18,17 +20,39 @@ export default function RadioPlayer() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const supabase = createClient();
 
-  const radioUrl = ""; // Radio URL will be configured when station is ready
+  const radioUrl = process.env.NEXT_PUBLIC_RADIO_URL || '';
 
   useEffect(() => {
-    audioRef.current = new Audio(radioUrl);
-    audioRef.current.volume = volume;
-    
+    const audio = new Audio(radioUrl);
+    audio.volume = volume;
+    audio.preload = 'none';
+
+    audio.onerror = () => {
+      setIsPlaying(false);
+      setIsLoading(false);
+      setError('Yayına bağlanılamadı.');
+    };
+
+    audio.oncanplay = () => {
+      setIsLoading(false);
+      setError(null);
+    };
+
+    audio.onwaiting = () => setIsLoading(true);
+    audio.onplaying = () => {
+      setIsLoading(false);
+      setError(null);
+    };
+
+    audioRef.current = audio;
+
     return () => {
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current = null;
-      }
+      audio.pause();
+      audio.onerror = null;
+      audio.oncanplay = null;
+      audio.onwaiting = null;
+      audio.onplaying = null;
+      audioRef.current = null;
     };
   }, []);
 
@@ -38,15 +62,28 @@ export default function RadioPlayer() {
     }
   }, [volume, isMuted]);
 
-  const togglePlay = () => {
-    if (!audioRef.current) return;
-    
+  const togglePlay = async () => {
+    if (!audioRef.current || !radioUrl) return;
+
     if (isPlaying) {
       audioRef.current.pause();
+      setIsPlaying(false);
+      setIsLoading(false);
     } else {
-      audioRef.current.play().catch(e => console.error("Playback failed:", e));
+      setIsLoading(true);
+      setError(null);
+      try {
+        audioRef.current.currentTime = 0;
+        await audioRef.current.play();
+        setIsPlaying(true);
+        setIsLoading(false);
+      } catch (e) {
+        setIsPlaying(false);
+        setIsLoading(false);
+        setError('Yayın başlatılamadı.');
+        console.error("Playback failed:", e);
+      }
     }
-    setIsPlaying(!isPlaying);
   };
 
   const handleRequestSubmit = async (e: React.FormEvent) => {
@@ -74,12 +111,11 @@ export default function RadioPlayer() {
   return (
     <div className="fixed bottom-4 right-4 z-50 flex flex-col items-end gap-2 pointer-events-none">
       
-      {/* Request Form Popup */}
       {showRequestForm && (
         <div className="habbo-box w-[calc(100vw-2rem)] sm:w-72 pointer-events-auto shadow-2xl animate-in slide-in-from-bottom-2 fade-in duration-200">
           <div className="habbo-box-header flex justify-between items-center py-2">
             <span className="flex items-center gap-1"><MessageCircle size={14} /> RADYO İSTEK HATTI</span>
-            <button onClick={() => setShowRequestForm(false)} className="text-[#94a3b8] hover:text-white font-black hover:bg-red-600 rounded-[2px] px-1.5 transition-colors">X</button>
+            <button onClick={() => setShowRequestForm(false)} className="text-[#94a3b8] hover:text-white font-black hover:bg-red-600 rounded-[2px] px-1.5 transition-colors" aria-label="Kapat">X</button>
           </div>
           
           <div className="p-4 bg-[#050a14]">
@@ -110,7 +146,6 @@ export default function RadioPlayer() {
         </div>
       )}
 
-      {/* Main Player Widget */}
       <div className="habbo-box w-[calc(100vw-2rem)] sm:w-72 pointer-events-auto shadow-2xl flex flex-col group">
         <div className="habbo-box-header">
             <div className="flex items-center justify-between text-xs py-1">
@@ -133,19 +168,21 @@ export default function RadioPlayer() {
 
           <button 
             onClick={togglePlay}
-            className={`relative z-10 w-12 h-12 rounded-[2px] flex items-center justify-center transition-all border border-[#14213a] hover:-translate-y-0.5 active:translate-y-0 ${
+            disabled={!radioUrl}
+            aria-label={isPlaying ? 'Duraklat' : 'Oynat'}
+            className={`relative z-10 w-12 h-12 rounded-[2px] flex items-center justify-center transition-all border border-[#14213a] hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 disabled:cursor-not-allowed ${
                 isPlaying 
                 ? 'bg-red-600 text-white hover:bg-red-500' 
                 : 'bg-green-600 text-white hover:bg-green-500'
             }`}
           >
-            {isPlaying ? <Pause size={20} className="fill-current" /> : <Play size={20} className="fill-current ml-1" />}
+            {isLoading ? <Loader2 size={20} className="animate-spin" /> : isPlaying ? <Pause size={20} className="fill-current" /> : <Play size={20} className="fill-current ml-1" />}
           </button>
           
           <div className="flex-1 px-3 relative z-10">
             <div className="text-[11px] font-black text-white uppercase tracking-widest mb-1.5 drop-shadow">DJ AutoDJ</div>
             <div className="flex items-center gap-2 bg-[#050a14] px-2 py-1 rounded-[2px] border border-[#14213a] shadow-inner">
-              <button onClick={() => setIsMuted(!isMuted)} className="text-[#64748b] hover:text-white transition-colors">
+              <button onClick={() => setIsMuted(!isMuted)} aria-label={isMuted ? 'Sesi aç' : 'Sesi kapat'} className="text-[#64748b] hover:text-white transition-colors">
                 {isMuted || volume === 0 ? <VolumeX size={14} /> : <Volume2 size={14} />}
               </button>
               <input 
@@ -159,12 +196,13 @@ export default function RadioPlayer() {
                 className="w-full h-1 bg-[#1e293b] rounded-[2px] appearance-none cursor-pointer accent-[#facc15]"
               />
             </div>
+            {error && <div className="text-[10px] text-red-400 font-bold mt-1">{error}</div>}
           </div>
 
           <button 
             onClick={() => setShowRequestForm(!showRequestForm)}
+            aria-label="İstek Gönder"
             className={`relative z-10 p-2.5 rounded-[2px] transition-colors border shadow-sm ${showRequestForm ? 'bg-[#facc15] text-black border-transparent font-black' : 'bg-[#050a14] text-[#94a3b8] border-[#14213a] hover:border-[#facc15] hover:text-[#facc15]'}`}
-            title="İstek Gönder"
           >
             <MessageCircle size={18} />
           </button>

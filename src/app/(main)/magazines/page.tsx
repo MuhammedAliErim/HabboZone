@@ -6,6 +6,8 @@ import {
 } from 'lucide-react';
 import Countdown from '@/components/Countdown';
 
+export const metadata = { title: 'Gazete & Dergi - HabboZone', description: 'HabboZone AI destekli dergi ve gazete arşivi.' };
+
 export const revalidate = 60;
 
 function formatDeterministicDate(dateString: string, includeTime = false) {

@@ -3,7 +3,8 @@ import { createClient } from '@/utils/supabase/server';
 import GroupCard from '@/components/ui/groups/GroupCard';
 import { Users, Search, Plus } from 'lucide-react';
 
-export const revalidate = 60; // Cache for 60 seconds
+export const metadata = { title: 'Gruplar - HabboZone', description: 'HabboZone gruplarını keşfedin, arkadaşlarınızla topluluk oluşturun.' };
+export const revalidate = 60;
 
 export default async function GroupsPage() {
   const supabase = await createClient();
