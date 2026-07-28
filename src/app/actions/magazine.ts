@@ -122,7 +122,10 @@ export async function getMagazineWithPages(id: string) {
     .eq('id', id)
     .single();
 
-  if (magErr) throw new Error(magErr.message);
+  if (magErr || !magazine) {
+    console.error("getMagazineWithPages mag err:", magErr?.message);
+    return { magazine: null, pages: [] };
+  }
 
   const { data: pages, error: pageErr } = await supabase
     .from('magazine_pages')
@@ -149,7 +152,7 @@ export async function saveMagazinePage(magazineId: string, pageNumber: number, l
     .select('id')
     .eq('magazine_id', magazineId)
     .eq('page_number', pageNumber)
-    .single();
+    .maybeSingle();
 
   if (existingPage) {
     // Güncelle

@@ -16,7 +16,7 @@ export default async function ForumCategoryPage({ params }: { params: Promise<{ 
     .from('forums')
     .select('id, title, slug, description, icon, category:categories(name, slug)')
     .eq('slug', resolvedParams.slug)
-    .single();
+    .maybeSingle();
 
   if (dbForum) {
     categoryInfo = {
@@ -31,9 +31,9 @@ export default async function ForumCategoryPage({ params }: { params: Promise<{ 
       .from('categories')
       .select('id, name, slug, description')
       .eq('slug', resolvedParams.slug)
-      .single();
-    
-    if (dbCat) {
+    .maybeSingle();
+
+  if (dbCat) {
       categoryInfo = {
         title: dbCat.name,
         slug: dbCat.slug,

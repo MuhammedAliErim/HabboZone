@@ -25,7 +25,7 @@ export default async function GroupDetailPage(props: { params: Promise<{ slug: s
       )
     `)
     .eq('slug', slug)
-    .single();
+    .maybeSingle();
 
   if (!group) {
     notFound();

@@ -16,7 +16,7 @@ export default async function EditGuidePage({ params }: { params: Promise<{ id: 
     .from('guides')
     .select('*')
     .eq('id', id)
-    .single()
+    .maybeSingle()
 
   if (!guide) {
     notFound()

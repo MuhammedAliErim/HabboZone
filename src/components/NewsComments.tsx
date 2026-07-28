@@ -45,8 +45,10 @@ export default function NewsComments({ newsId, initialComments }: { newsId: stri
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
       if (data.user) {
-        supabase.from('profiles').select('*').eq('id', data.user.id).single().then(({ data: profile }) => {
+        supabase.from('profiles').select('*').eq('id', data.user.id).maybeSingle().then(({ data: profile }) => {
           setUser({ ...data.user, profile });
+        }, () => {
+          setUser({ ...data.user, profile: undefined });
         });
       }
     });

@@ -14,7 +14,7 @@ export default async function CategoryValuesPage({ params }: { params: Promise<{
     .from('habbo_item_categories')
     .select('*')
     .eq('slug', resolvedParams.category)
-    .single();
+    .maybeSingle();
 
   if (dbCategory) {
     category = dbCategory;

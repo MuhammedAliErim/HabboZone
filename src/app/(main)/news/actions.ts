@@ -16,7 +16,7 @@ export async function toggleVote(targetId: string, targetType: string, reactionT
     .from('profiles')
     .select('id')
     .eq('id', user.id)
-    .single();
+    .maybeSingle();
 
   if (!profile) {
     return { success: false, message: 'Profil bulunamadı.' };
@@ -29,7 +29,7 @@ export async function toggleVote(targetId: string, targetType: string, reactionT
     .eq('user_id', profile.id)
     .eq('target_type', targetType)
     .eq('target_id', targetId)
-    .single();
+    .maybeSingle();
 
   try {
     if (existingVote) {
@@ -75,7 +75,7 @@ export async function trackView(newsId: string) {
     .from('news')
     .select('views')
     .eq('id', newsId)
-    .single();
+    .maybeSingle();
     
   if (news) {
     await supabase

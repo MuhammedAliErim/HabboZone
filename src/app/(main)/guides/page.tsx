@@ -31,7 +31,7 @@ export default async function GuidesPage() {
         category:categories!inner(name, slug),
         author:profiles!news_author_id_fkey(username, avatar_url)
       `)
-      .eq('status', 'published')
+      .eq('status', 'Published')
       .in('category_id', categoryIds)
       .order('published_at', { ascending: false });
       

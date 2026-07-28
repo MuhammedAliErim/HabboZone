@@ -99,4 +99,5 @@ export async function deleteNews(id: string) {
   revalidatePath('/admin/news')
   revalidatePath('/news')
   revalidatePath('/')
+  return { success: true }
 }

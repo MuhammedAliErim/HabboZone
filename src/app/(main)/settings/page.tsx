@@ -16,7 +16,7 @@ export default async function SettingsPage() {
     .from('profiles')
     .select('*')
     .eq('id', user.id)
-    .single();
+    .maybeSingle();
 
   if (!profile) {
     redirect('/');
@@ -27,14 +27,13 @@ export default async function SettingsPage() {
     
     const supabaseServer = await createClient();
     const { data: { user } } = await supabaseServer.auth.getUser();
-    
     if (!user) return;
 
     const username = formData.get('username') as string;
     const habbo_username = formData.get('habbo_username') as string;
     const motto = formData.get('motto') as string;
 
-    await supabaseServer
+    const { error } = await supabaseServer
       .from('profiles')
       .update({
         username,
@@ -43,6 +42,8 @@ export default async function SettingsPage() {
         updated_at: new Date().toISOString()
       })
       .eq('id', user.id);
+
+    if (error) console.error('Profile update error:', error);
 
     revalidatePath('/settings');
     revalidatePath(`/profile/${username}`);

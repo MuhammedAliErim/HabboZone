@@ -15,7 +15,7 @@ export async function GET() {
         published_at,
         authors ( name, habbo_username )
       `)
-      .eq('is_published', true)
+      .eq('status', 'Published')
       .order('published_at', { ascending: false });
 
     if (error) {

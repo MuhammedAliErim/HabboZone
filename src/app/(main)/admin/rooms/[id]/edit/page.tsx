@@ -16,7 +16,7 @@ export default async function EditRoomPage({ params }: { params: Promise<{ id: s
     .from('rooms')
     .select('*')
     .eq('id', id)
-    .single()
+    .maybeSingle()
 
   if (!room) {
     notFound()

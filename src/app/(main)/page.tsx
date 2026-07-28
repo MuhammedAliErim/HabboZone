@@ -57,7 +57,7 @@ export default async function Home() {
       published_at,
       author:profiles!news_author_id_fkey(username, habbo_username)
     `)
-    .eq('status', 'published')
+    .eq('status', 'Published')
     .lte('published_at', new Date().toISOString())
     .order('published_at', { ascending: false })
     .limit(3);

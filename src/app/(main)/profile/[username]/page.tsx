@@ -75,7 +75,7 @@ export default async function ProfilePage({ params, searchParams }: { params: Pr
       .from('news')
       .select('id, title, slug, published_at')
       .eq('author_id', profile.id)
-      .eq('status', 'published')
+       .eq('status', 'Published')
       .order('published_at', { ascending: false })
       .limit(4);
     if (data) {

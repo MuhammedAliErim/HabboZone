@@ -31,7 +31,7 @@ export async function generateMetadata(
     .from('news')
     .select('title, summary, thumbnail_url, published_at, author:profiles!news_author_id_fkey(username)')
     .eq('slug', resolvedParams.slug)
-    .single();
+    .maybeSingle();
 
   if (!guideItem) {
     return { title: 'Rehber Bulunamadı' };
@@ -84,7 +84,7 @@ export default async function GuideDetail({ params }: Props) {
       category:categories(id, name, slug)
     `)
     .eq('slug', resolvedParams.slug)
-    .single();
+    .maybeSingle();
 
   if (!guideItem) {
     notFound();
@@ -108,7 +108,7 @@ export default async function GuideDetail({ params }: Props) {
   // Fetch User Vote if logged in
   let userVote = null;
   if (user) {
-    const { data: profile } = await supabase.from('profiles').select('id').eq('id', user.id).single();
+    const { data: profile } = await supabase.from('profiles').select('id').eq('id', user.id).maybeSingle();
     if (profile) {
       const { data: vote } = await supabase
         .from('likes')
@@ -116,11 +116,11 @@ export default async function GuideDetail({ params }: Props) {
         .eq('user_id', profile.id)
         .eq('target_type', 'news')
         .eq('target_id', guideItem.id)
-        .single();
+        .maybeSingle();
       userVote = vote?.reaction_type || null;
     }
   }
-
+  
   // Count Votes
   const { count: upvotes } = await supabase
     .from('likes')
@@ -150,7 +150,7 @@ export default async function GuideDetail({ params }: Props) {
       .from('news')
       .select('title, slug, thumbnail_url, published_at')
       .eq('category_id', guideItem.category.id)
-      .eq('status', 'published')
+      .eq('status', 'Published')
       .neq('id', guideItem.id)
       .lte('published_at', new Date().toISOString())
       .order('published_at', { ascending: false })

@@ -15,7 +15,7 @@ export default async function ValuesItemPage({ params }: { params: Promise<{ slu
     .from('habbo_items')
     .select('*, habbo_item_categories(name, slug)')
     .eq('slug', resolvedParams.slug)
-    .single();
+    .maybeSingle();
 
   if (dbItem) {
     item = dbItem;

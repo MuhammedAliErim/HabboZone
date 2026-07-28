@@ -30,7 +30,7 @@ export async function generateMetadata(
     .from('news')
     .select('title, summary, thumbnail_url, published_at, author:profiles!news_author_id_fkey(username)')
     .eq('slug', resolvedParams.slug)
-    .single();
+    .maybeSingle();
 
   if (!newsItem) {
     return { title: 'Haber Bulunamadı' };
@@ -83,7 +83,7 @@ export default async function NewsDetail({ params }: Props) {
       category:categories(id, name, slug)
     `)
     .eq('slug', resolvedParams.slug)
-    .single();
+    .maybeSingle();
 
   if (!newsItem) {
     notFound();
@@ -114,7 +114,7 @@ export default async function NewsDetail({ params }: Props) {
   // Fetch User Vote if logged in
   let userVote = null;
   if (user) {
-    const { data: profile } = await supabase.from('profiles').select('id').eq('id', user.id).single();
+    const { data: profile } = await supabase.from('profiles').select('id').eq('id', user.id).maybeSingle();
     if (profile) {
       const { data: vote } = await supabase
         .from('likes')
@@ -122,11 +122,11 @@ export default async function NewsDetail({ params }: Props) {
         .eq('user_id', profile.id)
         .eq('target_type', 'news')
         .eq('target_id', newsItem.id)
-        .single();
+        .maybeSingle();
       userVote = vote?.reaction_type || null;
     }
   }
-
+  
   // Count Votes
   const { count: upvotes } = await supabase
     .from('likes')
@@ -171,7 +171,7 @@ export default async function NewsDetail({ params }: Props) {
     .lt('published_at', newsItem.published_at)
     .order('published_at', { ascending: false })
     .limit(1)
-    .single();
+    .maybeSingle();
 
   const { data: nextNews } = await supabase
     .from('news')
@@ -181,7 +181,7 @@ export default async function NewsDetail({ params }: Props) {
     .lte('published_at', new Date().toISOString())
     .order('published_at', { ascending: true })
     .limit(1)
-    .single();
+    .maybeSingle();
 
   // Reading time estimation (rough: 200 words per minute)
   const wordCount = newsItem.content.replace(/<[^>]*>?/gm, '').split(/\s+/).length;

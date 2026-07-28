@@ -21,6 +21,13 @@ export default async function AdminNewsPage() {
     `)
     .order('created_at', { ascending: false })
 
+  const { data: allCategories } = await supabase
+    .from('categories')
+    .select('id, name')
+    .eq('type', 'news')
+
+  const categoryMap = new Map(allCategories?.map(c => [c.id, c.name]) || [])
+
   const totalNews = news?.length || 0;
   const publishedCount = news?.filter(n => n.status === 'Published').length || 0;
   const draftCount = totalNews - publishedCount;
@@ -95,7 +102,7 @@ export default async function AdminNewsPage() {
                     <td className="px-5 py-3.5">
                       <div className="relative w-16 h-11 rounded-[2px] overflow-hidden bg-[#050a14] border border-[#1e293b] shadow">
                         <Image 
-                          src={item.image_url || '/placeholder-news.png'} 
+                          src={item.thumbnail_url || '/placeholder-news.png'} 
                           alt={item.title || 'Haber Görseli'} 
                           fill
                           className="object-cover"
@@ -113,7 +120,7 @@ export default async function AdminNewsPage() {
                     </td>
                     <td className="px-5 py-3.5">
                       <span className="bg-[#050a14] border border-[#1e293b] px-2.5 py-1 rounded-[2px] text-[10px] font-black uppercase text-gray-300 tracking-wider">
-                        {item.category || 'GENEL'}
+                        {categoryMap.get(item.category_id) || 'GENEL'}
                       </span>
                     </td>
                     <td className="px-5 py-3.5">

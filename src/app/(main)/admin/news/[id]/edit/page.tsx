@@ -14,9 +14,9 @@ export default async function EditNewsPage({
     .from('news')
     .select('*')
     .eq('id', id)
-    .single()
+    .maybeSingle()
 
-  if (error || !news) {
+  if (!news) {
     notFound()
   }
 

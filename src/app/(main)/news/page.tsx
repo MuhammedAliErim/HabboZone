@@ -30,7 +30,7 @@ export default async function NewsPage() {
       published_at,
       author:profiles!news_author_id_fkey(username, habbo_username)
     `)
-    .eq('status', 'published')
+    .eq('status', 'Published')
     // Removed lte('published_at') to show scheduled news as well
     .order('published_at', { ascending: false });
 

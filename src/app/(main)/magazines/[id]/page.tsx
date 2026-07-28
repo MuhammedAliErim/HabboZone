@@ -19,7 +19,7 @@ export async function generateMetadata(
     .from('magazines')
     .select('title, issue_number, cover_image_url')
     .eq(isNaN(Number(resolvedParams.id)) ? 'id' : 'issue_number', resolvedParams.id)
-    .single();
+    .maybeSingle();
 
   if (!magazine) {
     return { title: 'Dergi Bulunamadı' };
@@ -49,7 +49,7 @@ export default async function MagazineReaderPage({ params }: Props) {
     query = query.eq('id', resolvedParams.id);
   }
 
-  const { data: magazine } = await query.single();
+  const { data: magazine } = await query.maybeSingle();
 
   if (!magazine) {
     notFound();
