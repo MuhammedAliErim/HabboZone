@@ -209,7 +209,7 @@ export default function ForumAdminClient({
 
       {/* Category List */}
       <div className="space-y-6">
-        {categories.map(cat => (
+        {(categories ?? []).map(cat => (
           <div key={cat.id} className="habbo-box bg-[#0a1325] border border-[#1e293b] rounded-[2px] overflow-hidden shadow-lg">
             {/* Category Header */}
             <div className="bg-[#050a14] p-4 flex items-center justify-between border-b border-[#1e293b]">
@@ -315,7 +315,7 @@ export default function ForumAdminClient({
 
             {/* Forums List */}
             <div className="divide-y divide-[#1e293b]">
-              {forums.filter(f => f.category_id === cat.id).map(forum => (
+              {(forums ?? []).filter(f => f.category_id === cat.id).map(forum => (
                 <div key={forum.id} className="p-4 flex items-start justify-between hover:bg-white/[0.02] transition-colors">
                   {editingForumId === forum.id ? (
                     <div className="w-full space-y-4">
@@ -420,7 +420,7 @@ export default function ForumAdminClient({
                   )}
                 </div>
               ))}
-              {forums.filter(f => f.category_id === cat.id).length === 0 && (
+              {(forums ?? []).filter(f => f.category_id === cat.id).length === 0 && (
                 <div className="p-6 text-center text-gray-400 font-bold text-xs uppercase tracking-wider">
                   BU KATEGORİDE HENÜZ ALT FORUM YOK.
                 </div>

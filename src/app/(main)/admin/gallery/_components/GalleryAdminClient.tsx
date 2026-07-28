@@ -79,15 +79,15 @@ export default function GalleryAdminClient({
           }`}
         >
           <ShieldCheck size={16} className={activeTab === 'approved' ? 'text-black' : 'text-emerald-400'} />
-          Yayında Olanlar ({approvedImages.length})
+          Yayında Olanlar ({(approvedImages ?? []).length})
         </button>
       </div>
 
       {/* Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {activeTab === 'pending' ? (
-          pendingImages.length > 0 ? (
-            pendingImages.map(img => (
+          (pendingImages ?? []).length > 0 ? (
+            (pendingImages ?? []).map(img => (
               <div key={img.id} className="habbo-box bg-[#0a1224] border-2 border-white/10 rounded-xl overflow-hidden group hover:border-yellow-400/50 transition-all shadow-xl flex flex-col justify-between">
                 <div>
                   <div className="relative aspect-video w-full bg-[#050a14] border-b border-white/10 overflow-hidden cursor-pointer group-hover:opacity-90 transition-opacity" onClick={() => setPreviewImage(img)}>

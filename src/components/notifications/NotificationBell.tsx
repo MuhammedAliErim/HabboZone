@@ -72,12 +72,15 @@ export default function NotificationBell({ userId }: { userId: string }) {
   const handleNotificationClick = async (notification: Notification) => {
     setIsOpen(false)
     if (!notification.is_read) {
-      // Optimizasyon için UI'ı hemen güncelle
       setNotifications(prev => 
         prev.map(n => n.id === notification.id ? { ...n, is_read: true } : n)
       )
-      // Arka planda DB güncelle
-      await markAsRead(notification.id)
+      const result = await markAsRead(notification.id)
+      if (result?.error) {
+        setNotifications(prev => 
+          prev.map(n => n.id === notification.id ? { ...n, is_read: false } : n)
+        )
+      }
     }
     if (notification.link) {
       router.push(notification.link)

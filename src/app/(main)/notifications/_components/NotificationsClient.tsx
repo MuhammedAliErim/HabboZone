@@ -56,7 +56,12 @@ export default function NotificationsClient({
       setNotifications(prev => 
         prev.map(n => n.id === notification.id ? { ...n, is_read: true } : n)
       )
-      await markAsRead(notification.id)
+      const result = await markAsRead(notification.id)
+      if (result?.error) {
+        setNotifications(prev => 
+          prev.map(n => n.id === notification.id ? { ...n, is_read: false } : n)
+        )
+      }
     }
     if (notification.link) {
       router.push(notification.link)
@@ -65,9 +70,11 @@ export default function NotificationsClient({
 
   const handleMarkAllAsRead = async () => {
     setIsMarkingAll(true)
-    const { success } = await markAllAsRead()
-    if (success) {
+    const result = await markAllAsRead()
+    if (result?.success) {
       setNotifications(prev => prev.map(n => ({ ...n, is_read: true })))
+    } else if (result?.error) {
+      console.error('Mark all as read error:', result.error)
     }
     setIsMarkingAll(false)
   }

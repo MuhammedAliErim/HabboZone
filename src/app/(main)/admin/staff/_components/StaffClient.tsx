@@ -32,8 +32,8 @@ export default function StaffClient({
   initialStaff: StaffMember[], 
   availableUsers: AvailableUser[] 
 }) {
-  const [staff, setStaff] = useState<StaffMember[]>(initialStaff)
-  const [users, setUsers] = useState<AvailableUser[]>(availableUsers)
+  const [staff, setStaff] = useState<StaffMember[]>(initialStaff ?? [])
+  const [users, setUsers] = useState<AvailableUser[]>(availableUsers ?? [])
 
   const [isAdding, setIsAdding] = useState(false)
   const [selectedUserId, setSelectedUserId] = useState('')

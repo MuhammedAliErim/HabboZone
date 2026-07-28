@@ -20,7 +20,7 @@ export default function Breadcrumb({ items }: BreadcrumbProps) {
         <span>Ana Sayfa</span>
       </Link>
       
-      {items.map((item, index) => (
+      {(items ?? []).map((item, index) => (
         <div key={index} className="flex items-center space-x-1 sm:space-x-2 shrink-0">
           <ChevronRight size={14} className="text-gray-600" />
           {item.href ? (
