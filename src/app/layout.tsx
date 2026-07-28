@@ -19,6 +19,7 @@ const pixelifySans = Pixelify_Sans({
 export const metadata: Metadata = {
   title: "HabboZone",
   description: "Modern Habbo Community and Magazine Portal",
+  metadataBase: new URL("https://habbozone.vercel.app"),
 };
 
 export default function RootLayout({
@@ -28,7 +29,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="tr"
       className={`${ubuntu.variable} ${pixelifySans.variable} h-full antialiased`}
       suppressHydrationWarning
     >

@@ -1,8 +1,14 @@
 'use client';
 
+import { useEffect } from 'react';
 import { AlertTriangle, RefreshCw } from 'lucide-react';
+import { logErrorClient } from '@/lib/error-logger';
 
 export default function AdminError({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
+  useEffect(() => {
+    logErrorClient('admin_error_boundary', error.message, { digest: error.digest });
+  }, [error]);
+
   return (
     <div className="flex-1 flex items-center justify-center min-h-[60vh]">
       <div className="habbo-box p-8 max-w-md text-center">
