@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { TrendingUp, Activity, ArrowRight } from 'lucide-react';
 
@@ -26,9 +27,8 @@ export default function MarketWidget() {
         {MOCK_MARKET_DATA.map((item) => (
           <Link key={item.id} href="/values" className="flex items-center justify-between bg-[#050a14] p-2.5 rounded-[2px] border border-[#1e293b] hover:border-[#3b82f6] transition-colors group">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 bg-[#0a1325] border border-[#1e293b] rounded-[2px] flex items-center justify-center p-1">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={item.icon} alt={item.name} className="w-full h-full object-contain drop-shadow group-hover:scale-110 transition-transform" />
+              <div className="w-8 h-8 bg-[#0a1325] border border-[#1e293b] rounded-[2px] flex items-center justify-center p-1 relative">
+                <Image src={item.icon} alt={item.name} fill className="object-contain drop-shadow group-hover:scale-110 transition-transform" unoptimized />
               </div>
               <span className="font-bold text-xs text-white group-hover:text-[#facc15] transition-colors">{item.name}</span>
             </div>

@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { createClient } from '@/utils/supabase/server';
 import { 
@@ -92,9 +93,8 @@ export default async function MagazinesPage() {
                  <br/><br/>
                  Her hafta yeni sayılarla karşınızdayız!
                </p>
-               <div className="w-full h-24 bg-[#050a14] rounded-[2px] border border-[#1e293b] overflow-hidden flex items-center justify-center relative shadow-inner">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="https://images.habbo.com/c_images/reception/newspaper_promo.png" className="pixelated opacity-80" alt="" />
+                <div className="w-full h-24 bg-[#050a14] rounded-[2px] border border-[#1e293b] overflow-hidden flex items-center justify-center relative shadow-inner">
+                   <Image src="https://images.habbo.com/c_images/reception/newspaper_promo.png" fill className="pixelated opacity-80 object-contain" alt="" unoptimized />
                 </div>
             </div>
 
@@ -141,10 +141,9 @@ export default async function MagazinesPage() {
                       </div>
                    )}
                    
-                   <div className={`w-full md:w-[30%] h-[240px] rounded-[2px] border border-[#1e293b] relative overflow-hidden shrink-0 bg-[#050a14] ${isLatestLocked ? 'opacity-30' : ''}`}>
-                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                       <img src={latestMagazine.cover_image_url} className="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-transform duration-500" alt="" />
-                    </div>
+                    <div className={`w-full md:w-[30%] h-[240px] rounded-[2px] border border-[#1e293b] relative overflow-hidden shrink-0 bg-[#050a14] ${isLatestLocked ? 'opacity-30' : ''}`}>
+                        <Image src={latestMagazine.cover_image_url} fill className="object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-transform duration-500" alt="" unoptimized />
+                     </div>
                     <div className={`flex flex-col flex-1 justify-center py-2 ${isLatestLocked ? 'opacity-30' : ''}`}>
                       <span className="bg-[#3b82f6] text-white font-black text-[10px] px-2.5 py-1 rounded-[2px] uppercase tracking-wider w-max mb-3 border border-blue-400">
                          {isLatestLocked ? 'GELECEK SAYI' : 'YENİ SAYI YAYINDA'}
@@ -204,10 +203,9 @@ export default async function MagazinesPage() {
                           </div>
                        )}
 
-                       <div className={`w-full h-[180px] bg-[#050a14] rounded-[2px] border border-[#1e293b] relative overflow-hidden ${isLocked ? 'opacity-30' : ''}`}>
-                           {/* eslint-disable-next-line @next/next/no-img-element */}
-                           <img src={post.cover_image_url} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-transform duration-500" alt="" />
-                           <span className={`absolute top-2 left-2 ${isLocked ? 'bg-gray-700' : 'bg-[#2563eb]'} text-white text-[9px] font-black px-2 py-0.5 rounded-[2px] border border-black/30 uppercase shadow`}>SAYI #{post.issue_number}</span>
+                        <div className={`w-full h-[180px] bg-[#050a14] rounded-[2px] border border-[#1e293b] relative overflow-hidden ${isLocked ? 'opacity-30' : ''}`}>
+                            <Image src={post.cover_image_url} fill className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-transform duration-500" alt="" unoptimized />
+                            <span className={`absolute top-2 left-2 ${isLocked ? 'bg-gray-700' : 'bg-[#2563eb]'} text-white text-[9px] font-black px-2 py-0.5 rounded-[2px] border border-black/30 uppercase shadow`}>SAYI #{post.issue_number}</span>
                        </div>
                        <div className={`flex flex-col flex-1 ${isLocked ? 'opacity-30' : ''}`}>
                           <h3 className="text-white font-black text-xs leading-tight group-hover:text-[#facc15] transition-colors mb-2 uppercase tracking-tight">{post.title}</h3>
@@ -246,22 +244,20 @@ export default async function MagazinesPage() {
                       <div key={issue.id} className="relative block group">
                         {isLocked ? (
                           <div className="flex items-center gap-3 p-2 bg-[#050a14] border border-[#1e293b] rounded-[2px] transition-colors opacity-60">
-                             <div className="w-[45px] h-[60px] bg-[#0a1325] border border-[#1e293b] flex flex-col overflow-hidden shrink-0 relative">
-                                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                                 <img src={issue.cover_image_url} className="w-full h-full object-cover grayscale" alt="" />
-                                 <div className="absolute inset-0 flex items-center justify-center bg-black/60"><Lock size={16} className="text-[#facc15]"/></div>
-                             </div>
-                             <div className="flex flex-col justify-center min-w-0">
-                                <span className="text-gray-300 font-black text-xs line-clamp-1 uppercase tracking-tight">#{issue.issue_number} - {formatDeterministicDate(issue.published_at)}</span>
-                                <span className="text-gray-500 text-[10px] font-bold flex items-center gap-1 text-[#facc15] mt-1"><Lock size={10}/>Kilitli</span>
-                             </div>
+                              <div className="w-[45px] h-[60px] bg-[#0a1325] border border-[#1e293b] flex flex-col overflow-hidden shrink-0 relative">
+                                  <Image src={issue.cover_image_url} fill className="object-cover grayscale" alt="" unoptimized />
+                                  <div className="absolute inset-0 flex items-center justify-center bg-black/60"><Lock size={16} className="text-[#facc15]"/></div>
+                              </div>
+                              <div className="flex flex-col justify-center min-w-0">
+                                 <span className="text-gray-300 font-black text-xs line-clamp-1 uppercase tracking-tight">#{issue.issue_number} - {formatDeterministicDate(issue.published_at)}</span>
+                                 <span className="text-gray-500 text-[10px] font-bold flex items-center gap-1 text-[#facc15] mt-1"><Lock size={10}/>Kilitli</span>
+                              </div>
                           </div>
                         ) : (
                           <Link href={`/magazines/${issue.issue_number}`} className="flex items-center gap-3 p-2 bg-[#050a14] hover:bg-[#1e293b] border border-[#1e293b] hover:border-[#3b82f6] rounded-[2px] transition-colors group">
-                             <div className="w-[45px] h-[60px] bg-[#0a1325] border border-[#1e293b] flex flex-col overflow-hidden shrink-0 group-hover:scale-105 transition-transform">
-                                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                                 <img src={issue.cover_image_url} className="w-full h-full object-cover" alt="" />
-                              </div>
+                              <div className="w-[45px] h-[60px] bg-[#0a1325] border border-[#1e293b] flex flex-col overflow-hidden shrink-0 group-hover:scale-105 transition-transform">
+                                  <Image src={issue.cover_image_url} fill className="object-cover" alt="" unoptimized />
+                               </div>
                               <div className="flex flex-col justify-center min-w-0">
                                  <span className="text-gray-300 font-black text-xs group-hover:text-[#facc15] line-clamp-1 uppercase tracking-tight transition-colors">#{issue.issue_number} - {formatDeterministicDate(issue.published_at)}</span>
                                 <span className="text-gray-500 text-[10px] font-bold mt-1">{formatDeterministicDate(issue.published_at)}</span>

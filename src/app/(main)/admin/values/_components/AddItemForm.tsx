@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { useState } from 'react'
 import { createItem } from '../actions'
 import { PackagePlus, Image as ImageIcon, Check, Coins, Sparkles, Folder } from 'lucide-react'
@@ -101,7 +102,7 @@ export default function AddItemForm({ categories }: { categories: Category[] }) 
           <div className="mt-2.5 p-3 rounded-xl bg-[#050a14] border border-white/10 flex items-center gap-3">
             <span className="text-[10px] text-gray-400 font-bold uppercase">Önizleme:</span>
             <div className="w-10 h-10 rounded-lg bg-black/40 flex items-center justify-center border border-white/5">
-              <img src={imageUrl} alt="preview" className="max-w-full max-h-full object-contain" />
+              <Image src={imageUrl} alt="preview" width={40} height={40} className="object-contain" unoptimized />
             </div>
           </div>
         )}

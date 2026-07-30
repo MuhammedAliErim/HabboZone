@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { Calendar, Clock, Eye, MessageSquare, RefreshCw, User } from 'lucide-react';
 import Link from 'next/link';
 import { formatDistanceToNow } from 'date-fns';
@@ -32,8 +33,8 @@ export default function ArticleMeta({
     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#1e293b] p-3 sm:p-4 rounded-[4px] border border-black shadow-[0_4px_0_#000]">
       {/* Author Section */}
       <Link href={`/profile/${author.username}`} className="flex items-center gap-3 group">
-        <div className="w-12 h-12 bg-[#0a1325] rounded-[2px] border border-black overflow-hidden flex items-center justify-center group-hover:border-[#facc15] transition-colors shadow-inner">
-          <img src={avatarUrl} alt={author.username} className="pixelated -mt-2" />
+        <div className="w-12 h-12 bg-[#0a1325] rounded-[2px] border border-black overflow-hidden flex items-center justify-center group-hover:border-[#facc15] transition-colors shadow-inner relative">
+          <Image src={avatarUrl} alt={author.username} fill className="pixelated -mt-2" unoptimized />
         </div>
         <div>
           <div className="text-[10px] text-[#facc15] uppercase font-black tracking-wider flex items-center gap-1 mb-0.5">

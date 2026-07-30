@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { createClient } from '@/utils/supabase/server';
 import Link from 'next/link';
 import { Star, LayoutGrid, Diamond, TrendingUp, Sparkles, ArrowRight, ShieldCheck, Flame } from 'lucide-react';
@@ -198,11 +199,13 @@ export default async function ValuesPage() {
                     
                     {/* Center Image */}
                     <div className="flex-1 flex items-center justify-center w-full my-2">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img 
+                      <Image 
                         src={item.img} 
                         alt={item.name} 
+                        width={64}
+                        height={64}
                         className="max-w-[64px] max-h-[64px] object-contain filter drop-shadow group-hover:scale-110 transition-transform" 
+                        unoptimized
                       />
                     </div>
 

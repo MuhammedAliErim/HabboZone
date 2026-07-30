@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts'
 import { format, parseISO } from 'date-fns'
 import { tr } from 'date-fns/locale'
@@ -69,12 +70,15 @@ export default function PriceChart({ history, currencyType }: PriceChartProps) {
                   <div className="bg-[#1e293b] border border-[#2b3548] p-3 rounded-[4px] shadow-xl">
                     <p className="text-gray-400 text-xs mb-1">{label}</p>
                     <p className="text-white font-bold text-lg flex items-center gap-1.5">
-                      <img 
+                      <Image 
                         src={currencyType === 'credits' 
                           ? 'https://images.habbo.com/c_images/album1584/CRED.gif' 
                           : 'https://images.habbo.com/c_images/album1584/DIA.gif'} 
                         alt={currencyType}
-                        className="w-4 h-4 pixelated"
+                        width={16}
+                        height={16}
+                        className="pixelated"
+                        unoptimized
                       />
                       {payload[0].value?.toLocaleString('tr-TR')}
                     </p>

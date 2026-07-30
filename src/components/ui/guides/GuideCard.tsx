@@ -93,10 +93,12 @@ export default function GuideCard({ guide }: GuideCardProps) {
           {guide.author ? (
             <div className="flex items-center gap-2">
               <div className="w-6 h-6 rounded-[2px] bg-[#050a14] border border-[#1e293b] overflow-hidden relative">
-                <img 
+                <Image 
                   src={`https://www.habbo.com.tr/habbo-imaging/avatarimage?user=${guide.author.username}&action=std&direction=2&head_direction=2&gesture=sml&size=m&headonly=1`} 
                   alt={guide.author.username}
+                  fill
                   className="absolute -top-3 -left-1 drop-shadow-sm scale-[1.3] pixelated"
+                  unoptimized
                 />
               </div>
               <span className="text-xs font-black uppercase tracking-tight text-white">{guide.author.username}</span>

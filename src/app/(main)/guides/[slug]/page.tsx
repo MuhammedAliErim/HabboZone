@@ -337,11 +337,12 @@ export default async function GuideDetail({ params }: Props) {
               {guideItem.author && (
                 <div className="habbo-box bg-[#0a1325] border border-[#1e293b] rounded-[3px] p-6 mb-12 flex flex-col sm:flex-row items-center sm:items-start gap-6">
                    <div className="w-24 h-24 rounded-[2px] bg-[#050a14] border border-[#1e293b] flex items-center justify-center shrink-0 relative overflow-hidden shadow">
-                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                       <img 
+                       <Image 
                          src={`https://www.habbo.com.tr/habbo-imaging/avatarimage?user=${(guideItem.author as any).username}&action=std&direction=2&head_direction=2&gesture=sml&size=m`} 
                          alt={(guideItem.author as any).username}
-                         className="absolute -top-4 drop-shadow scale-[1.5] pixelated"
+                         fill
+                         className="drop-shadow scale-[1.5] pixelated object-contain"
+                         unoptimized
                        />
                    </div>
                    <div className="flex-1 text-center sm:text-left">

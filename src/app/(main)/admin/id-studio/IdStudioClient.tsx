@@ -507,10 +507,14 @@ export default function IdStudioClient() {
                 <div className="shrink-0 flex flex-col items-center justify-center">
                   <div className="relative">
                     <div className="absolute -inset-2 rounded-full blur-md pointer-events-none" style={{ backgroundColor: `${selectedTheme.accent}33` }} />
-                    <img 
+                    <Image 
                       src={getAvatarUrl()} 
                       alt={username} 
-                      className="max-h-[140px] sm:max-h-[160px] object-contain relative z-10 filter drop-shadow-[0_10px_15px_rgba(0,0,0,0.8)] -my-3 transition-transform hover:scale-105 duration-300" 
+                      width={120}
+                      height={180}
+                      className="max-h-[140px] sm:max-h-[160px] object-contain relative z-10 -my-3 transition-transform hover:scale-105 duration-300" 
+                      unoptimized
+                      style={{ filter: 'drop-shadow(0 10px 15px rgba(0,0,0,0.8))' }}
                     />
                   </div>
                   <div className="mt-2 text-[9px] font-black tracking-[0.2em] uppercase" style={{ color: selectedTheme.accent }}>

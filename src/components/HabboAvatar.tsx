@@ -34,12 +34,12 @@ export default function HabboAvatar({
 
   return (
     <div className={`relative flex items-center justify-center ${className}`}>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      <Image
         src={avatarUrl}
         alt={`${username} Avatar`}
+        fill
         className="object-contain drop-shadow-xl"
-        loading="lazy"
+        unoptimized
       />
     </div>
   );

@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { createClient } from '@/utils/supabase/server';
 import { Image as ImageIcon, Camera } from 'lucide-react';
 import Link from 'next/link';
@@ -68,8 +69,7 @@ export default async function GalleryPage() {
           {images?.map((img) => (
             <div key={img.id} className="break-inside-avoid bg-[#050a14] border border-[#1e293b] rounded-[3px] p-3 hover:border-[#3b82f6] transition-all group">
               <div className="rounded-[2px] overflow-hidden border border-[#1e293b] mb-2 bg-[#0a1325] relative">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={img.image_url} alt={img.title} className="w-full h-auto object-cover group-hover:scale-[1.02] transition-transform" />
+                <Image src={img.image_url} alt={img.title} width={0} height={0} sizes="100vw" className="w-full h-auto object-cover group-hover:scale-[1.02] transition-transform" unoptimized />
               </div>
               
               <h3 className="font-bold text-xs mb-2 text-white group-hover:text-[#facc15] transition-colors">{img.title}</h3>

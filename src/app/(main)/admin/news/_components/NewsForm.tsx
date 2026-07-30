@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { useState } from 'react'
 import { createNews, updateNews } from '../actions'
 import TipTapEditor from '@/components/admin/TipTapEditor'
@@ -181,13 +182,12 @@ export default function NewsForm({ initialData }: NewsFormProps) {
 
             {imageUrl ? (
               <div className="relative rounded-xl overflow-hidden border-2 border-white/20 aspect-video bg-black/50 group">
-                <img 
+                <Image 
                   src={imageUrl} 
                   alt="Kapak Önizleme" 
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  onError={(e) => {
-                    (e.target as HTMLElement).style.display = 'none';
-                  }}
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  unoptimized
                 />
               </div>
             ) : (

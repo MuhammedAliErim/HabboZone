@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { addEvent } from '../actions'
@@ -121,7 +122,7 @@ export default function EventForm() {
 
         {imageUrl ? (
           <div className="mt-3 relative rounded-[2px] overflow-hidden border border-[#1e293b] aspect-video bg-black/50 group">
-            <img src={imageUrl} alt="Afiş Önizleme" className="w-full h-full object-cover" />
+            <Image src={imageUrl} alt="Afiş Önizleme" fill className="object-cover" unoptimized />
           </div>
         ) : (
           <div className="mt-2 border border-dashed border-[#1e293b] rounded-[2px] h-24 flex items-center justify-center text-gray-400 text-xs font-black uppercase tracking-wide bg-black/20">

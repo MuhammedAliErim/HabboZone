@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { getWikiItemBySlug } from '../../actions'
 import { notFound } from 'next/navigation'
@@ -49,11 +50,13 @@ export default async function WikiItemPage({ params }: { params: { slug: string 
           {/* Sol Kısım: Resim (Vurgulu) */}
           <div className="w-full md:w-2/5 bg-[#050a14] p-8 md:p-12 flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-[#1e293b] relative group">
             <div className="relative w-48 h-48 md:w-64 md:h-64 flex items-center justify-center">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img 
+              <Image 
                 src={item.image_url} 
                 alt={item.name} 
+                width={256}
+                height={256}
                 className="max-w-full max-h-full object-contain drop-shadow-[0_10px_20px_rgba(0,0,0,0.6)] group-hover:scale-110 transition-transform duration-500 pixelated"
+                unoptimized
               />
             </div>
           </div>
@@ -101,8 +104,7 @@ export default async function WikiItemPage({ params }: { params: { slug: string 
                 <span className="text-white font-bold text-sm">
                   {item.market_value ? (
                     <span className="flex items-center gap-1 font-black text-[#facc15]">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src="https://images.habbo.com/c_images/catalogue/icon_273.png" alt="kredi" className="w-4 h-4 object-contain" />
+                      <Image src="https://images.habbo.com/c_images/catalogue/icon_273.png" alt="kredi" width={16} height={16} className="object-contain" unoptimized />
                       {item.market_value} c
                     </span>
                   ) : 'Belirlenmedi'}

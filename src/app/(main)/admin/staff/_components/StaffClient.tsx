@@ -201,10 +201,13 @@ export default function StaffClient({
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-xl bg-[#050a14] border border-white/10 flex items-center justify-center overflow-hidden shrink-0">
                           {s.profiles?.habbo_username ? (
-                            <img 
+                            <Image 
                               src={`https://www.habbo.com.tr/habbo-imaging/avatarimage?user=${s.profiles.habbo_username}&action=std&direction=2&head_direction=2&gesture=sml&size=m`}
                               alt={s.profiles.username}
-                              className="w-full h-full object-contain -mt-2"
+                              width={40}
+                              height={40}
+                              className="object-contain -mt-2"
+                              unoptimized
                             />
                           ) : (
                             <span className="font-black text-xs text-yellow-400">{s.profiles?.username?.substring(0, 2).toUpperCase()}</span>

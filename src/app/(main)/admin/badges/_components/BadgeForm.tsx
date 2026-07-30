@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { addBadge } from '../actions'
@@ -108,7 +109,7 @@ export default function BadgeForm() {
 
           {previewUrl && (
             <div className="w-16 h-16 rounded-[2px] bg-[#050a14] border border-[#facc15] flex items-center justify-center p-2 shadow-lg shrink-0 animate-bounce">
-              <img src={previewUrl} alt="Rozet Önizleme" className="pixelated max-w-10 max-h-10 object-contain" />
+              <Image src={previewUrl} alt="Rozet Önizleme" width={40} height={40} className="pixelated object-contain" unoptimized />
             </div>
           )}
         </div>

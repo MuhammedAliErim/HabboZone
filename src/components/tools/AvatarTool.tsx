@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { Download, RefreshCw, Copy } from 'lucide-react';
 
 export default function AvatarTool() {
@@ -99,13 +100,14 @@ export default function AvatarTool() {
               <RefreshCw size={24} className="text-[#3b82f6] animate-spin" />
             </div>
           )}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img 
+          <Image 
             src={imageUrl} 
             alt="Habbo Avatar" 
+            fill
             className="max-h-full object-contain transition-transform group-hover:scale-110" 
             onLoad={() => setLoading(false)}
             onError={() => setLoading(false)}
+            unoptimized
           />
         </div>
         <div className="flex w-full gap-2 mt-4">

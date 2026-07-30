@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useState, useRef } from 'react';
 import { Rnd } from 'react-rnd';
 import { Magazine, MagazinePage, saveMagazinePage } from '@/app/actions/magazine';
@@ -397,8 +398,7 @@ export default function MagazineEditor({ initialMagazine, initialPages }: Editor
                       title={st.name}
                       className="p-2 bg-[#1e293b] hover:bg-[#334155] rounded-lg border border-[#334155] flex flex-col items-center justify-center gap-1 transition-all group"
                     >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={st.url} alt={st.name} className="w-8 h-8 object-contain group-hover:scale-125 transition-transform" />
+                      <Image src={st.url} alt={st.name} width={32} height={32} className="object-contain group-hover:scale-125 transition-transform" unoptimized />
                       <span className="text-[10px] text-gray-300 truncate w-full text-center">{st.name.split(' ')[0]}</span>
                     </button>
                   ))}
@@ -666,12 +666,13 @@ export default function MagazineEditor({ initialMagazine, initialPages }: Editor
 
                   {/* RESİM / STICKER KATMANI */}
                   {(layer.type === 'image' || layer.type === 'sticker') && (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img 
+                    <Image 
                       src={layer.content || 'https://placehold.co/400x300'} 
                       alt="Medya" 
-                      className={`w-full h-full pointer-events-none ${layer.type === 'sticker' ? 'object-contain' : 'object-cover'}`} 
+                      fill
+                      className={`pointer-events-none ${layer.type === 'sticker' ? 'object-contain' : 'object-cover'}`} 
                       style={{ borderRadius: layer.style?.borderRadius || '0px' }}
+                      unoptimized
                     />
                   )}
                 </div>

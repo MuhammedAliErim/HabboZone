@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { Search, Loader2, Newspaper, BookOpen, Medal, Calendar, User, FileText, ShoppingBag, Package } from 'lucide-react';
 import { useDebounce } from 'use-debounce';
 import { globalSearch, SearchResult } from '@/app/actions/search';
@@ -112,9 +113,9 @@ export default function GlobalSearch() {
                   onClick={() => setIsOpen(false)}
                   className="flex items-center gap-3 px-3 py-2 hover:bg-[#334155] transition-colors border-b border-gray-800 last:border-0"
                 >
-                  <div className="w-8 h-8 rounded-[2px] border border-black bg-[#0a1325] overflow-hidden shrink-0 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-[2px] border border-black bg-[#0a1325] overflow-hidden shrink-0 flex items-center justify-center relative">
                     {result.imageUrl ? (
-                      <img src={result.imageUrl} alt={result.title} className="w-full h-full object-cover pixelated" />
+                      <Image src={result.imageUrl} alt={result.title} fill className="object-cover pixelated" unoptimized />
                     ) : (
                       getTypeIcon(result.type)
                     )}

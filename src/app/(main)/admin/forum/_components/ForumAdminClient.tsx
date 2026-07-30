@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { useState } from 'react'
 import { Plus, Trash2, Edit2, X, Save, Folder, MessageSquare } from 'lucide-react'
 import { createCategory, deleteCategory, createForum, updateForum, deleteForum } from '../actions'
@@ -379,8 +380,7 @@ export default function ForumAdminClient({
                       <div className="flex items-start gap-3">
                         <div className="w-10 h-10 bg-[#050a14] border border-[#1e293b] rounded-[2px] flex items-center justify-center shrink-0 shadow-inner">
                           {forum.icon ? (
-                            // eslint-disable-next-line @next/next/no-img-element
-                            <img src={forum.icon} alt="" className="w-6 h-6 object-contain" />
+                            <Image src={forum.icon} alt="" width={24} height={24} className="object-contain" unoptimized />
                           ) : (
                             <MessageSquare size={20} className="text-gray-400" />
                           )}

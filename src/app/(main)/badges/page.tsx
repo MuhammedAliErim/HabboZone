@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { createClient } from '@/utils/supabase/server';
 import { Award } from 'lucide-react';
 
@@ -58,8 +59,7 @@ export default async function BadgesPage() {
           {badges?.map((badge) => (
             <div key={badge.id} className="bg-[#050a14] border border-[#1e293b] rounded-[3px] p-3 flex flex-col items-center text-center hover:border-[#3b82f6] transition-all group">
               <div className="w-16 h-16 flex items-center justify-center mb-3 bg-[#0a1325] rounded-[2px] border border-[#1e293b] overflow-hidden relative">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={badge.image_url} alt={badge.name} className="max-w-full max-h-full object-contain filter drop-shadow group-hover:scale-110 transition-transform" />
+                <Image src={badge.image_url} alt={badge.name} fill className="max-w-full max-h-full object-contain filter drop-shadow group-hover:scale-110 transition-transform" unoptimized />
               </div>
               
               <h3 className="font-bold text-xs mb-1 text-white group-hover:text-[#facc15] transition-colors line-clamp-1">{badge.name}</h3>

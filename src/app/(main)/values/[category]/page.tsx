@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { createClient } from '@/utils/supabase/server';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -74,9 +75,8 @@ export default async function CategoryValuesPage({ params }: { params: Promise<{
       <div className="habbo-box mb-6 p-6 bg-[#0a1325] border border-[#1e293b] flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="flex items-center gap-4">
           <div className="w-16 h-16 bg-[#050a14] border border-[#1e293b] rounded-[2px] flex items-center justify-center shrink-0">
-            {category.icon_url ? (
-              /* eslint-disable-next-line @next/next/no-img-element */
-              <img src={category.icon_url} alt={category.name} className="w-12 h-12 object-contain filter drop-shadow" />
+              {category.icon_url ? (
+              <Image src={category.icon_url} alt={category.name} width={48} height={48} className="object-contain filter drop-shadow" unoptimized />
             ) : (
               <Diamond size={32} className="text-[#3b82f6]" />
             )}
@@ -133,8 +133,7 @@ export default async function CategoryValuesPage({ params }: { params: Promise<{
               
               <div className="h-16 w-16 flex items-center justify-center my-2">
                 {item.image_url ? (
-                  /* eslint-disable-next-line @next/next/no-img-element */
-                  <img src={item.image_url} alt={item.name} className="max-h-full max-w-full object-contain filter drop-shadow group-hover:scale-110 transition-transform" />
+                  <Image src={item.image_url} alt={item.name} width={64} height={64} className="max-h-full max-w-full object-contain filter drop-shadow group-hover:scale-110 transition-transform" unoptimized />
                 ) : (
                   <Diamond size={32} className="text-[#3b82f6]" />
                 )}

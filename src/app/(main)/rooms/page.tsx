@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { createClient } from '@/utils/supabase/server';
 import Link from 'next/link';
 import { Users, Plus, ArrowRight } from 'lucide-react';
@@ -69,8 +70,7 @@ export default async function RoomsPage() {
                       
                       {/* Thumbnail */}
                       <div className="w-full sm:w-[140px] h-[90px] shrink-0 rounded-[2px] overflow-hidden relative border border-[#1e293b] bg-[#050a14]">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img src={room.image_url || 'https://images.habbo.com/c_images/reception/reception_backdrop_4.png'} alt={room.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                          <Image src={room.image_url || 'https://images.habbo.com/c_images/reception/reception_backdrop_4.png'} alt={room.name} fill className="object-cover group-hover:scale-110 transition-transform duration-500" unoptimized />
                           <span className="absolute top-1 left-1 bg-black/80 px-1.5 py-0.5 rounded-[2px] text-[9px] font-black text-[#facc15] border border-[#1e293b] uppercase">
                             {room.category}
                           </span>

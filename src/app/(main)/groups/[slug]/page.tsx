@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { createClient } from '@/utils/supabase/server';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
@@ -53,11 +54,12 @@ export default async function GroupDetailPage(props: { params: Promise<{ slug: s
       {/* Cover Area */}
       <div className="mx-4 md:mx-6 rounded-[3px] overflow-hidden border border-[#1e293b] shadow-2xl relative mb-8 habbo-box bg-[#0a1325]">
         <div className="h-[250px] md:h-[350px] w-full relative">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img 
+          <Image 
             src={group.cover_url || 'https://images.habbo.com/c_images/reception/background_right_coffee_1.png'} 
             alt={group.name} 
-            className="w-full h-full object-cover pixelated opacity-60" 
+            fill
+            className="object-cover pixelated opacity-60" 
+            unoptimized
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#020610] via-[#020610]/60 to-transparent"></div>
         </div>
@@ -65,10 +67,9 @@ export default async function GroupDetailPage(props: { params: Promise<{ slug: s
         {/* Group Info Overlay */}
         <div className="absolute bottom-0 left-0 w-full p-6 md:p-10 flex flex-col md:flex-row items-end gap-6">
           
-          <div className="w-[100px] h-[100px] md:w-[130px] md:h-[130px] bg-[#050a14]/90 backdrop-blur-md rounded-[3px] border border-[#1e293b] flex items-center justify-center p-2 shadow z-10 shrink-0">
-             {/* eslint-disable-next-line @next/next/no-img-element */}
-             <img src={group.badge_url} alt="Badge" className="max-w-full max-h-full pixelated drop-shadow-xl" />
-          </div>
+           <div className="w-[100px] h-[100px] md:w-[130px] md:h-[130px] bg-[#050a14]/90 backdrop-blur-md rounded-[3px] border border-[#1e293b] flex items-center justify-center p-2 shadow z-10 shrink-0 relative">
+              <Image src={group.badge_url} alt="Badge" fill className="object-contain pixelated drop-shadow-xl p-2" unoptimized />
+           </div>
 
           <div className="flex-1 w-full relative z-10">
             <h1 className="text-3xl md:text-5xl font-black text-white tracking-tight uppercase mb-2" style={{ textShadow: '2px 2px 0 #000' }}>{group.name}</h1>

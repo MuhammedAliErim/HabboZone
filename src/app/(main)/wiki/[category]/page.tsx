@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { getWikiItemsByCategory } from '../actions'
 import { Package, ChevronRight, ArrowLeft } from 'lucide-react'
@@ -43,12 +44,12 @@ export default async function WikiCategoryPage({ params }: { params: { category:
               className="habbo-box bg-[#0a1325] border border-[#1e293b] rounded-[3px] p-3 flex flex-col items-center text-center hover:border-[#facc15] hover:-translate-y-1 transition-all group shadow"
             >
               <div className="w-16 h-16 relative flex items-center justify-center mb-2">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img 
+                <Image 
                   src={item.image_url} 
                   alt={item.name} 
-                  className="max-w-full max-h-full object-contain pixelated drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)] group-hover:scale-110 transition-transform duration-300"
-                  loading="lazy"
+                  fill
+                  className="object-contain pixelated drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)] group-hover:scale-110 transition-transform duration-300 p-1"
+                  unoptimized
                 />
               </div>
               <h3 className="font-black uppercase tracking-tight text-white text-xs line-clamp-2 leading-tight group-hover:text-[#facc15] transition-colors">

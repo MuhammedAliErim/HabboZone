@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { createClient } from '@/utils/supabase/server';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
@@ -202,10 +203,10 @@ export default async function TagPage({ params }: Props) {
       {/* Header */}
       <div className="mb-10 relative overflow-hidden habbo-box bg-[#0a1325] border border-[#1e293b] rounded-[3px] shadow min-h-[220px] flex items-center justify-center">
         {/* Abstract Background Image */}
-        <div className="absolute inset-0 z-0">
-           <img src="/images/assets/Gemini_Generated_Image_2zj0l42zj0l42zj0.png" className="w-full h-full object-cover opacity-20 pixelated" alt="Tag Background" onError={(e) => (e.currentTarget.style.display = 'none')} />
-           <div className="absolute inset-0 bg-gradient-to-t from-[#0a1325] via-[#0a1325]/80 to-transparent"></div>
-        </div>
+         <div className="absolute inset-0 z-0">
+            <Image src="/images/assets/Gemini_Generated_Image_2zj0l42zj0l42zj0.png" fill className="object-cover opacity-20 pixelated" alt="Tag Background" unoptimized />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0a1325] via-[#0a1325]/80 to-transparent"></div>
+         </div>
         
         <div className="relative z-10 text-center p-8">
           <div className="inline-flex items-center justify-center w-14 h-14 bg-[#050a14] rounded-[2px] border border-[#1e293b] shadow mb-4">
@@ -231,7 +232,7 @@ export default async function TagPage({ params }: Props) {
             >
               <div className="h-40 w-full relative border-b border-[#1e293b] bg-[#050a14]">
                 {item.imageUrl ? (
-                  <img src={item.imageUrl} alt={item.title} className="w-full h-full object-cover pixelated group-hover:scale-105 transition-transform duration-500" />
+                  <Image src={item.imageUrl} alt={item.title} fill className="object-cover pixelated group-hover:scale-105 transition-transform duration-500" unoptimized />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center">
                     {getTypeIcon(item._type)}

@@ -144,7 +144,7 @@ export default async function AdminNewsPage() {
                       <div className="flex items-center gap-2 font-black text-xs text-gray-300 uppercase">
                         <div className="w-6 h-6 rounded-[2px] bg-[#050a14] border border-[#1e293b] flex items-center justify-center overflow-hidden shrink-0">
                           {item.author?.avatar_url ? (
-                            <img src={item.author.avatar_url} alt="Author" className="w-full h-full object-cover" />
+                            <Image src={item.author.avatar_url} alt="Author" width={24} height={24} className="object-cover" unoptimized />
                           ) : (
                             <User size={12} className="text-[#3b82f6]" />
                           )}

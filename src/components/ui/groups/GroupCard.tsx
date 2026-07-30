@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { Users, ShieldAlert } from 'lucide-react';
 
@@ -26,11 +27,12 @@ export default function GroupCard({ group }: GroupCardProps) {
       
       {/* Cover Background */}
       <div className="absolute inset-0 z-0">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img 
+        <Image 
           src={group.cover_url || 'https://images.habbo.com/c_images/reception/background_right_coffee_1.png'} 
           alt={group.name} 
-          className="w-full h-full object-cover opacity-35 group-hover:opacity-50 group-hover:scale-105 transition-all duration-500 pixelated" 
+          width={0} height={0}
+          className="w-full h-full object-cover opacity-35 group-hover:opacity-50 group-hover:scale-105 transition-all duration-500 pixelated"
+          unoptimized
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#050a14] via-[#050a14]/90 to-transparent"></div>
       </div>
@@ -40,14 +42,12 @@ export default function GroupCard({ group }: GroupCardProps) {
         
         {/* Top: Badge & Admin */}
         <div className="flex justify-between items-start">
-          <div className="w-[48px] h-[48px] bg-[#0a1325]/90 rounded-[2px] border border-[#1e293b] flex items-center justify-center p-1.5 shadow group-hover:border-[#facc15] transition-colors">
-             {/* eslint-disable-next-line @next/next/no-img-element */}
-             <img src={group.badge_url} alt="Badge" className="max-w-full max-h-full pixelated drop-shadow group-hover:scale-110 transition-transform" />
+          <div className="w-[48px] h-[48px] bg-[#0a1325]/90 rounded-[2px] border border-[#1e293b] flex items-center justify-center p-1.5 shadow group-hover:border-[#facc15] transition-colors relative">
+             <Image src={group.badge_url} alt="Badge" fill className="max-w-full max-h-full pixelated drop-shadow group-hover:scale-110 transition-transform" unoptimized />
           </div>
           
           <div className="flex items-center gap-1.5 bg-[#0a1325]/90 px-2.5 py-1 rounded-[2px] border border-[#1e293b]">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={avatarUrl} alt={group.owner.username} className="w-4 h-4 object-contain rounded-[1px] bg-black/40" />
+            <Image src={avatarUrl} alt={group.owner.username} width={16} height={16} className="object-contain rounded-[1px] bg-black/40" unoptimized />
             <ShieldAlert size={12} className="text-[#facc15]" />
             <span className="text-white text-[10px] font-black uppercase">Kurucu: {group.owner.username}</span>
           </div>

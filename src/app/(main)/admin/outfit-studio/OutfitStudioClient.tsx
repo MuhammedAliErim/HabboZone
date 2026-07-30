@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import React, { useState } from 'react';
 import { 
   Sparkles, 
@@ -478,11 +479,14 @@ export default function OutfitStudioClient() {
               <div className={`rounded-xl bg-black/40 border-2 dashed ${activeTheme.podiumColor} p-6 flex flex-col items-center justify-center relative overflow-hidden min-h-[220px]`}>
                 <div className={`absolute inset-0 ${activeTheme.glowColor} blur-2xl pointer-events-none`}></div>
                 
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img 
+                <Image 
                   src={avatarUrl} 
                   alt={username}
-                  className="max-h-[190px] object-contain drop-shadow-[0_15px_20px_rgba(0,0,0,0.7)] transition-transform hover:scale-110 duration-300 relative z-10"
+                  width={120}
+                  height={190}
+                  className="max-h-[190px] object-contain transition-transform hover:scale-110 duration-300 relative z-10"
+                  unoptimized
+                  style={{ filter: 'drop-shadow(0 15px 20px rgba(0,0,0,0.7))' }}
                 />
 
                 <div className="mt-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-[11px] font-extrabold text-white shadow-lg relative z-10 flex items-center gap-1.5">

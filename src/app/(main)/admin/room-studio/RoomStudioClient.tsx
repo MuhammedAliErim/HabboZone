@@ -506,10 +506,12 @@ export default function RoomStudioClient() {
             
             {/* Oda Görseli Arka Plan */}
             <div className="relative w-full aspect-[16/10] max-h-[420px] overflow-hidden">
-              <img 
+              <Image 
                 src={currentRoomUrl} 
                 alt="Room Backdrop" 
-                className="w-full h-full object-cover select-none"
+                fill
+                className="object-cover select-none"
+                unoptimized
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 pointer-events-none" />
             </div>

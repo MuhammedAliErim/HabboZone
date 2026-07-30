@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { createClient } from '@/utils/supabase/server';
 import { Calendar, Clock, Trophy, MapPin, Tag } from 'lucide-react';
 
@@ -75,7 +76,7 @@ export default async function EventsPage() {
               
               <div className="w-full md:w-72 shrink-0 bg-[#050a14] flex items-center justify-center p-4 relative min-h-[180px] border-b md:border-b-0 md:border-r border-[#1e293b] overflow-hidden">
                 {ev.image_url ? (
-                  <img src={ev.image_url} alt={ev.title} className="max-w-full max-h-48 object-contain filter drop-shadow" />
+                  <Image src={ev.image_url} alt={ev.title} fill className="max-w-full max-h-48 object-contain filter drop-shadow" unoptimized />
                 ) : (
                   <Calendar size={56} className="text-gray-600" />
                 )}

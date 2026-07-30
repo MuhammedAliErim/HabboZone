@@ -621,10 +621,14 @@ export default function StudioClient() {
             {showAvatar && (
               <div className="relative z-20 shrink-0 flex items-center justify-center">
                 <div className="absolute -inset-4 bg-yellow-400/10 rounded-full blur-xl pointer-events-none" />
-                <img 
+                <Image 
                   src={getAvatarUrl()} 
                   alt={avatarUser}
-                  className="max-h-[160px] sm:max-h-[190px] object-contain drop-shadow-[0_12px_20px_rgba(0,0,0,0.8)] transition-all duration-300 hover:scale-110"
+                  width={120}
+                  height={190}
+                  className="max-h-[160px] sm:max-h-[190px] object-contain transition-all duration-300 hover:scale-110"
+                  unoptimized
+                  style={{ filter: 'drop-shadow(0 12px 20px rgba(0,0,0,0.8))' }}
                 />
               </div>
             )}

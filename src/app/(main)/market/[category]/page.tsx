@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import { getItemsByCategory, getMarketCategories } from '@/actions/market'
 import { ArrowLeft, Filter } from 'lucide-react'
@@ -44,8 +45,7 @@ export default async function MarketCategoryPage({ params }: { params: { categor
         <div className="habbo-box-header flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 bg-[#090e17] rounded-[4px] flex items-center justify-center p-1 border border-black/30">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={category.image_url} alt={category.name} className="max-w-full max-h-full object-contain pixelated" />
+              <Image src={category.image_url} alt={category.name} width={32} height={32} className="max-w-full max-h-full object-contain pixelated" unoptimized />
             </div>
             <h1 className="text-xl font-bold">{category.name}</h1>
           </div>
@@ -72,23 +72,26 @@ export default async function MarketCategoryPage({ params }: { params: { categor
                     LTD
                   </div>
                 )}
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img 
+                <Image 
                   src={item.image_url} 
                   alt={item.name} 
-                  className="max-w-full max-h-full object-contain pixelated group-hover:scale-110 transition-transform" 
+                  fill
+                  className="object-contain pixelated group-hover:scale-110 transition-transform p-4" 
+                  unoptimized
                 />
               </div>
               <div className="p-3 flex flex-col gap-1 border-t border-[#2b3548]">
                 <h3 className="text-white font-bold text-xs line-clamp-2" title={item.name}>{item.name}</h3>
                 <div className="flex items-center gap-1.5 mt-auto pt-1">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img 
+                  <Image 
                     src={item.currency_type === 'credits' 
                       ? 'https://images.habbo.com/c_images/album1584/CRED.gif' 
                       : 'https://images.habbo.com/c_images/album1584/DIA.gif'} 
                     alt={item.currency_type}
-                    className="w-4 h-4 pixelated"
+                    width={16}
+                    height={16}
+                    className="pixelated"
+                    unoptimized
                   />
                   <span className="text-yellow-400 font-bold text-sm">{item.current_value.toLocaleString('tr-TR')}</span>
                 </div>

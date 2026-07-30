@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { createClient } from '@/utils/supabase/server';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -113,8 +114,7 @@ export default async function ValuesItemPage({ params }: { params: Promise<{ slu
               {/* Item Image */}
               <div className="h-32 w-32 flex items-center justify-center mb-4 bg-[#050a14] border border-[#1e293b] rounded-[3px] p-4">
                 {item.image_url ? (
-                  /* eslint-disable-next-line @next/next/no-img-element */
-                  <img src={item.image_url} alt={item.name} className="max-h-full max-w-full object-contain filter drop-shadow scale-110" />
+                  <Image src={item.image_url} alt={item.name} width={128} height={128} className="max-h-full max-w-full object-contain filter drop-shadow scale-110" unoptimized />
                 ) : (
                   <Diamond size={48} className="text-[#3b82f6]" />
                 )}

@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { useState } from 'react'
 import { createRoom, updateRoom } from '../actions'
 import { createClient } from '@/utils/supabase/client'
@@ -181,7 +182,7 @@ export default function RoomForm({ initialData }: RoomFormProps) {
 
           {previewUrl && (
             <div className="w-full sm:w-48 aspect-video rounded-xl bg-black border-2 border-pink-500/50 overflow-hidden relative shadow-xl shrink-0">
-              <img src={previewUrl} alt="Oda Önizleme" className="w-full h-full object-cover" />
+              <Image src={previewUrl} alt="Oda Önizleme" fill className="object-cover" unoptimized />
             </div>
           )}
         </div>

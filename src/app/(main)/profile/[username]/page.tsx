@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { createClient } from '@/utils/supabase/server';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
@@ -193,8 +194,7 @@ export default async function ProfilePage({ params, searchParams }: { params: Pr
                             {badges.length > 0 ? (
                                 badges.map((b: Badge, i: number) => (
                                     <div key={i} title={b?.name || ''} className="w-10 h-10 bg-[#050a14] rounded border border-[#1e293b] flex items-center justify-center hover:bg-[#1e293b] transition-colors cursor-pointer group">
-                                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                                        <img src={b?.image_url} alt="Badge" className="group-hover:scale-110 transition-transform pixelated" />
+                                        <Image src={b?.image_url} alt="Badge" width={40} height={40} className="group-hover:scale-110 transition-transform pixelated" unoptimized />
                                     </div>
                                 ))
                             ) : (
@@ -291,9 +291,8 @@ export default async function ProfilePage({ params, searchParams }: { params: Pr
                         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4">
                             {badges.map((b: Badge, i: number) => (
                                 <div key={i} className="bg-[#050a14] border border-[#1e293b] rounded p-4 flex flex-col items-center text-center hover:border-[#facc15] transition-colors group">
-                                    <div className="w-16 h-16 flex items-center justify-center mb-3">
-                                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                                        <img src={b?.image_url} alt={b?.name} className="group-hover:scale-110 transition-transform pixelated max-w-full max-h-full" />
+                                    <div className="w-16 h-16 flex items-center justify-center mb-3 relative">
+                                        <Image src={b?.image_url} alt={b?.name} fill className="object-contain group-hover:scale-110 transition-transform pixelated p-1" unoptimized />
                                     </div>
                                     <h3 className="text-white font-bold text-[11px] leading-tight mb-1">{b?.name}</h3>
                                     <p className="text-[#64748b] text-[9px] line-clamp-2">{b?.description}</p>
@@ -370,9 +369,9 @@ export default async function ProfilePage({ params, searchParams }: { params: Pr
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             {rooms.map((room: UserRoom, i: number) => (
                                 <a href={`https://www.habbo.com.tr/hotel?room=${room.room_id}`} target="_blank" rel="noopener noreferrer" key={i} className="bg-[#050a14] border border-[#1e293b] rounded p-3 flex gap-4 hover:border-[#ef4444] transition-colors group">
-                                    <div className="w-16 h-16 bg-[#0a1325] rounded border border-[#1e293b] overflow-hidden shrink-0">
+                                    <div className="w-16 h-16 bg-[#0a1325] rounded border border-[#1e293b] overflow-hidden shrink-0 relative">
                                         {room.thumbnail_url ? (
-                                            <img src={room.thumbnail_url} alt={room.room_name} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
+                                            <Image src={room.thumbnail_url} alt={room.room_name} fill className="object-cover opacity-80 group-hover:opacity-100 transition-opacity" unoptimized />
                                         ) : (
                                             <div className="w-full h-full flex items-center justify-center text-[#334155]">
                                                 <MapPin size={24} />

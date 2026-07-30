@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ChevronLeft, ChevronRight, X, Maximize, Minimize } from 'lucide-react';
 import HTMLFlipBook from 'react-pageflip';
 
@@ -119,11 +120,12 @@ export default function MagazineReader({ magazine, aiPages = [] }: MagazineReade
                   height: layer.style?.height,
                 }}
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img 
+                <Image 
                   src={layer.content} 
                   alt="layer" 
-                  className="w-full h-full object-cover"
+                  fill
+                  className="object-cover"
+                  unoptimized
                 />
               </div>
             );
@@ -192,8 +194,7 @@ export default function MagazineReader({ magazine, aiPages = [] }: MagazineReade
               oldPages.map((url: string, index: number) => (
                 <Page key={index} number={index + 1}>
                   <div className="w-full h-full bg-white flex items-center justify-center">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={url} alt={`Sayfa ${index + 1}`} className="max-w-full max-h-full object-contain" />
+                    <Image src={url} alt={`Sayfa ${index + 1}`} width={0} height={0} className="max-w-full max-h-full object-contain" unoptimized />
                   </div>
                 </Page>
               ))

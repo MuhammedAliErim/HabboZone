@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { AlertTriangle, Home } from 'lucide-react';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -10,7 +11,7 @@ export default function NotFound() {
       <main className="flex-1 w-full flex flex-col items-center justify-center py-20 px-4 animate-in fade-in duration-500">
         <div className="habbo-box max-w-md w-full p-8 text-center flex flex-col items-center gap-6">
           <div className="w-24 h-24 bg-[#1e293b] rounded-full border-4 border-black flex items-center justify-center relative shadow-[4px_4px_0_#000]">
-            <img src="https://images.habbo.com/c_images/album1584/ADM.gif" alt="404 Error" className="scale-150 pixelated opacity-80" />
+            <Image src="https://images.habbo.com/c_images/album1584/ADM.gif" alt="404 Error" fill className="scale-150 pixelated opacity-80" unoptimized />
             <div className="absolute -bottom-2 -right-2 bg-red-500 rounded-full p-1 border-2 border-black">
               <AlertTriangle size={24} className="text-white" />
             </div>

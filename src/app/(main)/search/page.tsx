@@ -194,7 +194,7 @@ export default async function SearchPage({ searchParams }: Props) {
               <div className="flex items-start gap-3 mb-3">
                 <div className="w-12 h-12 rounded-[2px] border border-[#1e293b] bg-[#050a14] overflow-hidden shrink-0 flex items-center justify-center relative">
                   {item.imageUrl ? (
-                    <img src={item.imageUrl} alt={item.title} className="w-full h-full object-cover pixelated" />
+                    <Image src={item.imageUrl} alt={item.title} fill className="object-cover pixelated" unoptimized />
                   ) : (
                     getTypeIcon(item._type)
                   )}

@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { Hammer, Clock } from 'lucide-react';
 import Link from 'next/link';
 
@@ -12,7 +13,7 @@ export default function ComingSoon({ title, description }: { title: string, desc
         </div>
         
         <div className="w-24 h-24 bg-[#1e293b] rounded-full border-4 border-black flex items-center justify-center relative mb-6 shadow-[0_4px_0_#000]">
-            <img src="https://images.habbo.com/c_images/album1584/ADM.gif" alt="Construction" className="scale-125 pixelated opacity-80" />
+            <Image src="https://images.habbo.com/c_images/album1584/ADM.gif" alt="Construction" width={96} height={96} className="scale-125 pixelated opacity-80" unoptimized />
             <div className="absolute -bottom-2 -right-2 bg-[#facc15] rounded-full p-1.5 border-2 border-black">
               <Clock size={20} className="text-black" />
             </div>

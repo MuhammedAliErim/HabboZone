@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useState } from 'react';
 import { Search } from 'lucide-react';
 
@@ -98,11 +99,13 @@ export default function ProfilePage() {
                 {/* Avatar */}
                 <div className="w-32 h-32 md:w-40 md:h-40 rounded bg-white border border-gray-200 flex items-center justify-center shrink-0 shadow-sm relative overflow-hidden">
                 <div className="absolute inset-0 bg-blue-50 opacity-50"></div>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img 
+                <Image 
                     src={`https://www.habbo.com.tr/habbo-imaging/avatarimage?user=${user.name}&direction=2&head_direction=3&gesture=sml&size=l`}
                     alt={user.name}
+                    width={128}
+                    height={128}
                     className="mt-6 scale-110 relative z-10 filter drop-shadow-md"
+                    unoptimized
                 />
                 </div>
 
@@ -139,11 +142,13 @@ export default function ProfilePage() {
                             key={badge.badgeIndex}
                             className="bg-white p-2 rounded border border-gray-200 shadow-sm relative group hover:border-blue-300 hover:bg-blue-50 transition-colors"
                         >
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img 
+                            <Image 
                             src={`https://images.habbo.com/c_images/album1584/${badge.code}.png`} 
                             alt={badge.name}
-                            className="w-10 h-10 object-contain drop-shadow-sm group-hover:scale-110 transition-transform"
+                            width={40}
+                            height={40}
+                            className="object-contain drop-shadow-sm group-hover:scale-110 transition-transform"
+                            unoptimized
                             />
                             {/* Tooltip */}
                             <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-gray-800 text-white text-[10px] px-2 py-1.5 rounded w-max max-w-[200px] text-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20 shadow-md">

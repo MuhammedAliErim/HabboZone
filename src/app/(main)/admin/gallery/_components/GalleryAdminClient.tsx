@@ -227,11 +227,13 @@ export default function GalleryAdminClient({
               </button>
             </div>
             
-            <div className="p-6 overflow-auto flex-1 flex items-center justify-center bg-black/50">
-              <img 
+            <div className="relative p-6 overflow-auto flex-1 flex items-center justify-center bg-black/50">
+              <Image 
                 src={previewImage.image_url} 
                 alt={previewImage.title || 'Fotoğraf'} 
-                className="max-w-full max-h-[65vh] object-contain rounded-xl border border-white/10 shadow-2xl" 
+                fill
+                className="object-contain rounded-xl border border-white/10 shadow-2xl p-4"
+                unoptimized
               />
             </div>
 

@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { createClient } from '@/utils/supabase/server'
 import BadgeForm from './_components/BadgeForm'
 import DeleteBadgeButton from './_components/DeleteBadgeButton'
@@ -92,11 +93,13 @@ export default async function AdminBadgesPage() {
                       <tr key={badge.id} className="hover:bg-[#050a14] transition-colors group">
                         <td className="px-5 py-3.5">
                           <div className="relative w-11 h-11 bg-[#050a14] border border-[#1e293b] rounded-[2px] flex items-center justify-center shadow group-hover:border-[#facc15] transition-colors">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img 
+                            <Image 
                               src={badge.image_url} 
                               alt={badge.name} 
-                              className="pixelated max-w-8 max-h-8 object-contain scale-110"
+                              width={32}
+                              height={32}
+                              className="pixelated object-contain scale-110"
+                              unoptimized
                             />
                           </div>
                         </td>
