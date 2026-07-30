@@ -1,6 +1,15 @@
 import { NextResponse } from 'next/server';
+import { checkRateLimit, getRateLimitKey } from '@/lib/rate-limiter';
 
-export async function GET() {
+export async function GET(request: Request) {
+  const { allowed, resetIn } = checkRateLimit(getRateLimitKey(request), 5)
+  if (!allowed) {
+    return NextResponse.json({ error: 'Çok fazla istek. Lütfen bekleyin.' }, {
+      status: 429,
+      headers: { 'Retry-After': String(Math.ceil(resetIn / 1000)) },
+    })
+  }
+
   const textKey = process.env.NVIDIA_TEXT_API_KEY;
   const imageKey = process.env.NVIDIA_IMAGE_API_KEY;
 

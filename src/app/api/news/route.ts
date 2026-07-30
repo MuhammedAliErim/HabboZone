@@ -1,7 +1,16 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
+import { checkRateLimit, getRateLimitKey } from '@/lib/rate-limiter';
 
-export async function GET() {
+export async function GET(request: Request) {
+  const { allowed, remaining, resetIn } = checkRateLimit(getRateLimitKey(request))
+  if (!allowed) {
+    return NextResponse.json({ error: 'Çok fazla istek. Lütfen bekleyin.' }, {
+      status: 429,
+      headers: { 'Retry-After': String(Math.ceil(resetIn / 1000)) },
+    })
+  }
+
   try {
     const supabase = await createClient();
     const { data: news, error } = await supabase

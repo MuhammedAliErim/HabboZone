@@ -20,6 +20,13 @@ export const metadata: Metadata = {
   title: "HabboZone",
   description: "Modern Habbo Community and Magazine Portal",
   metadataBase: new URL("https://habbozone.vercel.app"),
+  manifest: "/manifest.json",
+  icons: { icon: "/favicon.ico" },
+  other: {
+    "theme-color": "#facc15",
+    "apple-mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-status-bar-style": "black-translucent",
+  },
 };
 
 export default function RootLayout({

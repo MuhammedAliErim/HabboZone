@@ -1,6 +1,15 @@
 import { NextResponse } from 'next/server';
+import { checkRateLimit, getRateLimitKey } from '@/lib/rate-limiter';
 
 export async function GET(request: Request) {
+  const { allowed, remaining, resetIn } = checkRateLimit(getRateLimitKey(request), 20)
+  if (!allowed) {
+    return NextResponse.json({ error: 'Çok fazla istek. Lütfen bekleyin.' }, {
+      status: 429,
+      headers: { 'Retry-After': String(Math.ceil(resetIn / 1000)) },
+    })
+  }
+
   const { searchParams } = new URL(request.url);
   const name = searchParams.get('name');
 

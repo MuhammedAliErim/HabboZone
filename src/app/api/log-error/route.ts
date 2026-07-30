@@ -1,7 +1,16 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/utils/supabase/server'
+import { checkRateLimit, getRateLimitKey } from '@/lib/rate-limiter'
 
 export async function POST(request: Request) {
+  const { allowed, resetIn } = checkRateLimit(getRateLimitKey(request), 60)
+  if (!allowed) {
+    return NextResponse.json({ error: 'Çok fazla istek. Lütfen bekleyin.' }, {
+      status: 429,
+      headers: { 'Retry-After': String(Math.ceil(resetIn / 1000)) },
+    })
+  }
+
   try {
     const body = await request.json()
     const { action, level, message, details, user_id } = body
