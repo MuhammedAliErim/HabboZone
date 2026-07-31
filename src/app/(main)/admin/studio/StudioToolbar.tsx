@@ -4,6 +4,7 @@ import React, { useRef, useState } from 'react';
 import {
   Undo2, Redo2, ZoomIn, ZoomOut, Download, FileCode2, RotateCcw,
   AlignCenter, ChevronDown, X, Check, Copy, Image as ImageIcon, Loader2,
+  Maximize2, Minimize2,
 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import {
@@ -16,7 +17,15 @@ import {
 } from './useStudioStore';
 import { generateEmbedHtml, exportElementToPng, exportElementToJpeg, downloadDataUrl } from './exportUtils';
 
-export default function StudioToolbar({ canvasRef }: { canvasRef: React.RefObject<HTMLDivElement | null> }) {
+export default function StudioToolbar({
+  canvasRef,
+  isFullscreen,
+  onToggleFullscreen,
+}: {
+  canvasRef: React.RefObject<HTMLDivElement | null>;
+  isFullscreen: boolean;
+  onToggleFullscreen: () => void;
+}) {
   const undo = useStudioStore((s) => s.undo);
   const redo = useStudioStore((s) => s.redo);
   const past = useStudioStore((s) => s.past);
@@ -200,6 +209,14 @@ export default function StudioToolbar({ canvasRef }: { canvasRef: React.RefObjec
         title="Tasarımı sıfırla"
       >
         <RotateCcw className="w-4 h-4" />
+      </button>
+
+      <button
+        onClick={onToggleFullscreen}
+        className="p-2 rounded-[3px] text-gray-300 hover:bg-[#1e293b] hover:text-cyan-400 transition-all cursor-pointer"
+        title={isFullscreen ? 'Tam ekrandan çık (Esc)' : 'Tam ekran aç'}
+      >
+        {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
       </button>
 
       <div className="relative" ref={exportMenuRef}>

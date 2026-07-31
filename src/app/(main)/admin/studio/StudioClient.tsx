@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback, useState } from 'react';
 import StudioToolbar from './StudioToolbar';
 import StudioLeftPanel from './StudioLeftPanel';
 import StudioCanvas from './StudioCanvas';
@@ -15,6 +15,8 @@ import {
 
 export default function StudioClient() {
   const canvasRef = useRef<HTMLDivElement | null>(null);
+  const editorRef = useRef<HTMLDivElement | null>(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const load = useStudioStore((s) => s.load);
   const layers = useStudioStore((s) => s.layers);
   const undo = useStudioStore((s) => s.undo);
@@ -85,9 +87,30 @@ export default function StudioClient() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleKeyDown]);
 
+  const toggleFullscreen = useCallback(() => {
+    if (document.fullscreenElement) {
+      document.exitFullscreen().catch(() => {});
+    } else if (editorRef.current) {
+      editorRef.current.requestFullscreen().catch(() => {});
+    }
+  }, []);
+
+  useEffect(() => {
+    const onFullscreenChange = () => setIsFullscreen(!!document.fullscreenElement);
+    document.addEventListener('fullscreenchange', onFullscreenChange);
+    return () => document.removeEventListener('fullscreenchange', onFullscreenChange);
+  }, []);
+
   return (
-    <div className="flex flex-col h-[calc(100vh-7.5rem)] min-h-[560px] rounded-[3px] overflow-hidden border border-[#1e293b] bg-[#05070f]">
-      <StudioToolbar canvasRef={canvasRef} />
+    <div
+      ref={editorRef}
+      className={`flex flex-col overflow-hidden border border-[#1e293b] bg-[#05070f] ${
+        isFullscreen
+          ? 'fixed inset-0 z-[200] h-screen w-screen rounded-none border-0'
+          : 'h-[calc(100vh-7.5rem)] min-h-[560px] rounded-[3px]'
+      }`}
+    >
+      <StudioToolbar canvasRef={canvasRef} isFullscreen={isFullscreen} onToggleFullscreen={toggleFullscreen} />
       <div className="flex flex-1 overflow-hidden">
         <StudioLeftPanel />
         <StudioCanvas canvasRef={canvasRef} />
