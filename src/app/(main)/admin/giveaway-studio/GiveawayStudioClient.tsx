@@ -163,7 +163,7 @@ export default function GiveawayStudioClient() {
     <div className="space-y-6 animate-in fade-in duration-500 text-white">
       
       {/* Üst Header */}
-      <div className="bg-gradient-to-r from-[#0a1224] via-[#111c35] to-[#0a1224] border-2 border-amber-500/30 rounded-[3px] p-6 shadow-2xl relative overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+      <div className="habbo-box bg-[#0a1325] border border-amber-500/30 rounded-[3px] p-6 shadow-2xl relative overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="absolute -right-10 -bottom-10 w-48 h-48 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
         <div className="flex items-center gap-4 relative z-10">
           <div className="w-14 h-14 rounded-[3px] bg-gradient-to-br from-amber-500 to-yellow-600 flex items-center justify-center shadow-lg shadow-amber-500/30 border border-amber-300">
@@ -176,10 +176,10 @@ export default function GiveawayStudioClient() {
               </span>
               <span className="text-xs text-gray-400 font-medium">CANLI KURA & TURNUVA</span>
             </div>
-            <h1 className="text-2xl font-black text-white tracking-tight mt-1 flex items-center gap-2">
+            <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight uppercase mt-1 flex items-center gap-2">
               Turnuva & Çekiliş Komuta Merkezi
             </h1>
-            <p className="text-xs text-gray-300">
+            <p className="text-xs text-gray-300 font-bold uppercase tracking-wide">
               Oda etkinlikleri, rozet kuraları ve 1v1 turnuva eşleşme şemalarını saniyeler içinde yönetip habere gömün.
             </p>
           </div>
@@ -191,7 +191,7 @@ export default function GiveawayStudioClient() {
             onClick={() => setActiveTab('giveaway')}
             className={`flex items-center gap-2 px-4 py-2.5 rounded-[2px] font-black text-xs transition-all ${
               activeTab === 'giveaway'
-                ? 'bg-gradient-to-r from-amber-500 to-yellow-500 text-black shadow-md'
+                ? 'bg-[#facc15] text-black shadow-md'
                 : 'text-gray-400 hover:text-white'
             }`}
           >
@@ -201,7 +201,7 @@ export default function GiveawayStudioClient() {
             onClick={() => setActiveTab('bracket')}
             className={`flex items-center gap-2 px-4 py-2.5 rounded-[2px] font-black text-xs transition-all ${
               activeTab === 'bracket'
-                ? 'bg-gradient-to-r from-pink-500 to-rose-600 text-white shadow-md'
+                ? 'bg-[#facc15] text-black shadow-md'
                 : 'text-gray-400 hover:text-white'
             }`}
           >

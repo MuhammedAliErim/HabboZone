@@ -200,7 +200,7 @@ export default function OutfitStudioClient() {
     <div className="space-y-8 animate-in fade-in duration-500">
       
       {/* Top Banner */}
-      <div className="habbo-box bg-gradient-to-r from-[#070c18] via-[#120a1c] to-[#070c18] border border-[#1e293b] p-6 rounded-[3px] relative overflow-hidden shadow-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div className="habbo-box bg-[#0a1325] border border-[#1e293b] p-6 rounded-[3px] relative overflow-hidden shadow-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
             <span className="px-2.5 py-0.5 rounded-[2px] bg-pink-500/20 border border-pink-500/40 text-pink-300 text-xs font-black uppercase flex items-center gap-1">
@@ -210,19 +210,19 @@ export default function OutfitStudioClient() {
               KOMBİN & LOOKBOOK
             </span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight uppercase">
             Habbo<span className="text-pink-400">Zone</span> Kombin & Moda Stüdyosu
           </h1>
-          <p className="text-sm text-gray-300">
+          <p className="text-xs text-gray-300 font-bold uppercase tracking-wide">
             Avatarlarınızı tasarlayın, giyilen kıyafetleri etiketleyin ve haberler veya dergiler için şık moda kartları export edin.
           </p>
         </div>
         
         <button
           onClick={handleCopyEmbed}
-          className="bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-400 hover:to-rose-500 text-white font-black px-6 py-3 rounded-[3px] shadow-lg shadow-pink-500/25 flex items-center gap-2 transition-all hover:scale-105 shrink-0 uppercase tracking-wider"
+          className="habbo-button px-6 py-3 font-black flex items-center gap-2 shrink-0 uppercase tracking-wider"
         >
-          {copied ? <Check className="w-5 h-5 text-yellow-300" /> : <Copy className="w-5 h-5" />}
+          {copied ? <Check className="w-5 h-5 text-black" /> : <Copy className="w-5 h-5" />}
           {copied ? 'MODA KODU KOPYALANDI!' : 'KOMBİN KODUNU KOPYALA'}
         </button>
       </div>
