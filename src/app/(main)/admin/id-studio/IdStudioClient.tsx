@@ -106,35 +106,35 @@ export default function IdStudioClient() {
       <div className="lg:col-span-7 space-y-6">
         
         {/* Sekme Menüsü */}
-        <div className="habbo-box bg-[#0a1224] border-2 border-white/10 p-2 rounded-xl flex items-center justify-between gap-1 overflow-x-auto shadow-xl">
+        <div className="habbo-box bg-[#0a1325] border border-[#1e293b] p-2 rounded-[3px] flex items-center justify-between gap-1 overflow-x-auto shadow-xl">
           <button
             onClick={() => setActiveTab('format')}
-            className={`flex-1 py-2.5 px-3 rounded-lg text-xs font-bold uppercase transition-all flex items-center justify-center gap-2 whitespace-nowrap ${
-              activeTab === 'format' ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/30' : 'text-gray-400 hover:text-white hover:bg-white/5'
+            className={`flex-1 py-2.5 px-3 rounded-[2px] text-xs font-bold uppercase transition-all flex items-center justify-center gap-2 whitespace-nowrap ${
+              activeTab === 'format' ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/30' : 'text-gray-400 hover:text-white hover:bg-[#0a1325]'
             }`}
           >
             <Layout size={16} /> Format & Tema
           </button>
           <button
             onClick={() => setActiveTab('avatar')}
-            className={`flex-1 py-2.5 px-3 rounded-lg text-xs font-bold uppercase transition-all flex items-center justify-center gap-2 whitespace-nowrap ${
-              activeTab === 'avatar' ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/30' : 'text-gray-400 hover:text-white hover:bg-white/5'
+            className={`flex-1 py-2.5 px-3 rounded-[2px] text-xs font-bold uppercase transition-all flex items-center justify-center gap-2 whitespace-nowrap ${
+              activeTab === 'avatar' ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/30' : 'text-gray-400 hover:text-white hover:bg-[#0a1325]'
             }`}
           >
             <User size={16} /> Karakter (Avatar)
           </button>
           <button
             onClick={() => setActiveTab('text')}
-            className={`flex-1 py-2.5 px-3 rounded-lg text-xs font-bold uppercase transition-all flex items-center justify-center gap-2 whitespace-nowrap ${
-              activeTab === 'text' ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/30' : 'text-gray-400 hover:text-white hover:bg-white/5'
+            className={`flex-1 py-2.5 px-3 rounded-[2px] text-xs font-bold uppercase transition-all flex items-center justify-center gap-2 whitespace-nowrap ${
+              activeTab === 'text' ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/30' : 'text-gray-400 hover:text-white hover:bg-[#0a1325]'
             }`}
           >
             <CreditCard size={16} /> Kart Bilgileri
           </button>
           <button
             onClick={() => setActiveTab('badge')}
-            className={`flex-1 py-2.5 px-3 rounded-lg text-xs font-bold uppercase transition-all flex items-center justify-center gap-2 whitespace-nowrap ${
-              activeTab === 'badge' ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/30' : 'text-gray-400 hover:text-white hover:bg-white/5'
+            className={`flex-1 py-2.5 px-3 rounded-[2px] text-xs font-bold uppercase transition-all flex items-center justify-center gap-2 whitespace-nowrap ${
+              activeTab === 'badge' ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/30' : 'text-gray-400 hover:text-white hover:bg-[#0a1325]'
             }`}
           >
             <Award size={16} /> Rozet & Sembol
@@ -143,7 +143,7 @@ export default function IdStudioClient() {
 
         {/* TAB 1: FORMAT & TEMA */}
         {activeTab === 'format' && (
-          <div className="habbo-box bg-[#0a1224] border-2 border-white/10 p-6 rounded-xl space-y-6 animate-in fade-in duration-300">
+          <div className="habbo-box bg-[#0a1325] border border-[#1e293b] p-6 rounded-[3px] space-y-6 animate-in fade-in duration-300">
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-purple-400 mb-3 flex items-center gap-1.5">
                 <Layout size={14} /> Kart Boyutu & Kullanım Tipi
@@ -153,10 +153,10 @@ export default function IdStudioClient() {
                   <button
                     key={fmt.id}
                     onClick={() => setSelectedFormat(fmt)}
-                    className={`p-4 rounded-xl border text-left transition-all ${
+                    className={`p-4 rounded-[3px] border text-left transition-all ${
                       selectedFormat.id === fmt.id
                         ? 'bg-purple-500/20 border-purple-500 text-white shadow-lg shadow-purple-500/10 scale-[1.02]'
-                        : 'bg-[#050a14] border-white/10 text-gray-400 hover:border-white/30 hover:text-white'
+                        : 'bg-[#050a14] border-[#1e293b] text-gray-400 hover:border-[#facc15] hover:text-white'
                     }`}
                   >
                     <div className="font-black text-xs text-white mb-1">{fmt.name}</div>
@@ -167,7 +167,7 @@ export default function IdStudioClient() {
               </div>
             </div>
 
-            <div className="border-t border-white/10 pt-5">
+            <div className="border-t border-[#1e293b] pt-5">
               <label className="block text-xs font-bold uppercase tracking-wider text-yellow-400 mb-3 flex items-center gap-1.5">
                 <Palette size={14} /> Kart Renk Teması & Glow Efekti
               </label>
@@ -176,10 +176,10 @@ export default function IdStudioClient() {
                   <button
                     key={thm.id}
                     onClick={() => setSelectedTheme(thm)}
-                    className={`p-3.5 rounded-xl border flex items-center justify-between transition-all ${
+                    className={`p-3.5 rounded-[3px] border flex items-center justify-between transition-all ${
                       selectedTheme.id === thm.id
-                        ? 'bg-white/10 border-white text-white font-bold shadow-xl'
-                        : 'bg-[#050a14] border-white/10 text-gray-400 hover:border-white/30 hover:text-white font-medium'
+                        ? 'bg-[#facc15] border-[#facc15] text-black font-bold shadow-xl'
+                        : 'bg-[#050a14] border-[#1e293b] text-gray-400 hover:border-[#facc15] hover:text-white font-medium'
                     }`}
                   >
                     <span className="text-xs">{thm.name}</span>
@@ -189,7 +189,7 @@ export default function IdStudioClient() {
               </div>
             </div>
 
-            <div className="border-t border-white/10 pt-5">
+            <div className="border-t border-[#1e293b] pt-5">
               <div className="flex items-center justify-between mb-2">
                 <label className="text-xs font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-1.5">
                   <Sliders size={14} /> Hologram Parlaklık Yoğunluğu
@@ -203,7 +203,7 @@ export default function IdStudioClient() {
                 step="0.05"
                 value={hologramOpacity}
                 onChange={(e) => setHologramOpacity(parseFloat(e.target.value))}
-                className="w-full accent-purple-500 bg-[#050a14] rounded-lg h-2 cursor-pointer"
+                className="w-full accent-purple-500 bg-[#050a14] rounded-[2px] h-2 cursor-pointer"
               />
             </div>
           </div>
@@ -211,7 +211,7 @@ export default function IdStudioClient() {
 
         {/* TAB 2: KARAKTER (AVATAR) */}
         {activeTab === 'avatar' && (
-          <div className="habbo-box bg-[#0a1224] border-2 border-white/10 p-6 rounded-xl space-y-6 animate-in fade-in duration-300">
+          <div className="habbo-box bg-[#0a1325] border border-[#1e293b] p-6 rounded-[3px] space-y-6 animate-in fade-in duration-300">
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-purple-400 mb-2">
                 Habbo Kullanıcı Adı (Avatar Çekimi İçin)
@@ -222,19 +222,19 @@ export default function IdStudioClient() {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder="Örn: MuhammedAliErim"
-                  className="flex-1 bg-[#050a14] border border-white/15 rounded-xl px-4 py-2.5 text-sm text-white font-bold focus:outline-none focus:border-purple-500"
+                  className="flex-1 bg-[#050a14] border border-[#1e293b] rounded-[3px] px-4 py-2.5 text-sm text-white font-bold focus:outline-none focus:border-purple-500"
                 />
                 <button
                   type="button"
                   onClick={() => setUsername('MuhammedAliErim')}
-                  className="px-3 py-2 bg-white/10 hover:bg-white/20 text-xs font-bold text-gray-300 rounded-xl transition-all"
+                  className="px-3 py-2 bg-[#050a14] hover:bg-[#0a1325] text-xs font-bold text-gray-300 rounded-[3px] transition-all"
                 >
                   Sıfırla
                 </button>
               </div>
             </div>
 
-            <div className="border-t border-white/10 pt-5">
+            <div className="border-t border-[#1e293b] pt-5">
               <label className="block text-xs font-bold uppercase tracking-wider text-yellow-400 mb-3">
                 Karakter Bakış Yönü
               </label>
@@ -243,10 +243,10 @@ export default function IdStudioClient() {
                   <button
                     key={dir}
                     onClick={() => setAvatarDirection(dir)}
-                    className={`py-2.5 rounded-xl border text-xs font-black transition-all ${
+                    className={`py-2.5 rounded-[3px] border text-xs font-black transition-all ${
                       avatarDirection === dir
                         ? 'bg-yellow-500/20 border-yellow-400 text-white shadow-md'
-                        : 'bg-[#050a14] border-white/10 text-gray-400 hover:text-white'
+                        : 'bg-[#050a14] border-[#1e293b] text-gray-400 hover:text-white'
                     }`}
                   >
                     {dir}
@@ -255,7 +255,7 @@ export default function IdStudioClient() {
               </div>
             </div>
 
-            <div className="border-t border-white/10 pt-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="border-t border-[#1e293b] pt-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-bold uppercase tracking-wider text-cyan-400 mb-3">
                   Karakter Eylemi (Animasyon)
@@ -270,10 +270,10 @@ export default function IdStudioClient() {
                     <button
                       key={act.id}
                       onClick={() => setAvatarAction(act.id)}
-                      className={`py-2 px-3 rounded-xl border text-xs font-bold transition-all truncate ${
+                      className={`py-2 px-3 rounded-[3px] border text-xs font-bold transition-all truncate ${
                         avatarAction === act.id
                           ? 'bg-cyan-500/20 border-cyan-400 text-white shadow-md'
-                          : 'bg-[#050a14] border-white/10 text-gray-400 hover:text-white'
+                          : 'bg-[#050a14] border-[#1e293b] text-gray-400 hover:text-white'
                       }`}
                     >
                       {act.label}
@@ -294,10 +294,10 @@ export default function IdStudioClient() {
                     <button
                       key={sz.id}
                       onClick={() => setAvatarSize(sz.id as 'm' | 'l')}
-                      className={`py-2 px-3 rounded-xl border text-xs font-bold transition-all ${
+                      className={`py-2 px-3 rounded-[3px] border text-xs font-bold transition-all ${
                         avatarSize === sz.id
                           ? 'bg-emerald-500/20 border-emerald-400 text-white shadow-md'
-                          : 'bg-[#050a14] border-white/10 text-gray-400 hover:text-white'
+                          : 'bg-[#050a14] border-[#1e293b] text-gray-400 hover:text-white'
                       }`}
                     >
                       {sz.label}
@@ -311,7 +311,7 @@ export default function IdStudioClient() {
 
         {/* TAB 3: METİN & KİMLİK BİLGİLERİ */}
         {activeTab === 'text' && (
-          <div className="habbo-box bg-[#0a1224] border-2 border-white/10 p-6 rounded-xl space-y-5 animate-in fade-in duration-300">
+          <div className="habbo-box bg-[#0a1325] border border-[#1e293b] p-6 rounded-[3px] space-y-5 animate-in fade-in duration-300">
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-purple-400 mb-2">
                 Yetki Unvanı & Görev Adı
@@ -321,7 +321,7 @@ export default function IdStudioClient() {
                 value={roleTitle}
                 onChange={(e) => setRoleTitle(e.target.value.toUpperCase())}
                 placeholder="Örn: BAŞ EDİTÖR & SİSTEM YÖNETİCİSİ"
-                className="w-full bg-[#050a14] border border-white/15 rounded-xl px-4 py-2.5 text-sm text-white font-bold uppercase focus:outline-none focus:border-purple-500"
+                className="w-full bg-[#050a14] border border-[#1e293b] rounded-[3px] px-4 py-2.5 text-sm text-white font-bold uppercase focus:outline-none focus:border-purple-500"
               />
             </div>
 
@@ -334,7 +334,7 @@ export default function IdStudioClient() {
                 value={motto}
                 onChange={(e) => setMotto(e.target.value)}
                 placeholder="Örn: Habbo'nun Kalbi Burada Attı!"
-                className="w-full bg-[#050a14] border border-white/15 rounded-xl px-4 py-2.5 text-sm text-white font-medium focus:outline-none focus:border-yellow-500"
+                className="w-full bg-[#050a14] border border-[#1e293b] rounded-[3px] px-4 py-2.5 text-sm text-white font-medium focus:outline-none focus:border-yellow-500"
               />
             </div>
 
@@ -348,7 +348,7 @@ export default function IdStudioClient() {
                   value={idNumber}
                   onChange={(e) => setIdNumber(e.target.value.toUpperCase())}
                   placeholder="Örn: HZ-2026-001"
-                  className="w-full bg-[#050a14] border border-white/15 rounded-xl px-4 py-2.5 text-sm text-white font-mono uppercase focus:outline-none focus:border-cyan-500"
+                  className="w-full bg-[#050a14] border border-[#1e293b] rounded-[3px] px-4 py-2.5 text-sm text-white font-mono uppercase focus:outline-none focus:border-cyan-500"
                 />
               </div>
 
@@ -361,7 +361,7 @@ export default function IdStudioClient() {
                   value={department}
                   onChange={(e) => setDepartment(e.target.value)}
                   placeholder="Örn: Medya & Basın Birimi"
-                  className="w-full bg-[#050a14] border border-white/15 rounded-xl px-4 py-2.5 text-sm text-white font-bold focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-[#050a14] border border-[#1e293b] rounded-[3px] px-4 py-2.5 text-sm text-white font-bold focus:outline-none focus:border-emerald-500"
                 />
               </div>
             </div>
@@ -370,7 +370,7 @@ export default function IdStudioClient() {
 
         {/* TAB 4: ROZET & SEMBOL */}
         {activeTab === 'badge' && (
-          <div className="habbo-box bg-[#0a1224] border-2 border-white/10 p-6 rounded-xl space-y-6 animate-in fade-in duration-300">
+          <div className="habbo-box bg-[#0a1325] border border-[#1e293b] p-6 rounded-[3px] space-y-6 animate-in fade-in duration-300">
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-purple-400 mb-3 flex items-center gap-1.5">
                 <Award size={14} /> Kart Üzerindeki Resmi Görev Rozeti
@@ -378,10 +378,10 @@ export default function IdStudioClient() {
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
                 <button
                   onClick={() => setSelectedBadge(null)}
-                  className={`p-3 rounded-xl border text-left transition-all flex items-center justify-center ${
+                  className={`p-3 rounded-[3px] border text-left transition-all flex items-center justify-center ${
                     !selectedBadge
                       ? 'bg-red-500/20 border-red-500 text-white font-bold shadow-lg'
-                      : 'bg-[#050a14] border-white/10 text-gray-400 hover:border-white/30 hover:text-white'
+                      : 'bg-[#050a14] border-[#1e293b] text-gray-400 hover:border-[#facc15] hover:text-white'
                   }`}
                 >
                   <span className="text-xs">Rozet Yok</span>
@@ -391,13 +391,13 @@ export default function IdStudioClient() {
                   <button
                     key={bdg.id}
                     onClick={() => setSelectedBadge(bdg)}
-                    className={`p-3 rounded-xl border flex items-center gap-2.5 text-xs font-bold transition-all ${
+                    className={`p-3 rounded-[3px] border flex items-center gap-2.5 text-xs font-bold transition-all ${
                       selectedBadge?.id === bdg.id
                         ? 'bg-purple-500/20 border-purple-500 text-white shadow-lg'
-                        : 'bg-[#050a14] border-white/10 text-gray-400 hover:border-white/30 hover:text-white'
+                        : 'bg-[#050a14] border-[#1e293b] text-gray-400 hover:border-[#facc15] hover:text-white'
                     }`}
                   >
-                    <div className="w-7 h-7 bg-black/40 rounded-lg flex items-center justify-center shrink-0 border border-white/10">
+                    <div className="w-7 h-7 bg-black/40 rounded-[2px] flex items-center justify-center shrink-0 border border-[#1e293b]">
                       <Image src={bdg.icon} alt={bdg.name} width={22} height={22} className="object-contain" unoptimized />
                     </div>
                     <span className="truncate">{bdg.name}</span>
@@ -405,7 +405,7 @@ export default function IdStudioClient() {
                 ))}
               </div>
 
-              <div className="border-t border-white/10 pt-5 mt-5">
+              <div className="border-t border-[#1e293b] pt-5 mt-5">
                 <label className="block text-xs font-bold uppercase tracking-wider text-yellow-400 mb-2">
                   ✨ Özel Habbo Rozet Kodu Ekle
                 </label>
@@ -415,7 +415,7 @@ export default function IdStudioClient() {
                     value={customBadgeInput}
                     onChange={(e) => setCustomBadgeInput(e.target.value.toUpperCase())}
                     placeholder="Örn: TR_X, ADM, VIP, HC1..."
-                    className="flex-1 bg-[#050a14] border border-white/15 rounded-xl px-4 py-2.5 text-xs text-white font-mono uppercase focus:outline-none focus:border-yellow-500"
+                    className="flex-1 bg-[#050a14] border border-[#1e293b] rounded-[3px] px-4 py-2.5 text-xs text-white font-mono uppercase focus:outline-none focus:border-yellow-500"
                   />
                   <button
                     type="button"
@@ -428,7 +428,7 @@ export default function IdStudioClient() {
                         });
                       }
                     }}
-                    className="bg-yellow-500 hover:bg-yellow-400 text-black font-black px-4 py-2.5 rounded-xl text-xs transition-all shadow-md"
+                    className="bg-yellow-500 hover:bg-yellow-400 text-black font-black px-4 py-2.5 rounded-[3px] text-xs transition-all shadow-md"
                   >
                     EKLE
                   </button>
@@ -443,20 +443,20 @@ export default function IdStudioClient() {
       <div className="lg:col-span-5 space-y-6 sticky top-24">
         
         {/* Canlı Kart Kartı */}
-        <div className="habbo-box bg-[#0a1224] border-2 border-white/10 p-6 rounded-xl space-y-4 shadow-2xl shadow-purple-500/5">
-          <div className="flex items-center justify-between pb-3 border-b border-white/10">
+        <div className="habbo-box bg-[#0a1325] border border-[#1e293b] p-6 rounded-[3px] space-y-4 shadow-2xl shadow-purple-500/5">
+          <div className="flex items-center justify-between pb-3 border-b border-[#1e293b]">
             <span className="text-xs font-black uppercase tracking-wider text-yellow-400 flex items-center gap-1.5">
               <Eye size={14} className="animate-pulse" /> Canlı Kart Stüdyosu
             </span>
-            <span className="px-2.5 py-0.5 rounded bg-white/10 text-[10px] font-mono text-gray-300 font-bold">
+            <span className="px-2.5 py-0.5 rounded-[2px] bg-[#050a14] border border-[#1e293b] text-[10px] font-mono text-gray-300 font-bold">
               {selectedFormat.width} x {selectedFormat.height} PX
             </span>
           </div>
 
           {/* CANVAS PREVIEW RENDERER */}
-          <div className="flex justify-center py-4 bg-[#050a14]/60 rounded-xl border border-white/5 overflow-hidden">
+          <div className="flex justify-center py-4 bg-[#050a14]/60 rounded-[3px] border border-[#1e293b] overflow-hidden">
             <div 
-              className={`relative w-full rounded-2xl overflow-hidden border-2 transition-all duration-500 p-6 shadow-2xl bg-gradient-to-br ${selectedTheme.bg} ${selectedTheme.border} ${selectedFormat.aspect}`}
+              className={`relative w-full rounded-[3px] overflow-hidden border-2 transition-all duration-500 p-6 shadow-2xl bg-gradient-to-br ${selectedTheme.bg} ${selectedTheme.border} ${selectedFormat.aspect}`}
             >
               {/* Hologram Parıltı Efekti */}
               <div 
@@ -474,7 +474,7 @@ export default function IdStudioClient() {
                 {/* Sol Bilgiler */}
                 <div className="flex-1 space-y-2 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className={`px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider border ${selectedTheme.badgeColor}`}>
+                    <span className={`px-2.5 py-0.5 rounded-[2px] text-[10px] font-black uppercase tracking-wider border ${selectedTheme.badgeColor}`}>
                       {roleTitle || 'YETKİLİ UNVANI'}
                     </span>
                     <span className="text-[11px] font-mono font-bold text-slate-400">
@@ -490,9 +490,9 @@ export default function IdStudioClient() {
                     "{motto || 'HabboZone En Gelişmiş Topluluk!'}"
                   </p>
 
-                  <div className="pt-2 border-t border-white/10 flex items-center gap-2.5">
+                  <div className="pt-2 border-t border-[#1e293b] flex items-center gap-2.5">
                     {selectedBadge && (
-                      <div className="w-8 h-8 bg-black/40 rounded-lg p-1 border border-white/10 shrink-0 flex items-center justify-center shadow-md animate-bounce">
+                      <div className="w-8 h-8 bg-black/40 rounded-[2px] p-1 border border-[#1e293b] shrink-0 flex items-center justify-center shadow-md animate-bounce">
                         <Image src={selectedBadge.icon} alt="Badge" width={22} height={22} className="object-contain" unoptimized />
                       </div>
                     )}
@@ -526,7 +526,7 @@ export default function IdStudioClient() {
             </div>
           </div>
 
-          <div className="bg-purple-500/10 border border-purple-500/20 rounded-xl p-3 text-xs text-purple-300 flex items-center gap-2">
+          <div className="bg-purple-500/10 border border-purple-500/20 rounded-[3px] p-3 text-xs text-purple-300 flex items-center gap-2">
             <Sparkles size={16} className="shrink-0 text-yellow-400" />
             <span>Kartlarınız haberlerde, rehberlerde ve forum imzalarında otomatik responsive çalışır!</span>
           </div>
@@ -535,7 +535,7 @@ export default function IdStudioClient() {
           <div className="grid grid-cols-2 gap-3 pt-2">
             <button
               onClick={copyCode}
-              className={`py-3 px-4 rounded-xl font-black text-xs uppercase flex items-center justify-center gap-2 transition-all shadow-lg ${
+              className={`py-3 px-4 rounded-[3px] font-black text-xs uppercase flex items-center justify-center gap-2 transition-all shadow-lg ${
                 copiedCode 
                   ? 'bg-emerald-500 text-black shadow-emerald-500/30 scale-95' 
                   : 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white shadow-purple-500/20'
@@ -549,7 +549,7 @@ export default function IdStudioClient() {
               href={getAvatarUrl()}
               target="_blank"
               rel="noopener noreferrer"
-              className="py-3 px-4 rounded-xl font-black text-xs uppercase flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white transition-all border border-white/10"
+              className="py-3 px-4 rounded-[3px] font-black text-xs uppercase flex items-center justify-center gap-2 bg-[#050a14] hover:bg-[#0a1325] text-white border border-[#1e293b] transition-all border border-[#1e293b]"
             >
               <Eye size={16} /> Karakteri Aç
             </a>

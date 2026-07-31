@@ -2,6 +2,8 @@ import { getAdminMagazines } from '@/app/actions/magazine'
 import Link from 'next/link'
 import { Edit, Trash2, Wand2, BookOpen, Sparkles, Calendar, ArrowRight, Clock } from 'lucide-react'
 import Image from 'next/image'
+import AdminPageHeader from '@/components/admin/AdminPageHeader'
+import AdminStat from '@/components/admin/AdminStat'
 
 export const revalidate = 0;
 
@@ -15,27 +17,20 @@ export default async function AdminMagazinesPage() {
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
-      
-      {/* Üst Başlık & Eylem */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-6 border-b border-white/10">
-        <div>
-          <h1 className="text-3xl font-black text-white tracking-tight flex items-center gap-3">
-            <BookOpen className="text-purple-400" size={32} /> AI DERGİ & GAZETE MERKEZİ
-          </h1>
-          <p className="text-sm text-gray-400 font-medium mt-1">
-            HabboZone topluluk dergilerini, yapay zeka destekli sayvaları ve yayın sayılarını kontrol edin.
-          </p>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <div className="habbo-box bg-[#0a1224] border border-white/10 px-4 py-2 rounded-xl flex items-center gap-3">
-            <Sparkles className="text-purple-400" size={20} />
-            <div>
-              <span className="block text-[10px] text-gray-400 font-bold uppercase">Yayın Sayısı</span>
-              <span className="text-base font-black text-purple-300">{magCount} Dergi</span>
-            </div>
-          </div>
-
+      <AdminPageHeader
+        icon={BookOpen}
+        iconColor="text-purple-400"
+        title="AI DERGİ & GAZETE MERKEZİ"
+        subtitle="HabboZone topluluk dergilerini, yapay zeka destekli sayvaları ve yayın sayılarını kontrol edin."
+        stats={
+          <AdminStat
+            label="Yayın Sayısı"
+            value={<span className="text-purple-300">{magCount} Dergi</span>}
+            icon={Sparkles}
+            iconColor="text-purple-400"
+          />
+        }
+        actions={
           <form action={async () => {
             'use server';
             const { createMagazine } = await import('@/app/(main)/admin/magazines/actions');
@@ -48,29 +43,29 @@ export default async function AdminMagazinesPage() {
             if (result?.error) return;
             redirect('/admin/magazines');
           }}>
-            <button 
+            <button
               type="submit"
-              className="habbo-button bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white px-5 py-3 rounded-xl font-black text-xs uppercase tracking-wider transition-all shadow-lg shadow-purple-500/20 flex items-center gap-2"
+              className="habbo-button px-5 py-3 font-black text-xs uppercase tracking-wider transition-all shadow-lg flex items-center gap-2"
             >
               <Wand2 size={18} /> YENİ AI DERGİ BAŞLAT
             </button>
           </form>
-        </div>
-      </div>
+        }
+      />
 
-      <div className="habbo-box bg-[#0a1224] border-2 border-white/10 rounded-2xl overflow-hidden shadow-2xl">
-        <div className="p-4 bg-[#050a14] border-b border-white/10 flex justify-between items-center">
+      <div className="habbo-box bg-[#0a1325] border border-[#1e293b] rounded-[3px] overflow-hidden shadow-2xl">
+        <div className="p-4 bg-[#050a14] border-b border-[#1e293b] flex justify-between items-center">
           <h2 className="text-sm font-black text-white uppercase tracking-wider flex items-center gap-2">
             <BookOpen className="text-purple-400" size={16} /> TÜM SAYILAR VE ARŞİV LİSTESİ
           </h2>
-          <span className="text-xs text-gray-400 font-bold bg-white/5 px-3 py-1 rounded-lg">
+          <span className="text-xs text-gray-400 font-bold bg-[#050a14] px-3 py-1 rounded-[2px]">
             Toplam {magCount} Kayıt
           </span>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm text-gray-300">
-            <thead className="bg-black/30 text-gray-400 text-xs font-black uppercase tracking-wider border-b border-white/10">
+            <thead className="bg-black/30 text-gray-400 text-xs font-black uppercase tracking-wider border-b border-[#1e293b]">
               <tr>
                 <th className="px-6 py-4 w-20">Kapak</th>
                 <th className="px-6 py-4 w-24">Sayı No</th>
@@ -82,9 +77,9 @@ export default async function AdminMagazinesPage() {
             <tbody className="divide-y divide-white/5 font-medium">
               {magazines && magazines.length > 0 ? (
                 magazines.map((item) => (
-                  <tr key={item.id} className="hover:bg-white/[0.02] transition-colors group">
+                  <tr key={item.id} className="hover:bg-[#050a14] transition-colors group">
                     <td className="px-6 py-4">
-                      <div className="relative w-12 h-16 rounded-xl overflow-hidden bg-[#050a14] border border-white/10 shadow-md group-hover:scale-105 transition-transform">
+                      <div className="relative w-12 h-16 rounded-[3px] overflow-hidden bg-[#050a14] border border-[#1e293b] shadow-md group-hover:scale-105 transition-transform">
                         <Image 
                           src={item.cover_image_url || '/placeholder.png'} 
                           alt={item.title || 'Dergi Kapağı'} 
@@ -95,7 +90,7 @@ export default async function AdminMagazinesPage() {
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <span className="font-black text-sm text-yellow-400 bg-yellow-400/10 border border-yellow-400/30 px-2.5 py-1 rounded-lg">
+                      <span className="font-black text-sm text-yellow-400 bg-yellow-400/10 border border-yellow-400/30 px-2.5 py-1 rounded-[2px]">
                         #{item.issue_number || '—'}
                       </span>
                     </td>
@@ -109,11 +104,11 @@ export default async function AdminMagazinesPage() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {item.published_at ? (
-                        <span className="inline-flex items-center gap-1.5 text-emerald-400 font-bold text-xs bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-xl">
+                        <span className="inline-flex items-center gap-1.5 text-emerald-400 font-bold text-xs bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-[3px]">
                           <Calendar size={13} /> {new Date(item.published_at).toLocaleDateString('tr-TR')}
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1.5 text-amber-400 font-bold text-xs bg-amber-500/10 border border-amber-500/20 px-3 py-1.5 rounded-xl">
+                        <span className="inline-flex items-center gap-1.5 text-amber-400 font-bold text-xs bg-amber-500/10 border border-amber-500/20 px-3 py-1.5 rounded-[3px]">
                           <Clock size={13} /> Taslak / Yayınlanmadı
                         </span>
                       )}
@@ -122,7 +117,7 @@ export default async function AdminMagazinesPage() {
                       <div className="flex items-center justify-end gap-2">
                         <Link 
                           href={`/admin/magazines/${item.id}/edit`}
-                          className="px-3.5 py-2 bg-purple-500/10 text-purple-400 hover:bg-purple-600 hover:text-white rounded-xl transition-all font-bold text-xs flex items-center gap-1.5 shadow-sm"
+                          className="px-3.5 py-2 bg-purple-500/10 text-purple-400 hover:bg-purple-600 hover:text-white rounded-[3px] transition-all font-bold text-xs flex items-center gap-1.5 shadow-sm"
                         >
                           <Edit size={14} /> STÜDYOYA GİT
                         </Link>
@@ -133,7 +128,7 @@ export default async function AdminMagazinesPage() {
                         }}>
                           <button 
                             type="submit"
-                            className="p-2 bg-red-500/10 text-red-400 hover:bg-red-600 hover:text-white rounded-xl transition-all"
+                            className="p-2 bg-red-500/10 text-red-400 hover:bg-red-600 hover:text-white rounded-[3px] transition-all"
                             title="Sayfayı Arşivden Sil"
                           >
                             <Trash2 size={16} />

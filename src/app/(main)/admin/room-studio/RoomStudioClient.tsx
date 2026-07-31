@@ -207,27 +207,27 @@ export default function RoomStudioClient() {
       <div className="lg:col-span-6 space-y-6">
         
         {/* Sekme Menüsü */}
-        <div className="habbo-box bg-[#0a1224] border-2 border-white/10 p-2 rounded-xl flex items-center justify-between gap-1 overflow-x-auto shadow-xl">
+        <div className="habbo-box bg-[#0a1325] border border-[#1e293b] p-2 rounded-[3px] flex items-center justify-between gap-1 overflow-x-auto shadow-xl">
           <button
             onClick={() => setActiveTab('steps')}
-            className={`flex-1 py-2.5 px-3 rounded-lg text-xs font-bold uppercase transition-all flex items-center justify-center gap-2 whitespace-nowrap ${
-              activeTab === 'steps' ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/30' : 'text-gray-400 hover:text-white hover:bg-white/5'
+            className={`flex-1 py-2.5 px-3 rounded-[2px] text-xs font-bold uppercase transition-all flex items-center justify-center gap-2 whitespace-nowrap ${
+              activeTab === 'steps' ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/30' : 'text-gray-400 hover:text-white hover:bg-[#0a1325]'
             }`}
           >
             <Compass size={16} /> Adım Ekle & Düzenle
           </button>
           <button
             onClick={() => setActiveTab('room')}
-            className={`flex-1 py-2.5 px-3 rounded-lg text-xs font-bold uppercase transition-all flex items-center justify-center gap-2 whitespace-nowrap ${
-              activeTab === 'room' ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/30' : 'text-gray-400 hover:text-white hover:bg-white/5'
+            className={`flex-1 py-2.5 px-3 rounded-[2px] text-xs font-bold uppercase transition-all flex items-center justify-center gap-2 whitespace-nowrap ${
+              activeTab === 'room' ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/30' : 'text-gray-400 hover:text-white hover:bg-[#0a1325]'
             }`}
           >
             <ImageIcon size={16} /> Oda Arka Planı
           </button>
           <button
             onClick={() => setActiveTab('legend')}
-            className={`flex-1 py-2.5 px-3 rounded-lg text-xs font-bold uppercase transition-all flex items-center justify-center gap-2 whitespace-nowrap ${
-              activeTab === 'legend' ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/30' : 'text-gray-400 hover:text-white hover:bg-white/5'
+            className={`flex-1 py-2.5 px-3 rounded-[2px] text-xs font-bold uppercase transition-all flex items-center justify-center gap-2 whitespace-nowrap ${
+              activeTab === 'legend' ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/30' : 'text-gray-400 hover:text-white hover:bg-[#0a1325]'
             }`}
           >
             <Layers size={16} /> Adım Listesi ({steps.length})
@@ -236,7 +236,7 @@ export default function RoomStudioClient() {
 
         {/* TAB 1: ADIM EKLE & DÜZENLE */}
         {activeTab === 'steps' && (
-          <div className="habbo-box bg-[#0a1224] border-2 border-white/10 p-6 rounded-xl space-y-6 animate-in fade-in duration-300">
+          <div className="habbo-box bg-[#0a1325] border border-[#1e293b] p-6 rounded-[3px] space-y-6 animate-in fade-in duration-300">
             
             {/* İşaretçi Tipi Seçimi */}
             <div>
@@ -252,10 +252,10 @@ export default function RoomStudioClient() {
                   <button
                     key={type.id}
                     onClick={() => setSelectedType(type.id as 'step' | 'arrow' | 'wired')}
-                    className={`p-3 rounded-xl border text-left transition-all ${
+                    className={`p-3 rounded-[3px] border text-left transition-all ${
                       selectedType === type.id
                         ? 'bg-emerald-500/20 border-emerald-400 text-white shadow-lg shadow-emerald-500/10'
-                        : 'bg-[#050a14] border-white/10 text-gray-400 hover:border-white/30 hover:text-white'
+                        : 'bg-[#050a14] border-[#1e293b] text-gray-400 hover:border-[#facc15] hover:text-white'
                     }`}
                   >
                     <div className="font-black text-xs text-white mb-0.5">{type.label}</div>
@@ -267,7 +267,7 @@ export default function RoomStudioClient() {
 
             {/* Ok Yönü Seçimi (Sadece ok seçildiyse) */}
             {selectedType === 'arrow' && (
-              <div className="border-t border-white/10 pt-4">
+              <div className="border-t border-[#1e293b] pt-4">
                 <label className="block text-xs font-bold uppercase tracking-wider text-yellow-400 mb-2">
                   Ok Bakış Yönü
                 </label>
@@ -278,10 +278,10 @@ export default function RoomStudioClient() {
                       <button
                         key={arr.id}
                         onClick={() => setSelectedArrow(arr)}
-                        className={`py-2 px-2 rounded-xl border flex flex-col items-center justify-center gap-1 text-[11px] font-bold transition-all ${
+                        className={`py-2 px-2 rounded-[3px] border flex flex-col items-center justify-center gap-1 text-[11px] font-bold transition-all ${
                           selectedArrow.id === arr.id
                             ? 'bg-yellow-500/20 border-yellow-400 text-white shadow-md'
-                            : 'bg-[#050a14] border-white/10 text-gray-400 hover:text-white'
+                            : 'bg-[#050a14] border-[#1e293b] text-gray-400 hover:text-white'
                         }`}
                       >
                         <IconComp size={18} />
@@ -295,7 +295,7 @@ export default function RoomStudioClient() {
 
             {/* Wired İkon Seçimi (Sadece wired seçildiyse) */}
             {selectedType === 'wired' && (
-              <div className="border-t border-white/10 pt-4">
+              <div className="border-t border-[#1e293b] pt-4">
                 <label className="block text-xs font-bold uppercase tracking-wider text-purple-400 mb-2">
                   Wired veya Eşya İkonu
                 </label>
@@ -304,10 +304,10 @@ export default function RoomStudioClient() {
                     <button
                       key={wrd.id}
                       onClick={() => setSelectedWired(wrd)}
-                      className={`p-2 rounded-xl border flex items-center gap-2 text-xs font-bold transition-all ${
+                      className={`p-2 rounded-[3px] border flex items-center gap-2 text-xs font-bold transition-all ${
                         selectedWired.id === wrd.id
                           ? 'bg-purple-500/20 border-purple-400 text-white shadow-md'
-                          : 'bg-[#050a14] border-white/10 text-gray-400 hover:text-white'
+                          : 'bg-[#050a14] border-[#1e293b] text-gray-400 hover:text-white'
                       }`}
                     >
                       <span className="text-base shrink-0">{wrd.name.split(' ')[0]}</span>
@@ -319,7 +319,7 @@ export default function RoomStudioClient() {
             )}
 
             {/* Renk Seçimi */}
-            <div className="border-t border-white/10 pt-4">
+            <div className="border-t border-[#1e293b] pt-4">
               <label className="block text-xs font-bold uppercase tracking-wider text-cyan-400 mb-2.5">
                 İşaretçi Rengi & Parlaklık Glow
               </label>
@@ -328,7 +328,7 @@ export default function RoomStudioClient() {
                   <button
                     key={col.id}
                     onClick={() => setSelectedColor(col)}
-                    className={`py-2 px-1 rounded-xl border text-center text-xs font-bold transition-all truncate ${col.bg} ${
+                    className={`py-2 px-1 rounded-[3px] border text-center text-xs font-bold transition-all truncate ${col.bg} ${
                       selectedColor.id === col.id ? 'ring-2 ring-white scale-105 shadow-xl' : 'opacity-70 hover:opacity-100'
                     }`}
                   >
@@ -339,7 +339,7 @@ export default function RoomStudioClient() {
             </div>
 
             {/* Başlık ve Açıklama Inputları */}
-            <div className="border-t border-white/10 pt-4 space-y-4">
+            <div className="border-t border-[#1e293b] pt-4 space-y-4">
               <div>
                 <label className="block text-xs font-bold uppercase tracking-wider text-white mb-1.5">
                   Adım Başlığı / Talimat Adı
@@ -349,7 +349,7 @@ export default function RoomStudioClient() {
                   value={newTitle}
                   onChange={(e) => setNewTitle(e.target.value)}
                   placeholder={selectedType === 'step' ? 'Örn: Gizli Kolu Çek' : selectedType === 'arrow' ? 'Örn: Bu Yöne İlerle' : 'Örn: Wired Tetikleyici'}
-                  className="w-full bg-[#050a14] border border-white/15 rounded-xl px-4 py-2.5 text-sm text-white font-bold focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-[#050a14] border border-[#1e293b] rounded-[3px] px-4 py-2.5 text-sm text-white font-bold focus:outline-none focus:border-emerald-500"
                 />
               </div>
 
@@ -362,14 +362,14 @@ export default function RoomStudioClient() {
                   onChange={(e) => setNewDesc(e.target.value)}
                   rows={2}
                   placeholder="Örn: 10 saniye süre dolmadan karoya basın ve kapıdan geçin..."
-                  className="w-full bg-[#050a14] border border-white/15 rounded-xl px-4 py-2 text-xs text-white font-medium focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-[#050a14] border border-[#1e293b] rounded-[3px] px-4 py-2 text-xs text-white font-medium focus:outline-none focus:border-emerald-500"
                 />
               </div>
 
               <button
                 type="button"
                 onClick={handleAddStep}
-                className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-black py-3 rounded-xl shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2 text-xs uppercase transition-all hover:scale-[1.01]"
+                className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-black py-3 rounded-[3px] shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2 text-xs uppercase transition-all hover:scale-[1.01]"
               >
                 <Plus size={18} /> Haritaya Yeni Adım / İşaretçi Ekle
               </button>
@@ -379,7 +379,7 @@ export default function RoomStudioClient() {
 
         {/* TAB 2: ODA ARKA PLANI */}
         {activeTab === 'room' && (
-          <div className="habbo-box bg-[#0a1224] border-2 border-white/10 p-6 rounded-xl space-y-6 animate-in fade-in duration-300">
+          <div className="habbo-box bg-[#0a1325] border border-[#1e293b] p-6 rounded-[3px] space-y-6 animate-in fade-in duration-300">
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-emerald-400 mb-3">
                 🏰 Hazır Popüler Oda Şablonları
@@ -392,10 +392,10 @@ export default function RoomStudioClient() {
                       setSelectedRoom(rm);
                       setUseCustomUrl(false);
                     }}
-                    className={`p-3.5 rounded-xl border text-left transition-all flex flex-col justify-between ${
+                    className={`p-3.5 rounded-[3px] border text-left transition-all flex flex-col justify-between ${
                       !useCustomUrl && selectedRoom.id === rm.id
                         ? 'bg-emerald-500/20 border-emerald-400 text-white shadow-lg'
-                        : 'bg-[#050a14] border-white/10 text-gray-400 hover:border-white/30 hover:text-white'
+                        : 'bg-[#050a14] border-[#1e293b] text-gray-400 hover:border-[#facc15] hover:text-white'
                     }`}
                   >
                     <div className="font-black text-xs text-white mb-1">{rm.name}</div>
@@ -405,7 +405,7 @@ export default function RoomStudioClient() {
               </div>
             </div>
 
-            <div className="border-t border-white/10 pt-5">
+            <div className="border-t border-[#1e293b] pt-5">
               <label className="block text-xs font-bold uppercase tracking-wider text-yellow-400 mb-2">
                 🌐 Veya Kendi Oda Ekran Görüntüsü URL'nizi Yapıştırın
               </label>
@@ -418,12 +418,12 @@ export default function RoomStudioClient() {
                     if (e.target.value.trim()) setUseCustomUrl(true);
                   }}
                   placeholder="https://images.habbo.com/..."
-                  className="flex-1 bg-[#050a14] border border-white/15 rounded-xl px-4 py-2.5 text-xs text-white font-mono focus:outline-none focus:border-yellow-500"
+                  className="flex-1 bg-[#050a14] border border-[#1e293b] rounded-[3px] px-4 py-2.5 text-xs text-white font-mono focus:outline-none focus:border-yellow-500"
                 />
                 <button
                   type="button"
                   onClick={() => setUseCustomUrl(!!customRoomUrl.trim())}
-                  className="bg-yellow-500 hover:bg-yellow-400 text-black font-black px-4 py-2.5 rounded-xl text-xs transition-all shadow-md"
+                  className="bg-yellow-500 hover:bg-yellow-400 text-black font-black px-4 py-2.5 rounded-[3px] text-xs transition-all shadow-md"
                 >
                   UYGULA
                 </button>
@@ -434,8 +434,8 @@ export default function RoomStudioClient() {
 
         {/* TAB 3: ADIM LİSTESİ */}
         {activeTab === 'legend' && (
-          <div className="habbo-box bg-[#0a1224] border-2 border-white/10 p-6 rounded-xl space-y-4 animate-in fade-in duration-300">
-            <div className="flex items-center justify-between pb-3 border-b border-white/10">
+          <div className="habbo-box bg-[#0a1325] border border-[#1e293b] p-6 rounded-[3px] space-y-4 animate-in fade-in duration-300">
+            <div className="flex items-center justify-between pb-3 border-b border-[#1e293b]">
               <span className="text-xs font-black uppercase tracking-wider text-white">Haritadaki Adım ve İşaretçiler</span>
               <span className="text-xs font-bold text-emerald-400">{steps.length} Kayıtlı Öğeler</span>
             </div>
@@ -445,10 +445,10 @@ export default function RoomStudioClient() {
                 <div
                   key={st.id}
                   onClick={() => setActiveStepId(st.id)}
-                  className={`p-3 rounded-xl border flex items-center justify-between gap-3 cursor-pointer transition-all ${
+                  className={`p-3 rounded-[3px] border flex items-center justify-between gap-3 cursor-pointer transition-all ${
                     activeStepId === st.id
                       ? 'bg-emerald-500/20 border-emerald-400 text-white shadow-md'
-                      : 'bg-[#050a14] border-white/10 text-gray-300 hover:border-white/20'
+                      : 'bg-[#050a14] border-[#1e293b] text-gray-300 hover:border-[#facc15]'
                   }`}
                 >
                   <div className="flex items-center gap-3 min-w-0">
@@ -468,7 +468,7 @@ export default function RoomStudioClient() {
                         e.stopPropagation();
                         handleDeleteStep(st.id);
                       }}
-                      className="p-1.5 hover:bg-red-500/20 text-gray-400 hover:text-red-400 rounded-lg transition-all"
+                      className="p-1.5 hover:bg-red-500/20 text-gray-400 hover:text-red-400 rounded-[2px] transition-all"
                       title="Sil"
                     >
                       <Trash2 size={15} />
@@ -491,18 +491,18 @@ export default function RoomStudioClient() {
       <div className="lg:col-span-6 space-y-6 sticky top-24">
         
         {/* Canlı Harita Kartı */}
-        <div className="habbo-box bg-[#0a1224] border-2 border-white/10 p-6 rounded-xl space-y-4 shadow-2xl">
-          <div className="flex items-center justify-between pb-3 border-b border-white/10">
+        <div className="habbo-box bg-[#0a1325] border border-[#1e293b] p-6 rounded-[3px] space-y-4 shadow-2xl">
+          <div className="flex items-center justify-between pb-3 border-b border-[#1e293b]">
             <span className="text-xs font-black uppercase tracking-wider text-yellow-400 flex items-center gap-1.5">
               <Eye size={14} className="animate-pulse" /> Canlı İnteraktif Tuval
             </span>
-            <span className="px-2.5 py-0.5 rounded bg-white/10 text-[10px] font-mono text-gray-300 font-bold">
+            <span className="px-2.5 py-0.5 rounded-[2px] bg-[#050a14] border border-[#1e293b] text-[10px] font-mono text-gray-300 font-bold">
               100% RESPONSIVE MAP
             </span>
           </div>
 
           {/* CANVAS PREVIEW RENDERER */}
-          <div className="relative w-full rounded-2xl overflow-hidden border-2 border-white/10 shadow-2xl bg-[#050a14] group">
+          <div className="relative w-full rounded-[3px] overflow-hidden border border-[#1e293b] shadow-2xl bg-[#050a14] group">
             
             {/* Oda Görseli Arka Plan */}
             <div className="relative w-full aspect-[16/10] max-h-[420px] overflow-hidden">
@@ -530,7 +530,7 @@ export default function RoomStudioClient() {
                     }`}
                   >
                     {/* Marker İkon / Rozet */}
-                    <div className={`px-2.5 py-1.5 rounded-full border-2 font-black text-xs flex items-center gap-1.5 shadow-2xl transition-all ${st.color} ${
+                    <div className={`px-2.5 py-1.5 rounded-[2px] border-2 font-black text-xs flex items-center gap-1.5 shadow-2xl transition-all ${st.color} ${
                       isSelected ? 'ring-4 ring-white animate-pulse' : ''
                     }`}>
                       {st.type === 'step' && <span>{st.number}</span>}
@@ -541,14 +541,14 @@ export default function RoomStudioClient() {
 
                     {/* Konum Kaydırma Butonları (Aktif Öğeye Özel) */}
                     {isSelected && (
-                      <div className="mt-1 flex items-center gap-1 bg-black/90 border border-white/20 p-1 rounded-lg shadow-2xl">
+                      <div className="mt-1 flex items-center gap-1 bg-black/90 border border-[#1e293b] p-1 rounded-[2px] shadow-2xl">
                         <button
                           type="button"
                           onClick={(e) => {
                             e.stopPropagation();
                             updatePosition(st.id, st.x - 5, st.y);
                           }}
-                          className="px-1.5 py-0.5 hover:bg-white/20 rounded text-[10px] text-white font-bold"
+                          className="px-1.5 py-0.5 hover:bg-[#0a1325] rounded text-[10px] text-white font-bold"
                           title="Sola Kaydır"
                         >
                           ⬅️
@@ -559,7 +559,7 @@ export default function RoomStudioClient() {
                             e.stopPropagation();
                             updatePosition(st.id, st.x + 5, st.y);
                           }}
-                          className="px-1.5 py-0.5 hover:bg-white/20 rounded text-[10px] text-white font-bold"
+                          className="px-1.5 py-0.5 hover:bg-[#0a1325] rounded text-[10px] text-white font-bold"
                           title="Sağa Kaydır"
                         >
                           ➡️
@@ -570,7 +570,7 @@ export default function RoomStudioClient() {
                             e.stopPropagation();
                             updatePosition(st.id, st.x, st.y - 5);
                           }}
-                          className="px-1.5 py-0.5 hover:bg-white/20 rounded text-[10px] text-white font-bold"
+                          className="px-1.5 py-0.5 hover:bg-[#0a1325] rounded text-[10px] text-white font-bold"
                           title="Yukarı Kaydır"
                         >
                           ⬆️
@@ -581,7 +581,7 @@ export default function RoomStudioClient() {
                             e.stopPropagation();
                             updatePosition(st.id, st.x, st.y + 5);
                           }}
-                          className="px-1.5 py-0.5 hover:bg-white/20 rounded text-[10px] text-white font-bold"
+                          className="px-1.5 py-0.5 hover:bg-[#0a1325] rounded text-[10px] text-white font-bold"
                           title="Aşağı Kaydır"
                         >
                           ⬇️
@@ -594,7 +594,7 @@ export default function RoomStudioClient() {
             </div>
 
             {/* Alt Kılavuz Özeti Barı */}
-            <div className="p-4 bg-[#050a14] border-t border-white/10">
+            <div className="p-4 bg-[#050a14] border-t border-[#1e293b]">
               <div className="text-xs font-black text-yellow-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
                 <Sparkles size={14} /> Harita Çözüm Kılavuzu ({steps.length} Adım)
               </div>
@@ -613,7 +613,7 @@ export default function RoomStudioClient() {
 
           </div>
 
-          <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-3 text-xs text-emerald-300 flex items-center gap-2">
+          <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-[3px] p-3 text-xs text-emerald-300 flex items-center gap-2">
             <Sparkles size={16} className="shrink-0 text-yellow-400" />
             <span>Haritadaki öğelerin üzerine tıklayıp yön oklarıyla konumlarını tuvalde hassas ayarlayabilirsiniz!</span>
           </div>
@@ -622,7 +622,7 @@ export default function RoomStudioClient() {
           <div className="grid grid-cols-2 gap-3 pt-2">
             <button
               onClick={copyCode}
-              className={`py-3.5 px-4 rounded-xl font-black text-xs uppercase flex items-center justify-center gap-2 transition-all shadow-lg ${
+              className={`py-3.5 px-4 rounded-[3px] font-black text-xs uppercase flex items-center justify-center gap-2 transition-all shadow-lg ${
                 copiedCode 
                   ? 'bg-yellow-400 text-black shadow-yellow-400/30 scale-95' 
                   : 'bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white shadow-emerald-500/20'
@@ -637,7 +637,7 @@ export default function RoomStudioClient() {
                 setSteps([]);
                 setActiveStepId(null);
               }}
-              className="py-3.5 px-4 rounded-xl font-black text-xs uppercase flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white transition-all border border-white/10"
+              className="py-3.5 px-4 rounded-[3px] font-black text-xs uppercase flex items-center justify-center gap-2 bg-[#050a14] hover:bg-[#0a1325] text-white border border-[#1e293b] transition-all border border-[#1e293b]"
             >
               <Trash2 size={16} /> Haritayı Sıfırla
             </button>

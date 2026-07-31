@@ -93,7 +93,7 @@ export default function BadgeForm() {
         </label>
         
         <div className="flex items-center gap-4">
-          <label className="flex-1 cursor-pointer bg-[#050a14] hover:bg-white/5 border border-dashed border-[#1e293b] rounded-[2px] p-4 text-center transition-all group">
+          <label className="flex-1 cursor-pointer bg-[#050a14] hover:bg-[#0a1325] border border-dashed border-[#1e293b] rounded-[2px] p-4 text-center transition-all group">
             <input 
               type="file" 
               name="image_file" 

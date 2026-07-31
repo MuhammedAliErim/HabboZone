@@ -30,14 +30,14 @@ export default function AddCategoryForm() {
         <input 
           name="name" 
           required 
-          className="habbo-box w-full px-3.5 py-2.5 bg-[#050a14] border-2 border-white/10 rounded-xl text-white text-sm font-bold focus:outline-none focus:border-yellow-400 transition-all placeholder:text-gray-600 placeholder:font-normal"
+          className="habbo-box w-full px-3.5 py-2.5 bg-[#050a14] border border-[#1e293b] rounded-[3px] text-white text-sm font-bold focus:outline-none focus:border-yellow-400 transition-all placeholder:text-gray-600 placeholder:font-normal"
           placeholder="Örn: Klasik Nadireler, LTD Eşyaları..."
         />
       </div>
       <button 
         type="submit" 
         disabled={loading}
-        className="habbo-button w-full py-2.5 bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-400 hover:to-amber-400 text-black font-black text-xs uppercase tracking-wider rounded-xl transition-all shadow-lg shadow-yellow-500/10 flex items-center justify-center gap-1.5 disabled:opacity-50"
+        className="habbo-button w-full py-2.5 bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-400 hover:to-amber-400 text-black font-black text-xs uppercase tracking-wider rounded-[3px] transition-all shadow-lg shadow-yellow-500/10 flex items-center justify-center gap-1.5 disabled:opacity-50"
       >
         <Check size={16} /> {loading ? 'Oluşturuluyor...' : 'Yeni Kategori Ekle'}
       </button>

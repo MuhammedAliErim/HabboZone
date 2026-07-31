@@ -86,7 +86,7 @@ export default function RoomForm({ initialData }: RoomFormProps) {
             defaultValue={initialData?.name}
             required
             placeholder="Örn: [HR] VIP Dinlenme Tesisi"
-            className="w-full px-4 py-3 bg-[#050a14] border-2 border-white/10 rounded-xl text-white font-bold text-sm focus:outline-none focus:border-yellow-400 transition-colors shadow-inner"
+            className="w-full px-4 py-3 bg-[#050a14] border border-[#1e293b] rounded-[3px] text-white font-bold text-sm focus:outline-none focus:border-yellow-400 transition-colors shadow-inner"
           />
         </div>
 
@@ -99,7 +99,7 @@ export default function RoomForm({ initialData }: RoomFormProps) {
             defaultValue={initialData?.owner}
             required
             placeholder="Örn: MuhammedAliErim"
-            className="w-full px-4 py-3 bg-[#050a14] border-2 border-white/10 rounded-xl text-white font-bold text-sm focus:outline-none focus:border-blue-400 transition-colors shadow-inner"
+            className="w-full px-4 py-3 bg-[#050a14] border border-[#1e293b] rounded-[3px] text-white font-bold text-sm focus:outline-none focus:border-blue-400 transition-colors shadow-inner"
           />
         </div>
       </div>
@@ -113,7 +113,7 @@ export default function RoomForm({ initialData }: RoomFormProps) {
           defaultValue={initialData?.description}
           rows={3}
           placeholder="Oda kuralları, sohbet ortamı ve genel bilgi..."
-          className="w-full px-4 py-3 bg-[#050a14] border-2 border-white/10 rounded-xl text-gray-300 text-xs focus:outline-none focus:border-yellow-400 transition-colors shadow-inner font-medium resize-none"
+          className="w-full px-4 py-3 bg-[#050a14] border border-[#1e293b] rounded-[3px] text-gray-300 text-xs focus:outline-none focus:border-yellow-400 transition-colors shadow-inner font-medium resize-none"
         />
       </div>
 
@@ -125,7 +125,7 @@ export default function RoomForm({ initialData }: RoomFormProps) {
           <select 
             name="category"
             defaultValue={initialData?.category || 'Popüler'}
-            className="w-full px-4 py-3 bg-[#050a14] border-2 border-white/10 rounded-xl text-white font-bold text-xs focus:outline-none focus:border-purple-400 transition-colors"
+            className="w-full px-4 py-3 bg-[#050a14] border border-[#1e293b] rounded-[3px] text-white font-bold text-xs focus:outline-none focus:border-purple-400 transition-colors"
           >
             <option value="Popüler">🌟 Popüler Odalar</option>
             <option value="Yeni">✨ Yeni Açılanlar</option>
@@ -143,7 +143,7 @@ export default function RoomForm({ initialData }: RoomFormProps) {
             name="max_users"
             defaultValue={initialData?.max_users ?? 75}
             required
-            className="w-full px-4 py-3 bg-[#050a14] border-2 border-white/10 rounded-xl text-white font-bold text-xs focus:outline-none focus:border-emerald-400 transition-colors shadow-inner"
+            className="w-full px-4 py-3 bg-[#050a14] border border-[#1e293b] rounded-[3px] text-white font-bold text-xs focus:outline-none focus:border-emerald-400 transition-colors shadow-inner"
           />
         </div>
 
@@ -155,18 +155,18 @@ export default function RoomForm({ initialData }: RoomFormProps) {
             type="number"
             name="current_users"
             defaultValue={initialData?.current_users ?? 0}
-            className="w-full px-4 py-3 bg-[#050a14] border-2 border-white/10 rounded-xl text-white font-bold text-xs focus:outline-none focus:border-cyan-400 transition-colors shadow-inner"
+            className="w-full px-4 py-3 bg-[#050a14] border border-[#1e293b] rounded-[3px] text-white font-bold text-xs focus:outline-none focus:border-cyan-400 transition-colors shadow-inner"
           />
         </div>
       </div>
 
-      <div className="habbo-box bg-[#050a14] border-2 border-white/10 rounded-xl p-5 space-y-4">
+      <div className="habbo-box bg-[#050a14] border border-[#1e293b] rounded-[3px] p-5 space-y-4">
         <label className="block text-xs font-bold uppercase tracking-wider text-pink-400 flex items-center gap-1.5">
           <ImageIcon size={16} /> Oda Kapak Görseli (Screenshot / Minyatür) <span className="text-red-500">*</span>
         </label>
         
         <div className="flex flex-col sm:flex-row items-center gap-6">
-          <label className="flex-1 w-full cursor-pointer bg-[#0a1224] hover:bg-white/5 border-2 border-dashed border-white/20 rounded-xl p-6 text-center transition-all group">
+          <label className="flex-1 w-full cursor-pointer bg-[#0a1325] hover:bg-[#0a1325] border-2 border-dashed border-[#1e293b] rounded-[3px] p-6 text-center transition-all group">
             <input 
               type="file"
               accept="image/*"
@@ -181,7 +181,7 @@ export default function RoomForm({ initialData }: RoomFormProps) {
           </label>
 
           {previewUrl && (
-            <div className="w-full sm:w-48 aspect-video rounded-xl bg-black border-2 border-pink-500/50 overflow-hidden relative shadow-xl shrink-0">
+            <div className="w-full sm:w-48 aspect-video rounded-[3px] bg-black border-2 border-pink-500/50 overflow-hidden relative shadow-xl shrink-0">
               <Image src={previewUrl} alt="Oda Önizleme" fill className="object-cover" unoptimized />
             </div>
           )}
@@ -192,10 +192,10 @@ export default function RoomForm({ initialData }: RoomFormProps) {
         <input type="hidden" name="image_url" value={initialData.image_url} />
       )}
 
-      <div className="flex justify-end items-center gap-4 pt-4 border-t border-white/10">
+      <div className="flex justify-end items-center gap-4 pt-4 border-t border-[#1e293b]">
         <Link 
           href="/admin/rooms" 
-          className="px-6 py-3 rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white font-bold text-xs uppercase transition-colors"
+          className="px-6 py-3 rounded-[3px] bg-[#050a14] border border-[#1e293b] hover:bg-[#0a1325] text-gray-400 hover:text-white font-bold text-xs uppercase transition-colors"
         >
           İptal Et
         </Link>
@@ -203,7 +203,7 @@ export default function RoomForm({ initialData }: RoomFormProps) {
         <button 
           type="submit"
           disabled={loading}
-          className="habbo-button bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-400 hover:to-amber-400 text-black font-black px-8 py-3 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 text-xs uppercase disabled:opacity-50"
+          className="habbo-button bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-400 hover:to-amber-400 text-black font-black px-8 py-3 rounded-[3px] shadow-lg transition-all flex items-center justify-center gap-2 text-xs uppercase disabled:opacity-50"
         >
           {loading ? (
             <>

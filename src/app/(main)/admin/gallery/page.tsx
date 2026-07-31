@@ -1,6 +1,8 @@
 import { createClient } from '@/utils/supabase/server'
 import GalleryAdminClient from './_components/GalleryAdminClient'
-import { Image as ImageIcon, Sparkles, Layers, ShieldCheck } from 'lucide-react'
+import AdminPageHeader from '@/components/admin/AdminPageHeader'
+import AdminStat from '@/components/admin/AdminStat'
+import { Image as ImageIcon, Sparkles, ShieldCheck } from 'lucide-react'
 
 export const revalidate = 0;
 
@@ -29,36 +31,28 @@ export default async function AdminGalleryPage() {
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
-      
-      {/* Üst Başlık & Mini İstatistikler */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-6 border-b border-white/10">
-        <div>
-          <h1 className="text-3xl font-black text-white tracking-tight flex items-center gap-3">
-            <ImageIcon className="text-yellow-400" size={32} /> GALERİ DENETİM & ONAY MERKEZİ
-          </h1>
-          <p className="text-sm text-gray-400 font-medium mt-1">
-            Topluluk üyelerinin yüklediği oda tasarımları, etkinlik kareleri ve nostalji fotoğraflarını denetleyin.
-          </p>
-        </div>
-
-        <div className="flex items-center gap-3 flex-wrap">
-          <div className="habbo-box bg-[#0a1224] border border-white/10 px-4 py-2 rounded-xl flex items-center gap-3">
-            <Sparkles className="text-yellow-400" size={20} />
-            <div>
-              <span className="block text-[10px] text-gray-400 font-bold uppercase">Bekleyen Onay</span>
-              <span className="text-base font-black text-yellow-300">{pendingCount} Fotoğraf</span>
-            </div>
-          </div>
-
-          <div className="habbo-box bg-[#0a1224] border border-white/10 px-4 py-2 rounded-xl flex items-center gap-3">
-            <ShieldCheck className="text-emerald-400" size={20} />
-            <div>
-              <span className="block text-[10px] text-gray-400 font-bold uppercase">Son Onaylananlar</span>
-              <span className="text-base font-black text-emerald-300">{approvedCount} Kayıt</span>
-            </div>
-          </div>
-        </div>
-      </div>
+      <AdminPageHeader
+        icon={ImageIcon}
+        iconColor="text-[#facc15]"
+        title="GALERİ DENETİM & ONAY MERKEZİ"
+        subtitle="Topluluk üyelerinin yüklediği oda tasarımları, etkinlik kareleri ve nostalji fotoğraflarını denetleyin."
+        stats={
+          <>
+            <AdminStat
+              label="Bekleyen Onay"
+              value={<span className="text-yellow-300">{pendingCount} Fotoğraf</span>}
+              icon={Sparkles}
+              iconColor="text-[#facc15]"
+            />
+            <AdminStat
+              label="Son Onaylananlar"
+              value={<span className="text-emerald-300">{approvedCount} Kayıt</span>}
+              icon={ShieldCheck}
+              iconColor="text-emerald-400"
+            />
+          </>
+        }
+      />
 
       <GalleryAdminClient 
         pendingImages={pendingImages || []} 

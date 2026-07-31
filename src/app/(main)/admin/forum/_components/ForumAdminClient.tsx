@@ -317,7 +317,7 @@ export default function ForumAdminClient({
             {/* Forums List */}
             <div className="divide-y divide-[#1e293b]">
               {(forums ?? []).filter(f => f.category_id === cat.id).map(forum => (
-                <div key={forum.id} className="p-4 flex items-start justify-between hover:bg-white/[0.02] transition-colors">
+                <div key={forum.id} className="p-4 flex items-start justify-between hover:bg-[#050a14] transition-colors">
                   {editingForumId === forum.id ? (
                     <div className="w-full space-y-4">
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -361,7 +361,7 @@ export default function ForumAdminClient({
                       <div className="flex justify-end gap-2">
                         <button 
                           onClick={() => setEditingForumId(null)}
-                          className="p-2 text-gray-400 hover:bg-white/10 rounded-[2px] transition-colors"
+                          className="p-2 text-gray-400 hover:bg-[#0a1325] rounded-[2px] transition-colors"
                           title="İptal"
                         >
                           <X size={16} />

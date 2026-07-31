@@ -200,13 +200,13 @@ export default function OutfitStudioClient() {
     <div className="space-y-8 animate-in fade-in duration-500">
       
       {/* Top Banner */}
-      <div className="habbo-box bg-gradient-to-r from-[#070c18] via-[#120a1c] to-[#070c18] border-2 border-white/10 p-6 rounded-2xl relative overflow-hidden shadow-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div className="habbo-box bg-gradient-to-r from-[#070c18] via-[#120a1c] to-[#070c18] border border-[#1e293b] p-6 rounded-[3px] relative overflow-hidden shadow-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <span className="px-2.5 py-0.5 rounded-full bg-pink-500/20 border border-pink-500/40 text-pink-300 text-xs font-black uppercase flex items-center gap-1">
+            <span className="px-2.5 py-0.5 rounded-[2px] bg-pink-500/20 border border-pink-500/40 text-pink-300 text-xs font-black uppercase flex items-center gap-1">
               <Shirt className="w-3.5 h-3.5" /> CANVA MODA v2.0
             </span>
-            <span className="px-2.5 py-0.5 rounded-full bg-yellow-400/20 border border-yellow-400/40 text-yellow-300 text-xs font-bold">
+            <span className="px-2.5 py-0.5 rounded-[2px] bg-yellow-400/20 border border-yellow-400/40 text-yellow-300 text-xs font-bold">
               KOMBİN & LOOKBOOK
             </span>
           </div>
@@ -220,7 +220,7 @@ export default function OutfitStudioClient() {
         
         <button
           onClick={handleCopyEmbed}
-          className="bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-400 hover:to-rose-500 text-white font-black px-6 py-3 rounded-xl shadow-lg shadow-pink-500/25 flex items-center gap-2 transition-all hover:scale-105 shrink-0 uppercase tracking-wider"
+          className="bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-400 hover:to-rose-500 text-white font-black px-6 py-3 rounded-[3px] shadow-lg shadow-pink-500/25 flex items-center gap-2 transition-all hover:scale-105 shrink-0 uppercase tracking-wider"
         >
           {copied ? <Check className="w-5 h-5 text-yellow-300" /> : <Copy className="w-5 h-5" />}
           {copied ? 'MODA KODU KOPYALANDI!' : 'KOMBİN KODUNU KOPYALA'}
@@ -233,8 +233,8 @@ export default function OutfitStudioClient() {
         <div className="lg:col-span-7 space-y-6">
           
           {/* 1. Tema & Genel Bilgiler */}
-          <div className="habbo-box bg-[#070c18] border-2 border-white/10 rounded-xl p-5 space-y-4">
-            <h2 className="text-base font-black text-white flex items-center gap-2 border-b border-white/10 pb-3">
+          <div className="habbo-box bg-[#0a1325] border border-[#1e293b] rounded-[3px] p-5 space-y-4">
+            <h2 className="text-base font-black text-white flex items-center gap-2 border-b border-[#1e293b] pb-3">
               <Palette className="w-4 h-4 text-pink-400" /> 1. Tema & Kombin Başlığı
             </h2>
 
@@ -245,7 +245,7 @@ export default function OutfitStudioClient() {
                   type="text" 
                   value={outfitTitle}
                   onChange={(e) => setOutfitTitle(e.target.value)}
-                  className="w-full bg-[#0a1325] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-pink-500 font-bold"
+                  className="w-full bg-[#0a1325] border border-[#1e293b] rounded-[2px] px-3 py-2 text-sm text-white focus:outline-none focus:border-pink-500 font-bold"
                 />
               </div>
               <div>
@@ -254,7 +254,7 @@ export default function OutfitStudioClient() {
                   type="text" 
                   value={authorName}
                   onChange={(e) => setAuthorName(e.target.value)}
-                  className="w-full bg-[#0a1325] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-pink-500 font-bold"
+                  className="w-full bg-[#0a1325] border border-[#1e293b] rounded-[2px] px-3 py-2 text-sm text-white focus:outline-none focus:border-pink-500 font-bold"
                 />
               </div>
             </div>
@@ -266,10 +266,10 @@ export default function OutfitStudioClient() {
                   <button
                     key={t.id}
                     onClick={() => setSelectedThemeId(t.id)}
-                    className={`px-3 py-2.5 rounded-lg border text-left text-xs font-black transition-all flex items-center justify-between ${
+                    className={`px-3 py-2.5 rounded-[2px] border text-left text-xs font-black transition-all flex items-center justify-between ${
                       selectedThemeId === t.id
                         ? 'bg-pink-500/20 border-pink-500 text-white shadow-lg shadow-pink-500/10'
-                        : 'bg-[#0a1325] border-white/10 text-gray-400 hover:text-white hover:bg-white/5'
+                        : 'bg-[#0a1325] border-[#1e293b] text-gray-400 hover:text-white hover:bg-[#0a1325]'
                     }`}
                   >
                     <span>{t.name}</span>
@@ -281,8 +281,8 @@ export default function OutfitStudioClient() {
           </div>
 
           {/* 2. Karakter (Avatar) Kontrolleri */}
-          <div className="habbo-box bg-[#070c18] border-2 border-white/10 rounded-xl p-5 space-y-4">
-            <h2 className="text-base font-black text-white flex items-center gap-2 border-b border-white/10 pb-3">
+          <div className="habbo-box bg-[#0a1325] border border-[#1e293b] rounded-[3px] p-5 space-y-4">
+            <h2 className="text-base font-black text-white flex items-center gap-2 border-b border-[#1e293b] pb-3">
               <User className="w-4 h-4 text-yellow-400" /> 2. Karakter (Avatar) Ayarları
             </h2>
 
@@ -293,7 +293,7 @@ export default function OutfitStudioClient() {
                   type="text" 
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  className="w-full bg-[#0a1325] border border-white/10 rounded-lg px-3 py-2 text-sm text-yellow-300 focus:outline-none focus:border-yellow-400 font-black"
+                  className="w-full bg-[#0a1325] border border-[#1e293b] rounded-[2px] px-3 py-2 text-sm text-yellow-300 focus:outline-none focus:border-yellow-400 font-black"
                   placeholder="Örn: MuhammedAliErim"
                 />
               </div>
@@ -302,7 +302,7 @@ export default function OutfitStudioClient() {
                 <select 
                   value={action} 
                   onChange={(e) => setAction(e.target.value)}
-                  className="w-full bg-[#0a1325] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-yellow-400 font-bold"
+                  className="w-full bg-[#0a1325] border border-[#1e293b] rounded-[2px] px-3 py-2 text-sm text-white focus:outline-none focus:border-yellow-400 font-bold"
                 >
                   <option value="std">Ayakta Duruyor (Normal)</option>
                   <option value="wav">El Sallıyor (Selamlama)</option>
@@ -319,7 +319,7 @@ export default function OutfitStudioClient() {
                 <select 
                   value={direction} 
                   onChange={(e) => { setDirection(e.target.value); setHeadDirection(e.target.value); }}
-                  className="w-full bg-[#0a1325] border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-yellow-400 font-bold"
+                  className="w-full bg-[#0a1325] border border-[#1e293b] rounded-[2px] px-3 py-2 text-xs text-white focus:outline-none focus:border-yellow-400 font-bold"
                 >
                   <option value="2">Güney Doğu (➡️)</option>
                   <option value="3">Güney (⬇️)</option>
@@ -333,7 +333,7 @@ export default function OutfitStudioClient() {
                 <select 
                   value={gesture} 
                   onChange={(e) => setGesture(e.target.value)}
-                  className="w-full bg-[#0a1325] border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-yellow-400 font-bold"
+                  className="w-full bg-[#0a1325] border border-[#1e293b] rounded-[2px] px-3 py-2 text-xs text-white focus:outline-none focus:border-yellow-400 font-bold"
                 >
                   <option value="sml">😊 Gülümsüyor</option>
                   <option value="std">😐 Ciddi / Havalı</option>
@@ -347,7 +347,7 @@ export default function OutfitStudioClient() {
                 <select 
                   value={size} 
                   onChange={(e) => setSize(e.target.value)}
-                  className="w-full bg-[#0a1325] border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-yellow-400 font-bold"
+                  className="w-full bg-[#0a1325] border border-[#1e293b] rounded-[2px] px-3 py-2 text-xs text-white focus:outline-none focus:border-yellow-400 font-bold"
                 >
                   <option value="l">Büyük (L - Yüksek Kalite)</option>
                   <option value="m">Orta (M - Standart)</option>
@@ -358,8 +358,8 @@ export default function OutfitStudioClient() {
           </div>
 
           {/* 3. Kombinde Kullanılan Kıyafet & Nadireler */}
-          <div className="habbo-box bg-[#070c18] border-2 border-white/10 rounded-xl p-5 space-y-4">
-            <h2 className="text-base font-black text-white flex items-center justify-between border-b border-white/10 pb-3">
+          <div className="habbo-box bg-[#0a1325] border border-[#1e293b] rounded-[3px] p-5 space-y-4">
+            <h2 className="text-base font-black text-white flex items-center justify-between border-b border-[#1e293b] pb-3">
               <span className="flex items-center gap-2">
                 <Tag className="w-4 h-4 text-emerald-400" /> 3. Kombinde Kullanılan Parçalar ({items.length})
               </span>
@@ -367,13 +367,13 @@ export default function OutfitStudioClient() {
             </h2>
 
             {/* Add New Item Inputs */}
-            <div className="bg-[#0a1325] p-3 rounded-xl border border-white/10 space-y-3">
+            <div className="bg-[#0a1325] p-3 rounded-[3px] border border-[#1e293b] space-y-3">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                 <div className="sm:col-span-1">
                   <select
                     value={newItemCategory}
                     onChange={(e) => setNewItemCategory(e.target.value)}
-                    className="w-full bg-[#070c18] border border-white/10 rounded-lg px-2.5 py-2 text-xs text-white font-bold focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-[#0a1325] border border-[#1e293b] rounded-[2px] px-2.5 py-2 text-xs text-white font-bold focus:outline-none focus:border-emerald-500"
                   >
                     <option value="👑 Aksesuar / Nadire">👑 Aksesuar / Nadire</option>
                     <option value="🎩 Şapka / Saç">🎩 Şapka / Saç</option>
@@ -389,7 +389,7 @@ export default function OutfitStudioClient() {
                     placeholder="Eşya Adı (Örn: Örgü Kazak)"
                     value={newItemName}
                     onChange={(e) => setNewItemName(e.target.value)}
-                    className="w-full bg-[#070c18] border border-white/10 rounded-lg px-2.5 py-2 text-xs text-white font-bold focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-[#0a1325] border border-[#1e293b] rounded-[2px] px-2.5 py-2 text-xs text-white font-bold focus:outline-none focus:border-emerald-500"
                   />
                 </div>
                 <div className="sm:col-span-1 flex gap-1">
@@ -398,11 +398,11 @@ export default function OutfitStudioClient() {
                     placeholder="Fiyat (25k / Mağaza)"
                     value={newItemPrice}
                     onChange={(e) => setNewItemPrice(e.target.value)}
-                    className="w-full bg-[#070c18] border border-white/10 rounded-lg px-2.5 py-2 text-xs text-yellow-300 font-bold focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-[#0a1325] border border-[#1e293b] rounded-[2px] px-2.5 py-2 text-xs text-yellow-300 font-bold focus:outline-none focus:border-emerald-500"
                   />
                   <button
                     onClick={handleAddItem}
-                    className="bg-emerald-600 hover:bg-emerald-500 text-white font-black px-3 py-2 rounded-lg transition-all flex items-center justify-center shrink-0 shadow"
+                    className="bg-emerald-600 hover:bg-emerald-500 text-white font-black px-3 py-2 rounded-[2px] transition-all flex items-center justify-center shrink-0 shadow"
                   >
                     <Plus className="w-4 h-4" />
                   </button>
@@ -413,14 +413,14 @@ export default function OutfitStudioClient() {
             {/* Items Table */}
             <div className="space-y-2 max-h-[220px] overflow-y-auto pr-1">
               {items.length === 0 ? (
-                <div className="text-center py-6 bg-white/5 rounded-lg border border-dashed border-white/10 text-gray-400 text-xs font-bold">
+                <div className="text-center py-6 bg-[#050a14] rounded-[2px] border border-dashed border-[#1e293b] text-gray-400 text-xs font-bold">
                   Henüz kombine kıyafet veya nadire parçası eklenmedi.
                 </div>
               ) : (
                 items.map((item) => (
-                  <div key={item.id} className="flex items-center justify-between bg-[#0a1325] border border-white/10 px-3 py-2 rounded-lg hover:border-white/20 transition-all">
+                  <div key={item.id} className="flex items-center justify-between bg-[#0a1325] border border-[#1e293b] px-3 py-2 rounded-[2px] hover:border-[#facc15] transition-all">
                     <div className="flex items-center gap-3 min-w-0">
-                      <span className="text-[10px] font-black uppercase text-gray-400 px-2 py-0.5 rounded bg-white/5 border border-white/5 shrink-0">
+                      <span className="text-[10px] font-black uppercase text-gray-400 px-2 py-0.5 rounded bg-[#050a14] border border-[#1e293b] shrink-0">
                         {item.category}
                       </span>
                       <span className="text-xs font-bold text-white truncate">{item.name}</span>
@@ -448,21 +448,21 @@ export default function OutfitStudioClient() {
         {/* Right Column: Live Canva Lookbook Preview (5 Cols) */}
         <div className="lg:col-span-5 space-y-6 sticky top-24">
           
-          <div className="habbo-box bg-[#070c18] border-2 border-white/10 rounded-xl p-5 space-y-4">
-            <h2 className="text-base font-black text-white flex items-center justify-between border-b border-white/10 pb-3">
+          <div className="habbo-box bg-[#0a1325] border border-[#1e293b] rounded-[3px] p-5 space-y-4">
+            <h2 className="text-base font-black text-white flex items-center justify-between border-b border-[#1e293b] pb-3">
               <span className="flex items-center gap-2">
                 <Eye className="w-4 h-4 text-yellow-400" /> Canlı Moda Kartı Önizlemesi
               </span>
-              <span className="text-[10px] uppercase tracking-wider font-bold text-gray-400 bg-white/5 px-2 py-0.5 rounded">
+              <span className="text-[10px] uppercase tracking-wider font-bold text-gray-400 bg-[#050a14] px-2 py-0.5 rounded-[2px]">
                 CANVA PRO
               </span>
             </h2>
 
             {/* THE CARD */}
-            <div className={`rounded-2xl border-2 ${activeTheme.borderColor} bg-gradient-to-b ${activeTheme.bgGradient} p-5 space-y-5 shadow-2xl relative overflow-hidden transition-all duration-300`}>
+            <div className={`rounded-[3px] border-2 ${activeTheme.borderColor} bg-gradient-to-b ${activeTheme.bgGradient} p-5 space-y-5 shadow-2xl relative overflow-hidden transition-all duration-300`}>
               
               {/* Top Bar */}
-              <div className="flex justify-between items-center border-b border-white/10 pb-3">
+              <div className="flex justify-between items-center border-b border-[#1e293b] pb-3">
                 <div>
                   <span className={`inline-block px-2 py-0.5 rounded text-[9px] uppercase tracking-wider ${activeTheme.badgeBg} ${activeTheme.badgeText} shadow mb-1`}>
                     GÜNÜN KOMBİNİ
@@ -476,7 +476,7 @@ export default function OutfitStudioClient() {
               </div>
 
               {/* Podium & Avatar */}
-              <div className={`rounded-xl bg-black/40 border-2 dashed ${activeTheme.podiumColor} p-6 flex flex-col items-center justify-center relative overflow-hidden min-h-[220px]`}>
+              <div className={`rounded-[3px] bg-black/40 border-2 dashed ${activeTheme.podiumColor} p-6 flex flex-col items-center justify-center relative overflow-hidden min-h-[220px]`}>
                 <div className={`absolute inset-0 ${activeTheme.glowColor} blur-2xl pointer-events-none`}></div>
                 
                 <Image 
@@ -489,7 +489,7 @@ export default function OutfitStudioClient() {
                   style={{ filter: 'drop-shadow(0 15px 20px rgba(0,0,0,0.7))' }}
                 />
 
-                <div className="mt-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-[11px] font-extrabold text-white shadow-lg relative z-10 flex items-center gap-1.5">
+                <div className="mt-2 px-3 py-1 rounded-[2px] bg-[#050a14]/90 border border-[#1e293b] text-[11px] font-extrabold text-white shadow-lg relative z-10 flex items-center gap-1.5">
                   <Sparkles className="w-3 h-3 text-yellow-400 animate-pulse" />
                   <span>Habbo Tarzı: {username}</span>
                 </div>
@@ -497,13 +497,13 @@ export default function OutfitStudioClient() {
 
               {/* Items List Inside Card */}
               <div className="space-y-2">
-                <h4 className="text-xs font-black text-white uppercase tracking-wider border-b border-white/10 pb-1.5 flex items-center gap-1.5">
+                <h4 className="text-xs font-black text-white uppercase tracking-wider border-b border-[#1e293b] pb-1.5 flex items-center gap-1.5">
                   <Shirt className="w-3.5 h-3.5 text-pink-400" /> Kullanılan Parçalar ({items.length})
                 </h4>
 
                 <div className="space-y-1.5 max-h-[180px] overflow-y-auto pr-1">
                   {items.map((item) => (
-                    <div key={item.id} className="flex items-center justify-between bg-black/30 border border-white/10 px-3 py-1.5 rounded-lg text-xs">
+                    <div key={item.id} className="flex items-center justify-between bg-black/30 border border-[#1e293b] px-3 py-1.5 rounded-[2px] text-xs">
                       <div className="min-w-0 pr-2">
                         <span className="text-[9px] font-bold text-gray-400 block uppercase">{item.category}</span>
                         <span className="font-extrabold text-white truncate block">{item.name}</span>
@@ -517,7 +517,7 @@ export default function OutfitStudioClient() {
               </div>
 
               {/* Card Footer */}
-              <div className="pt-2 border-t border-white/10 flex justify-between items-center text-[11px] font-bold text-gray-400">
+              <div className="pt-2 border-t border-[#1e293b] flex justify-between items-center text-[11px] font-bold text-gray-400">
                 <span>Editör: <strong className="text-white">{authorName}</strong></span>
                 <span className="text-pink-400 font-extrabold flex items-center gap-1">
                   HabboZone Lookbook <Award className="w-3 h-3" />
@@ -528,7 +528,7 @@ export default function OutfitStudioClient() {
             {/* Quick Export Button */}
             <button
               onClick={handleCopyEmbed}
-              className="w-full bg-gradient-to-r from-pink-500 via-purple-600 to-indigo-600 hover:from-pink-400 hover:to-indigo-500 text-white font-black py-3.5 rounded-xl shadow-lg shadow-pink-500/25 flex items-center justify-center gap-2 transition-all hover:scale-[1.02] uppercase tracking-wider text-sm"
+              className="w-full bg-gradient-to-r from-pink-500 via-purple-600 to-indigo-600 hover:from-pink-400 hover:to-indigo-500 text-white font-black py-3.5 rounded-[3px] shadow-lg shadow-pink-500/25 flex items-center justify-center gap-2 transition-all hover:scale-[1.02] uppercase tracking-wider text-sm"
             >
               {copied ? <Check className="w-5 h-5 text-yellow-300" /> : <Copy className="w-5 h-5" />}
               {copied ? 'EMBED KODU KOPYALANDI!' : 'TEK TIKLA HABER VEYA DERGİ İÇİN KOPYALA'}

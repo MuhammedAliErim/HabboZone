@@ -46,11 +46,11 @@ export default function NewsForm({ initialData }: NewsFormProps) {
     <div className="max-w-[1200px] mx-auto animate-in fade-in duration-300">
       
       {/* Üst Başlık Barı */}
-      <div className="flex items-center justify-between mb-8 pb-4 border-b border-white/10">
+      <div className="flex items-center justify-between mb-8 pb-4 border-b border-[#1e293b]">
         <div className="flex items-center gap-3">
           <Link 
             href="/admin/news" 
-            className="p-2 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 text-gray-300 hover:text-white transition-colors"
+            className="p-2 rounded-[2px] bg-[#050a14] border border-[#1e293b] hover:bg-[#0a1325] text-gray-300 hover:text-white transition-colors"
           >
             <ArrowLeft size={20} />
           </Link>
@@ -72,7 +72,7 @@ export default function NewsForm({ initialData }: NewsFormProps) {
         <div className="lg:col-span-2 space-y-6">
           
           {/* Başlık */}
-          <div className="habbo-box bg-[#0a1224] border-2 border-white/10 p-6 rounded-xl shadow-xl space-y-4">
+          <div className="habbo-box bg-[#0a1325] border border-[#1e293b] p-6 rounded-[3px] shadow-xl space-y-4">
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-yellow-400 mb-2 flex items-center gap-1.5">
                 <FileText size={16} /> Haber Başlığı <span className="text-red-500">*</span>
@@ -82,7 +82,7 @@ export default function NewsForm({ initialData }: NewsFormProps) {
                 defaultValue={initialData?.title}
                 required
                 placeholder="Örn: Habbo Zone 2026 Yaz Festivali Başlıyor!"
-                className="w-full px-4 py-3 bg-[#050a14] border-2 border-white/10 rounded-xl text-white font-bold text-lg focus:outline-none focus:border-yellow-500 transition-colors shadow-inner"
+                className="w-full px-4 py-3 bg-[#050a14] border border-[#1e293b] rounded-[3px] text-white font-bold text-lg focus:outline-none focus:border-yellow-500 transition-colors shadow-inner"
               />
             </div>
 
@@ -95,7 +95,7 @@ export default function NewsForm({ initialData }: NewsFormProps) {
                 defaultValue={initialData?.excerpt}
                 rows={2}
                 placeholder="Haber kartlarında görünecek 1-2 cümlelik çarpıcı bir özet yazın..."
-                className="w-full px-4 py-2.5 bg-[#050a14] border border-white/10 rounded-xl text-gray-300 text-sm focus:outline-none focus:border-yellow-500 transition-colors shadow-inner"
+                className="w-full px-4 py-2.5 bg-[#050a14] border border-[#1e293b] rounded-[3px] text-gray-300 text-sm focus:outline-none focus:border-yellow-500 transition-colors shadow-inner"
               />
             </div>
           </div>
@@ -116,8 +116,8 @@ export default function NewsForm({ initialData }: NewsFormProps) {
         <div className="space-y-6">
           
           {/* Yayın Ayarları */}
-          <div className="habbo-box bg-[#0a1224] border-2 border-white/10 p-6 rounded-xl shadow-xl space-y-5">
-            <h3 className="text-sm font-black text-white uppercase tracking-wider border-b border-white/10 pb-3 flex items-center gap-2">
+          <div className="habbo-box bg-[#0a1325] border border-[#1e293b] p-6 rounded-[3px] shadow-xl space-y-5">
+            <h3 className="text-sm font-black text-white uppercase tracking-wider border-b border-[#1e293b] pb-3 flex items-center gap-2">
               <Calendar className="text-blue-400" size={18} /> Yayın Ayarları
             </h3>
 
@@ -128,7 +128,7 @@ export default function NewsForm({ initialData }: NewsFormProps) {
               <select 
                 name="category"
                 defaultValue={initialData?.category || 'Duyuru'}
-                className="w-full px-4 py-2.5 bg-[#050a14] border border-white/15 rounded-xl text-white font-bold text-sm focus:outline-none focus:border-blue-500 transition-colors"
+                className="w-full px-4 py-2.5 bg-[#050a14] border border-[#1e293b] rounded-[3px] text-white font-bold text-sm focus:outline-none focus:border-blue-500 transition-colors"
               >
                 <option value="Duyuru">📢 Duyuru</option>
                 <option value="Etkinlik">🎉 Etkinlik</option>
@@ -143,7 +143,7 @@ export default function NewsForm({ initialData }: NewsFormProps) {
               <select 
                 name="status"
                 defaultValue={initialData?.status || 'Published'}
-                className="w-full px-4 py-2.5 bg-[#050a14] border border-white/15 rounded-xl text-white font-bold text-sm focus:outline-none focus:border-blue-500 transition-colors"
+                className="w-full px-4 py-2.5 bg-[#050a14] border border-[#1e293b] rounded-[3px] text-white font-bold text-sm focus:outline-none focus:border-blue-500 transition-colors"
               >
                 <option value="Published">🟢 Yayınlandı (Canlı)</option>
                 <option value="Draft">🟡 Taslak (Gizli)</option>
@@ -157,15 +157,15 @@ export default function NewsForm({ initialData }: NewsFormProps) {
                 type="datetime-local"
                 name="published_at"
                 defaultValue={initialData?.published_at ? new Date(initialData.published_at).toISOString().slice(0, 16) : ''}
-                className="w-full px-4 py-2 bg-[#050a14] border border-white/15 rounded-xl text-gray-300 text-xs focus:outline-none focus:border-blue-500 transition-colors"
+                className="w-full px-4 py-2 bg-[#050a14] border border-[#1e293b] rounded-[3px] text-gray-300 text-xs focus:outline-none focus:border-blue-500 transition-colors"
               />
               <p className="text-[11px] text-gray-500 mt-1">Boş bırakılırsa hemen şimdi yayınlanır.</p>
             </div>
           </div>
 
           {/* Kapak Görseli */}
-          <div className="habbo-box bg-[#0a1224] border-2 border-white/10 p-6 rounded-xl shadow-xl space-y-4">
-            <h3 className="text-sm font-black text-white uppercase tracking-wider border-b border-white/10 pb-3 flex items-center gap-2">
+          <div className="habbo-box bg-[#0a1325] border border-[#1e293b] p-6 rounded-[3px] shadow-xl space-y-4">
+            <h3 className="text-sm font-black text-white uppercase tracking-wider border-b border-[#1e293b] pb-3 flex items-center gap-2">
               <ImageIcon className="text-pink-400" size={18} /> Kapak Görseli
             </h3>
 
@@ -176,12 +176,12 @@ export default function NewsForm({ initialData }: NewsFormProps) {
                 value={imageUrl}
                 onChange={(e) => setImageUrl(e.target.value)}
                 placeholder="https://..."
-                className="w-full px-3 py-2 bg-[#050a14] border border-white/15 rounded-xl text-gray-300 text-xs focus:outline-none focus:border-pink-500 transition-colors"
+                className="w-full px-3 py-2 bg-[#050a14] border border-[#1e293b] rounded-[3px] text-gray-300 text-xs focus:outline-none focus:border-pink-500 transition-colors"
               />
             </div>
 
             {imageUrl ? (
-              <div className="relative rounded-xl overflow-hidden border-2 border-white/20 aspect-video bg-black/50 group">
+              <div className="relative rounded-[3px] overflow-hidden border border-[#1e293b] aspect-video bg-black/50 group">
                 <Image 
                   src={imageUrl} 
                   alt="Kapak Önizleme" 
@@ -191,7 +191,7 @@ export default function NewsForm({ initialData }: NewsFormProps) {
                 />
               </div>
             ) : (
-              <div className="border-2 border-dashed border-white/10 rounded-xl aspect-video flex flex-col items-center justify-center text-gray-500 bg-black/20 p-4 text-center">
+              <div className="border-2 border-dashed border-[#1e293b] rounded-[3px] aspect-video flex flex-col items-center justify-center text-gray-500 bg-black/20 p-4 text-center">
                 <ImageIcon size={28} className="mb-2 opacity-40" />
                 <span className="text-xs">Kapak görseli URL'si yapıştırıldığında burada önizleme belirecektir.</span>
               </div>
@@ -203,7 +203,7 @@ export default function NewsForm({ initialData }: NewsFormProps) {
             <button 
               type="submit" 
               disabled={loading}
-              className="habbo-button bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-400 hover:to-amber-400 text-black font-black py-3.5 px-6 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 text-sm uppercase disabled:opacity-50"
+              className="habbo-button bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-400 hover:to-amber-400 text-black font-black py-3.5 px-6 rounded-[3px] shadow-lg transition-all flex items-center justify-center gap-2 text-sm uppercase disabled:opacity-50"
             >
               <CheckCircle2 size={18} />
               {loading ? 'KAYDEDİLİYOR...' : 'HABERİ KAYDET & YAYINLA'}
@@ -211,7 +211,7 @@ export default function NewsForm({ initialData }: NewsFormProps) {
 
             <Link 
               href="/admin/news" 
-              className="text-center py-2.5 text-xs font-bold text-gray-400 hover:text-white transition-colors border border-white/10 rounded-xl bg-white/5 hover:bg-white/10"
+              className="text-center py-2.5 text-xs font-bold text-gray-400 hover:text-white transition-colors border border-[#1e293b] rounded-[3px] bg-[#050a14] border border-[#1e293b] hover:bg-[#0a1325]"
             >
               İPTAL ET VE GERİ DÖN
             </Link>

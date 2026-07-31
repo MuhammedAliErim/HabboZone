@@ -1,7 +1,9 @@
 import { createClient } from '@/utils/supabase/server'
 import StaffClient from './_components/StaffClient'
 import { redirect } from 'next/navigation'
-import { Shield, Award, Users, Star } from 'lucide-react'
+import { Shield, Award } from 'lucide-react'
+import AdminPageHeader from '@/components/admin/AdminPageHeader'
+import AdminStat from '@/components/admin/AdminStat'
 
 export const revalidate = 0;
 
@@ -65,26 +67,20 @@ export default async function AdminStaffPage() {
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
-      
-      {/* Üst Başlık & İstatistik */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-6 border-b border-white/10">
-        <div>
-          <h1 className="text-3xl font-black text-white tracking-tight flex items-center gap-3">
-            <Shield className="text-yellow-400" size={32} /> EKİP & KADRO YÖNETİM MERKEZİ
-          </h1>
-          <p className="text-sm text-gray-400 font-medium mt-1">
-            HabboZone resmi ekip üyelerini, unvanlarını ve sayfada görüntülenme önceliklerini yönetin.
-          </p>
-        </div>
-
-        <div className="habbo-box bg-[#0a1224] border border-white/10 px-5 py-2.5 rounded-xl flex items-center gap-3 shadow-lg">
-          <Award className="text-yellow-400" size={24} />
-          <div>
-            <span className="block text-[10px] text-gray-400 font-bold uppercase tracking-wider">Topluluk Kadrosu</span>
-            <span className="text-lg font-black text-white">{staffCount} Yetkili Üye</span>
-          </div>
-        </div>
-      </div>
+      <AdminPageHeader
+        icon={Shield}
+        iconColor="text-[#facc15]"
+        title="EKİP & KADRO YÖNETİM MERKEZİ"
+        subtitle="HabboZone resmi ekip üyelerini, unvanlarını ve sayfada görüntülenme önceliklerini yönetin."
+        stats={
+          <AdminStat
+            label="Topluluk Kadrosu"
+            value={`${staffCount} Yetkili Üye`}
+            icon={Award}
+            iconColor="text-[#facc15]"
+          />
+        }
+      />
       
       <StaffClient 
         initialStaff={(staffMembers as any) || []} 

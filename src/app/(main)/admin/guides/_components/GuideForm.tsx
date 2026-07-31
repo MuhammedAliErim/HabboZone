@@ -91,7 +91,7 @@ export default function GuideForm({ initialData }: GuideFormProps) {
             defaultValue={initialData?.title}
             required
             placeholder="Örn: Wired (Kablolu) Sistemler Başlangıç Rehberi"
-            className="w-full px-4 py-3 bg-[#050a14] border-2 border-white/10 rounded-xl text-white font-bold text-sm focus:outline-none focus:border-yellow-400 transition-colors shadow-inner"
+            className="w-full px-4 py-3 bg-[#050a14] border border-[#1e293b] rounded-[3px] text-white font-bold text-sm focus:outline-none focus:border-yellow-400 transition-colors shadow-inner"
           />
         </div>
 
@@ -102,7 +102,7 @@ export default function GuideForm({ initialData }: GuideFormProps) {
           <select 
             name="category"
             defaultValue={initialData?.category || 'Genel'}
-            className="w-full px-4 py-3 bg-[#050a14] border-2 border-white/10 rounded-xl text-white font-bold text-xs focus:outline-none focus:border-purple-400 transition-colors"
+            className="w-full px-4 py-3 bg-[#050a14] border border-[#1e293b] rounded-[3px] text-white font-bold text-xs focus:outline-none focus:border-purple-400 transition-colors"
           >
             <option value="Kablolu">⚡ Kablolu (Wired)</option>
             <option value="Mimari">🏰 Mimari & Tasarım</option>
@@ -122,23 +122,23 @@ export default function GuideForm({ initialData }: GuideFormProps) {
             name="read_time"
             defaultValue={initialData?.read_time || '4 dk okuma'}
             required
-            className="w-full px-4 py-3 bg-[#050a14] border-2 border-white/10 rounded-xl text-white font-bold text-xs focus:outline-none focus:border-emerald-400 transition-colors shadow-inner"
+            className="w-full px-4 py-3 bg-[#050a14] border border-[#1e293b] rounded-[3px] text-white font-bold text-xs focus:outline-none focus:border-emerald-400 transition-colors shadow-inner"
           />
         </div>
 
-        <div className="text-xs text-gray-400 bg-white/5 p-3 rounded-xl border border-white/10 flex items-center gap-2">
+        <div className="text-xs text-gray-400 bg-[#050a14] p-3 rounded-[3px] border border-[#1e293b] flex items-center gap-2">
           <BookOpen className="text-yellow-400 shrink-0" size={18} />
           <span>Profesyonel düzenleyici ile renkli metinler, başlıklar ve görseller ekleyebilirsiniz.</span>
         </div>
       </div>
 
-      <div className="habbo-box bg-[#050a14] border-2 border-white/10 rounded-xl p-5 space-y-4">
+      <div className="habbo-box bg-[#050a14] border border-[#1e293b] rounded-[3px] p-5 space-y-4">
         <label className="block text-xs font-bold uppercase tracking-wider text-pink-400 flex items-center gap-1.5">
           <ImageIcon size={16} /> Rehber Kapak Görseli (Geniş Banner / Thumbnail) <span className="text-red-500">*</span>
         </label>
         
         <div className="flex flex-col sm:flex-row items-center gap-6">
-          <label className="flex-1 w-full cursor-pointer bg-[#0a1224] hover:bg-white/5 border-2 border-dashed border-white/20 rounded-xl p-6 text-center transition-all group">
+          <label className="flex-1 w-full cursor-pointer bg-[#0a1325] hover:bg-[#0a1325] border-2 border-dashed border-[#1e293b] rounded-[3px] p-6 text-center transition-all group">
             <input 
               type="file"
               accept="image/*"
@@ -153,7 +153,7 @@ export default function GuideForm({ initialData }: GuideFormProps) {
           </label>
 
           {previewUrl && (
-            <div className="w-full sm:w-48 aspect-video rounded-xl bg-black border-2 border-pink-500/50 overflow-hidden relative shadow-xl shrink-0">
+            <div className="w-full sm:w-48 aspect-video rounded-[3px] bg-black border-2 border-pink-500/50 overflow-hidden relative shadow-xl shrink-0">
               <Image src={previewUrl} alt="Rehber Önizleme" fill className="object-cover" unoptimized />
             </div>
           )}
@@ -175,10 +175,10 @@ export default function GuideForm({ initialData }: GuideFormProps) {
         <input type="hidden" name="image_url" value={initialData.image_url} />
       )}
 
-      <div className="flex justify-end items-center gap-4 pt-4 border-t border-white/10">
+      <div className="flex justify-end items-center gap-4 pt-4 border-t border-[#1e293b]">
         <Link 
           href="/admin/guides" 
-          className="px-6 py-3 rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white font-bold text-xs uppercase transition-colors"
+          className="px-6 py-3 rounded-[3px] bg-[#050a14] border border-[#1e293b] hover:bg-[#0a1325] text-gray-400 hover:text-white font-bold text-xs uppercase transition-colors"
         >
           İptal Et
         </Link>
@@ -186,7 +186,7 @@ export default function GuideForm({ initialData }: GuideFormProps) {
         <button 
           type="submit"
           disabled={loading}
-          className="habbo-button bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-400 hover:to-amber-400 text-black font-black px-8 py-3 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 text-xs uppercase disabled:opacity-50"
+          className="habbo-button bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-400 hover:to-amber-400 text-black font-black px-8 py-3 rounded-[3px] shadow-lg transition-all flex items-center justify-center gap-2 text-xs uppercase disabled:opacity-50"
         >
           {loading ? (
             <>

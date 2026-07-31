@@ -45,10 +45,10 @@ export default function RoleSelect({ userId, currentRole }: { userId: string, cu
         value={role}
         onChange={handleChange}
         disabled={loading}
-        className={`px-3 py-1.5 rounded-lg border text-xs outline-none cursor-pointer transition-all ${activeRoleConfig.class} hover:border-white/40 disabled:opacity-50`}
+        className={`px-3 py-1.5 rounded-[2px] border text-xs outline-none cursor-pointer transition-all ${activeRoleConfig.class} hover:border-[#facc15] disabled:opacity-50`}
       >
         {roles.map(r => (
-          <option key={r.value} value={r.value} className="bg-[#0f172a] text-white font-medium py-1">
+          <option key={r.value} value={r.value} className="bg-[#050a14] text-white font-medium py-1">
             {r.label}
           </option>
         ))}

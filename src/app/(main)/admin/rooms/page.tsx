@@ -2,6 +2,8 @@ import { createClient } from '@/utils/supabase/server'
 import Link from 'next/link'
 import { Plus, Edit, Trash2, Home, Users, Layers, Sparkles } from 'lucide-react'
 import Image from 'next/image'
+import AdminPageHeader from '@/components/admin/AdminPageHeader'
+import AdminStat from '@/components/admin/AdminStat'
 
 export const revalidate = 0;
 
@@ -22,48 +24,41 @@ export default async function AdminRoomsPage() {
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
-      
-      {/* Üst Başlık & İstatistikler */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-6 border-b border-white/10">
-        <div>
-          <h1 className="text-3xl font-black text-white tracking-tight flex items-center gap-3">
-            <Home className="text-yellow-400" size={32} /> HABBO ODALARI YÖNETİM MERKEZİ
-          </h1>
-          <p className="text-sm text-gray-400 font-medium mt-1">
-            Topluluğun gözde mekanlarını, resmi oda listesini ve buluşma alanlarını organize edin.
-          </p>
-        </div>
-
-        <div className="flex items-center gap-3 flex-wrap">
-          <div className="habbo-box bg-[#0a1224] border border-white/10 px-4 py-2 rounded-xl flex items-center gap-3">
-            <Layers className="text-yellow-400" size={20} />
-            <div>
-              <span className="block text-[10px] text-gray-400 font-bold uppercase">Kayıtlı Mekan</span>
-              <span className="text-base font-black text-white">{activeRooms} Oda</span>
-            </div>
-          </div>
-
-          <div className="habbo-box bg-[#0a1224] border border-white/10 px-4 py-2 rounded-xl flex items-center gap-3">
-            <Users className="text-emerald-400" size={20} />
-            <div>
-              <span className="block text-[10px] text-gray-400 font-bold uppercase">Toplam Kapasite</span>
-              <span className="text-base font-black text-emerald-300">{totalCapacity} Kişi</span>
-            </div>
-          </div>
-
-          <Link 
+      <AdminPageHeader
+        icon={Home}
+        iconColor="text-[#facc15]"
+        title="HABBO ODALARI YÖNETİM MERKEZİ"
+        subtitle="Topluluğun gözde mekanlarını, resmi oda listesini ve buluşma alanlarını organize edin."
+        stats={
+          <>
+            <AdminStat
+              label="Kayıtlı Mekan"
+              value={`${activeRooms} Oda`}
+              icon={Layers}
+              iconColor="text-[#facc15]"
+            />
+            <AdminStat
+              label="Toplam Kapasite"
+              value={<span className="text-emerald-300">{totalCapacity} Kişi</span>}
+              icon={Users}
+              iconColor="text-emerald-400"
+            />
+          </>
+        }
+        actions={
+          <Link
             href="/admin/rooms/new"
-            className="habbo-button bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-400 hover:to-amber-400 text-black px-5 py-2.5 rounded-xl font-black transition-all flex items-center gap-2 shadow-lg text-xs uppercase"
+            className="habbo-button px-5 py-2.5 font-black transition-all flex items-center gap-2 shadow-lg text-xs uppercase"
           >
             <Plus size={18} />
             Yeni Oda Ekle
           </Link>
-        </div>
-      </div>
+        }
+      />
 
       {/* Oda Listesi Tablosu */}
-      <div className="habbo-box bg-[#0a1224] border-2 border-white/10 rounded-xl overflow-hidden shadow-2xl">
-        <div className="p-4 border-b border-white/10 flex justify-between items-center bg-[#050a14]">
+      <div className="habbo-box bg-[#0a1325] border border-[#1e293b] rounded-[3px] overflow-hidden shadow-2xl">
+        <div className="p-4 border-b border-[#1e293b] flex justify-between items-center bg-[#050a14]">
           <h2 className="text-sm font-black text-white uppercase tracking-wider flex items-center gap-2">
             <Sparkles className="text-yellow-400" size={18} /> Gözde Odalar ve Mekan Listesi
           </h2>
@@ -74,7 +69,7 @@ export default async function AdminRoomsPage() {
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm text-gray-300">
-            <thead className="bg-[#050a14] text-gray-400 uppercase text-xs font-black border-b border-white/10">
+            <thead className="bg-[#050a14] text-gray-400 uppercase text-xs font-black border-b border-[#1e293b]">
               <tr>
                 <th className="px-6 py-4">ODA KAPAK GÖRSELİ</th>
                 <th className="px-6 py-4">ODA ADI & AÇIKLAMA</th>
@@ -87,10 +82,10 @@ export default async function AdminRoomsPage() {
             <tbody className="divide-y divide-white/5">
               {rooms && rooms.length > 0 ? (
                 rooms.map((item) => (
-                  <tr key={item.id} className="hover:bg-white/5 transition-colors group">
+                  <tr key={item.id} className="hover:bg-[#0a1325] transition-colors group">
                     <td className="px-6 py-4">
                       {item.image_url ? (
-                        <div className="relative w-24 h-14 rounded-xl overflow-hidden border-2 border-white/10 shadow-md group-hover:border-yellow-400/50 transition-colors shrink-0">
+                        <div className="relative w-24 h-14 rounded-[3px] overflow-hidden border border-[#1e293b] shadow-md group-hover:border-yellow-400/50 transition-colors shrink-0">
                           <Image 
                             src={item.image_url} 
                             alt={item.name} 
@@ -100,7 +95,7 @@ export default async function AdminRoomsPage() {
                           />
                         </div>
                       ) : (
-                        <div className="w-24 h-14 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-xs text-gray-500 italic">
+                        <div className="w-24 h-14 rounded-[3px] bg-[#050a14] border border-[#1e293b] flex items-center justify-center text-xs text-gray-500 italic">
                           Görsel Yok
                         </div>
                       )}
@@ -116,17 +111,17 @@ export default async function AdminRoomsPage() {
                       )}
                     </td>
                     <td className="px-6 py-4">
-                      <span className="font-bold text-yellow-400 text-xs bg-yellow-500/10 border border-yellow-500/20 px-2.5 py-1 rounded-lg">
+                      <span className="font-bold text-yellow-400 text-xs bg-yellow-500/10 border border-yellow-500/20 px-2.5 py-1 rounded-[2px]">
                         👤 {item.owner}
                       </span>
                     </td>
                     <td className="px-6 py-4">
-                      <span className="bg-purple-500/20 text-purple-300 border border-purple-500/30 px-3 py-1 rounded-lg text-xs font-bold uppercase">
+                      <span className="bg-purple-500/20 text-purple-300 border border-purple-500/30 px-3 py-1 rounded-[2px] text-xs font-bold uppercase">
                         {item.category || 'Popüler'}
                       </span>
                     </td>
                     <td className="px-6 py-4 text-center">
-                      <span className="font-black text-white text-sm bg-black/40 px-3 py-1 rounded-lg border border-white/10">
+                      <span className="font-black text-white text-sm bg-black/40 px-3 py-1 rounded-[2px] border border-[#1e293b]">
                         {item.current_users || 0} / {item.max_users || 75}
                       </span>
                     </td>
@@ -134,7 +129,7 @@ export default async function AdminRoomsPage() {
                       <div className="flex items-center justify-end gap-2">
                         <Link 
                           href={`/admin/rooms/${item.id}/edit`}
-                          className="p-2.5 bg-blue-500/10 text-blue-400 hover:bg-blue-500 hover:text-white rounded-xl transition-all shadow-sm"
+                          className="p-2.5 bg-blue-500/10 text-blue-400 hover:bg-blue-500 hover:text-white rounded-[3px] transition-all shadow-sm"
                           title="Düzenle"
                         >
                           <Edit size={16} />
@@ -147,7 +142,7 @@ export default async function AdminRoomsPage() {
                         }}>
                           <button 
                             type="submit"
-                            className="p-2.5 bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white rounded-xl transition-all shadow-sm"
+                            className="p-2.5 bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white rounded-[3px] transition-all shadow-sm"
                             title="Odayı Sil"
                           >
                             <Trash2 size={16} />

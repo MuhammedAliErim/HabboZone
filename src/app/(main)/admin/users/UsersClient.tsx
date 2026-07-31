@@ -206,7 +206,7 @@ export default function UsersClient({ initialUsers }: { initialUsers: UserProfil
                 <tr>
                   <td colSpan={4} className="px-6 py-12 text-center">
                     <div className="max-w-xs mx-auto text-center space-y-2">
-                      <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mx-auto text-gray-500">
+                      <div className="w-12 h-12 rounded-full bg-[#050a14] border border-[#1e293b] flex items-center justify-center mx-auto text-gray-500">
                         <Search size={24} />
                       </div>
                       <p className="text-gray-400 font-bold">Kriterlere uygun kullanıcı bulunamadı.</p>

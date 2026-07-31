@@ -2,6 +2,8 @@ import { createClient } from '@/utils/supabase/server'
 import Link from 'next/link'
 import { Plus, Edit, Trash2, BookOpen, Layers, Sparkles, Clock } from 'lucide-react'
 import Image from 'next/image'
+import AdminPageHeader from '@/components/admin/AdminPageHeader'
+import AdminStat from '@/components/admin/AdminStat'
 
 export const revalidate = 0;
 
@@ -21,40 +23,33 @@ export default async function AdminGuidesPage() {
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
-      
-      {/* Üst Başlık & İstatistikler */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-6 border-b border-white/10">
-        <div>
-          <h1 className="text-3xl font-black text-white tracking-tight flex items-center gap-3">
-            <BookOpen className="text-yellow-400" size={32} /> REHBERLER & BİLGİ BANKASI MERKEZİ
-          </h1>
-          <p className="text-sm text-gray-400 font-medium mt-1">
-            Topluluk üyelerine Wired mekanizmaları, oda tasarımları ve oyun taktiklerini öğreten rehberleri organize edin.
-          </p>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <div className="habbo-box bg-[#0a1224] border border-white/10 px-4 py-2 rounded-xl flex items-center gap-3">
-            <Layers className="text-yellow-400" size={20} />
-            <div>
-              <span className="block text-[10px] text-gray-400 font-bold uppercase">Toplam Rehber</span>
-              <span className="text-base font-black text-white">{totalGuides} Adet</span>
-            </div>
-          </div>
-
-          <Link 
+      <AdminPageHeader
+        icon={BookOpen}
+        iconColor="text-[#facc15]"
+        title="REHBERLER & BİLGİ BANKASI MERKEZİ"
+        subtitle="Topluluk üyelerine Wired mekanizmaları, oda tasarımları ve oyun taktiklerini öğreten rehberleri organize edin."
+        stats={
+          <AdminStat
+            label="Toplam Rehber"
+            value={`${totalGuides} Adet`}
+            icon={Layers}
+            iconColor="text-[#facc15]"
+          />
+        }
+        actions={
+          <Link
             href="/admin/guides/new"
-            className="habbo-button bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-400 hover:to-amber-400 text-black px-5 py-2.5 rounded-xl font-black transition-all flex items-center gap-2 shadow-lg text-xs uppercase"
+            className="habbo-button px-5 py-2.5 font-black transition-all flex items-center gap-2 shadow-lg text-xs uppercase"
           >
             <Plus size={18} />
             Yeni Rehber Ekle
           </Link>
-        </div>
-      </div>
+        }
+      />
 
       {/* Rehberler Tablosu */}
-      <div className="habbo-box bg-[#0a1224] border-2 border-white/10 rounded-xl overflow-hidden shadow-2xl">
-        <div className="p-4 border-b border-white/10 flex justify-between items-center bg-[#050a14]">
+      <div className="habbo-box bg-[#0a1325] border border-[#1e293b] rounded-[3px] overflow-hidden shadow-2xl">
+        <div className="p-4 border-b border-[#1e293b] flex justify-between items-center bg-[#050a14]">
           <h2 className="text-sm font-black text-white uppercase tracking-wider flex items-center gap-2">
             <Sparkles className="text-yellow-400" size={18} /> Yayınlanan Kılavuzlar
           </h2>
@@ -65,7 +60,7 @@ export default async function AdminGuidesPage() {
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm text-gray-300">
-            <thead className="bg-[#050a14] text-gray-400 uppercase text-xs font-black border-b border-white/10">
+            <thead className="bg-[#050a14] text-gray-400 uppercase text-xs font-black border-b border-[#1e293b]">
               <tr>
                 <th className="px-6 py-4">KAPAK GÖRSELİ</th>
                 <th className="px-6 py-4">REHBER BAŞLIĞI</th>
@@ -77,10 +72,10 @@ export default async function AdminGuidesPage() {
             <tbody className="divide-y divide-white/5">
               {guides && guides.length > 0 ? (
                 guides.map((item) => (
-                  <tr key={item.id} className="hover:bg-white/5 transition-colors group">
+                  <tr key={item.id} className="hover:bg-[#0a1325] transition-colors group">
                     <td className="px-6 py-4">
                       {item.image_url ? (
-                        <div className="relative w-24 h-14 rounded-xl overflow-hidden border-2 border-white/10 shadow-md group-hover:border-yellow-400/50 transition-colors shrink-0">
+                        <div className="relative w-24 h-14 rounded-[3px] overflow-hidden border border-[#1e293b] shadow-md group-hover:border-yellow-400/50 transition-colors shrink-0">
                           <Image 
                             src={item.image_url} 
                             alt={item.title} 
@@ -90,7 +85,7 @@ export default async function AdminGuidesPage() {
                           />
                         </div>
                       ) : (
-                        <div className="w-24 h-14 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-xs text-gray-500 italic">
+                        <div className="w-24 h-14 rounded-[3px] bg-[#050a14] border border-[#1e293b] flex items-center justify-center text-xs text-gray-500 italic">
                           Görsel Yok
                         </div>
                       )}
@@ -101,7 +96,7 @@ export default async function AdminGuidesPage() {
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <span className="bg-blue-500/20 text-blue-300 border border-blue-500/30 px-3 py-1 rounded-lg text-xs font-bold uppercase">
+                      <span className="bg-blue-500/20 text-blue-300 border border-blue-500/30 px-3 py-1 rounded-[2px] text-xs font-bold uppercase">
                         {item.category || 'Genel'}
                       </span>
                     </td>
@@ -115,7 +110,7 @@ export default async function AdminGuidesPage() {
                       <div className="flex items-center justify-end gap-2">
                         <Link 
                           href={`/admin/guides/${item.id}/edit`}
-                          className="p-2.5 bg-blue-500/10 text-blue-400 hover:bg-blue-500 hover:text-white rounded-xl transition-all shadow-sm"
+                          className="p-2.5 bg-blue-500/10 text-blue-400 hover:bg-blue-500 hover:text-white rounded-[3px] transition-all shadow-sm"
                           title="Düzenle"
                         >
                           <Edit size={16} />
@@ -128,7 +123,7 @@ export default async function AdminGuidesPage() {
                         }}>
                           <button 
                             type="submit"
-                            className="p-2.5 bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white rounded-xl transition-all shadow-sm"
+                            className="p-2.5 bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white rounded-[3px] transition-all shadow-sm"
                             title="Rehberi Sil"
                           >
                             <Trash2 size={16} />

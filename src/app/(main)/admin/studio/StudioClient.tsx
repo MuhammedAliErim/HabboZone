@@ -48,7 +48,7 @@ const BORDER_STYLES = [
   { id: 'pink', name: 'Canva Pink Glow', border: '2px solid #ec4899', shadow: '0 0 25px rgba(236,72,153,0.5)', class: 'border-2 border-pink-500 shadow-[0_0_25px_rgba(236,72,153,0.4)]' },
   { id: 'gold', name: 'Habbo Altın Kutu', border: '3px solid #facc15', shadow: '0 0 20px rgba(250,204,21,0.4)', class: 'border-[3px] border-yellow-400 shadow-[0_0_20px_rgba(250,204,21,0.4)]' },
   { id: 'cyan', name: 'Siber Lüks Neon', border: '2px solid #38bdf8', shadow: '0 0 20px rgba(56,189,248,0.5)', class: 'border-2 border-sky-400 shadow-[0_0_20px_rgba(56,189,248,0.5)]' },
-  { id: 'classic', name: 'Klasik Koyu Çerçeve', border: '2px solid rgba(255,255,255,0.15)', shadow: '0 20px 25px -5px rgba(0,0,0,0.8)', class: 'border-2 border-white/15 shadow-2xl' },
+  { id: 'classic', name: 'Klasik Koyu Çerçeve', border: '2px solid rgba(255,255,255,0.15)', shadow: '0 20px 25px -5px rgba(0,0,0,0.8)', class: 'border border-[#1e293b] shadow-2xl' },
 ];
 
 const FONT_FAMILIES = [
@@ -132,43 +132,43 @@ export default function StudioClient() {
       <div className="lg:col-span-7 space-y-6">
         
         {/* Sekme Menüsü */}
-        <div className="habbo-box bg-[#0a1224] border-2 border-white/10 p-2 rounded-xl flex items-center justify-between gap-1 overflow-x-auto">
+        <div className="habbo-box bg-[#0a1325] border border-[#1e293b] p-2 rounded-[3px] flex items-center justify-between gap-1 overflow-x-auto">
           <button
             onClick={() => setActiveTab('bg')}
-            className={`flex-1 py-2.5 px-3 rounded-lg text-xs font-bold uppercase transition-all flex items-center justify-center gap-2 whitespace-nowrap ${
-              activeTab === 'bg' ? 'bg-pink-600 text-white shadow-lg shadow-pink-600/30' : 'text-gray-400 hover:text-white hover:bg-white/5'
+            className={`flex-1 py-2.5 px-3 rounded-[2px] text-xs font-bold uppercase transition-all flex items-center justify-center gap-2 whitespace-nowrap ${
+              activeTab === 'bg' ? 'bg-pink-600 text-white shadow-lg shadow-pink-600/30' : 'text-gray-400 hover:text-white hover:bg-[#0a1325]'
             }`}
           >
             <ImageIcon size={16} /> Arka Plan & Boyut
           </button>
           <button
             onClick={() => setActiveTab('text')}
-            className={`flex-1 py-2.5 px-3 rounded-lg text-xs font-bold uppercase transition-all flex items-center justify-center gap-2 whitespace-nowrap ${
-              activeTab === 'text' ? 'bg-pink-600 text-white shadow-lg shadow-pink-600/30' : 'text-gray-400 hover:text-white hover:bg-white/5'
+            className={`flex-1 py-2.5 px-3 rounded-[2px] text-xs font-bold uppercase transition-all flex items-center justify-center gap-2 whitespace-nowrap ${
+              activeTab === 'text' ? 'bg-pink-600 text-white shadow-lg shadow-pink-600/30' : 'text-gray-400 hover:text-white hover:bg-[#0a1325]'
             }`}
           >
             <Type size={16} /> Yazı Katmanı
           </button>
           <button
             onClick={() => setActiveTab('avatar')}
-            className={`flex-1 py-2.5 px-3 rounded-lg text-xs font-bold uppercase transition-all flex items-center justify-center gap-2 whitespace-nowrap ${
-              activeTab === 'avatar' ? 'bg-pink-600 text-white shadow-lg shadow-pink-600/30' : 'text-gray-400 hover:text-white hover:bg-white/5'
+            className={`flex-1 py-2.5 px-3 rounded-[2px] text-xs font-bold uppercase transition-all flex items-center justify-center gap-2 whitespace-nowrap ${
+              activeTab === 'avatar' ? 'bg-pink-600 text-white shadow-lg shadow-pink-600/30' : 'text-gray-400 hover:text-white hover:bg-[#0a1325]'
             }`}
           >
             <User size={16} /> Karakter (Avatar)
           </button>
           <button
             onClick={() => setActiveTab('sticker')}
-            className={`flex-1 py-2.5 px-3 rounded-lg text-xs font-bold uppercase transition-all flex items-center justify-center gap-2 whitespace-nowrap ${
-              activeTab === 'sticker' ? 'bg-pink-600 text-white shadow-lg shadow-pink-600/30' : 'text-gray-400 hover:text-white hover:bg-white/5'
+            className={`flex-1 py-2.5 px-3 rounded-[2px] text-xs font-bold uppercase transition-all flex items-center justify-center gap-2 whitespace-nowrap ${
+              activeTab === 'sticker' ? 'bg-pink-600 text-white shadow-lg shadow-pink-600/30' : 'text-gray-400 hover:text-white hover:bg-[#0a1325]'
             }`}
           >
             <Award size={16} /> Rozet & Dekor
           </button>
           <button
             onClick={() => setActiveTab('fx')}
-            className={`flex-1 py-2.5 px-3 rounded-lg text-xs font-bold uppercase transition-all flex items-center justify-center gap-2 whitespace-nowrap ${
-              activeTab === 'fx' ? 'bg-pink-600 text-white shadow-lg shadow-pink-600/30' : 'text-gray-400 hover:text-white hover:bg-white/5'
+            className={`flex-1 py-2.5 px-3 rounded-[2px] text-xs font-bold uppercase transition-all flex items-center justify-center gap-2 whitespace-nowrap ${
+              activeTab === 'fx' ? 'bg-pink-600 text-white shadow-lg shadow-pink-600/30' : 'text-gray-400 hover:text-white hover:bg-[#0a1325]'
             }`}
           >
             <Sliders size={16} /> Filtre & Efekt
@@ -177,7 +177,7 @@ export default function StudioClient() {
 
         {/* TAB 1: ARKA PLAN & BOYUT */}
         {activeTab === 'bg' && (
-          <div className="habbo-box bg-[#0a1224] border-2 border-white/10 p-6 rounded-xl space-y-6 animate-in fade-in duration-300">
+          <div className="habbo-box bg-[#0a1325] border border-[#1e293b] p-6 rounded-[3px] space-y-6 animate-in fade-in duration-300">
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-pink-400 mb-3 flex items-center gap-1.5">
                 <Layout size={14} /> Tuval Boyutu & Şablon Formatı
@@ -187,10 +187,10 @@ export default function StudioClient() {
                   <button
                     key={size.id}
                     onClick={() => setSelectedSize(size)}
-                    className={`p-3 rounded-xl border text-left transition-all ${
+                    className={`p-3 rounded-[3px] border text-left transition-all ${
                       selectedSize.id === size.id
                         ? 'bg-pink-500/20 border-pink-500 text-white shadow-lg shadow-pink-500/10 font-bold'
-                        : 'bg-[#050a14] border-white/10 text-gray-400 hover:border-white/20 hover:text-white font-medium'
+                        : 'bg-[#050a14] border-[#1e293b] text-gray-400 hover:border-[#facc15] hover:text-white font-medium'
                     }`}
                   >
                     <div className="text-xs">{size.name.split(' (')[0]}</div>
@@ -200,7 +200,7 @@ export default function StudioClient() {
               </div>
             </div>
 
-            <div className="border-t border-white/10 pt-6">
+            <div className="border-t border-[#1e293b] pt-6">
               <label className="block text-xs font-bold uppercase tracking-wider text-cyan-400 mb-3 flex items-center gap-1.5">
                 <ImageIcon size={14} /> Resmi Habbo Arka Plan Temaları
               </label>
@@ -209,10 +209,10 @@ export default function StudioClient() {
                   <button
                     key={tpl.id}
                     onClick={() => setSelectedTemplate(tpl)}
-                    className={`group relative h-24 rounded-xl overflow-hidden border-2 transition-all ${
+                    className={`group relative h-24 rounded-[3px] overflow-hidden border-2 transition-all ${
                       selectedTemplate.id === tpl.id
                         ? 'border-pink-500 shadow-xl shadow-pink-500/20 scale-[1.02]'
-                        : 'border-white/10 hover:border-white/30 opacity-70 hover:opacity-100'
+                        : 'border-[#1e293b] hover:border-[#facc15] opacity-70 hover:opacity-100'
                     }`}
                   >
                     <div 
@@ -231,7 +231,7 @@ export default function StudioClient() {
 
         {/* TAB 2: YAZI KATMANI */}
         {activeTab === 'text' && (
-          <div className="habbo-box bg-[#0a1224] border-2 border-white/10 p-6 rounded-xl space-y-6 animate-in fade-in duration-300">
+          <div className="habbo-box bg-[#0a1325] border border-[#1e293b] p-6 rounded-[3px] space-y-6 animate-in fade-in duration-300">
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-pink-400 mb-2">
                 Ana Başlık Metni
@@ -240,7 +240,7 @@ export default function StudioClient() {
                 type="text"
                 value={titleText}
                 onChange={(e) => setTitleText(e.target.value)}
-                className="w-full bg-[#050a14] border border-white/15 rounded-xl px-4 py-3 text-white font-bold focus:outline-none focus:border-pink-500 transition-colors"
+                className="w-full bg-[#050a14] border border-[#1e293b] rounded-[3px] px-4 py-3 text-white font-bold focus:outline-none focus:border-pink-500 transition-colors"
                 placeholder="Örn: HAFTANIN ETKİNLİĞİ!"
               />
             </div>
@@ -255,7 +255,7 @@ export default function StudioClient() {
                     type="checkbox"
                     checked={showSubtext}
                     onChange={(e) => setShowSubtext(e.target.checked)}
-                    className="w-4 h-4 rounded bg-[#050a14] border-white/20 text-pink-500 focus:ring-0"
+                    className="w-4 h-4 rounded bg-[#050a14] border-[#1e293b] text-pink-500 focus:ring-0"
                   />
                   <span className="text-xs text-gray-400">Açıklamayı Göster</span>
                 </label>
@@ -265,13 +265,13 @@ export default function StudioClient() {
                   type="text"
                   value={subText}
                   onChange={(e) => setSubText(e.target.value)}
-                  className="w-full bg-[#050a14] border border-white/15 rounded-xl px-4 py-3 text-gray-300 text-sm focus:outline-none focus:border-cyan-500 transition-colors"
+                  className="w-full bg-[#050a14] border border-[#1e293b] rounded-[3px] px-4 py-3 text-gray-300 text-sm focus:outline-none focus:border-cyan-500 transition-colors"
                   placeholder="Örn: Cumartesi 20:00'da buluşuyoruz..."
                 />
               )}
             </div>
 
-            <div className="border-t border-white/10 pt-6">
+            <div className="border-t border-[#1e293b] pt-6">
               <label className="block text-xs font-bold uppercase tracking-wider text-yellow-400 mb-3 flex items-center gap-1.5">
                 <Palette size={14} /> Ana Başlık Rengi
               </label>
@@ -280,10 +280,10 @@ export default function StudioClient() {
                   <button
                     key={col.value}
                     onClick={() => setTitleColor(col)}
-                    className={`px-3.5 py-2 rounded-xl border flex items-center gap-2 text-xs font-bold transition-all ${
+                    className={`px-3.5 py-2 rounded-[3px] border flex items-center gap-2 text-xs font-bold transition-all ${
                       titleColor.value === col.value
-                        ? 'bg-white/15 border-white text-white shadow-lg scale-105'
-                        : 'bg-[#050a14] border-white/10 text-gray-400 hover:border-white/30 hover:text-white'
+                        ? 'bg-[#facc15] border-[#facc15] text-black shadow-lg scale-105'
+                        : 'bg-[#050a14] border-[#1e293b] text-gray-400 hover:border-[#facc15] hover:text-white'
                     }`}
                   >
                     <span className="w-3 h-3 rounded-full border border-black/50 shadow-sm" style={{ backgroundColor: col.value }} />
@@ -293,7 +293,7 @@ export default function StudioClient() {
               </div>
             </div>
 
-            <div className="border-t border-white/10 pt-6 flex items-center justify-between">
+            <div className="border-t border-[#1e293b] pt-6 flex items-center justify-between">
               <div>
                 <span className="block text-sm font-bold text-white">Neon Glow (Parlak Gölge) Efekti</span>
                 <span className="text-xs text-gray-400">Yazının arkasına yüksek kontrastlı 3D neon parlama ekler.</span>
@@ -311,8 +311,8 @@ export default function StudioClient() {
 
         {/* TAB 3: KARAKTER (AVATAR) KATMANI */}
         {activeTab === 'avatar' && (
-          <div className="habbo-box bg-[#0a1224] border-2 border-white/10 p-6 rounded-xl space-y-6 animate-in fade-in duration-300">
-            <div className="flex items-center justify-between pb-4 border-b border-white/10">
+          <div className="habbo-box bg-[#0a1325] border border-[#1e293b] p-6 rounded-[3px] space-y-6 animate-in fade-in duration-300">
+            <div className="flex items-center justify-between pb-4 border-b border-[#1e293b]">
               <div>
                 <span className="block text-sm font-bold text-white">Canlı Habbo Karakterini Tuvale Ekle</span>
                 <span className="text-xs text-gray-400">Habbo API üzerinden anlık avatarları manşete yerleştirir.</span>
@@ -336,12 +336,12 @@ export default function StudioClient() {
                     type="text"
                     value={avatarUser}
                     onChange={(e) => setAvatarUser(e.target.value)}
-                    className="w-full bg-[#050a14] border border-white/15 rounded-xl px-4 py-3 text-white font-bold focus:outline-none focus:border-pink-500 transition-colors"
+                    className="w-full bg-[#050a14] border border-[#1e293b] rounded-[3px] px-4 py-3 text-white font-bold focus:outline-none focus:border-pink-500 transition-colors"
                     placeholder="Örn: MuhammedAliErim"
                   />
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-white/10 pt-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-[#1e293b] pt-4">
                   <div>
                     <label className="block text-xs font-bold uppercase tracking-wider text-cyan-400 mb-2">
                       Karakter Yönü
@@ -351,10 +351,10 @@ export default function StudioClient() {
                         <button
                           key={dir}
                           onClick={() => setAvatarDirection(dir)}
-                          className={`py-2 rounded-lg text-xs font-bold border transition-all ${
+                          className={`py-2 rounded-[2px] text-xs font-bold border transition-all ${
                             avatarDirection === dir
                               ? 'bg-cyan-500/20 border-cyan-500 text-white'
-                              : 'bg-[#050a14] border-white/10 text-gray-400 hover:border-white/30'
+                              : 'bg-[#050a14] border-[#1e293b] text-gray-400 hover:border-[#facc15]'
                           }`}
                         >
                           Yön {dir}
@@ -370,7 +370,7 @@ export default function StudioClient() {
                     <select
                       value={avatarAction}
                       onChange={(e) => setAvatarAction(e.target.value)}
-                      className="w-full bg-[#050a14] border border-white/15 rounded-xl px-3 py-2 text-xs text-white font-bold focus:outline-none focus:border-yellow-500"
+                      className="w-full bg-[#050a14] border border-[#1e293b] rounded-[3px] px-3 py-2 text-xs text-white font-bold focus:outline-none focus:border-yellow-500"
                     >
                       <option value="std">Normal Ayakta (Stand)</option>
                       <option value="wav">El Sallama (Wave)</option>
@@ -382,21 +382,21 @@ export default function StudioClient() {
                   </div>
                 </div>
 
-                <div className="border-t border-white/10 pt-4 flex items-center justify-between">
+                <div className="border-t border-[#1e293b] pt-4 flex items-center justify-between">
                   <span className="text-xs font-bold uppercase tracking-wider text-gray-300">Avatar Boyutu:</span>
                   <div className="flex gap-2">
                     <button
                       onClick={() => setAvatarSize('m')}
-                      className={`px-4 py-1.5 rounded-lg text-xs font-bold border transition-all ${
-                        avatarSize === 'm' ? 'bg-white text-black font-black' : 'bg-[#050a14] border-white/10 text-gray-400'
+                      className={`px-4 py-1.5 rounded-[2px] text-xs font-bold border transition-all ${
+                        avatarSize === 'm' ? 'bg-white text-black font-black' : 'bg-[#050a14] border-[#1e293b] text-gray-400'
                       }`}
                     >
                       Normal (Medium)
                     </button>
                     <button
                       onClick={() => setAvatarSize('l')}
-                      className={`px-4 py-1.5 rounded-lg text-xs font-bold border transition-all ${
-                        avatarSize === 'l' ? 'bg-white text-black font-black' : 'bg-[#050a14] border-white/10 text-gray-400'
+                      className={`px-4 py-1.5 rounded-[2px] text-xs font-bold border transition-all ${
+                        avatarSize === 'l' ? 'bg-white text-black font-black' : 'bg-[#050a14] border-[#1e293b] text-gray-400'
                       }`}
                     >
                       Büyük (Large)
@@ -410,7 +410,7 @@ export default function StudioClient() {
 
         {/* TAB 4: ROZET & DEKOR */}
         {activeTab === 'sticker' && (
-          <div className="habbo-box bg-[#0a1224] border-2 border-white/10 p-6 rounded-xl space-y-6 animate-in fade-in duration-300">
+          <div className="habbo-box bg-[#0a1325] border border-[#1e293b] p-6 rounded-[3px] space-y-6 animate-in fade-in duration-300">
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-pink-400 mb-3 flex items-center gap-1.5">
                 <Award size={14} /> Manşet Rozet İkonu Seç
@@ -418,10 +418,10 @@ export default function StudioClient() {
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 <button
                   onClick={() => setSelectedSticker(null)}
-                  className={`p-4 rounded-xl border flex items-center justify-center gap-2 text-xs font-bold transition-all ${
+                  className={`p-4 rounded-[3px] border flex items-center justify-center gap-2 text-xs font-bold transition-all ${
                     selectedSticker === null
                       ? 'bg-pink-500/20 border-pink-500 text-white'
-                      : 'bg-[#050a14] border-white/10 text-gray-400 hover:border-white/30'
+                      : 'bg-[#050a14] border-[#1e293b] text-gray-400 hover:border-[#facc15]'
                   }`}
                 >
                   <span className="text-red-400">×</span> İkon Yok
@@ -431,13 +431,13 @@ export default function StudioClient() {
                   <button
                     key={stk.id}
                     onClick={() => setSelectedSticker(stk)}
-                    className={`p-3 rounded-xl border flex items-center gap-3 text-xs font-bold transition-all ${
+                    className={`p-3 rounded-[3px] border flex items-center gap-3 text-xs font-bold transition-all ${
                       selectedSticker?.id === stk.id
                         ? 'bg-pink-500/20 border-pink-500 text-white shadow-lg'
-                        : 'bg-[#050a14] border-white/10 text-gray-400 hover:border-white/30 hover:text-white'
+                        : 'bg-[#050a14] border-[#1e293b] text-gray-400 hover:border-[#facc15] hover:text-white'
                     }`}
                   >
-                    <div className="w-8 h-8 bg-black/40 rounded-lg flex items-center justify-center shrink-0 border border-white/10">
+                    <div className="w-8 h-8 bg-black/40 rounded-[2px] flex items-center justify-center shrink-0 border border-[#1e293b]">
                       <Image src={stk.icon} alt={stk.name} width={24} height={24} className="object-contain" unoptimized />
                     </div>
                     <span className="truncate">{stk.name}</span>
@@ -445,7 +445,7 @@ export default function StudioClient() {
                 ))}
               </div>
 
-              <div className="border-t border-white/10 pt-5">
+              <div className="border-t border-[#1e293b] pt-5">
                 <label className="block text-xs font-bold uppercase tracking-wider text-yellow-400 mb-2">
                   ✨ Özel Habbo Rozet Kodu Ekle
                 </label>
@@ -455,7 +455,7 @@ export default function StudioClient() {
                     value={customBadgeInput}
                     onChange={(e) => setCustomBadgeInput(e.target.value.toUpperCase())}
                     placeholder="Örn: ADM, DEV, VIP, HC1..."
-                    className="flex-1 bg-[#050a14] border border-white/15 rounded-xl px-4 py-2.5 text-xs text-white font-mono uppercase focus:outline-none focus:border-yellow-500"
+                    className="flex-1 bg-[#050a14] border border-[#1e293b] rounded-[3px] px-4 py-2.5 text-xs text-white font-mono uppercase focus:outline-none focus:border-yellow-500"
                   />
                   <button
                     type="button"
@@ -468,7 +468,7 @@ export default function StudioClient() {
                         });
                       }
                     }}
-                    className="bg-yellow-500 hover:bg-yellow-400 text-black font-black px-4 py-2.5 rounded-xl text-xs transition-all shadow-md"
+                    className="bg-yellow-500 hover:bg-yellow-400 text-black font-black px-4 py-2.5 rounded-[3px] text-xs transition-all shadow-md"
                   >
                     EKLE
                   </button>
@@ -480,7 +480,7 @@ export default function StudioClient() {
 
         {/* TAB 5: FİLTRE & EFEKTLER (PRO FX) */}
         {activeTab === 'fx' && (
-          <div className="habbo-box bg-[#0a1224] border-2 border-white/10 p-6 rounded-xl space-y-6 animate-in fade-in duration-300">
+          <div className="habbo-box bg-[#0a1325] border border-[#1e293b] p-6 rounded-[3px] space-y-6 animate-in fade-in duration-300">
             <div>
               <div className="flex items-center justify-between mb-2">
                 <label className="text-xs font-bold uppercase tracking-wider text-pink-400 flex items-center gap-1.5">
@@ -495,11 +495,11 @@ export default function StudioClient() {
                 step="0.05"
                 value={bgOpacity}
                 onChange={(e) => setBgOpacity(parseFloat(e.target.value))}
-                className="w-full accent-pink-500 bg-[#050a14] rounded-lg h-2 cursor-pointer"
+                className="w-full accent-pink-500 bg-[#050a14] rounded-[2px] h-2 cursor-pointer"
               />
             </div>
 
-            <div className="border-t border-white/10 pt-5">
+            <div className="border-t border-[#1e293b] pt-5">
               <label className="block text-xs font-bold uppercase tracking-wider text-cyan-400 mb-3">
                 Tuval Çerçeve (Border Glow) Stili
               </label>
@@ -508,10 +508,10 @@ export default function StudioClient() {
                   <button
                     key={bst.id}
                     onClick={() => setBorderStyle(bst)}
-                    className={`p-3 rounded-xl border text-left transition-all ${
+                    className={`p-3 rounded-[3px] border text-left transition-all ${
                       borderStyle.id === bst.id
                         ? 'bg-cyan-500/20 border-cyan-400 text-white font-bold shadow-lg shadow-cyan-500/10'
-                        : 'bg-[#050a14] border-white/10 text-gray-400 hover:border-white/30 hover:text-white font-medium'
+                        : 'bg-[#050a14] border-[#1e293b] text-gray-400 hover:border-[#facc15] hover:text-white font-medium'
                     }`}
                   >
                     <div className="text-xs">{bst.name}</div>
@@ -520,7 +520,7 @@ export default function StudioClient() {
               </div>
             </div>
 
-            <div className="border-t border-white/10 pt-5">
+            <div className="border-t border-[#1e293b] pt-5">
               <label className="block text-xs font-bold uppercase tracking-wider text-yellow-400 mb-3">
                 Yazı Tipi & Tipografi Ailesi
               </label>
@@ -529,10 +529,10 @@ export default function StudioClient() {
                   <button
                     key={fnt.id}
                     onClick={() => setFontFamily(fnt)}
-                    className={`p-3 rounded-xl border text-left transition-all ${
+                    className={`p-3 rounded-[3px] border text-left transition-all ${
                       fontFamily.id === fnt.id
                         ? 'bg-yellow-500/20 border-yellow-400 text-white font-bold shadow-lg shadow-yellow-500/10'
-                        : 'bg-[#050a14] border-white/10 text-gray-400 hover:border-white/30 hover:text-white font-medium'
+                        : 'bg-[#050a14] border-[#1e293b] text-gray-400 hover:border-[#facc15] hover:text-white font-medium'
                     }`}
                   >
                     <div className={`text-xs ${fnt.class}`}>{fnt.name}</div>
@@ -541,7 +541,7 @@ export default function StudioClient() {
               </div>
             </div>
 
-            <div className="border-t border-white/10 pt-5">
+            <div className="border-t border-[#1e293b] pt-5">
               <label className="block text-xs font-bold uppercase tracking-wider text-emerald-400 mb-3">
                 Metin Hizalama (Alignment)
               </label>
@@ -550,10 +550,10 @@ export default function StudioClient() {
                   <button
                     key={pos}
                     onClick={() => setTextPosition(pos)}
-                    className={`py-2 rounded-xl border text-xs font-bold transition-all uppercase ${
+                    className={`py-2 rounded-[3px] border text-xs font-bold transition-all uppercase ${
                       textPosition === pos
                         ? 'bg-emerald-500/20 border-emerald-400 text-white shadow-md'
-                        : 'bg-[#050a14] border-white/10 text-gray-400 hover:text-white'
+                        : 'bg-[#050a14] border-[#1e293b] text-gray-400 hover:text-white'
                     }`}
                   >
                     {pos === 'left' ? 'Sol' : pos === 'center' ? 'Orta' : 'Sağ'}
@@ -569,19 +569,19 @@ export default function StudioClient() {
       <div className="lg:col-span-5 space-y-6 sticky top-24">
         
         {/* Canlı Tuval Kartı */}
-        <div className="habbo-box bg-[#0a1224] border-2 border-white/10 p-6 rounded-xl space-y-4 shadow-2xl shadow-pink-500/5">
-          <div className="flex items-center justify-between pb-3 border-b border-white/10">
+        <div className="habbo-box bg-[#0a1325] border border-[#1e293b] p-6 rounded-[3px] space-y-4 shadow-2xl shadow-pink-500/5">
+          <div className="flex items-center justify-between pb-3 border-b border-[#1e293b]">
             <span className="text-xs font-black uppercase tracking-wider text-yellow-400 flex items-center gap-1.5">
               <Eye size={14} className="animate-pulse" /> Canlı Stüdyo Önizlemesi
             </span>
-            <span className="px-2 py-0.5 rounded bg-white/10 text-[10px] font-mono text-gray-300">
+            <span className="px-2 py-0.5 rounded-[2px] bg-[#050a14] border border-[#1e293b] text-[10px] font-mono text-gray-300">
               {selectedSize.width} x {selectedSize.height} PX
             </span>
           </div>
 
           {/* CANVAS PREVIEW RENDERER */}
           <div 
-            className={`relative w-full rounded-xl overflow-hidden ${borderStyle.class} flex items-center justify-between p-6 sm:p-8 transition-all duration-500 ${selectedSize.aspect}`}
+            className={`relative w-full rounded-[3px] overflow-hidden ${borderStyle.class} flex items-center justify-between p-6 sm:p-8 transition-all duration-500 ${selectedSize.aspect}`}
             style={{ 
               backgroundImage: `url('${selectedTemplate.url}')`,
               backgroundSize: 'cover',
@@ -595,7 +595,7 @@ export default function StudioClient() {
             {/* Metin & Rozet Katmanı */}
             <div className={`relative z-20 max-w-[65%] space-y-2 ${textPosition === 'center' ? 'mx-auto text-center' : textPosition === 'right' ? 'ml-auto text-right' : 'text-left'} ${fontFamily.class}`}>
               {selectedSticker && (
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-black/60 backdrop-blur-md rounded-lg border border-white/20 shadow-lg mb-1 animate-bounce">
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-black/60 backdrop-blur-md rounded-[2px] border border-[#1e293b] shadow-lg mb-1 animate-bounce">
                   <Image src={selectedSticker.icon} alt="Sticker" width={20} height={20} className="object-contain" unoptimized />
                   <span className="text-[11px] font-black uppercase tracking-wider text-yellow-300">{selectedSticker.name}</span>
                 </div>
@@ -635,10 +635,10 @@ export default function StudioClient() {
           </div>
 
           {/* Dışa Aktarım Butonları */}
-          <div className="pt-4 border-t border-white/10 space-y-3">
+          <div className="pt-4 border-t border-[#1e293b] space-y-3">
             <button
               onClick={() => copyToClipboard('code')}
-              className="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg shadow-pink-500/25 flex items-center justify-center gap-2 text-sm transition-all hover:scale-[1.02]"
+              className="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 text-white font-bold py-3.5 px-4 rounded-[3px] shadow-lg shadow-pink-500/25 flex items-center justify-center gap-2 text-sm transition-all hover:scale-[1.02]"
             >
               {copiedCode ? <Check size={18} className="text-emerald-300" /> : <Copy size={18} />}
               {copiedCode ? 'HTML KODU KOPYALANDI!' : 'HABER & REHBER İÇİN HTML KODU KOPYALA'}
@@ -647,7 +647,7 @@ export default function StudioClient() {
             <div className="grid grid-cols-2 gap-3">
               <button
                 onClick={() => copyToClipboard('url')}
-                className="bg-[#050a14] hover:bg-white/10 text-gray-300 hover:text-white font-bold py-2.5 px-3 rounded-xl border border-white/15 flex items-center justify-center gap-2 text-xs transition-colors"
+                className="bg-[#050a14] hover:bg-[#0a1325] text-gray-300 hover:text-white font-bold py-2.5 px-3 rounded-[3px] border border-[#1e293b] flex items-center justify-center gap-2 text-xs transition-colors"
               >
                 {copiedUrl ? <Check size={14} className="text-emerald-400" /> : <Share2 size={14} />}
                 {copiedUrl ? 'LİNK KOPYALANDI' : 'Şablon Linkini Al'}
@@ -659,14 +659,14 @@ export default function StudioClient() {
                   setSubText('HabboZone kulübünde harika hediyeler sizleri bekliyor.');
                   setAvatarUser('MuhammedAliErim');
                 }}
-                className="bg-[#050a14] hover:bg-white/10 text-gray-300 hover:text-white font-bold py-2.5 px-3 rounded-xl border border-white/15 flex items-center justify-center gap-2 text-xs transition-colors"
+                className="bg-[#050a14] hover:bg-[#0a1325] text-gray-300 hover:text-white font-bold py-2.5 px-3 rounded-[3px] border border-[#1e293b] flex items-center justify-center gap-2 text-xs transition-colors"
               >
                 <RefreshCw size={14} /> Tasarımı Sıfırla
               </button>
             </div>
           </div>
 
-          <div className="bg-[#050a14] border border-white/10 rounded-xl p-3 text-[11px] text-gray-400 font-medium">
+          <div className="bg-[#050a14] border border-[#1e293b] rounded-[3px] p-3 text-[11px] text-gray-400 font-medium">
             <span className="text-pink-400 font-bold">💡 TipTap İpucu:</span> Kopyaladığınız HTML kodunu, Haberler veya Rehberler sayfasındaki editörün kaynak kod (<code className="text-yellow-300">&lt;/&gt;</code>) bölümüne doğrudan yapıştırabilirsiniz.
           </div>
         </div>

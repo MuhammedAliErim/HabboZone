@@ -38,7 +38,7 @@ export default function AddItemForm({ categories }: { categories: Category[] }) 
         <select 
           name="category_id" 
           required 
-          className="habbo-box w-full px-3.5 py-2.5 bg-[#050a14] border-2 border-white/10 rounded-xl text-white text-sm font-bold focus:outline-none focus:border-blue-400 transition-all"
+          className="habbo-box w-full px-3.5 py-2.5 bg-[#050a14] border border-[#1e293b] rounded-[3px] text-white text-sm font-bold focus:outline-none focus:border-blue-400 transition-all"
         >
           <option value="">-- Bir Kategori Belirleyin --</option>
           {categories.map(c => (
@@ -54,7 +54,7 @@ export default function AddItemForm({ categories }: { categories: Category[] }) 
         <input 
           name="name" 
           required 
-          className="habbo-box w-full px-3.5 py-2.5 bg-[#050a14] border-2 border-white/10 rounded-xl text-white text-sm font-bold focus:outline-none focus:border-emerald-400 transition-all placeholder:text-gray-600 placeholder:font-normal"
+          className="habbo-box w-full px-3.5 py-2.5 bg-[#050a14] border border-[#1e293b] rounded-[3px] text-white text-sm font-bold focus:outline-none focus:border-emerald-400 transition-all placeholder:text-gray-600 placeholder:font-normal"
           placeholder="Örn: Mavi Ejderha Lambası, Altın Taht..."
         />
       </div>
@@ -69,7 +69,7 @@ export default function AddItemForm({ categories }: { categories: Category[] }) 
             type="number"
             required 
             min="0"
-            className="habbo-box w-full px-3.5 py-2.5 bg-[#050a14] border-2 border-white/10 rounded-xl text-white text-sm font-bold focus:outline-none focus:border-yellow-400 transition-all"
+            className="habbo-box w-full px-3.5 py-2.5 bg-[#050a14] border border-[#1e293b] rounded-[3px] text-white text-sm font-bold focus:outline-none focus:border-yellow-400 transition-all"
             placeholder="0"
           />
         </div>
@@ -79,7 +79,7 @@ export default function AddItemForm({ categories }: { categories: Category[] }) 
           </label>
           <select 
             name="currency_type" 
-            className="habbo-box w-full px-3.5 py-2.5 bg-[#050a14] border-2 border-white/10 rounded-xl text-white text-sm font-bold focus:outline-none focus:border-cyan-400 transition-all"
+            className="habbo-box w-full px-3.5 py-2.5 bg-[#050a14] border border-[#1e293b] rounded-[3px] text-white text-sm font-bold focus:outline-none focus:border-cyan-400 transition-all"
           >
             <option value="Kredi">Kredi (c)</option>
             <option value="Elmas">Elmas / Elmas Bar</option>
@@ -95,13 +95,13 @@ export default function AddItemForm({ categories }: { categories: Category[] }) 
           name="image_url" 
           value={imageUrl}
           onChange={(e) => setImageUrl(e.target.value)}
-          className="habbo-box w-full px-3.5 py-2.5 bg-[#050a14] border-2 border-white/10 rounded-xl text-white text-sm font-bold focus:outline-none focus:border-purple-400 transition-all placeholder:text-gray-600 placeholder:font-normal"
+          className="habbo-box w-full px-3.5 py-2.5 bg-[#050a14] border border-[#1e293b] rounded-[3px] text-white text-sm font-bold focus:outline-none focus:border-purple-400 transition-all placeholder:text-gray-600 placeholder:font-normal"
           placeholder="https://www.habbo.com.tr/habbo-imaging/icon/..."
         />
         {imageUrl && (
-          <div className="mt-2.5 p-3 rounded-xl bg-[#050a14] border border-white/10 flex items-center gap-3">
+          <div className="mt-2.5 p-3 rounded-[3px] bg-[#050a14] border border-[#1e293b] flex items-center gap-3">
             <span className="text-[10px] text-gray-400 font-bold uppercase">Önizleme:</span>
-            <div className="w-10 h-10 rounded-lg bg-black/40 flex items-center justify-center border border-white/5">
+            <div className="w-10 h-10 rounded-[2px] bg-black/40 flex items-center justify-center border border-[#1e293b]">
               <Image src={imageUrl} alt="preview" width={40} height={40} className="object-contain" unoptimized />
             </div>
           </div>
@@ -111,7 +111,7 @@ export default function AddItemForm({ categories }: { categories: Category[] }) 
       <button 
         type="submit" 
         disabled={loading}
-        className="habbo-button w-full py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-xs uppercase tracking-wider rounded-xl transition-all shadow-lg shadow-emerald-500/10 flex items-center justify-center gap-1.5 disabled:opacity-50 mt-2"
+        className="habbo-button w-full py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-xs uppercase tracking-wider rounded-[3px] transition-all shadow-lg shadow-emerald-500/10 flex items-center justify-center gap-1.5 disabled:opacity-50 mt-2"
       >
         <Check size={16} /> {loading ? 'Eşya Ekleniyor...' : 'Eşyayı Değer Borsa Listesine Ekle'}
       </button>

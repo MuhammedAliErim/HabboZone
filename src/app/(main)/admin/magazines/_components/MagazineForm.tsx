@@ -169,7 +169,7 @@ export default function MagazineForm({ initialData }: MagazineFormProps) {
       <div className="flex justify-end gap-3 pt-4 border-t border-[#1e293b]">
         <a 
           href="/admin/magazines" 
-          className="px-5 py-2.5 bg-[#0a1325] border border-[#1e293b] text-white font-bold uppercase tracking-wider text-xs rounded-[2px] hover:bg-white/5 transition-colors"
+          className="px-5 py-2.5 bg-[#0a1325] border border-[#1e293b] text-white font-bold uppercase tracking-wider text-xs rounded-[2px] hover:bg-[#0a1325] transition-colors"
         >
           İPTAL
         </a>

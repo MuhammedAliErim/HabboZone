@@ -290,28 +290,28 @@ export default function MagazineEditor({ initialMagazine, initialPages }: Editor
   };
 
   return (
-    <div className="flex h-[calc(100vh-6rem)] w-full bg-[#0a0f1d] text-gray-200 border border-[#1e293b] rounded-xl overflow-hidden shadow-2xl">
+    <div className="flex h-[calc(100vh-6rem)] w-full bg-[#0a0f1d] text-gray-200 border border-[#1e293b] rounded-[3px] overflow-hidden shadow-2xl">
       
       {/* SOL PANEL: TAB MENÜSÜ VE ARAÇLAR (w-80) */}
-      <div className="w-80 border-r border-[#1e293b] bg-[#0f172a] flex flex-col shrink-0">
+      <div className="w-80 border-r border-[#1e293b] bg-[#050a14] flex flex-col shrink-0">
         
         {/* Tab Başlıkları */}
         <div className="flex border-b border-[#1e293b] bg-[#090e17] p-1 gap-1">
           <button 
             onClick={() => setActiveTab('tools')}
-            className={`flex-1 py-2.5 px-3 rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${activeTab === 'tools' ? 'bg-[#3b82f6] text-white shadow-lg shadow-blue-500/25' : 'text-gray-400 hover:bg-[#1e293b]'}`}
+            className={`flex-1 py-2.5 px-3 rounded-[2px] text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${activeTab === 'tools' ? 'bg-[#3b82f6] text-white shadow-lg shadow-blue-500/25' : 'text-gray-400 hover:bg-[#1e293b]'}`}
           >
             <Layers className="w-3.5 h-3.5" /> Katmanlar
           </button>
           <button 
             onClick={() => setActiveTab('ai')}
-            className={`flex-1 py-2.5 px-3 rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${activeTab === 'ai' ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg shadow-purple-500/25' : 'text-gray-400 hover:bg-[#1e293b]'}`}
+            className={`flex-1 py-2.5 px-3 rounded-[2px] text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${activeTab === 'ai' ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg shadow-purple-500/25' : 'text-gray-400 hover:bg-[#1e293b]'}`}
           >
             <Wand2 className="w-3.5 h-3.5" /> AI Motoru
           </button>
           <button 
             onClick={() => setActiveTab('bg')}
-            className={`flex-1 py-2.5 px-3 rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${activeTab === 'bg' ? 'bg-[#facc15] text-black shadow-lg shadow-yellow-500/25 font-black' : 'text-gray-400 hover:bg-[#1e293b]'}`}
+            className={`flex-1 py-2.5 px-3 rounded-[2px] text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${activeTab === 'bg' ? 'bg-[#facc15] text-black shadow-lg shadow-yellow-500/25 font-black' : 'text-gray-400 hover:bg-[#1e293b]'}`}
           >
             <Palette className="w-3.5 h-3.5" /> Tuval
           </button>
@@ -330,7 +330,7 @@ export default function MagazineEditor({ initialMagazine, initialPages }: Editor
                 <div className="grid grid-cols-1 gap-2">
                   <button 
                     onClick={() => addLayer('title')} 
-                    className="flex items-center gap-3 p-3 bg-[#1e293b] hover:bg-[#334155] rounded-lg border border-[#334155] transition-all text-left group"
+                    className="flex items-center gap-3 p-3 bg-[#1e293b] hover:bg-[#0a1325] rounded-[2px] border border-[#1e293b] transition-all text-left group"
                   >
                     <div className="w-8 h-8 rounded bg-blue-500/20 flex items-center justify-center font-black text-blue-400 text-lg group-hover:scale-110 transition-transform">B</div>
                     <div>
@@ -341,7 +341,7 @@ export default function MagazineEditor({ initialMagazine, initialPages }: Editor
 
                   <button 
                     onClick={() => addLayer('subtitle')} 
-                    className="flex items-center gap-3 p-3 bg-[#1e293b] hover:bg-[#334155] rounded-lg border border-[#334155] transition-all text-left group"
+                    className="flex items-center gap-3 p-3 bg-[#1e293b] hover:bg-[#0a1325] rounded-[2px] border border-[#1e293b] transition-all text-left group"
                   >
                     <div className="w-8 h-8 rounded bg-indigo-500/20 flex items-center justify-center font-bold text-indigo-400 text-base group-hover:scale-110 transition-transform">A</div>
                     <div>
@@ -352,7 +352,7 @@ export default function MagazineEditor({ initialMagazine, initialPages }: Editor
 
                   <button 
                     onClick={() => addLayer('text')} 
-                    className="flex items-center gap-3 p-3 bg-[#1e293b] hover:bg-[#334155] rounded-lg border border-[#334155] transition-all text-left group"
+                    className="flex items-center gap-3 p-3 bg-[#1e293b] hover:bg-[#0a1325] rounded-[2px] border border-[#1e293b] transition-all text-left group"
                   >
                     <div className="w-8 h-8 rounded bg-gray-500/20 flex items-center justify-center font-normal text-gray-300 text-sm group-hover:scale-110 transition-transform">T</div>
                     <div>
@@ -370,7 +370,7 @@ export default function MagazineEditor({ initialMagazine, initialPages }: Editor
                 <div className="grid grid-cols-2 gap-2">
                   <button 
                     onClick={() => addLayer('image')} 
-                    className="flex flex-col items-center justify-center gap-2 p-3 bg-[#1e293b] hover:bg-[#334155] rounded-lg border border-[#334155] transition-all text-center group"
+                    className="flex flex-col items-center justify-center gap-2 p-3 bg-[#1e293b] hover:bg-[#0a1325] rounded-[2px] border border-[#1e293b] transition-all text-center group"
                   >
                     <ImageIcon className="w-6 h-6 text-green-400 group-hover:scale-110 transition-transform" />
                     <span className="text-xs font-bold text-white">Resim Ekle</span>
@@ -378,7 +378,7 @@ export default function MagazineEditor({ initialMagazine, initialPages }: Editor
 
                   <button 
                     onClick={() => addLayer('shape')} 
-                    className="flex flex-col items-center justify-center gap-2 p-3 bg-[#1e293b] hover:bg-[#334155] rounded-lg border border-[#334155] transition-all text-center group"
+                    className="flex flex-col items-center justify-center gap-2 p-3 bg-[#1e293b] hover:bg-[#0a1325] rounded-[2px] border border-[#1e293b] transition-all text-center group"
                   >
                     <Square className="w-6 h-6 text-yellow-400 group-hover:scale-110 transition-transform" />
                     <span className="text-xs font-bold text-white">Renk Kutusu</span>
@@ -396,7 +396,7 @@ export default function MagazineEditor({ initialMagazine, initialPages }: Editor
                       key={i}
                       onClick={() => addLayer('sticker', st.url)}
                       title={st.name}
-                      className="p-2 bg-[#1e293b] hover:bg-[#334155] rounded-lg border border-[#334155] flex flex-col items-center justify-center gap-1 transition-all group"
+                      className="p-2 bg-[#1e293b] hover:bg-[#0a1325] rounded-[2px] border border-[#1e293b] flex flex-col items-center justify-center gap-1 transition-all group"
                     >
                       <Image src={st.url} alt={st.name} width={32} height={32} className="object-contain group-hover:scale-125 transition-transform" unoptimized />
                       <span className="text-[10px] text-gray-300 truncate w-full text-center">{st.name.split(' ')[0]}</span>
@@ -410,7 +410,7 @@ export default function MagazineEditor({ initialMagazine, initialPages }: Editor
           {/* TAB 2: YAPAY ZEKA TASARIMCI */}
           {activeTab === 'ai' && (
             <div className="space-y-4 animate-in fade-in duration-200">
-              <div className="p-3 bg-gradient-to-br from-purple-900/40 to-indigo-900/40 border border-purple-500/30 rounded-lg text-xs text-purple-200">
+              <div className="p-3 bg-gradient-to-br from-purple-900/40 to-indigo-900/40 border border-purple-500/30 rounded-[2px] text-xs text-purple-200">
                 <p className="font-bold mb-1 flex items-center gap-1">⚡ NVIDIA NIM Yapay Zeka</p>
                 Prompt verin; AI sizin için kapak, başlıklar, resimler ve renk paletleriyle tam bir dergi oluştursun!
               </div>
@@ -420,7 +420,7 @@ export default function MagazineEditor({ initialMagazine, initialPages }: Editor
                 <textarea 
                   value={aiPrompt}
                   onChange={(e) => setAiPrompt(e.target.value)}
-                  className="w-full bg-[#1e293b] p-3 rounded-lg border border-[#334155] text-sm outline-none focus:border-purple-500 transition-colors text-white placeholder-gray-500"
+                  className="w-full bg-[#1e293b] p-3 rounded-[2px] border border-[#1e293b] text-sm outline-none focus:border-purple-500 transition-colors text-white placeholder-gray-500"
                   placeholder="Örn: 1980'ler retro tarzında, cyberpunk esintili bir Habbo moda dergisi. Kapakta nadire kıyafetler ve içerikte odalar olsun..."
                   rows={5}
                 />
@@ -429,7 +429,7 @@ export default function MagazineEditor({ initialMagazine, initialPages }: Editor
               <button 
                 onClick={generateWithAI}
                 disabled={isAIGenerating}
-                className="w-full bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 hover:opacity-90 py-3 rounded-lg font-bold text-white shadow-lg shadow-purple-500/20 flex items-center justify-center gap-2 disabled:opacity-50 transition-all"
+                className="w-full bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 hover:opacity-90 py-3 rounded-[2px] font-bold text-white shadow-lg shadow-purple-500/20 flex items-center justify-center gap-2 disabled:opacity-50 transition-all"
               >
                 {isAIGenerating ? <Loader2 className="w-5 h-5 animate-spin" /> : <Wand2 className="w-5 h-5 animate-bounce" />}
                 {isAIGenerating ? 'Yapay Zeka Tasarlıyor...' : 'AI ile Dergi Üret'}
@@ -447,7 +447,7 @@ export default function MagazineEditor({ initialMagazine, initialPages }: Editor
                     <button
                       key={i}
                       onClick={() => updatePageBackground(bg.color)}
-                      className={`h-12 rounded-lg border-2 flex flex-col items-center justify-center transition-all ${currentPage.background_color === bg.color ? 'border-yellow-400 scale-105 shadow-md' : 'border-transparent hover:border-white/40'}`}
+                      className={`h-12 rounded-[2px] border-2 flex flex-col items-center justify-center transition-all ${currentPage.background_color === bg.color ? 'border-yellow-400 scale-105 shadow-md' : 'border-transparent hover:border-[#facc15]'}`}
                       style={{ backgroundColor: bg.color }}
                       title={bg.name}
                     >
@@ -460,13 +460,13 @@ export default function MagazineEditor({ initialMagazine, initialPages }: Editor
                     type="color" 
                     value={currentPage.background_color || '#0f172a'}
                     onChange={(e) => updatePageBackground(e.target.value)}
-                    className="w-10 h-10 rounded bg-transparent cursor-pointer border border-[#334155]" 
+                    className="w-10 h-10 rounded bg-transparent cursor-pointer border border-[#1e293b]" 
                   />
                   <input 
                     type="text"
                     value={currentPage.background_color || '#0f172a'}
                     onChange={(e) => updatePageBackground(e.target.value)}
-                    className="flex-1 bg-[#1e293b] border border-[#334155] rounded px-3 py-2 text-xs font-mono text-white outline-none focus:border-yellow-400"
+                    className="flex-1 bg-[#1e293b] border border-[#1e293b] rounded px-3 py-2 text-xs font-mono text-white outline-none focus:border-yellow-400"
                     placeholder="#0f172a"
                   />
                 </div>
@@ -479,7 +479,7 @@ export default function MagazineEditor({ initialMagazine, initialPages }: Editor
                     type="text" 
                     value={currentPage.background_image || ''}
                     onChange={(e) => updatePageBackground(currentPage.background_color, e.target.value || null)}
-                    className="flex-1 bg-[#1e293b] border border-[#334155] rounded px-3 py-2 text-xs text-white outline-none focus:border-yellow-400"
+                    className="flex-1 bg-[#1e293b] border border-[#1e293b] rounded px-3 py-2 text-xs text-white outline-none focus:border-yellow-400"
                     placeholder="https://images.habbo.com/..."
                   />
                   {currentPage.background_image && (
@@ -497,7 +497,7 @@ export default function MagazineEditor({ initialMagazine, initialPages }: Editor
                 <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Izgara ve Kılavuzlar</h3>
                 <button 
                   onClick={() => setShowGrid(!showGrid)}
-                  className={`w-full py-2 px-3 rounded-lg border text-xs font-bold flex items-center justify-center gap-2 transition-all ${showGrid ? 'bg-yellow-500/20 border-yellow-500 text-yellow-300' : 'bg-[#1e293b] border-[#334155] text-gray-400'}`}
+                  className={`w-full py-2 px-3 rounded-[2px] border text-xs font-bold flex items-center justify-center gap-2 transition-all ${showGrid ? 'bg-yellow-500/20 border-yellow-500 text-yellow-300' : 'bg-[#1e293b] border-[#1e293b] text-gray-400'}`}
                 >
                   <Grid className="w-4 h-4" />
                   {showGrid ? 'Izgara Çizgilerini Gizle' : 'Canva Hizalama Izgarası Göster'}
@@ -513,7 +513,7 @@ export default function MagazineEditor({ initialMagazine, initialPages }: Editor
           <button 
             onClick={saveAllPages}
             disabled={isSaving}
-            className="w-full bg-emerald-600 hover:bg-emerald-500 py-3 rounded-lg font-bold text-white shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2 disabled:opacity-50 transition-all"
+            className="w-full bg-emerald-600 hover:bg-emerald-500 py-3 rounded-[2px] font-bold text-white shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2 disabled:opacity-50 transition-all"
           >
             {isSaving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
             Tüm Dergiyi Kaydet
@@ -524,13 +524,13 @@ export default function MagazineEditor({ initialMagazine, initialPages }: Editor
 
       {/* ORTA PANEL: TUVAL (CANVAS) ALANI */}
       <div 
-        className="flex-1 bg-[#050811] flex flex-col items-center overflow-auto p-6 relative select-none"
+        className="flex-1 bg-[#0a1325] flex flex-col items-center overflow-auto p-6 relative select-none"
         onClick={(e) => {
           if (e.target === e.currentTarget) setSelectedLayerId(null);
         }}
       >
         {/* Üst Kılavuz Çubuğu */}
-        <div className="flex items-center gap-3 mb-6 bg-[#0f172a]/90 backdrop-blur px-5 py-2 rounded-full border border-[#1e293b] shadow-xl sticky top-0 z-40">
+        <div className="flex items-center gap-3 mb-6 bg-[#050a14]/90 backdrop-blur px-5 py-2 rounded-full border border-[#1e293b] shadow-xl sticky top-0 z-40">
           <button 
             onClick={() => { setCurrentPageIndex(prev => Math.max(0, prev - 1)); setSelectedLayerId(null); }}
             disabled={currentPageIndex === 0}
@@ -551,11 +551,11 @@ export default function MagazineEditor({ initialMagazine, initialPages }: Editor
             <ChevronRight className="w-5 h-5" />
           </button>
           
-          <div className="w-[1px] h-4 bg-[#334155] mx-1"></div>
+          <div className="w-[1px] h-4 bg-[#1e293b] mx-1"></div>
           
           <button 
             onClick={addNewPage}
-            className="flex items-center gap-1.5 px-3 py-1 bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/30 rounded-full text-xs font-bold text-blue-400 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1 bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/30 rounded-[2px] text-xs font-bold text-blue-400 transition-colors"
           >
             <Plus className="w-3.5 h-3.5" /> Yeni Sayfa
           </button>
@@ -563,7 +563,7 @@ export default function MagazineEditor({ initialMagazine, initialPages }: Editor
           <button 
             onClick={deleteCurrentPage}
             disabled={pages.length <= 1}
-            className="flex items-center gap-1.5 px-3 py-1 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 rounded-full text-xs font-bold text-red-400 transition-colors disabled:opacity-30"
+            className="flex items-center gap-1.5 px-3 py-1 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 rounded-[2px] text-xs font-bold text-red-400 transition-colors disabled:opacity-30"
           >
             <Trash2 className="w-3.5 h-3.5" /> Sayfayı Sil
           </button>
@@ -571,7 +571,7 @@ export default function MagazineEditor({ initialMagazine, initialPages }: Editor
 
         {/* TUVAL (CANVAS - 800x1131 Dergi Boyutu) */}
         <div 
-          className={`relative shadow-[0_0_50px_rgba(0,0,0,0.8)] rounded-md transition-all duration-300 shrink-0 ${showGrid ? 'bg-[linear-gradient(to_right,#1f2937_1px,transparent_1px),linear-gradient(to_bottom,#1f2937_1px,transparent_1px)] bg-[size:40px_40px]' : ''}`}
+          className={`relative shadow-[0_0_50px_rgba(0,0,0,0.8)] rounded-[2px] transition-all duration-300 shrink-0 ${showGrid ? 'bg-[linear-gradient(to_right,#1f2937_1px,transparent_1px),linear-gradient(to_bottom,#1f2937_1px,transparent_1px)] bg-[size:40px_40px]' : ''}`}
           style={{
             width: 800,
             height: 1131,
@@ -684,7 +684,7 @@ export default function MagazineEditor({ initialMagazine, initialPages }: Editor
       </div>
 
       {/* SAĞ PANEL: ÖZELLİKLER DENETLEYİCİSİ (INSPECTOR - w-80) */}
-      <div className="w-80 border-l border-[#1e293b] bg-[#0f172a] p-5 flex flex-col shrink-0 overflow-y-auto">
+      <div className="w-80 border-l border-[#1e293b] bg-[#050a14] p-5 flex flex-col shrink-0 overflow-y-auto">
         
         {selectedLayer ? (
           <div className="space-y-6 animate-in fade-in duration-200">
@@ -712,7 +712,7 @@ export default function MagazineEditor({ initialMagazine, initialPages }: Editor
                 <textarea 
                   value={selectedLayer.content || ''}
                   onChange={(e) => updateLayerContent(selectedLayer.id, e.target.value)}
-                  className="w-full bg-[#1e293b] border border-[#334155] rounded-lg p-2.5 text-xs text-white outline-none focus:border-yellow-400"
+                  className="w-full bg-[#1e293b] border border-[#1e293b] rounded-[2px] p-2.5 text-xs text-white outline-none focus:border-yellow-400"
                   rows={4}
                 />
               ) : (
@@ -721,7 +721,7 @@ export default function MagazineEditor({ initialMagazine, initialPages }: Editor
                     type="text" 
                     value={selectedLayer.content || ''}
                     onChange={(e) => updateLayerContent(selectedLayer.id, e.target.value)}
-                    className="w-full bg-[#1e293b] border border-[#334155] rounded-lg p-2 text-xs text-white outline-none focus:border-yellow-400 font-mono"
+                    className="w-full bg-[#1e293b] border border-[#1e293b] rounded-[2px] p-2 text-xs text-white outline-none focus:border-yellow-400 font-mono"
                     placeholder="https://..."
                   />
                   <p className="text-[10px] text-gray-400">Doğrudan resim veya gif linki yapıştırın.</p>
@@ -738,7 +738,7 @@ export default function MagazineEditor({ initialMagazine, initialPages }: Editor
                     <select 
                       value={selectedLayer.style?.fontSize || '20px'}
                       onChange={(e) => updateLayerStyle(selectedLayer.id, { fontSize: e.target.value })}
-                      className="w-full bg-[#1e293b] border border-[#334155] rounded-lg p-2 text-xs text-white outline-none"
+                      className="w-full bg-[#1e293b] border border-[#1e293b] rounded-[2px] p-2 text-xs text-white outline-none"
                     >
                       {['12px', '14px', '16px', '18px', '20px', '24px', '28px', '32px', '38px', '44px', '52px', '64px'].map(sz => (
                         <option key={sz} value={sz}>{sz}</option>
@@ -751,7 +751,7 @@ export default function MagazineEditor({ initialMagazine, initialPages }: Editor
                     <select 
                       value={selectedLayer.style?.fontWeight || 'normal'}
                       onChange={(e) => updateLayerStyle(selectedLayer.id, { fontWeight: e.target.value })}
-                      className="w-full bg-[#1e293b] border border-[#334155] rounded-lg p-2 text-xs text-white outline-none"
+                      className="w-full bg-[#1e293b] border border-[#1e293b] rounded-[2px] p-2 text-xs text-white outline-none"
                     >
                       <option value="normal">Normal</option>
                       <option value="bold">Kalın (Bold)</option>
@@ -763,7 +763,7 @@ export default function MagazineEditor({ initialMagazine, initialPages }: Editor
 
                 <div>
                   <label className="text-xs font-bold text-gray-300 block mb-1">Hizalama</label>
-                  <div className="grid grid-cols-3 gap-1 bg-[#1e293b] p-1 rounded-lg border border-[#334155]">
+                  <div className="grid grid-cols-3 gap-1 bg-[#1e293b] p-1 rounded-[2px] border border-[#1e293b]">
                     {['left', 'center', 'right'].map((align) => (
                       <button
                         key={align}
@@ -807,7 +807,7 @@ export default function MagazineEditor({ initialMagazine, initialPages }: Editor
                     type="text" 
                     value={(selectedLayer.type === 'text' ? selectedLayer.style?.color : selectedLayer.style?.backgroundColor) || '#ffffff'}
                     onChange={(e) => updateLayerStyle(selectedLayer.id, selectedLayer.type === 'text' ? { color: e.target.value } : { backgroundColor: e.target.value })}
-                    className="flex-1 bg-[#1e293b] border border-[#334155] rounded px-2.5 py-1.5 text-xs font-mono text-white outline-none" 
+                    className="flex-1 bg-[#1e293b] border border-[#1e293b] rounded px-2.5 py-1.5 text-xs font-mono text-white outline-none" 
                   />
                 </div>
               </div>
@@ -837,7 +837,7 @@ export default function MagazineEditor({ initialMagazine, initialPages }: Editor
                 <select 
                   value={selectedLayer.style?.borderRadius || '0px'}
                   onChange={(e) => updateLayerStyle(selectedLayer.id, { borderRadius: e.target.value })}
-                  className="w-full bg-[#1e293b] border border-[#334155] rounded-lg p-2 text-xs text-white outline-none"
+                  className="w-full bg-[#1e293b] border border-[#1e293b] rounded-[2px] p-2 text-xs text-white outline-none"
                 >
                   <option value="0px">Keskin Köşe (0px)</option>
                   <option value="6px">Hafif Yuvarlak (6px)</option>
@@ -854,13 +854,13 @@ export default function MagazineEditor({ initialMagazine, initialPages }: Editor
               <div className="grid grid-cols-2 gap-2">
                 <button 
                   onClick={() => bringToFront(selectedLayer.id)}
-                  className="py-2 px-3 bg-[#1e293b] hover:bg-[#334155] rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition-colors"
+                  className="py-2 px-3 bg-[#1e293b] hover:bg-[#0a1325] rounded-[2px] text-xs font-bold flex items-center justify-center gap-1.5 transition-colors"
                 >
                   <ArrowUp className="w-3.5 h-3.5 text-blue-400" /> En Öne Al
                 </button>
                 <button 
                   onClick={() => sendToBack(selectedLayer.id)}
-                  className="py-2 px-3 bg-[#1e293b] hover:bg-[#334155] rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition-colors"
+                  className="py-2 px-3 bg-[#1e293b] hover:bg-[#0a1325] rounded-[2px] text-xs font-bold flex items-center justify-center gap-1.5 transition-colors"
                 >
                   <ArrowDown className="w-3.5 h-3.5 text-indigo-400" /> En Arkaya Al
                 </button>
@@ -869,13 +869,13 @@ export default function MagazineEditor({ initialMagazine, initialPages }: Editor
               <div className="grid grid-cols-2 gap-2 pt-2">
                 <button 
                   onClick={() => duplicateLayer(selectedLayer.id)}
-                  className="py-2.5 px-3 bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/30 text-blue-400 rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition-colors"
+                  className="py-2.5 px-3 bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/30 text-blue-400 rounded-[2px] text-xs font-bold flex items-center justify-center gap-1.5 transition-colors"
                 >
                   <Copy className="w-3.5 h-3.5" /> Çoğalt
                 </button>
                 <button 
                   onClick={() => removeLayer(selectedLayer.id)}
-                  className="py-2.5 px-3 bg-red-600/20 hover:bg-red-600/30 border border-red-500/30 text-red-400 rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition-colors"
+                  className="py-2.5 px-3 bg-red-600/20 hover:bg-red-600/30 border border-red-500/30 text-red-400 rounded-[2px] text-xs font-bold flex items-center justify-center gap-1.5 transition-colors"
                 >
                   <Trash2 className="w-3.5 h-3.5" /> Sil
                 </button>
@@ -892,7 +892,7 @@ export default function MagazineEditor({ initialMagazine, initialPages }: Editor
             <p className="text-xs text-gray-500">
               Düzenlemek veya konumlandırmak için tuvaldeli herhangi bir öğeye veya yazıya tıklayın.
             </p>
-            <div className="mt-8 p-3 bg-[#1e293b]/50 border border-[#334155]/40 rounded-lg text-left text-xs text-gray-400 w-full space-y-1.5">
+            <div className="mt-8 p-3 bg-[#1e293b]/50 border border-[#1e293b]/40 rounded-[2px] text-left text-xs text-gray-400 w-full space-y-1.5">
               <p className="font-bold text-yellow-400 flex items-center gap-1"><Sparkles className="w-3.5 h-3.5" /> İpucu</p>
               <p>• Katmanları sürükleyerek taşıyın.</p>
               <p>• Köşelerinden çekerek yeniden boyutlandırın.</p>
