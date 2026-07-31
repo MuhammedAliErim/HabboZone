@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { checkRateLimit, getRateLimitKey } from '@/lib/rate-limiter';
+import { logger } from '@/lib/logger';
 
 export async function GET(request: Request) {
   const { allowed, resetIn } = checkRateLimit(getRateLimitKey(request), 5)
@@ -66,6 +67,7 @@ export async function GET(request: Request) {
       }
     } catch (e: any) {
       modelResults[model] = { success: false, exception: e.message };
+      await logger.error('api_debug_ai_model', model, { error: e?.message })
     }
   }
 

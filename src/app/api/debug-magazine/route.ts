@@ -1,6 +1,7 @@
 import { createClient } from '@/utils/supabase/server';
 import { NextResponse } from 'next/server';
 import { checkRateLimit, getRateLimitKey } from '@/lib/rate-limiter';
+import { logger } from '@/lib/logger';
 
 export async function GET(request: Request) {
   const { allowed, resetIn } = checkRateLimit(getRateLimitKey(request), 10)
@@ -70,6 +71,7 @@ export async function GET(request: Request) {
       }
     });
   } catch (e: any) {
+    await logger.error('api_debug_magazine', e?.message || 'Unknown error')
     return NextResponse.json({ step: 'exception', error: e.message, stack: e.stack }, { status: 500 });
   }
 }

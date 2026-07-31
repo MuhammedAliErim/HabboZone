@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { memo } from 'react';
 import { Users, ShieldAlert } from 'lucide-react';
 
 interface GroupCardProps {
@@ -18,7 +19,7 @@ interface GroupCardProps {
   };
 }
 
-export default function GroupCard({ group }: GroupCardProps) {
+function GroupCard({ group }: GroupCardProps) {
   const avatarUrl = `https://www.habbo.com.tr/habbo-imaging/avatarimage?user=${group.owner.habbo_username}&direction=2&head_direction=2&gesture=sml&size=s`;
   const members = group.memberCount || ((group.name.length * 7) % 50) + 12;
 
@@ -76,3 +77,5 @@ export default function GroupCard({ group }: GroupCardProps) {
     </Link>
   );
 }
+
+export default memo(GroupCard);

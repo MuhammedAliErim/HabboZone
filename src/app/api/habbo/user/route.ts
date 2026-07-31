@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { checkRateLimit, getRateLimitKey } from '@/lib/rate-limiter';
+import { logger } from '@/lib/logger';
 
 export async function GET(request: Request) {
   const { allowed, remaining, resetIn } = checkRateLimit(getRateLimitKey(request), 20)
@@ -35,7 +36,7 @@ export async function GET(request: Request) {
     const data = await response.json();
     return NextResponse.json(data);
   } catch (error) {
-    console.error('Habbo API Proxy Error:', error);
+    await logger.error('api_habbo_user', error instanceof Error ? error.message : 'Unknown error')
     return NextResponse.json({ error: 'Failed to fetch user data' }, { status: 500 });
   }
 }

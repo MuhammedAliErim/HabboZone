@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/utils/supabase/server'
 import { checkRateLimit, getRateLimitKey } from '@/lib/rate-limiter'
+import { logger } from '@/lib/logger'
 
 export async function POST(request: Request) {
   const { allowed, resetIn } = checkRateLimit(getRateLimitKey(request), 60)
@@ -28,7 +29,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ ok: true })
   } catch (err) {
-    console.error('log-error route failed:', err)
+    await logger.error('api_log_error', err instanceof Error ? err.message : 'Unknown error')
     return NextResponse.json({ ok: false }, { status: 500 })
   }
 }

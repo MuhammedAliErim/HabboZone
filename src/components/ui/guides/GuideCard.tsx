@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { memo } from 'react';
 import { Clock, BarChart2 } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { tr } from 'date-fns/locale';
@@ -27,7 +28,7 @@ interface GuideCardProps {
   };
 }
 
-export default function GuideCard({ guide }: GuideCardProps) {
+function GuideCard({ guide }: GuideCardProps) {
   const difficultyColors: Record<string, string> = {
     'Kolay': 'bg-green-500/20 text-green-400 border-green-500/50',
     'Orta': 'bg-yellow-500/20 text-yellow-400 border-yellow-500/50',
@@ -115,3 +116,5 @@ export default function GuideCard({ guide }: GuideCardProps) {
     </div>
   );
 }
+
+export default memo(GuideCard);

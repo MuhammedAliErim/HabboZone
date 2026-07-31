@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 import { checkRateLimit, getRateLimitKey } from '@/lib/rate-limiter';
+import { logger } from '@/lib/logger';
 
 export async function GET(request: Request) {
   const { allowed, remaining, resetIn } = checkRateLimit(getRateLimitKey(request))
@@ -28,11 +29,13 @@ export async function GET(request: Request) {
       .order('published_at', { ascending: false });
 
     if (error) {
+      await logger.error('api_news_query', error.message)
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
     return NextResponse.json({ news }, { status: 200 });
-  } catch {
+  } catch (err) {
+    await logger.error('api_news_exception', err instanceof Error ? err.message : 'Unknown error')
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

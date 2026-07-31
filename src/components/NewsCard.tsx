@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { memo } from 'react';
 import { Clock, Eye, MessageSquare } from 'lucide-react';
 
 interface NewsCardProps {
@@ -18,7 +19,7 @@ interface NewsCardProps {
   };
 }
 
-export default function NewsCard({ news }: NewsCardProps) {
+function NewsCard({ news }: NewsCardProps) {
   const avatarUrl = `https://www.habbo.com.tr/habbo-imaging/avatarimage?user=${news.author.habbo_username}&direction=2&head_direction=2&gesture=sml&size=s`;
 
   const stableSeed = news.slug.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
@@ -75,3 +76,5 @@ export default function NewsCard({ news }: NewsCardProps) {
     </Link>
   );
 }
+
+export default memo(NewsCard);
